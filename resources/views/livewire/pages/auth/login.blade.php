@@ -19,7 +19,23 @@ class extends Component
 
         Session::regenerate();
 
-        $this->redirectIntended(default: route('dashboard', absolute: false), navigate: true);
+        // 👇 LOGIKA REDIRECT BERDASARKAN ROLE 👇
+        
+        $role = auth()->user()->role; 
+
+        // Tentukan mau kemana berdasarkan role
+        $redirectUrl = match ($role) {
+            'superadmin' => route('admin.dashboard', absolute: false),
+            'admin_umkm'  => route('umkm.dashboard', absolute: false),
+            'worker'      => route('worker.dashboard', absolute: false),
+            'customer'      => route('customer.dashboard', absolute: false),
+            default       => route('dashboard', absolute: false), // customer lari kesini
+        };
+
+        // RedirectIntended artinya: 
+        // Kalau user tadi mau buka halaman Admin tapi dihadang login, balikin ke Admin.
+        // Tapi kalau login biasa, arahkan ke $redirectUrl yang kita set diatas.
+        $this->redirectIntended(default: $redirectUrl, navigate: true);
     }
 }; ?>
 
