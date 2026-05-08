@@ -178,59 +178,75 @@
             x-data="{
                 isMobileMenuOpen: false,
                 isScrolled: false,
-                init() { window.addEventListener('scroll', () => { this.isScrolled = window.scrollY > 20; }); },
+                init() { 
+                    window.addEventListener('scroll', () => { 
+                        this.isScrolled = window.scrollY > 20; 
+                    }); 
+                },
                 handleLinkClick(href) {
                     this.isMobileMenuOpen = false;
                     const element = document.querySelector(href);
                     if (element) element.scrollIntoView({ behavior: 'smooth' });
                 }
             }"
-            :class="isScrolled ? 'bg-background/95 backdrop-blur-md shadow-sm' : 'bg-transparent'"
+            :class="isScrolled ? 'bg-white/95 backdrop-blur-md shadow-sm text-gray-900' : 'bg-transparent text-white'"
             class="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
         >
             <div class="max-w-7xl mx-auto px-6 lg:px-8">
                 <div class="flex items-center justify-between h-20">
                     <div class="flex-shrink-0 flex items-center gap-3">
                         <!-- Branding: JOS (Logo removed) -->
-                        <button @click="handleLinkClick('#home')" class="text-2xl font-bold text-foreground hover:text-primary transition-colors duration-200" style="font-family: 'Plus Jakarta Sans', sans-serif;">
+                        <button @click="handleLinkClick('#home')" 
+                                :class="isScrolled ? 'text-gray-900' : 'text-white'"
+                                class="text-2xl font-bold hover:text-[#167E6C] transition-colors duration-200" 
+                                style="font-family: 'Plus Jakarta Sans', sans-serif;">
                             <span style="font-family: 'Figtree', sans-serif; font-weight: 800;">JOS</span>
                         </button>
                     </div>
                     <div class="hidden md:block">
                         <div class="ml-10 flex items-baseline space-x-8">
                             @foreach($navigationLinks as $link)
-                                <button @click="handleLinkClick('{{ $link['href'] }}')" class="text-foreground hover:text-primary px-3 py-2 text-base font-medium transition-colors duration-200 relative group" style="font-family: 'Figtree', sans-serif; font-weight: 400;">
+                                <button @click="handleLinkClick('{{ $link['href'] }}')" 
+                                        :class="isScrolled ? 'text-gray-900 hover:text-[#167E6C]' : 'text-white hover:text-white/80'"
+                                        class="px-3 py-2 text-base font-medium transition-colors duration-200 relative group" 
+                                        style="font-family: 'Figtree', sans-serif; font-weight: 400;">
                                     <span>{{ $link['name'] }}</span>
-                                    <div class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></div>
+                                    <div class="absolute bottom-0 left-0 w-0 h-0.5 bg-current transition-all duration-300 group-hover:w-full"></div>
                                 </button>
                             @endforeach
                         </div>
                     </div>
                     <div class="hidden md:block">
                         <div class="flex items-center gap-4">
-                            <a href="#" class="text-foreground font-medium hover:text-primary transition-colors px-3 py-2" style="font-family: 'Figtree', sans-serif;">Masuk</a>
+                            <a href="{{ route('customer.dashboard.preview') }}" 
+                               :class="isScrolled ? 'text-gray-900 hover:text-[#167E6C]' : 'text-white hover:text-white/80'"
+                               class="font-medium transition-colors px-3 py-2" 
+                               style="font-family: 'Figtree', sans-serif;">Masuk</a>
                             <button class="bg-[#167E6C] text-white px-[18px] rounded-full text-base font-semibold hover:bg-[#167E6C]/90 transition-all duration-200 hover:rounded-2xl shadow-sm hover:shadow-md whitespace-nowrap leading-4 py-[15px]" style="font-family: 'Plus Jakarta Sans', sans-serif;">
                                 <span style="font-family: 'Figtree', sans-serif; font-weight: 500;">Daftar</span>
                             </button>
                         </div>
                     </div>
                     <div class="md:hidden">
-                        <button @click="isMobileMenuOpen = !isMobileMenuOpen" class="text-foreground hover:text-primary p-2 rounded-md transition-colors duration-200" aria-label="Toggle mobile menu">
+                        <button @click="isMobileMenuOpen = !isMobileMenuOpen" 
+                                :class="isScrolled ? 'text-gray-900' : 'text-white'"
+                                class="hover:text-[#167E6C] p-2 rounded-md transition-colors duration-200" 
+                                aria-label="Toggle mobile menu">
                             <svg x-show="!isMobileMenuOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
                             <svg x-show="isMobileMenuOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                         </button>
                     </div>
                 </div>
             </div>
-            <div x-show="isMobileMenuOpen" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 h-0" x-transition:enter-end="opacity-100 h-auto" x-transition:leave="transition ease-in duration-300" x-transition:leave-start="opacity-100 h-auto" x-transition:leave-end="opacity-0 h-0" class="md:hidden bg-background/95 backdrop-blur-md border-t border-border overflow-hidden">
+            <div x-show="isMobileMenuOpen" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 h-0" x-transition:enter-end="opacity-100 h-auto" x-transition:leave="transition ease-in duration-300" x-transition:leave-start="opacity-100 h-auto" x-transition:leave-end="opacity-0 h-0" class="md:hidden bg-white/95 backdrop-blur-md border-t border-gray-200 overflow-hidden">
                 <div class="px-6 py-6 space-y-4">
                     @foreach($navigationLinks as $link)
-                        <button @click="handleLinkClick('{{ $link['href'] }}')" class="block w-full text-left text-foreground hover:text-primary py-3 text-lg font-medium transition-colors duration-200" style="font-family: 'Figtree', sans-serif; font-weight: 400;">
+                        <button @click="handleLinkClick('{{ $link['href'] }}')" class="block w-full text-left text-gray-900 hover:text-[#167E6C] py-3 text-lg font-medium transition-colors duration-200" style="font-family: 'Figtree', sans-serif; font-weight: 400;">
                             <span>{{ $link['name'] }}</span>
                         </button>
                     @endforeach
-                    <div class="pt-4 border-t border-border flex flex-col gap-3">
-                         <a href="#" class="block w-full text-center text-foreground font-medium hover:text-primary transition-colors py-2" style="font-family: 'Figtree', sans-serif;">Masuk</a>
+                    <div class="pt-4 border-t border-gray-200 flex flex-col gap-3">
+                         <a href="{{ route('customer.dashboard.preview') }}" class="block w-full text-center text-gray-900 font-medium hover:text-[#167E6C] transition-colors py-2" style="font-family: 'Figtree', sans-serif;">Masuk</a>
                         <button class="w-full bg-[#167E6C] text-white px-[18px] py-[15px] rounded-full text-base font-semibold hover:bg-[#167E6C]/90 transition-all duration-200" style="font-family: 'Plus Jakarta Sans', sans-serif;">
                             <span>Daftar</span>
                         </button>
@@ -239,19 +255,30 @@
             </div>
         </nav>
 
-        <!-- Product Teaser Section (Now Section 1) -->
-        <section class="w-full px-8 pt-40 pb-32">
-            <div class="max-w-7xl mx-auto">
-                <div class="grid grid-cols-12 gap-2">
-                    <div x-data="{ shown: false }" x-init="setTimeout(() => shown = true, 100)" :class="shown ? 'opacity-100' : 'opacity-0'" class="col-span-12 lg:col-span-6 bg-[#e9e9e9] rounded-[40px] p-12 lg:p-16 flex flex-col justify-end aspect-square overflow-hidden transition-opacity duration-1000 ease-out">
-                        <div class="flex flex-col gap-1 text-[#167E6C] mb-8">
+        <!-- Full Screen Video Hero Section -->
+        <section id="home" class="relative w-full min-h-screen flex items-end justify-start overflow-hidden">
+            <!-- Video Background -->
+            <div class="absolute inset-0 w-full h-full">
+                <video autoplay muted loop playsinline class="w-full h-full object-cover">
+                    <source src="{{ asset('storage/videos/hero.mp4') }}" type="video/mp4">
+                    <!-- Fallback if needed, possibly an image -->
+                </video>
+                <!-- Opaque Overlay to ensure text readability -->
+                <div class="absolute inset-0 bg-black/40"></div>
+            </div>
+
+            <!-- Content Container (Bottom Left) -->
+            <div class="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-8 pb-24 lg:pb-32">
+                <div class="max-w-3xl">
+                    <div class="col-span-12 lg:col-span-6 flex flex-col justify-end">
+                        <div class="flex flex-col gap-1 text-[#4ade80] mb-6 hero-text-anim">
                             <span class="text-sm uppercase tracking-tight font-mono flex items-center gap-1" style="font-family: 'Geist Mono', monospace;">
                                 SOLUSI UMKM TERDEPAN
-                                <span class="w-1.5 h-3 bg-[#167E6C] ml-1 rounded-sm animate-pulse"></span>
+                                <span class="w-1.5 h-3 bg-[#4ade80] ml-1 rounded-sm animate-pulse"></span>
                             </span>
                         </div>
-                        <h1 class="text-[56px] leading-[1.1] tracking-tight text-[#064E3B] max-w-[520px] mb-6" style="font-weight: 500; font-family: 'Figtree', sans-serif;">
-                            Bangun <span class="relative inline-block text-[#167E6C]" 
+                        <h1 class="text-[56px] leading-[1.1] tracking-tight text-white mb-6 hero-text-anim" style="font-weight: 500; font-family: 'Figtree', sans-serif;">
+                            Bangun <span class="relative inline-block text-[#4ade80]" 
                                 x-data="{
                                     words: ['Identitas Digital', 'Bisnis Modern', 'Relasi Kuat', 'Pasar Luas'],
                                     current: 0,
@@ -270,34 +297,30 @@
                                           }"
                                     ></span>
                                 </template>
-                                <!-- Invisible spacer to adjust width dynamically or fixed to longest word -->
                                 <span class="opacity-0">Identitas Digital</span>
                             </span><br>
-                            dan Tingkatkan Daya Saing <span class="opacity-60">UMKM Anda.</span>
+                            dan Tingkatkan Daya Saing <span class="opacity-80 text-white">UMKM Anda.</span>
                         </h1>
-                        <p class="text-lg leading-7 text-[#064E3B]/80 max-w-[520px] mb-8" style="font-family: 'Figtree', sans-serif;">
+                        <p class="text-lg leading-7 text-gray-200 max-w-[520px] mb-8 hero-text-anim" style="font-family: 'Figtree', sans-serif;">
                             Platform terintegrasi yang menghubungkan UMKM dengan peluang pasar yang lebih luas, teknologi terkini, dan komunitas yang mendukung pertumbuhan bisnis Anda.
                         </p>
-                        <ul class="flex gap-1.5 flex-wrap mt-2">
+                        <ul class="flex gap-1.5 flex-wrap mt-2 hero-text-anim">
                             <li>
-                                <button class="relative inline-flex justify-center items-center leading-4 text-center cursor-pointer whitespace-nowrap outline-none font-medium h-10 text-white bg-[#167E6C] transition-all duration-200 ease-in-out rounded-lg px-5 text-sm group hover:bg-[#167E6C]/90 hover:shadow-lg">
-                                    <span class="relative z-10 flex items-center gap-1">Click to explore <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 -mr-1 transition-transform duration-150 group-hover:translate-x-1"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></span>
+                                <button class="relative inline-flex justify-center items-center leading-4 text-center cursor-pointer whitespace-nowrap outline-none font-medium h-12 text-[#064E3B] bg-white transition-all duration-200 ease-in-out rounded-lg px-6 text-base group hover:bg-gray-100 hover:shadow-lg">
+                                    <span class="relative z-10 flex items-center gap-2">Mulai Sekarang <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 transition-transform duration-150 group-hover:translate-x-1"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></span>
                                 </button>
                             </li>
                         </ul>
-                    </div>
-                    <div x-data="{ shown: false }" x-init="setTimeout(() => shown = true, 300)" :class="shown ? 'opacity-100' : 'opacity-0'" class="col-span-12 lg:col-span-6 bg-white rounded-[40px] flex justify-center items-center aspect-square overflow-hidden transition-opacity duration-1000 ease-out" style="background-image: url('https://storage.googleapis.com/storage.magicpath.ai/user/282171029206482944/assets/882ef3dd-3459-4fd8-a939-52ceada51d5c.png'); background-size: cover; background-position: center;">
-                        <video src="{{ $teaser['videoSrc'] }}" autoplay muted loop playsinline poster="{{ $teaser['posterSrc'] }}" class="block w-full h-full object-cover"></video>
                     </div>
                 </div>
             </div>
         </section>
 
         <div class="w-full py-12 bg-white overflow-hidden">
-            <div class="max-w-[680px] mx-auto text-center mb-10 px-4">
-                <h2 class="text-[40px] leading-tight font-normal text-[#064E3B] tracking-tight mb-4" style="font-family: 'Figtree', sans-serif;">Pilih UMKM Partner Anda</h2>
-                <p class="text-lg leading-7 text-[#666666] max-w-[600px] mx-auto" style="font-family: 'Figtree', sans-serif;">Temukan dan berkolaborasi dengan UMKM terbaik dari berbagai industri untuk mendukung pertumbuhan bisnis Anda.</p>
-                <div class="mt-8"><a href="#" class="inline-block px-5 py-2.5 rounded-full bg-white text-[#064E3B] text-[15px] font-medium transition-all duration-75 hover:shadow-lg border border-[#e3e3e3]">Lihat Semua UMKM Partner</a></div>
+            <div class="max-w-[680px] mx-auto text-center mb-10 px-4 partner-header-section">
+                <h2 class="text-[40px] leading-tight font-normal text-[#064E3B] tracking-tight mb-4 partner-header-anim" style="font-family: 'Figtree', sans-serif;">Pilih UMKM Partner Anda</h2>
+                <p class="text-lg leading-7 text-[#666666] max-w-[600px] mx-auto partner-header-anim" style="font-family: 'Figtree', sans-serif;">Temukan dan berkolaborasi dengan UMKM terbaik dari berbagai industri untuk mendukung pertumbuhan bisnis Anda.</p>
+                <div class="mt-8 partner-header-anim"><a href="#" class="inline-block px-5 py-2.5 rounded-full bg-white text-[#064E3B] text-[15px] font-medium transition-all duration-75 hover:shadow-lg border border-[#e3e3e3]">Lihat Semua UMKM Partner</a></div>
             </div>
             <div class="relative h-[268px] -mt-6">
                 <div class="flex items-start gap-6 absolute top-6 whitespace-nowrap animate-scroll w-max">
@@ -314,14 +337,14 @@
         </div>
 
         <!-- Why Choose Us (Section 3) -->
-        <div class="w-full bg-gradient-to-br from-background via-background to-[#167E6C]/5 py-24 px-8">
+        <div class="w-full bg-gradient-to-br from-background via-background to-[#167E6C]/5 py-24 px-8 features-section">
             <div class="max-w-7xl mx-auto">
                 <div class="text-center mb-16">
                     <h2 class="text-[40px] leading-tight font-normal text-[#064E3B] mb-6 tracking-tight" style="font-weight: 400; font-family: 'Figtree', sans-serif;">Mengapa Memilih Platform Kami</h2>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                     <!-- Feature 1 -->
-                    <div class="bg-white p-8 rounded-3xl shadow-[0_2px_8px_rgba(0,0,0,0.04)] border border-[#e5e5e5]/50 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col items-center text-center group">
+                    <div class="bg-white p-8 rounded-3xl shadow-[0_2px_8px_rgba(0,0,0,0.04)] border border-[#e5e5e5]/50 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col items-center text-center group feature-card">
                         <div class="w-14 h-14 rounded-full bg-[#167E6C]/10 flex items-center justify-center mb-6 group-hover:bg-[#167E6C] transition-colors duration-300">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-[#167E6C] group-hover:text-white transition-colors duration-300"><polyline points="20 6 9 17 4 12"></polyline></svg>
                         </div>
@@ -330,7 +353,7 @@
                     </div>
 
                     <!-- Feature 2 -->
-                    <div class="bg-white p-8 rounded-3xl shadow-[0_2px_8px_rgba(0,0,0,0.04)] border border-[#e5e5e5]/50 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col items-center text-center group">
+                    <div class="bg-white p-8 rounded-3xl shadow-[0_2px_8px_rgba(0,0,0,0.04)] border border-[#e5e5e5]/50 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col items-center text-center group feature-card">
                         <div class="w-14 h-14 rounded-full bg-[#167E6C]/10 flex items-center justify-center mb-6 group-hover:bg-[#167E6C] transition-colors duration-300">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-[#167E6C] group-hover:text-white transition-colors duration-300"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
                         </div>
@@ -339,7 +362,7 @@
                     </div>
 
                     <!-- Feature 3 -->
-                    <div class="bg-white p-8 rounded-3xl shadow-[0_2px_8px_rgba(0,0,0,0.04)] border border-[#e5e5e5]/50 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col items-center text-center group">
+                    <div class="bg-white p-8 rounded-3xl shadow-[0_2px_8px_rgba(0,0,0,0.04)] border border-[#e5e5e5]/50 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col items-center text-center group feature-card">
                         <div class="w-14 h-14 rounded-full bg-[#167E6C]/10 flex items-center justify-center mb-6 group-hover:bg-[#167E6C] transition-colors duration-300">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-[#167E6C] group-hover:text-white transition-colors duration-300"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
                         </div>
@@ -348,7 +371,7 @@
                     </div>
 
                     <!-- Feature 4 -->
-                    <div class="bg-white p-8 rounded-3xl shadow-[0_2px_8px_rgba(0,0,0,0.04)] border border-[#e5e5e5]/50 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col items-center text-center group">
+                    <div class="bg-white p-8 rounded-3xl shadow-[0_2px_8px_rgba(0,0,0,0.04)] border border-[#e5e5e5]/50 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col items-center text-center group feature-card">
                         <div class="w-14 h-14 rounded-full bg-[#167E6C]/10 flex items-center justify-center mb-6 group-hover:bg-[#167E6C] transition-colors duration-300">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-[#167E6C] group-hover:text-white transition-colors duration-300"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
                         </div>
@@ -360,7 +383,7 @@
         </div>
 
         <!-- How It Works (Section 4) -->
-        <div class="w-full bg-white py-24 px-8" x-data="{ activeStep: null }">
+        <div class="w-full bg-white py-24 px-8 steps-section" x-data="{ activeStep: null }">
             <div class="max-w-7xl mx-auto">
                 <div class="text-center mb-20">
                     <h2 class="text-[40px] leading-tight font-normal text-[#064E3B] tracking-tight" style="font-weight: 400; font-family: 'Figtree', sans-serif;">Cara Kerja</h2>
@@ -372,7 +395,7 @@
                     
                     <div class="grid grid-cols-1 lg:grid-cols-4 gap-12">
                         <!-- Step 1 -->
-                        <div class="flex flex-col items-center text-center group cursor-pointer" @mouseenter="activeStep = 1" @mouseleave="activeStep = null">
+                        <div class="flex flex-col items-center text-center group cursor-pointer step-item" @mouseenter="activeStep = 1" @mouseleave="activeStep = null">
                             <div class="w-24 h-24 rounded-full flex items-center justify-center text-2xl font-bold mb-6 transition-all duration-300 relative bg-white border-4" 
                                 :class="activeStep === 1 ? 'border-[#167E6C] text-[#167E6C] scale-110 shadow-lg' : 'border-gray-900 text-gray-900'">
                                 1
@@ -384,7 +407,7 @@
                         </div>
 
                         <!-- Step 2 -->
-                        <div class="flex flex-col items-center text-center group cursor-pointer" @mouseenter="activeStep = 2" @mouseleave="activeStep = null">
+                        <div class="flex flex-col items-center text-center group cursor-pointer step-item" @mouseenter="activeStep = 2" @mouseleave="activeStep = null">
                             <div class="w-24 h-24 rounded-full flex items-center justify-center text-2xl font-bold mb-6 transition-all duration-300 relative bg-white border-4" 
                                 :class="activeStep === 2 ? 'border-[#167E6C] text-[#167E6C] scale-110 shadow-lg' : 'border-gray-900 text-gray-900'">
                                 2
@@ -396,7 +419,7 @@
                         </div>
 
                         <!-- Step 3 -->
-                        <div class="flex flex-col items-center text-center group cursor-pointer" @mouseenter="activeStep = 3" @mouseleave="activeStep = null">
+                        <div class="flex flex-col items-center text-center group cursor-pointer step-item" @mouseenter="activeStep = 3" @mouseleave="activeStep = null">
                             <div class="w-24 h-24 rounded-full flex items-center justify-center text-2xl font-bold mb-6 transition-all duration-300 relative bg-white border-4" 
                                 :class="activeStep === 3 ? 'border-[#167E6C] text-[#167E6C] scale-110 shadow-lg' : 'border-gray-900 text-gray-900'">
                                 3
@@ -408,7 +431,7 @@
                         </div>
 
                         <!-- Step 4 -->
-                        <div class="flex flex-col items-center text-center group cursor-pointer" @mouseenter="activeStep = 4" @mouseleave="activeStep = null">
+                        <div class="flex flex-col items-center text-center group cursor-pointer step-item" @mouseenter="activeStep = 4" @mouseleave="activeStep = null">
                             <div class="w-24 h-24 rounded-full flex items-center justify-center text-2xl font-bold mb-6 transition-all duration-300 relative bg-white border-4" 
                                 :class="activeStep === 4 ? 'border-[#167E6C] text-[#167E6C] scale-110 shadow-lg' : 'border-gray-900 text-gray-900'">
                                 4
@@ -424,14 +447,14 @@
         </div>
 
         <!-- FAQ -->
-        <section class="w-full py-24 px-8 bg-white" x-data="{ openIndex: null }">
+        <section class="w-full py-24 px-8 bg-white faq-section" x-data="{ openIndex: null }">
             <div class="max-w-7xl mx-auto">
                 <div class="grid lg:grid-cols-12 gap-16">
                     <div class="lg:col-span-4"><h2 class="text-[40px] leading-tight font-normal text-[#064E3B] tracking-tight sticky top-24" style="font-family: 'Figtree', sans-serif; font-weight: 400;">Pertanyaan yang Sering Diajukan</h2></div>
                     <div class="lg:col-span-8">
                         <div class="space-y-0">
                             <!-- FAQ Item 1 -->
-                            <div class="border-b border-[#e5e5e5] last:border-b-0">
+                            <div class="border-b border-[#e5e5e5] last:border-b-0 faq-item">
                                 <button @click="openIndex = openIndex === 0 ? null : 0" class="w-full flex items-center justify-between py-6 text-left group hover:opacity-70 transition-opacity duration-150" :aria-expanded="openIndex === 0">
                                     <span class="text-lg leading-7 text-[#202020] pr-8" style="font-family: 'Figtree', sans-serif; font-weight: 400;">Bagaimana cara mendaftar sebagai partner UMKM?</span>
                                     <div class="flex-shrink-0 transition-transform duration-200 ease-[cubic-bezier(0.4,0,0.2,1)]" :class="openIndex === 0 ? 'rotate-45' : 'rotate-0'">
@@ -443,7 +466,7 @@
                                 </div>
                             </div>
                             <!-- FAQ Item 2 -->
-                            <div class="border-b border-[#e5e5e5] last:border-b-0">
+                            <div class="border-b border-[#e5e5e5] last:border-b-0 faq-item">
                                 <button @click="openIndex = openIndex === 1 ? null : 1" class="w-full flex items-center justify-between py-6 text-left group hover:opacity-70 transition-opacity duration-150" :aria-expanded="openIndex === 1">
                                     <span class="text-lg leading-7 text-[#202020] pr-8" style="font-family: 'Figtree', sans-serif; font-weight: 400;">Apakah ada biaya pendaftaran?</span>
                                     <div class="flex-shrink-0 transition-transform duration-200 ease-[cubic-bezier(0.4,0,0.2,1)]" :class="openIndex === 1 ? 'rotate-45' : 'rotate-0'">
@@ -455,7 +478,7 @@
                                 </div>
                             </div>
                             <!-- FAQ Item 3 -->
-                            <div class="border-b border-[#e5e5e5] last:border-b-0">
+                            <div class="border-b border-[#e5e5e5] last:border-b-0 faq-item">
                                 <button @click="openIndex = openIndex === 2 ? null : 2" class="w-full flex items-center justify-between py-6 text-left group hover:opacity-70 transition-opacity duration-150" :aria-expanded="openIndex === 2">
                                     <span class="text-lg leading-7 text-[#202020] pr-8" style="font-family: 'Figtree', sans-serif; font-weight: 400;">Bagaimana sistem pembayarannya?</span>
                                     <div class="flex-shrink-0 transition-transform duration-200 ease-[cubic-bezier(0.4,0,0.2,1)]" :class="openIndex === 2 ? 'rotate-45' : 'rotate-0'">
@@ -467,7 +490,7 @@
                                 </div>
                             </div>
                             <!-- FAQ Item 4 -->
-                            <div class="border-b border-[#e5e5e5] last:border-b-0">
+                            <div class="border-b border-[#e5e5e5] last:border-b-0 faq-item">
                                 <button @click="openIndex = openIndex === 3 ? null : 3" class="w-full flex items-center justify-between py-6 text-left group hover:opacity-70 transition-opacity duration-150" :aria-expanded="openIndex === 3">
                                     <span class="text-lg leading-7 text-[#202020] pr-8" style="font-family: 'Figtree', sans-serif; font-weight: 400;">Apakah pengiriman mencakup seluruh Indonesia?</span>
                                     <div class="flex-shrink-0 transition-transform duration-200 ease-[cubic-bezier(0.4,0,0.2,1)]" :class="openIndex === 3 ? 'rotate-45' : 'rotate-0'">
@@ -541,5 +564,77 @@
             </div>
         </footer>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const initAnimations = () => {
+                if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
+                    setTimeout(initAnimations, 100);
+                    return;
+                }
+
+                gsap.registerPlugin(ScrollTrigger);
+
+                // 1. Hero Text Reveal (On Load)
+                gsap.fromTo(".hero-text-anim", 
+                    { y: 50, opacity: 0 },
+                    { y: 0, opacity: 1, duration: 1, stagger: 0.2, ease: "power3.out" }
+                );
+
+                // 2. Partner Header (Staggered Reveal)
+                gsap.fromTo(".partner-header-anim", 
+                    { y: 40, opacity: 0 },
+                    {
+                        y: 0, opacity: 1, duration: 1, stagger: 0.2, ease: "power3.out",
+                        scrollTrigger: {
+                            trigger: ".partner-header-section",
+                            start: "top 80%",
+                        }
+                    }
+                );
+
+                // 3. Feature Cards (ScrollTrigger Batch/Stagger)
+                gsap.fromTo(".feature-card", 
+                    { y: 50, opacity: 0 },
+                    {
+                        y: 0, opacity: 1, duration: 0.8, stagger: 0.2, ease: "power2.out",
+                        scrollTrigger: {
+                            trigger: ".features-section",
+                            start: "top 80%", // Trigger when top of section hits 80% viewport height
+                        }
+                    }
+                );
+
+                // 3. How It Works Steps
+                gsap.utils.toArray(".step-item").forEach((step, i) => {
+                    gsap.fromTo(step,
+                        { y: 50, opacity: 0 },
+                        {
+                            y: 0, opacity: 1, duration: 0.8, ease: "back.out(1.7)", delay: i * 0.1,
+                            scrollTrigger: {
+                                trigger: step,
+                                start: "top 85%", // Trigger each step individually
+                            }
+                        }
+                    );
+                });
+
+                // 4. FAQ Items
+                gsap.utils.toArray(".faq-item").forEach((item, i) => {
+                    gsap.fromTo(item,
+                        { x: -30, opacity: 0 },
+                        {
+                            x: 0, opacity: 1, duration: 0.6, ease: "power2.out", delay: i * 0.1,
+                            scrollTrigger: {
+                                trigger: item,
+                                start: "top 90%", // Trigger each item individually
+                            }
+                        }
+                    );
+                });
+            };
+            
+            initAnimations();
+        });
+    </script>
 </body>
 </html>

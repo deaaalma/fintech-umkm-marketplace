@@ -6,6 +6,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'welcome');
 
+Route::get('/customer/dashboard/preview', function () {
+    return view('customer.dashboard');
+})->name('customer.dashboard.preview');
+
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
@@ -38,7 +42,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // 5. Dashboard Customer
     Route::get('/customer/dashboard', function () {
-        return view('livewire.customer.index'); // Pastikan view ini ada
+        return view('customer.dashboard');
     })->name('customer.dashboard');
 });
 
