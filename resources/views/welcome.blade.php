@@ -30,56 +30,61 @@
     </nav>
     
     <!-- Hero Section -->
-    <header class="relative pt-32 pb-20 px-6 md:px-12 lg:px-24 overflow-hidden min-h-screen flex items-center" id="home">
-        <!-- Background Elements -->
-        <div class="absolute top-0 right-0 w-2/3 h-full bg-accent/10 rounded-l-[15rem] -z-10 transform translate-x-1/4 skew-x-6"></div>
-        <div class="absolute top-20 right-20 w-80 h-80 bg-primary/5 rounded-full blur-3xl -z-10"></div>
-        <div class="absolute bottom-10 left-10 w-48 h-48 bg-secondary-muted/10 rounded-full blur-2xl -z-10"></div>
+    <header class="relative pt-32 pb-20 px-6 md:px-12 lg:px-24 overflow-hidden min-h-screen flex items-center bg-neutral-cream" id="home">
+        <!-- Top Right Background Decoration (Pale Yellow/Cream Organic Shape) -->
+        <div class="absolute top-0 right-0 w-[50vw] h-[80vh] bg-[#f8f1d8] rounded-[30%_70%_70%_30%/30%_30%_70%_70%] -z-10 blur-3xl opacity-50 translate-x-1/4 -translate-y-1/4"></div>
 
-        <div class="grid md:grid-cols-2 gap-16 items-center w-full">
-            <div class="relative z-10 animate-fade-in-up">
-                <h1 class="text-5xl md:text-6xl lg:text-7xl font-serif font-bold text-primary mb-6 leading-[1.1]">
+        <div class="grid lg:grid-cols-2 gap-16 items-center w-full max-w-7xl mx-auto">
+            <!-- Left Side: Text -->
+            <div class="relative z-10 text-left">
+                <!-- Navigation Links (Desktop) - Recreating the header look from reference -->
+                <div class="hidden lg:flex gap-8 mb-16 text-sm font-semibold tracking-wide text-gray-600">
+                    <a href="#home" class="text-primary border-b-2 border-accent">Home</a>
+                    <a href="#about" class="hover:text-primary transition">About Us</a>
+                    <a href="#services" class="hover:text-primary transition">Services</a>
+                    <a href="#contact" class="hover:text-primary transition">Contact Us</a>
+                </div>
+
+                <h1 class="text-5xl md:text-7xl lg:text-[5.5rem] font-serif font-bold text-primary mb-8 leading-[1.1] tracking-tight">
                     We Help you <br>
                     to grow your <br>
-                    <span class="relative inline-block">
+                    <span class="relative inline-block z-10">
                         Business
-                        <!-- Underline decoration -->
-                        <svg class="absolute w-full h-4 -bottom-2 left-0 text-accent" viewBox="0 0 100 10" preserveAspectRatio="none">
-                            <path d="M0 5 Q 50 15 100 5" stroke="currentColor" stroke-width="4" fill="none" class="opacity-80" />
-                        </svg>
+                        <!-- Yellow block underline effect -->
+                        <span class="absolute bottom-2 left-0 w-full h-4 bg-accent/80 -z-10"></span>
                     </span>
                 </h1>
-                <p class="text-gray-600 mb-8 max-w-lg text-lg font-light leading-relaxed">
-                    Digitalisasi UMKM, Kemudahan untuk Semua. Bergabunglah dengan ribuan pelaku usaha yang telah bertransformasi ke era digital.
+                
+                <p class="text-gray-600 mb-10 max-w-lg text-lg leading-relaxed">
+                    Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
                 </p>
-                <button class="bg-primary text-white py-4 px-10 rounded-full shadow-xl hover:bg-primary-light hover:shadow-2xl hover:-translate-y-1 transition duration-300 font-medium tracking-wide">
+                
+                <button class="bg-primary text-white py-4 px-12 rounded-lg shadow-lg hover:bg-primary-light hover:shadow-xl hover:-translate-y-1 transition duration-300 font-bold tracking-wide text-sm">
                     GET STARTED
                 </button>
             </div>
             
-            <div class="relative flex justify-center">
-                <!-- Image Container with organic shape -->
-                <div class="relative z-10 w-full max-w-md">
-                     <!-- Yellow/Accent Blob Background -->
-                     <svg class="absolute -top-12 -right-12 w-[130%] h-[130%] text-accent z-0 opacity-80" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                        <path fill="currentColor" d="M44.7,-76.4C58.9,-69.2,71.8,-59.1,81.6,-46.7C91.4,-34.3,98.1,-19.6,95.8,-5.4C93.5,8.8,82.2,22.5,71.2,34.4C60.2,46.3,49.5,56.4,37.3,64.2C25.1,72,11.4,77.5,-2.2,81.3C-15.8,85.1,-29.3,87.2,-41.2,80.7C-53.1,74.2,-63.4,59.1,-71.4,43.7C-79.4,28.3,-85.1,12.6,-83.4,-2.2C-81.7,-17,-72.6,-30.9,-61.9,-41.8C-51.2,-52.7,-38.9,-60.6,-26.3,-68.8C-13.7,-77,-0.8,-85.5,13.2,-87.3C27.2,-89.1,55.1,-84.2,44.7,-76.4Z" transform="translate(100 100)" />
-                    </svg>
+            <!-- Right Side: Image with Organic Blob Mask -->
+            <div class="relative flex justify-center lg:justify-end">
+                <div class="relative w-full max-w-[500px] aspect-square">
                     
-                    <!-- Masked Image -->
-                    <div class="relative z-10 rounded-full overflow-hidden border-8 border-white shadow-2xl aspect-square">
-                        <img src="{{ asset('images/placeholder.png') }}" alt="UMKM Owners" class="w-full h-full object-cover">
+                    <!-- Dotted Line Decoration (SVG) -->
+                    <svg class="absolute -top-12 -left-12 w-[120%] h-[120%] z-0 text-gray-800 opacity-80" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                         <path d="M44.7,-76.4C58.9,-69.2,71.8,-59.1,81.6,-46.7C91.4,-34.3,98.1,-19.6,95.8,-5.4C93.5,8.8,82.2,22.5,71.2,34.4C60.2,46.3,49.5,56.4,37.3,64.2C25.1,72,11.4,77.5,-2.2,81.3C-15.8,85.1,-29.3,87.2,-41.2,80.7C-53.1,74.2,-63.4,59.1,-71.4,43.7C-79.4,28.3,-85.1,12.6,-83.4,-2.2C-81.7,-17,-72.6,-30.9,-61.9,-41.8C-51.2,-52.7,-38.9,-60.6,-26.3,-68.8C-13.7,-77,-0.8,-85.5,13.2,-87.3C27.2,-89.1,55.1,-84.2,44.7,-76.4Z" transform="translate(100 100)" stroke="currentColor" stroke-width="0.5" stroke-dasharray="2 2" />
+                    </svg>
+
+                    <!-- The Yellow Blob Background -->
+                    <!-- Using SVG for precise control or border-radius for CSS blobs -->
+                    <div class="absolute inset-0 bg-accent rounded-[40%_60%_70%_30%/40%_50%_60%_50%] transform rotate-12 scale-110 z-0"></div>
+                    
+                    <!-- The MASKED Image Container -->
+                    <!-- This div clips the image into a blob shape -->
+                    <div class="absolute inset-0 z-10 overflow-hidden rounded-[30%_70%_70%_30%/30%_30%_70%_70%] border-4 border-transparent">
+                        <img src="{{ asset('images/placeholder.png') }}" alt="Team Growth" class="w-full h-full object-cover transform scale-105 hover:scale-110 transition duration-700 ease-in-out">
                     </div>
 
-                    <!-- Floating Badge -->
-                    <div class="absolute -bottom-6 -left-6 bg-white p-4 rounded-xl shadow-lg z-20 flex items-center gap-3 animate-bounce-slow">
-                        <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center text-green-600 font-bold">
-                            UP
-                        </div>
-                        <div>
-                            <p class="text-xs text-gray-400">Growth</p>
-                            <p class="font-bold text-primary">+150%</p>
-                        </div>
-                    </div>
+                    <!-- Additional Bottom Blob Decoration -->
+                     <div class="absolute -bottom-10 -right-10 w-32 h-32 bg-accent rounded-full z-20 mix-blend-multiply opacity-80 animate-pulse"></div>
                 </div>
             </div>
         </div>
