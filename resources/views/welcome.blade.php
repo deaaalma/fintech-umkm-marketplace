@@ -66,7 +66,7 @@
                 'dailyVolumeLabel' => "DAILY ANALYZED MESSAGES",
                 'headline' => "The Intelligence Layer for Modern Communication",
                 'subheadline' => "Auralink connects every call, chat, and meeting into a unified AI layer — delivering real-time insights, tone analysis, and team alignment across your favorite tools.",
-                'videoSrc' => "https://cdn.sanity.io/files/1t8iva7t/production/a2cbbed7c998cf93e7ecb6dae75bab42b13139c2.mp4",
+                'videoSrc' => asset('storage/videos/hero.mp4'),
                 'posterSrc' => "/images/design-mode/9ad78a5534a46e77bafe116ce1c38172c60dc21a-1069x1068.png",
                 'primaryButtonText' => "Start analyzing",
                 'primaryButtonHref' => "#",
