@@ -26,44 +26,38 @@ export default {
                 mono: ["Geist Mono", ...defaultTheme.fontFamily.mono],
             },
             colors: {
-                border: "oklch(var(--border) / <alpha-value>)",
-                input: "oklch(var(--input) / <alpha-value>)",
-                ring: "oklch(var(--ring) / <alpha-value>)",
-                background: "oklch(var(--background) / <alpha-value>)",
-                foreground: "oklch(var(--foreground) / <alpha-value>)",
+                border: "hsl(var(--border))",
+                input: "hsl(var(--input))",
+                ring: "hsl(var(--ring))",
+                background: "hsl(var(--background))",
+                foreground: "hsl(var(--foreground))",
                 primary: {
-                    DEFAULT: "oklch(var(--primary) / <alpha-value>)",
-                    foreground:
-                        "oklch(var(--primary-foreground) / <alpha-value>)",
+                    DEFAULT: "#047857", // Emerald 700
+                    foreground: "#ffffff",
                 },
                 secondary: {
-                    DEFAULT: "oklch(var(--secondary) / <alpha-value>)",
-                    foreground:
-                        "oklch(var(--secondary-foreground) / <alpha-value>)",
+                    DEFAULT: "#ecfdf5", // Emerald 50
+                    foreground: "#065f46", // Emerald 800
                 },
                 destructive: {
-                    DEFAULT: "oklch(var(--destructive) / <alpha-value>)",
-                    foreground:
-                        "oklch(var(--destructive-foreground) / <alpha-value>)",
+                    DEFAULT: "hsl(var(--destructive))",
+                    foreground: "hsl(var(--destructive-foreground))",
                 },
                 muted: {
-                    DEFAULT: "oklch(var(--muted) / <alpha-value>)",
-                    foreground:
-                        "oklch(var(--muted-foreground) / <alpha-value>)",
+                    DEFAULT: "#f1f5f9", // Slate 100
+                    foreground: "#64748b", // Slate 500
                 },
                 accent: {
-                    DEFAULT: "oklch(var(--accent) / <alpha-value>)",
-                    foreground:
-                        "oklch(var(--accent-foreground) / <alpha-value>)",
+                    DEFAULT: "#d1fae5", // Emerald 100
+                    foreground: "#065f46",
                 },
                 popover: {
-                    DEFAULT: "oklch(var(--popover) / <alpha-value>)",
-                    foreground:
-                        "oklch(var(--popover-foreground) / <alpha-value>)",
+                    DEFAULT: "hsl(var(--popover))",
+                    foreground: "hsl(var(--popover-foreground))",
                 },
                 card: {
-                    DEFAULT: "oklch(var(--card) / <alpha-value>)",
-                    foreground: "oklch(var(--card-foreground) / <alpha-value>)",
+                    DEFAULT: "hsl(var(--card))",
+                    foreground: "hsl(var(--card-foreground))",
                 },
             },
             borderRadius: {
