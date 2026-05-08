@@ -1,3 +1,71 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+    :root {
+        --background: 100% 0 0; /* oklch(1 0 0) */
+        --foreground: 14.5% 0 0; /* oklch(0.145 0 0) */
+        --card: 100% 0 0;
+        --card-foreground: 14.5% 0 0;
+        --popover: 100% 0 0;
+        --popover-foreground: 14.5% 0 0;
+        --primary: 20.5% 0 0;
+        --primary-foreground: 98.5% 0 0;
+        --secondary: 97% 0 0;
+        --secondary-foreground: 20.5% 0 0;
+        --muted: 97% 0 0;
+        --muted-foreground: 55.6% 0 0;
+        --accent: 97% 0 0;
+        --accent-foreground: 20.5% 0 0;
+        --destructive: 57.7% 0.245 27.325;
+        --destructive-foreground: 57.7% 0.245 27.325;
+        --border: 92.2% 0 0;
+        --input: 92.2% 0 0;
+        --ring: 70.8% 0 0;
+        --radius: 0.625rem;
+
+        /* Charts */
+        --chart-1: 64.6% 0.222 41.116;
+        --chart-2: 60% 0.118 184.704;
+        --chart-3: 39.8% 0.07 227.392;
+        --chart-4: 82.8% 0.189 84.429;
+        --chart-5: 76.9% 0.188 70.08;
+    }
+
+    .dark {
+        --background: 14.5% 0 0;
+        --foreground: 98.5% 0 0;
+        --card: 14.5% 0 0;
+        --card-foreground: 98.5% 0 0;
+        --popover: 14.5% 0 0;
+        --popover-foreground: 98.5% 0 0;
+        --primary: 98.5% 0 0;
+        --primary-foreground: 20.5% 0 0;
+        --secondary: 26.9% 0 0;
+        --secondary-foreground: 98.5% 0 0;
+        --muted: 26.9% 0 0;
+        --muted-foreground: 70.8% 0 0;
+        --accent: 26.9% 0 0;
+        --accent-foreground: 98.5% 0 0;
+        --destructive: 39.6% 0.141 25.723;
+        --destructive-foreground: 63.7% 0.237 25.331;
+        --border: 26.9% 0 0;
+        --input: 26.9% 0 0;
+        --ring: 43.9% 0 0;
+        --chart-1: 48.8% 0.243 264.376;
+        --chart-2: 69.6% 0.17 162.48;
+        --chart-3: 76.9% 0.188 70.08;
+        --chart-4: 62.7% 0.265 303.9;
+        --chart-5: 64.5% 0.246 16.439;
+    }
+
+    * {
+        @apply border-border;
+    }
+
+    body {
+        @apply bg-background text-foreground;
+        font-family: "Figtree", sans-serif;
+    }
+}
