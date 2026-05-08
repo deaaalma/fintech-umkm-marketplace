@@ -10,6 +10,34 @@ Route::get('/customer/dashboard/preview', function () {
     return view('customer.dashboard');
 })->name('customer.dashboard.preview');
 
+Route::get('/customer/orders/preview', function () {
+    return view('customer.orders');
+})->name('customer.orders.preview');
+
+Route::get('/customer/partners/preview', function () {
+    return view('customer.partners');
+})->name('customer.partners.preview');
+
+Route::get('/superadmin/dashboard/preview', function () {
+    return view('superadmin.dashboard');
+})->name('superadmin.dashboard.preview');
+
+Route::get('/superadmin/users/preview', function () {
+    return view('superadmin.users');
+})->name('superadmin.users.preview');
+
+Route::get('/superadmin/transactions/preview', function () {
+    return view('superadmin.transactions');
+})->name('superadmin.transactions.preview');
+
+Route::get('/superadmin/reports/preview', function () {
+    return view('superadmin.reports');
+})->name('superadmin.reports.preview');
+
+Route::get('/superadmin/settings/preview', function () {
+    return view('superadmin.settings');
+})->name('superadmin.settings.preview');
+
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
