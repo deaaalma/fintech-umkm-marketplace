@@ -103,7 +103,7 @@
                     <!-- Logo & Brand -->
                     <div class="flex items-center gap-4">
                         <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 bg-[#064E3B] rounded-xl flex items-center justify-center">
+                            <div class="w-10 h-10 bg-[#003d5c] rounded-xl flex items-center justify-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
                                     <line x1="3" y1="9" x2="21" y2="9"></line>
@@ -123,7 +123,7 @@
                             <input 
                                 type="text" 
                                 placeholder="Search UMKMs, users, orders..."
-                                class="w-full px-4 py-2.5 pl-10 rounded-lg border border-[#e5e5e5] focus:outline-none focus:ring-2 focus:ring-[#167E6C] focus:border-transparent text-sm"
+                                class="w-full px-4 py-2.5 pl-10 rounded-lg border border-[#e5e5e5] focus:outline-none focus:ring-2 focus:ring-[#0078b7] focus:border-transparent text-sm"
                                 style="font-family: 'Figtree', sans-serif;">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="absolute left-3 top-1/2 -translate-y-1/2 text-[#999999]">
                                 <circle cx="11" cy="11" r="8"></circle>
@@ -143,7 +143,7 @@
                         </button>
                         
                         <div class="flex items-center gap-3 pl-4 border-l border-[#e5e5e5]">
-                            <div class="w-9 h-9 rounded-full bg-[#167E6C] flex items-center justify-center">
+                            <div class="w-9 h-9 rounded-full bg-[#0078b7] flex items-center justify-center">
                                 <span class="text-white font-semibold text-sm" style="font-family: 'Figtree', sans-serif;">A</span>
                             </div>
                             <div class="text-left">
@@ -158,7 +158,7 @@
 
                     <div class="md:hidden">
                         <button @click="isMobileMenuOpen = !isMobileMenuOpen" 
-                                class="text-gray-900 hover:text-[#167E6C] p-2 rounded-md transition-colors duration-200">
+                                class="text-gray-900 hover:text-[#0078b7] p-2 rounded-md transition-colors duration-200">
                             <svg x-show="!isMobileMenuOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
                             <svg x-show="isMobileMenuOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                         </button>
@@ -169,11 +169,11 @@
                 <div class="hidden md:flex items-center gap-6 pb-4 border-b border-[#e5e5e5]">
                     @foreach($navigationLinks as $link)
                     <a href="{{ $link['href'] }}" 
-                       class="flex items-center gap-2 px-3 py-2 text-sm font-medium transition-colors duration-200 relative group {{ isset($link['active']) && $link['active'] ? 'text-[#167E6C]' : 'text-gray-900 hover:text-[#167E6C]' }}" 
+                       class="flex items-center gap-2 px-3 py-2 text-sm font-medium transition-colors duration-200 relative group {{ isset($link['active']) && $link['active'] ? 'text-[#0078b7]' : 'text-gray-900 hover:text-[#0078b7]' }}" 
                        style="font-family: 'Figtree', sans-serif; font-weight: 400;">
                         <span>{{ $link['name'] }}</span>
                         @if(isset($link['badge']))
-                        <span class="px-2 py-0.5 bg-[#064E3B] text-white text-xs font-semibold rounded-full">{{ $link['badge'] }}</span>
+                        <span class="px-2 py-0.5 bg-[#003d5c] text-white text-xs font-semibold rounded-full">{{ $link['badge'] }}</span>
                         @endif
                         <div class="absolute bottom-0 left-0 {{ isset($link['active']) && $link['active'] ? 'w-full' : 'w-0' }} h-0.5 bg-current transition-all duration-300 group-hover:w-full"></div>
                     </a>
@@ -188,11 +188,11 @@
             <div class="w-full bg-white border-b border-[#e5e5e5]">
                 <div class="max-w-[1400px] mx-auto px-6 lg:px-8 py-4">
                     <div class="flex items-center gap-2 text-sm">
-                        <a href="{{ route('superadmin.dashboard.preview') }}" class="text-[#666666] hover:text-[#167E6C] transition-colors" style="font-family: 'Figtree', sans-serif;">Dashboard</a>
+                        <a href="{{ route('superadmin.dashboard.preview') }}" class="text-[#666666] hover:text-[#0078b7] transition-colors" style="font-family: 'Figtree', sans-serif;">Dashboard</a>
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[#999999]">
                             <polyline points="9 18 15 12 9 6"></polyline>
                         </svg>
-                        <span class="text-[#064E3B] font-medium" style="font-family: 'Figtree', sans-serif;">Laporan & Analytics</span>
+                        <span class="text-[#003d5c] font-medium" style="font-family: 'Figtree', sans-serif;">Laporan & Analytics</span>
                     </div>
                 </div>
             </div>
@@ -200,31 +200,31 @@
             <!-- Page Header -->
             <div class="w-full bg-white border-b border-[#e5e5e5]">
                 <div class="max-w-[1400px] mx-auto px-6 lg:px-8 py-8">
-                    <h1 class="text-[32px] leading-tight font-normal text-[#064E3B] tracking-tight mb-2" style="font-weight: 400; font-family: 'Figtree', sans-serif;">Laporan & Analytics</h1>
+                    <h1 class="text-[32px] leading-tight font-normal text-[#003d5c] tracking-tight mb-2" style="font-weight: 400; font-family: 'Figtree', sans-serif;">Laporan & Analytics</h1>
                     <p class="text-sm text-[#666666]" style="font-family: 'Figtree', sans-serif;">Analisis performa platform dan generate laporan</p>
                 </div>
             </div>
 
             <!-- Content -->
-            <div class="w-full bg-gradient-to-br from-background via-background to-[#167E6C]/5 py-12">
+            <div class="w-full bg-gradient-to-br from-background via-background to-[#0078b7]/5 py-12">
                 <div class="max-w-[1400px] mx-auto px-6 lg:px-8">
                     <!-- Analytics Overview -->
                     <div class="mb-8">
-                        <h2 class="text-xl font-semibold text-[#064E3B] mb-6" style="font-family: 'Figtree', sans-serif;">Analytics Overview</h2>
+                        <h2 class="text-xl font-semibold text-[#003d5c] mb-6" style="font-family: 'Figtree', sans-serif;">Analytics Overview</h2>
                         
                         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
                             <!-- Revenue Trend Chart -->
                             <div class="bg-white rounded-3xl p-6 border border-[#e5e5e5]">
-                                <h3 class="text-base font-semibold text-[#064E3B] mb-4" style="font-family: 'Figtree', sans-serif;">Revenue Trend (Last 30 Days)</h3>
-                                <div class="h-64 bg-gradient-to-br from-[#167E6C]/5 to-[#064E3B]/5 rounded-xl flex items-center justify-center">
+                                <h3 class="text-base font-semibold text-[#003d5c] mb-4" style="font-family: 'Figtree', sans-serif;">Revenue Trend (Last 30 Days)</h3>
+                                <div class="h-64 bg-gradient-to-br from-[#0078b7]/5 to-[#003d5c]/5 rounded-xl flex items-center justify-center">
                                     <p class="text-sm text-[#999999]" style="font-family: 'Figtree', sans-serif;">Chart: Line chart showing revenue trend</p>
                                 </div>
                             </div>
 
                             <!-- Order Volume Chart -->
                             <div class="bg-white rounded-3xl p-6 border border-[#e5e5e5]">
-                                <h3 class="text-base font-semibold text-[#064E3B] mb-4" style="font-family: 'Figtree', sans-serif;">Order Volume (Last 30 Days)</h3>
-                                <div class="h-64 bg-gradient-to-br from-[#167E6C]/5 to-[#064E3B]/5 rounded-xl flex items-center justify-center">
+                                <h3 class="text-base font-semibold text-[#003d5c] mb-4" style="font-family: 'Figtree', sans-serif;">Order Volume (Last 30 Days)</h3>
+                                <div class="h-64 bg-gradient-to-br from-[#0078b7]/5 to-[#003d5c]/5 rounded-xl flex items-center justify-center">
                                     <p class="text-sm text-[#999999]" style="font-family: 'Figtree', sans-serif;">Chart: Bar chart showing order volume</p>
                                 </div>
                             </div>
@@ -233,7 +233,7 @@
                         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                             <!-- Top UMKMs by Revenue -->
                             <div class="bg-white rounded-3xl p-6 border border-[#e5e5e5]">
-                                <h3 class="text-base font-semibold text-[#064E3B] mb-4" style="font-family: 'Figtree', sans-serif;">Top 10 UMKMs by Revenue</h3>
+                                <h3 class="text-base font-semibold text-[#003d5c] mb-4" style="font-family: 'Figtree', sans-serif;">Top 10 UMKMs by Revenue</h3>
                                 <div class="overflow-x-auto">
                                     <table class="w-full">
                                         <thead>
@@ -248,13 +248,13 @@
                                             @foreach($topUMKMs as $umkm)
                                             <tr class="border-b border-[#e5e5e5] hover:bg-gray-50 transition-colors">
                                                 <td class="py-3 px-2">
-                                                    <span class="text-sm font-semibold text-[#064E3B]" style="font-family: 'Figtree', sans-serif;">{{ $umkm['rank'] }}</span>
+                                                    <span class="text-sm font-semibold text-[#003d5c]" style="font-family: 'Figtree', sans-serif;">{{ $umkm['rank'] }}</span>
                                                 </td>
                                                 <td class="py-3 px-2">
-                                                    <span class="text-sm text-[#064E3B]" style="font-family: 'Figtree', sans-serif;">{{ $umkm['name'] }}</span>
+                                                    <span class="text-sm text-[#003d5c]" style="font-family: 'Figtree', sans-serif;">{{ $umkm['name'] }}</span>
                                                 </td>
                                                 <td class="py-3 px-2 text-right">
-                                                    <span class="text-sm font-semibold text-[#064E3B]" style="font-family: 'Figtree', sans-serif;">{{ $umkm['revenue'] }}</span>
+                                                    <span class="text-sm font-semibold text-[#003d5c]" style="font-family: 'Figtree', sans-serif;">{{ $umkm['revenue'] }}</span>
                                                 </td>
                                                 <td class="py-3 px-2 text-right">
                                                     <span class="text-sm text-[#666666]" style="font-family: 'Figtree', sans-serif;">{{ $umkm['orders'] }}</span>
@@ -268,19 +268,19 @@
 
                             <!-- Top Service Categories -->
                             <div class="bg-white rounded-3xl p-6 border border-[#e5e5e5]">
-                                <h3 class="text-base font-semibold text-[#064E3B] mb-4" style="font-family: 'Figtree', sans-serif;">Top Service Categories</h3>
+                                <h3 class="text-base font-semibold text-[#003d5c] mb-4" style="font-family: 'Figtree', sans-serif;">Top Service Categories</h3>
                                 <div class="h-80 flex items-center justify-center">
                                     <div class="text-center">
-                                        <div class="w-64 h-64 bg-gradient-to-br from-[#167E6C]/10 to-[#064E3B]/10 rounded-full flex items-center justify-center mb-4">
+                                        <div class="w-64 h-64 bg-gradient-to-br from-[#0078b7]/10 to-[#003d5c]/10 rounded-full flex items-center justify-center mb-4">
                                             <p class="text-sm text-[#999999]" style="font-family: 'Figtree', sans-serif;">Pie Chart</p>
                                         </div>
                                         <div class="grid grid-cols-2 gap-3 text-xs">
                                             <div class="flex items-center gap-2">
-                                                <div class="w-3 h-3 bg-[#064E3B] rounded-sm"></div>
+                                                <div class="w-3 h-3 bg-[#003d5c] rounded-sm"></div>
                                                 <span class="text-[#666666]" style="font-family: 'Figtree', sans-serif;">Cleaning (28%)</span>
                                             </div>
                                             <div class="flex items-center gap-2">
-                                                <div class="w-3 h-3 bg-[#167E6C] rounded-sm"></div>
+                                                <div class="w-3 h-3 bg-[#0078b7] rounded-sm"></div>
                                                 <span class="text-[#666666]" style="font-family: 'Figtree', sans-serif;">Laundry (23%)</span>
                                             </div>
                                             <div class="flex items-center gap-2">
@@ -308,7 +308,7 @@
 
                     <!-- Report Generator -->
                     <div class="bg-white rounded-3xl p-8 border border-[#e5e5e5] mb-8">
-                        <h2 class="text-xl font-semibold text-[#064E3B] mb-6" style="font-family: 'Figtree', sans-serif;">Report Generator</h2>
+                        <h2 class="text-xl font-semibold text-[#003d5c] mb-6" style="font-family: 'Figtree', sans-serif;">Report Generator</h2>
                         
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <!-- Left Column -->
@@ -316,7 +316,7 @@
                                 <!-- Report Type -->
                                 <div>
                                     <label class="block text-xs font-semibold text-[#999999] uppercase mb-2" style="font-family: 'Figtree', sans-serif;">REPORT TYPE</label>
-                                    <select class="w-full px-4 py-3 rounded-lg border border-[#e5e5e5] focus:outline-none focus:ring-2 focus:ring-[#167E6C] text-sm" style="font-family: 'Figtree', sans-serif;">
+                                    <select class="w-full px-4 py-3 rounded-lg border border-[#e5e5e5] focus:outline-none focus:ring-2 focus:ring-[#0078b7] text-sm" style="font-family: 'Figtree', sans-serif;">
                                         <option>Revenue Report</option>
                                         <option>Transaction Report</option>
                                         <option>UMKM Performance</option>
@@ -331,14 +331,14 @@
                                     <input 
                                         type="text" 
                                         placeholder="DD/MM/YYYY"
-                                        class="w-full px-4 py-3 rounded-lg border border-[#e5e5e5] focus:outline-none focus:ring-2 focus:ring-[#167E6C] text-sm"
+                                        class="w-full px-4 py-3 rounded-lg border border-[#e5e5e5] focus:outline-none focus:ring-2 focus:ring-[#0078b7] text-sm"
                                         style="font-family: 'Figtree', sans-serif;">
                                 </div>
 
                                 <!-- Filter by UMKM -->
                                 <div>
                                     <label class="block text-xs font-semibold text-[#999999] uppercase mb-2" style="font-family: 'Figtree', sans-serif;">FILTER BY UMKM</label>
-                                    <select class="w-full px-4 py-3 rounded-lg border border-[#e5e5e5] focus:outline-none focus:ring-2 focus:ring-[#167E6C] text-sm" style="font-family: 'Figtree', sans-serif;">
+                                    <select class="w-full px-4 py-3 rounded-lg border border-[#e5e5e5] focus:outline-none focus:ring-2 focus:ring-[#0078b7] text-sm" style="font-family: 'Figtree', sans-serif;">
                                         <option>All UMKMs</option>
                                         <option>BWP Cleaning</option>
                                         <option>Express Laundry</option>
@@ -349,7 +349,7 @@
                                 <!-- Filter by Status -->
                                 <div>
                                     <label class="block text-xs font-semibold text-[#999999] uppercase mb-2" style="font-family: 'Figtree', sans-serif;">FILTER BY STATUS</label>
-                                    <select class="w-full px-4 py-3 rounded-lg border border-[#e5e5e5] focus:outline-none focus:ring-2 focus:ring-[#167E6C] text-sm" style="font-family: 'Figtree', sans-serif;">
+                                    <select class="w-full px-4 py-3 rounded-lg border border-[#e5e5e5] focus:outline-none focus:ring-2 focus:ring-[#0078b7] text-sm" style="font-family: 'Figtree', sans-serif;">
                                         <option>All Status</option>
                                         <option>Success</option>
                                         <option>Pending</option>
@@ -364,7 +364,7 @@
                                 <!-- Date Range Preset -->
                                 <div>
                                     <label class="block text-xs font-semibold text-[#999999] uppercase mb-2" style="font-family: 'Figtree', sans-serif;">DATE RANGE PRESET</label>
-                                    <select class="w-full px-4 py-3 rounded-lg border border-[#e5e5e5] focus:outline-none focus:ring-2 focus:ring-[#167E6C] text-sm" style="font-family: 'Figtree', sans-serif;">
+                                    <select class="w-full px-4 py-3 rounded-lg border border-[#e5e5e5] focus:outline-none focus:ring-2 focus:ring-[#0078b7] text-sm" style="font-family: 'Figtree', sans-serif;">
                                         <option>Last 30 Days</option>
                                         <option>Last 7 Days</option>
                                         <option>Last 90 Days</option>
@@ -381,14 +381,14 @@
                                     <input 
                                         type="text" 
                                         placeholder="DD/MM/YYYY"
-                                        class="w-full px-4 py-3 rounded-lg border border-[#e5e5e5] focus:outline-none focus:ring-2 focus:ring-[#167E6C] text-sm"
+                                        class="w-full px-4 py-3 rounded-lg border border-[#e5e5e5] focus:outline-none focus:ring-2 focus:ring-[#0078b7] text-sm"
                                         style="font-family: 'Figtree', sans-serif;">
                                 </div>
 
                                 <!-- Filter by Category -->
                                 <div>
                                     <label class="block text-xs font-semibold text-[#999999] uppercase mb-2" style="font-family: 'Figtree', sans-serif;">FILTER BY CATEGORY</label>
-                                    <select class="w-full px-4 py-3 rounded-lg border border-[#e5e5e5] focus:outline-none focus:ring-2 focus:ring-[#167E6C] text-sm" style="font-family: 'Figtree', sans-serif;">
+                                    <select class="w-full px-4 py-3 rounded-lg border border-[#e5e5e5] focus:outline-none focus:ring-2 focus:ring-[#0078b7] text-sm" style="font-family: 'Figtree', sans-serif;">
                                         <option>All Categories</option>
                                         <option>Cleaning</option>
                                         <option>Laundry</option>
@@ -402,16 +402,16 @@
                                     <label class="block text-xs font-semibold text-[#999999] uppercase mb-2" style="font-family: 'Figtree', sans-serif;">OUTPUT FORMAT</label>
                                     <div class="flex gap-4">
                                         <label class="flex items-center gap-2 cursor-pointer">
-                                            <input type="radio" name="format" value="pdf" checked class="w-4 h-4 text-[#167E6C] focus:ring-[#167E6C]">
-                                            <span class="text-sm text-[#064E3B]" style="font-family: 'Figtree', sans-serif;">PDF</span>
+                                            <input type="radio" name="format" value="pdf" checked class="w-4 h-4 text-[#0078b7] focus:ring-[#0078b7]">
+                                            <span class="text-sm text-[#003d5c]" style="font-family: 'Figtree', sans-serif;">PDF</span>
                                         </label>
                                         <label class="flex items-center gap-2 cursor-pointer">
-                                            <input type="radio" name="format" value="excel" class="w-4 h-4 text-[#167E6C] focus:ring-[#167E6C]">
-                                            <span class="text-sm text-[#064E3B]" style="font-family: 'Figtree', sans-serif;">Excel</span>
+                                            <input type="radio" name="format" value="excel" class="w-4 h-4 text-[#0078b7] focus:ring-[#0078b7]">
+                                            <span class="text-sm text-[#003d5c]" style="font-family: 'Figtree', sans-serif;">Excel</span>
                                         </label>
                                         <label class="flex items-center gap-2 cursor-pointer">
-                                            <input type="radio" name="format" value="csv" class="w-4 h-4 text-[#167E6C] focus:ring-[#167E6C]">
-                                            <span class="text-sm text-[#064E3B]" style="font-family: 'Figtree', sans-serif;">CSV</span>
+                                            <input type="radio" name="format" value="csv" class="w-4 h-4 text-[#0078b7] focus:ring-[#0078b7]">
+                                            <span class="text-sm text-[#003d5c]" style="font-family: 'Figtree', sans-serif;">CSV</span>
                                         </label>
                                     </div>
                                 </div>
@@ -420,7 +420,7 @@
 
                         <!-- Generate Button -->
                         <div class="mt-8 flex justify-end">
-                            <button class="px-8 py-3 bg-[#064E3B] text-white rounded-xl hover:bg-[#167E6C] transition-colors font-semibold flex items-center gap-2" style="font-family: 'Figtree', sans-serif;">
+                            <button class="px-8 py-3 bg-[#003d5c] text-white rounded-xl hover:bg-[#0078b7] transition-colors font-semibold flex items-center gap-2" style="font-family: 'Figtree', sans-serif;">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
                                     <polyline points="7 10 12 15 17 10"></polyline>
@@ -434,8 +434,8 @@
                     <!-- Scheduled Reports -->
                     <div class="bg-white rounded-3xl p-8 border border-[#e5e5e5]">
                         <div class="flex items-center justify-between mb-6">
-                            <h2 class="text-xl font-semibold text-[#064E3B]" style="font-family: 'Figtree', sans-serif;">Scheduled Reports</h2>
-                            <button class="px-4 py-2 bg-[#064E3B] text-white rounded-lg hover:bg-[#167E6C] transition-colors font-semibold text-sm flex items-center gap-2" style="font-family: 'Figtree', sans-serif;">
+                            <h2 class="text-xl font-semibold text-[#003d5c]" style="font-family: 'Figtree', sans-serif;">Scheduled Reports</h2>
+                            <button class="px-4 py-2 bg-[#003d5c] text-white rounded-lg hover:bg-[#0078b7] transition-colors font-semibold text-sm flex items-center gap-2" style="font-family: 'Figtree', sans-serif;">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <line x1="12" y1="5" x2="12" y2="19"></line>
                                     <line x1="5" y1="12" x2="19" y2="12"></line>
@@ -459,7 +459,7 @@
                                     @foreach($scheduledReports as $report)
                                     <tr class="border-b border-[#e5e5e5] hover:bg-gray-50 transition-colors">
                                         <td class="py-4 px-4">
-                                            <span class="text-sm font-semibold text-[#064E3B]" style="font-family: 'Figtree', sans-serif;">{{ $report['name'] }}</span>
+                                            <span class="text-sm font-semibold text-[#003d5c]" style="font-family: 'Figtree', sans-serif;">{{ $report['name'] }}</span>
                                         </td>
                                         <td class="py-4 px-4">
                                             <span class="text-sm text-[#666666]" style="font-family: 'Figtree', sans-serif;">{{ $report['frequency'] }}</span>

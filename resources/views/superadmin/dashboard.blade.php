@@ -187,7 +187,7 @@
                     <!-- Logo & Brand -->
                     <div class="flex items-center gap-4">
                         <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 bg-[#064E3B] rounded-xl flex items-center justify-center">
+                            <div class="w-10 h-10 bg-[#003d5c] rounded-xl flex items-center justify-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
                                     <line x1="3" y1="9" x2="21" y2="9"></line>
@@ -207,7 +207,7 @@
                             <input 
                                 type="text" 
                                 placeholder="Search UMKMs, users, orders..."
-                                class="w-full px-4 py-2.5 pl-10 rounded-lg border border-[#e5e5e5] focus:outline-none focus:ring-2 focus:ring-[#167E6C] focus:border-transparent text-sm"
+                                class="w-full px-4 py-2.5 pl-10 rounded-lg border border-[#e5e5e5] focus:outline-none focus:ring-2 focus:ring-[#0078b7] focus:border-transparent text-sm"
                                 style="font-family: 'Figtree', sans-serif;">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="absolute left-3 top-1/2 -translate-y-1/2 text-[#999999]">
                                 <circle cx="11" cy="11" r="8"></circle>
@@ -227,7 +227,7 @@
                         </button>
                         
                         <div class="flex items-center gap-3 pl-4 border-l border-[#e5e5e5]">
-                            <div class="w-9 h-9 rounded-full bg-[#167E6C] flex items-center justify-center">
+                            <div class="w-9 h-9 rounded-full bg-[#0078b7] flex items-center justify-center">
                                 <span class="text-white font-semibold text-sm" style="font-family: 'Figtree', sans-serif;">A</span>
                             </div>
                             <div class="text-left">
@@ -242,7 +242,7 @@
 
                     <div class="md:hidden">
                         <button @click="isMobileMenuOpen = !isMobileMenuOpen" 
-                                class="text-gray-900 hover:text-[#167E6C] p-2 rounded-md transition-colors duration-200">
+                                class="text-gray-900 hover:text-[#0078b7] p-2 rounded-md transition-colors duration-200">
                             <svg x-show="!isMobileMenuOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
                             <svg x-show="isMobileMenuOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                         </button>
@@ -253,11 +253,11 @@
                 <div class="hidden md:flex items-center gap-6 pb-4 border-b border-[#e5e5e5]">
                     @foreach($navigationLinks as $link)
                     <a href="{{ $link['href'] }}" 
-                       class="flex items-center gap-2 px-3 py-2 text-sm font-medium transition-colors duration-200 relative group {{ isset($link['active']) && $link['active'] ? 'text-[#167E6C]' : 'text-gray-900 hover:text-[#167E6C]' }}" 
+                       class="flex items-center gap-2 px-3 py-2 text-sm font-medium transition-colors duration-200 relative group {{ isset($link['active']) && $link['active'] ? 'text-[#0078b7]' : 'text-gray-900 hover:text-[#0078b7]' }}" 
                        style="font-family: 'Figtree', sans-serif; font-weight: 400;">
                         <span>{{ $link['name'] }}</span>
                         @if(isset($link['badge']))
-                        <span class="px-2 py-0.5 bg-[#064E3B] text-white text-xs font-semibold rounded-full">{{ $link['badge'] }}</span>
+                        <span class="px-2 py-0.5 bg-[#003d5c] text-white text-xs font-semibold rounded-full">{{ $link['badge'] }}</span>
                         @endif
                         <div class="absolute bottom-0 left-0 {{ isset($link['active']) && $link['active'] ? 'w-full' : 'w-0' }} h-0.5 bg-current transition-all duration-300 group-hover:w-full"></div>
                     </a>
@@ -273,7 +273,7 @@
                 <div class="max-w-[1400px] mx-auto px-6 lg:px-8 py-8">
                     <div class="flex items-center justify-between">
                         <div>
-                            <h1 class="text-[32px] leading-tight font-normal text-[#064E3B] tracking-tight mb-2" style="font-weight: 400; font-family: 'Figtree', sans-serif;">Dashboard UMKM Management</h1>
+                            <h1 class="text-[32px] leading-tight font-normal text-[#003d5c] tracking-tight mb-2" style="font-weight: 400; font-family: 'Figtree', sans-serif;">Dashboard UMKM Management</h1>
                             <p class="text-sm text-[#666666]" style="font-family: 'Figtree', sans-serif;">Monitor dan kelola semua mitra bisnis Anda</p>
                         </div>
                         <div class="flex items-center gap-3">
@@ -295,15 +295,15 @@
             </div>
 
             <!-- Stats Grid -->
-            <div class="w-full bg-gradient-to-br from-background via-background to-[#167E6C]/5 py-12">
+            <div class="w-full bg-gradient-to-br from-background via-background to-[#0078b7]/5 py-12">
                 <div class="max-w-[1400px] mx-auto px-6 lg:px-8">
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-12">
                         @foreach($stats as $stat)
-                        <div class="bg-white rounded-3xl p-6 border border-[#e5e5e5] hover:shadow-md transition-all duration-300 {{ isset($stat['highlight']) && $stat['highlight'] ? 'bg-[#064E3B] text-white border-[#064E3B]' : '' }}">
+                        <div class="bg-white rounded-3xl p-6 border border-[#e5e5e5] hover:shadow-md transition-all duration-300 {{ isset($stat['highlight']) && $stat['highlight'] ? 'bg-[#003d5c] text-white border-[#003d5c]' : '' }}">
                             <p class="text-xs uppercase tracking-wide mb-3 {{ isset($stat['highlight']) && $stat['highlight'] ? 'text-white/80' : 'text-[#999999]' }}" style="font-family: 'Figtree', sans-serif;">{{ $stat['title'] }}</p>
                             
                             @if(isset($stat['rating']) && $stat['rating'])
-                            <div class="text-4xl font-bold mb-4 text-[#064E3B]" style="font-family: 'Figtree', sans-serif;">{{ $stat['value'] }}</div>
+                            <div class="text-4xl font-bold mb-4 text-[#003d5c]" style="font-family: 'Figtree', sans-serif;">{{ $stat['value'] }}</div>
                             <div class="space-y-2">
                                 @foreach($stat['ratingBars'] as $bar)
                                 <div class="flex items-center gap-2">
@@ -316,19 +316,19 @@
                                 @endforeach
                             </div>
                             @else
-                            <div class="text-4xl font-bold mb-4 {{ isset($stat['highlight']) && $stat['highlight'] ? 'text-white' : 'text-[#064E3B]' }}" style="font-family: 'Figtree', sans-serif;">{{ $stat['value'] }}</div>
+                            <div class="text-4xl font-bold mb-4 {{ isset($stat['highlight']) && $stat['highlight'] ? 'text-white' : 'text-[#003d5c]' }}" style="font-family: 'Figtree', sans-serif;">{{ $stat['value'] }}</div>
                             
                             <div class="space-y-2 mb-4">
                                 @foreach($stat['details'] as $detail)
                                 <div class="flex items-center justify-between text-xs">
                                     <span class="{{ isset($stat['highlight']) && $stat['highlight'] ? 'text-white/70' : 'text-[#666666]' }}" style="font-family: 'Figtree', sans-serif;">{{ $detail['label'] }}</span>
-                                    <span class="{{ isset($stat['highlight']) && $stat['highlight'] ? 'text-white font-semibold' : 'text-[#064E3B] font-semibold' }}" style="font-family: 'Figtree', sans-serif;">{{ $detail['value'] }}</span>
+                                    <span class="{{ isset($stat['highlight']) && $stat['highlight'] ? 'text-white font-semibold' : 'text-[#003d5c] font-semibold' }}" style="font-family: 'Figtree', sans-serif;">{{ $detail['value'] }}</span>
                                 </div>
                                 @endforeach
                             </div>
 
                             @if(isset($stat['action']))
-                            <button class="w-full bg-white text-[#064E3B] px-4 py-2.5 rounded-xl text-sm font-semibold hover:bg-gray-100 transition-all duration-200" style="font-family: 'Figtree', sans-serif;">
+                            <button class="w-full bg-white text-[#003d5c] px-4 py-2.5 rounded-xl text-sm font-semibold hover:bg-gray-100 transition-all duration-200" style="font-family: 'Figtree', sans-serif;">
                                 {{ $stat['action'] }}
                             </button>
                             @endif
@@ -349,9 +349,9 @@
                     <div class="bg-white rounded-3xl p-8 border border-[#e5e5e5] mb-8">
                         <div class="flex items-center justify-between mb-6">
                             <div>
-                                <h2 class="text-2xl font-semibold text-[#064E3B] mb-1" style="font-family: 'Figtree', sans-serif;">Pending UMKM Applications</h2>
+                                <h2 class="text-2xl font-semibold text-[#003d5c] mb-1" style="font-family: 'Figtree', sans-serif;">Pending UMKM Applications</h2>
                                 <p class="text-sm text-[#666666]" style="font-family: 'Figtree', sans-serif;">
-                                    <span class="font-semibold text-[#064E3B]">127</span> aplikasi menunggu review • 
+                                    <span class="font-semibold text-[#003d5c]">127</span> aplikasi menunggu review • 
                                     <span class="text-[#F59E0B] font-semibold">15 PRIORITY TINGGI</span>
                                 </p>
                             </div>
@@ -360,7 +360,7 @@
                                     <input 
                                         type="text" 
                                         placeholder="Cari nama atau kategori..."
-                                        class="px-4 py-2 pl-10 rounded-lg border border-[#e5e5e5] focus:outline-none focus:ring-2 focus:ring-[#167E6C] text-sm"
+                                        class="px-4 py-2 pl-10 rounded-lg border border-[#e5e5e5] focus:outline-none focus:ring-2 focus:ring-[#0078b7] text-sm"
                                         style="font-family: 'Figtree', sans-serif;">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="absolute left-3 top-1/2 -translate-y-1/2 text-[#999999]">
                                         <circle cx="11" cy="11" r="8"></circle>
@@ -405,7 +405,7 @@
                                             <span class="text-sm font-mono text-[#999999]" style="font-family: 'Geist Mono', monospace;">{{ $app['id'] }}</span>
                                         </td>
                                         <td class="py-4 px-4">
-                                            <span class="text-sm font-semibold text-[#064E3B]" style="font-family: 'Figtree', sans-serif;">{{ $app['name'] }}</span>
+                                            <span class="text-sm font-semibold text-[#003d5c]" style="font-family: 'Figtree', sans-serif;">{{ $app['name'] }}</span>
                                         </td>
                                         <td class="py-4 px-4">
                                             <span class="text-sm text-[#666666]" style="font-family: 'Figtree', sans-serif;">{{ $app['category'] }}</span>
@@ -416,9 +416,9 @@
                                         <td class="py-4 px-4">
                                             <div class="flex items-center gap-2">
                                                 <div class="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden max-w-[100px]">
-                                                    <div class="h-full bg-[#167E6C] rounded-full" style="width: {{ $app['completeness'] }}%"></div>
+                                                    <div class="h-full bg-[#0078b7] rounded-full" style="width: {{ $app['completeness'] }}%"></div>
                                                 </div>
-                                                <span class="text-xs font-semibold text-[#064E3B]" style="font-family: 'Figtree', sans-serif;">{{ $app['completeness'] }}%</span>
+                                                <span class="text-xs font-semibold text-[#003d5c]" style="font-family: 'Figtree', sans-serif;">{{ $app['completeness'] }}%</span>
                                             </div>
                                         </td>
                                         <td class="py-4 px-4">
@@ -432,7 +432,7 @@
                                         </td>
                                         <td class="py-4 px-4">
                                             <div class="flex items-center gap-2">
-                                                <button class="px-4 py-2 bg-[#064E3B] text-white rounded-lg text-xs font-semibold hover:bg-[#167E6C] transition-colors" style="font-family: 'Figtree', sans-serif;">
+                                                <button class="px-4 py-2 bg-[#003d5c] text-white rounded-lg text-xs font-semibold hover:bg-[#0078b7] transition-colors" style="font-family: 'Figtree', sans-serif;">
                                                     {{ $app['status'] }}
                                                 </button>
                                                 <button class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
@@ -465,7 +465,7 @@
                         <div class="mt-6 flex items-center justify-between">
                             <p class="text-sm text-[#666666]" style="font-family: 'Figtree', sans-serif;">Menampilkan 1-6 dari 127 +</p>
                             <div class="flex items-center gap-2">
-                                <button class="px-3 py-1.5 bg-[#064E3B] text-white rounded-lg text-sm font-semibold">1</button>
+                                <button class="px-3 py-1.5 bg-[#003d5c] text-white rounded-lg text-sm font-semibold">1</button>
                                 <button class="px-3 py-1.5 bg-white border border-[#e5e5e5] rounded-lg text-sm font-medium hover:bg-gray-50">2</button>
                                 <button class="px-3 py-1.5 bg-white border border-[#e5e5e5] rounded-lg text-sm font-medium hover:bg-gray-50">3</button>
                                 <span class="px-2 text-[#999999]">...</span>
@@ -479,21 +479,21 @@
                         <!-- UMKM Terbaru Onboard -->
                         <div class="bg-white rounded-3xl p-6 border border-[#e5e5e5]">
                             <div class="flex items-center justify-between mb-6">
-                                <h3 class="text-lg font-semibold text-[#064E3B]" style="font-family: 'Figtree', sans-serif;">UMKM Terbaru Onboard</h3>
+                                <h3 class="text-lg font-semibold text-[#003d5c]" style="font-family: 'Figtree', sans-serif;">UMKM Terbaru Onboard</h3>
                             </div>
                             <div class="space-y-4">
                                 @foreach($recentUMKM as $umkm)
                                 <div class="flex items-start justify-between py-3 border-b border-[#e5e5e5] last:border-b-0">
                                     <div class="flex-1">
-                                        <h4 class="text-sm font-semibold text-[#064E3B] mb-1" style="font-family: 'Figtree', sans-serif;">{{ $umkm['name'] }}</h4>
+                                        <h4 class="text-sm font-semibold text-[#003d5c] mb-1" style="font-family: 'Figtree', sans-serif;">{{ $umkm['name'] }}</h4>
                                         <p class="text-xs text-[#666666]" style="font-family: 'Figtree', sans-serif;">{{ $umkm['category'] }}</p>
                                         <p class="text-xs text-[#999999] mt-1" style="font-family: 'Figtree', sans-serif;">{{ $umkm['time'] }}</p>
                                     </div>
-                                    <button class="text-xs text-[#167E6C] font-semibold hover:text-[#064E3B]" style="font-family: 'Figtree', sans-serif;">Lihat</button>
+                                    <button class="text-xs text-[#0078b7] font-semibold hover:text-[#003d5c]" style="font-family: 'Figtree', sans-serif;">Lihat</button>
                                 </div>
                                 @endforeach
                             </div>
-                            <button class="w-full mt-4 text-sm text-[#167E6C] hover:text-[#064E3B] font-medium transition-colors flex items-center justify-center gap-1" style="font-family: 'Figtree', sans-serif;">
+                            <button class="w-full mt-4 text-sm text-[#0078b7] hover:text-[#003d5c] font-medium transition-colors flex items-center justify-center gap-1" style="font-family: 'Figtree', sans-serif;">
                                 Lihat Semua Terbaru →
                             </button>
                         </div>
@@ -501,8 +501,8 @@
                         <!-- Placeholder Charts -->
                         <div class="lg:col-span-2 space-y-6">
                             <div class="bg-white rounded-3xl p-6 border border-[#e5e5e5]">
-                                <h3 class="text-lg font-semibold text-[#064E3B] mb-4" style="font-family: 'Figtree', sans-serif;">Pertumbuhan UMKM</h3>
-                                <div class="h-64 bg-gradient-to-br from-[#167E6C]/5 to-[#064E3B]/5 rounded-xl flex items-center justify-center">
+                                <h3 class="text-lg font-semibold text-[#003d5c] mb-4" style="font-family: 'Figtree', sans-serif;">Pertumbuhan UMKM</h3>
+                                <div class="h-64 bg-gradient-to-br from-[#0078b7]/5 to-[#003d5c]/5 rounded-xl flex items-center justify-center">
                                     <p class="text-sm text-[#999999]" style="font-family: 'Figtree', sans-serif;">Chart: Pertumbuhan UMKM per Bulan</p>
                                 </div>
                             </div>

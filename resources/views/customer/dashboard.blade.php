@@ -126,7 +126,7 @@
                 <div class="flex items-center justify-between h-20">
                     <div class="flex-shrink-0 flex items-center gap-3">
                         <!-- Branding: JOS -->
-                        <a href="/" class="text-2xl font-bold text-gray-900 hover:text-[#167E6C] transition-colors duration-200" style="font-family: 'Figtree', sans-serif; font-weight: 800;">
+                        <a href="/" class="text-2xl font-bold text-gray-900 hover:text-[#0078b7] transition-colors duration-200" style="font-family: 'Figtree', sans-serif; font-weight: 800;">
                             JOS
                         </a>
                     </div>
@@ -134,7 +134,7 @@
                         <div class="ml-10 flex items-baseline space-x-8">
                             @foreach($navigationLinks as $link)
                                 <a href="{{ $link['href'] }}" 
-                                   class="px-3 py-2 text-base font-medium transition-colors duration-200 relative group {{ isset($link['active']) && $link['active'] ? 'text-[#167E6C]' : 'text-gray-900 hover:text-[#167E6C]' }}" 
+                                   class="px-3 py-2 text-base font-medium transition-colors duration-200 relative group {{ isset($link['active']) && $link['active'] ? 'text-[#0078b7]' : 'text-gray-900 hover:text-[#0078b7]' }}" 
                                    style="font-family: 'Figtree', sans-serif; font-weight: 400;">
                                     <span>{{ $link['name'] }}</span>
                                     <div class="absolute bottom-0 left-0 {{ isset($link['active']) && $link['active'] ? 'w-full' : 'w-0' }} h-0.5 bg-current transition-all duration-300 group-hover:w-full"></div>
@@ -155,8 +155,8 @@
                             
                             <!-- User Profile -->
                             <div class="flex items-center gap-3 pl-4 border-l border-[#e5e5e5]">
-                                <div class="w-9 h-9 rounded-full bg-[#167E6C]/10 flex items-center justify-center">
-                                    <span class="text-[#167E6C] font-semibold text-sm" style="font-family: 'Figtree', sans-serif;">A</span>
+                                <div class="w-9 h-9 rounded-full bg-[#0078b7]/10 flex items-center justify-center">
+                                    <span class="text-[#0078b7] font-semibold text-sm" style="font-family: 'Figtree', sans-serif;">A</span>
                                 </div>
                                 <div class="text-left">
                                     <div class="text-sm font-semibold text-gray-900" style="font-family: 'Figtree', sans-serif;">{{ $user['name'] }}</div>
@@ -167,7 +167,7 @@
                     </div>
                     <div class="md:hidden">
                         <button @click="isMobileMenuOpen = !isMobileMenuOpen" 
-                                class="text-gray-900 hover:text-[#167E6C] p-2 rounded-md transition-colors duration-200" 
+                                class="text-gray-900 hover:text-[#0078b7] p-2 rounded-md transition-colors duration-200" 
                                 aria-label="Toggle mobile menu">
                             <svg x-show="!isMobileMenuOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
                             <svg x-show="isMobileMenuOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
@@ -178,7 +178,7 @@
             <div x-show="isMobileMenuOpen" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 h-0" x-transition:enter-end="opacity-100 h-auto" x-transition:leave="transition ease-in duration-300" x-transition:leave-start="opacity-100 h-auto" x-transition:leave-end="opacity-0 h-0" class="md:hidden bg-white/95 backdrop-blur-md border-t border-gray-200 overflow-hidden">
                 <div class="px-6 py-6 space-y-4">
                     @foreach($navigationLinks as $link)
-                        <a href="{{ $link['href'] }}" class="block w-full text-left text-gray-900 hover:text-[#167E6C] py-3 text-lg font-medium transition-colors duration-200 {{ isset($link['active']) && $link['active'] ? 'text-[#167E6C]' : '' }}" style="font-family: 'Figtree', sans-serif; font-weight: 400;">
+                        <a href="{{ $link['href'] }}" class="block w-full text-left text-gray-900 hover:text-[#0078b7] py-3 text-lg font-medium transition-colors duration-200 {{ isset($link['active']) && $link['active'] ? 'text-[#0078b7]' : '' }}" style="font-family: 'Figtree', sans-serif; font-weight: 400;">
                             <span>{{ $link['name'] }}</span>
                         </a>
                     @endforeach
@@ -200,14 +200,14 @@
                 
                 <!-- Content -->
                 <div class="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 py-16">
-                    <div class="flex flex-col gap-1 text-[#4ade80] mb-4">
+                    <div class="flex flex-col gap-1 text-[#38bdf8] mb-4">
                         <span class="text-sm uppercase tracking-tight font-mono flex items-center gap-1" style="font-family: 'Geist Mono', monospace;">
                             DASHBOARD CUSTOMER
-                            <span class="w-1.5 h-3 bg-[#4ade80] ml-1 rounded-sm animate-pulse"></span>
+                            <span class="w-1.5 h-3 bg-[#38bdf8] ml-1 rounded-sm animate-pulse"></span>
                         </span>
                     </div>
                     <h1 class="text-[56px] leading-[1.1] tracking-tight text-white mb-4" style="font-weight: 500; font-family: 'Figtree', sans-serif;">
-                        Halo, <span class="text-[#4ade80]">{{ $user['name'] }}</span>
+                        Halo, <span class="text-[#38bdf8]">{{ $user['name'] }}</span>
                     </h1>
                     <p class="text-lg leading-7 text-gray-200 max-w-[520px]" style="font-family: 'Figtree', sans-serif;">
                         Berikut ringkasan pesanan Anda
@@ -221,8 +221,8 @@
                 <div class="max-w-7xl mx-auto px-6 lg:px-8">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         @foreach($stats as $index => $stat)
-                        <div class="bg-white rounded-3xl p-8 border border-[#e5e5e5] hover:shadow-md hover:-translate-y-1 transition-all duration-300 {{ $stat['color'] === 'highlight' ? 'bg-[#064E3B] text-white border-[#064E3B]' : '' }}">
-                            <div class="text-5xl font-bold mb-3 {{ $stat['color'] === 'highlight' ? 'text-white' : 'text-[#064E3B]' }}" style="font-family: 'Figtree', sans-serif;">{{ $stat['count'] }}</div>
+                        <div class="bg-white rounded-3xl p-8 border border-[#e5e5e5] hover:shadow-md hover:-translate-y-1 transition-all duration-300 {{ $stat['color'] === 'highlight' ? 'bg-[#003d5c] text-white border-[#003d5c]' : '' }}">
+                            <div class="text-5xl font-bold mb-3 {{ $stat['color'] === 'highlight' ? 'text-white' : 'text-[#003d5c]' }}" style="font-family: 'Figtree', sans-serif;">{{ $stat['count'] }}</div>
                             <div class="text-base {{ $stat['color'] === 'highlight' ? 'text-white/90' : 'text-[#666666]' }}" style="font-family: 'Figtree', sans-serif;">{{ $stat['label'] }}</div>
                             @if($stat['color'] === 'highlight')
                             <div class="mt-4 pt-4 border-t border-white/20">
@@ -236,15 +236,15 @@
             </div>
 
             <!-- Main Content Grid -->
-            <div class="w-full bg-gradient-to-br from-background via-background to-[#167E6C]/5 py-16">
+            <div class="w-full bg-gradient-to-br from-background via-background to-[#0078b7]/5 py-16">
                 <div class="max-w-7xl mx-auto px-6 lg:px-8">
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                         <!-- Left Column - Active Orders -->
                         <div class="lg:col-span-2 space-y-8">
                             <!-- Section Header -->
                             <div class="flex items-center justify-between">
-                                <h2 class="text-[40px] leading-tight font-normal text-[#064E3B] tracking-tight" style="font-weight: 400; font-family: 'Figtree', sans-serif;">Pesanan Aktif</h2>
-                                <a href="#" class="text-sm text-[#167E6C] hover:text-[#064E3B] font-medium transition-colors flex items-center gap-1" style="font-family: 'Figtree', sans-serif;">
+                                <h2 class="text-[40px] leading-tight font-normal text-[#003d5c] tracking-tight" style="font-weight: 400; font-family: 'Figtree', sans-serif;">Pesanan Aktif</h2>
+                                <a href="#" class="text-sm text-[#0078b7] hover:text-[#003d5c] font-medium transition-colors flex items-center gap-1" style="font-family: 'Figtree', sans-serif;">
                                     Lihat Semua
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
                                 </a>
@@ -257,11 +257,11 @@
                                 <div class="flex items-start justify-between mb-6">
                                     <div class="flex-1">
                                         <div class="text-xs text-[#999999] mb-2 font-mono" style="font-family: 'Geist Mono', monospace;">{{ $order['id'] }}</div>
-                                        <h3 class="text-2xl font-semibold text-[#064E3B] mb-2" style="font-family: 'Figtree', sans-serif;">{{ $order['service'] }}</h3>
+                                        <h3 class="text-2xl font-semibold text-[#003d5c] mb-2" style="font-family: 'Figtree', sans-serif;">{{ $order['service'] }}</h3>
                                         <p class="text-sm text-[#666666]" style="font-family: 'Figtree', sans-serif;">{{ $order['provider'] }}</p>
                                     </div>
                                     @if(isset($order['statusHighlight']) && $order['statusHighlight'])
-                                    <span class="px-4 py-2 bg-[#064E3B] text-white text-xs font-semibold rounded-full whitespace-nowrap" style="font-family: 'Figtree', sans-serif;">{{ $order['status'] }}</span>
+                                    <span class="px-4 py-2 bg-[#003d5c] text-white text-xs font-semibold rounded-full whitespace-nowrap" style="font-family: 'Figtree', sans-serif;">{{ $order['status'] }}</span>
                                     @endif
                                 </div>
 
@@ -275,44 +275,44 @@
                                 <!-- Order Details -->
                                 <div class="space-y-4 mb-6">
                                     <div class="flex items-center gap-3 text-sm">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[#167E6C]">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[#0078b7]">
                                             <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
                                             <line x1="16" y1="2" x2="16" y2="6"></line>
                                             <line x1="8" y1="2" x2="8" y2="6"></line>
                                             <line x1="3" y1="10" x2="21" y2="10"></line>
                                         </svg>
-                                        <span class="text-[#064E3B] font-medium" style="font-family: 'Figtree', sans-serif;">{{ $order['date'] }}</span>
+                                        <span class="text-[#003d5c] font-medium" style="font-family: 'Figtree', sans-serif;">{{ $order['date'] }}</span>
                                         <span class="text-[#999999]">{{ $order['time'] }}</span>
                                     </div>
                                     <div class="flex items-center gap-3 text-sm">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[#167E6C]">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[#0078b7]">
                                             <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
                                             <circle cx="12" cy="10" r="3"></circle>
                                         </svg>
-                                        <span class="text-[#064E3B] font-medium" style="font-family: 'Figtree', sans-serif;">{{ $order['location'] }}</span>
+                                        <span class="text-[#003d5c] font-medium" style="font-family: 'Figtree', sans-serif;">{{ $order['location'] }}</span>
                                     </div>
                                     <div class="flex items-center gap-3 text-sm">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[#167E6C]">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[#0078b7]">
                                             <line x1="12" y1="1" x2="12" y2="23"></line>
                                             <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
                                         </svg>
-                                        <span class="text-[#064E3B] font-semibold text-lg" style="font-family: 'Figtree', sans-serif;">{{ $order['price'] }}</span>
+                                        <span class="text-[#003d5c] font-semibold text-lg" style="font-family: 'Figtree', sans-serif;">{{ $order['price'] }}</span>
                                     </div>
                                 </div>
 
                                 <!-- Action Button -->
                                 @if($order['action'] === 'review')
-                                <button class="w-full bg-[#167E6C] text-white px-6 py-4 rounded-xl text-base font-semibold hover:bg-[#064E3B] transition-all duration-200 hover:shadow-sm flex items-center justify-center gap-2" style="font-family: 'Figtree', sans-serif;">
+                                <button class="w-full bg-[#0078b7] text-white px-6 py-4 rounded-xl text-base font-semibold hover:bg-[#003d5c] transition-all duration-200 hover:shadow-sm flex items-center justify-center gap-2" style="font-family: 'Figtree', sans-serif;">
                                     Review Pre-Invoice
                                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
                                 </button>
                                 @elseif($order['action'] === 'pay')
-                                <button class="w-full bg-[#167E6C] text-white px-6 py-4 rounded-xl text-base font-semibold hover:bg-[#064E3B] transition-all duration-200 hover:shadow-lg flex items-center justify-center gap-2" style="font-family: 'Figtree', sans-serif;">
+                                <button class="w-full bg-[#0078b7] text-white px-6 py-4 rounded-xl text-base font-semibold hover:bg-[#003d5c] transition-all duration-200 hover:shadow-lg flex items-center justify-center gap-2" style="font-family: 'Figtree', sans-serif;">
                                     Bayar Sekarang
                                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
                                 </button>
                                 @else
-                                <button class="w-full bg-white border-2 border-[#e5e5e5] text-[#064E3B] px-6 py-4 rounded-xl text-base font-semibold hover:border-[#167E6C] hover:text-[#167E6C] transition-all duration-200 flex items-center justify-center gap-2" style="font-family: 'Figtree', sans-serif;">
+                                <button class="w-full bg-white border-2 border-[#e5e5e5] text-[#003d5c] px-6 py-4 rounded-xl text-base font-semibold hover:border-[#0078b7] hover:text-[#0078b7] transition-all duration-200 flex items-center justify-center gap-2" style="font-family: 'Figtree', sans-serif;">
                                     Lihat Detail
                                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
                                 </button>
@@ -325,44 +325,44 @@
                         <div class="space-y-6">
                             <!-- Quick Actions -->
                             <div class="bg-white rounded-3xl p-6 border border-[#e5e5e5]">
-                                <h3 class="text-xl font-semibold text-[#064E3B] mb-6" style="font-family: 'Figtree', sans-serif;">Menu Cepat</h3>
+                                <h3 class="text-xl font-semibold text-[#003d5c] mb-6" style="font-family: 'Figtree', sans-serif;">Menu Cepat</h3>
                                 <div class="space-y-3">
-                                    <a href="#" class="flex items-center justify-between p-4 rounded-xl hover:bg-[#167E6C]/5 transition-all duration-200 group">
+                                    <a href="#" class="flex items-center justify-between p-4 rounded-xl hover:bg-[#0078b7]/5 transition-all duration-200 group">
                                         <div class="flex items-center gap-3">
-                                            <div class="w-10 h-10 rounded-lg bg-[#167E6C]/10 flex items-center justify-center group-hover:bg-[#167E6C] transition-colors">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[#167E6C] group-hover:text-white">
+                                            <div class="w-10 h-10 rounded-lg bg-[#0078b7]/10 flex items-center justify-center group-hover:bg-[#0078b7] transition-colors">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[#0078b7] group-hover:text-white">
                                                     <circle cx="11" cy="11" r="8"></circle>
                                                     <path d="m21 21-4.35-4.35"></path>
                                                 </svg>
                                             </div>
-                                            <span class="text-sm font-medium text-[#064E3B]" style="font-family: 'Figtree', sans-serif;">Cari Admin</span>
+                                            <span class="text-sm font-medium text-[#003d5c]" style="font-family: 'Figtree', sans-serif;">Cari Admin</span>
                                         </div>
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[#999999]">
                                             <polyline points="9 18 15 12 9 6"></polyline>
                                         </svg>
                                     </a>
-                                    <a href="#" class="flex items-center justify-between p-4 rounded-xl hover:bg-[#167E6C]/5 transition-all duration-200 group">
+                                    <a href="#" class="flex items-center justify-between p-4 rounded-xl hover:bg-[#0078b7]/5 transition-all duration-200 group">
                                         <div class="flex items-center gap-3">
-                                            <div class="w-10 h-10 rounded-lg bg-[#167E6C]/10 flex items-center justify-center group-hover:bg-[#167E6C] transition-colors">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[#167E6C] group-hover:text-white">
+                                            <div class="w-10 h-10 rounded-lg bg-[#0078b7]/10 flex items-center justify-center group-hover:bg-[#0078b7] transition-colors">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[#0078b7] group-hover:text-white">
                                                     <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
                                                     <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
                                                 </svg>
                                             </div>
-                                            <span class="text-sm font-medium text-[#064E3B]" style="font-family: 'Figtree', sans-serif;">Notifikasi</span>
+                                            <span class="text-sm font-medium text-[#003d5c]" style="font-family: 'Figtree', sans-serif;">Notifikasi</span>
                                         </div>
                                         <span class="w-6 h-6 rounded-full bg-red-500 text-white text-xs flex items-center justify-center font-semibold">3</span>
                                     </a>
-                                    <a href="#" class="flex items-center justify-between p-4 rounded-xl hover:bg-[#167E6C]/5 transition-all duration-200 group">
+                                    <a href="#" class="flex items-center justify-between p-4 rounded-xl hover:bg-[#0078b7]/5 transition-all duration-200 group">
                                         <div class="flex items-center gap-3">
-                                            <div class="w-10 h-10 rounded-lg bg-[#167E6C]/10 flex items-center justify-center group-hover:bg-[#167E6C] transition-colors">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[#167E6C] group-hover:text-white">
+                                            <div class="w-10 h-10 rounded-lg bg-[#0078b7]/10 flex items-center justify-center group-hover:bg-[#0078b7] transition-colors">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[#0078b7] group-hover:text-white">
                                                     <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
                                                     <circle cx="12" cy="12" r="10"></circle>
                                                     <line x1="12" y1="17" x2="12.01" y2="17"></line>
                                                 </svg>
                                             </div>
-                                            <span class="text-sm font-medium text-[#064E3B]" style="font-family: 'Figtree', sans-serif;">Hubungi Kami</span>
+                                            <span class="text-sm font-medium text-[#003d5c]" style="font-family: 'Figtree', sans-serif;">Hubungi Kami</span>
                                         </div>
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[#999999]">
                                             <polyline points="9 18 15 12 9 6"></polyline>
@@ -374,14 +374,14 @@
                             <!-- Recent Notifications -->
                             <div class="bg-white rounded-3xl p-6 border border-[#e5e5e5]">
                                 <div class="flex items-center justify-between mb-6">
-                                    <h3 class="text-xl font-semibold text-[#064E3B]" style="font-family: 'Figtree', sans-serif;">Notifikasi Terbaru</h3>
+                                    <h3 class="text-xl font-semibold text-[#003d5c]" style="font-family: 'Figtree', sans-serif;">Notifikasi Terbaru</h3>
                                     <span class="w-6 h-6 rounded-full bg-red-500 text-white text-xs flex items-center justify-center font-semibold">{{ count($notifications) }}</span>
                                 </div>
                                 <div class="space-y-4">
                                     @foreach($notifications as $notif)
                                     <div class="pb-4 border-b border-[#e5e5e5] last:border-b-0 last:pb-0">
-                                        <p class="text-sm text-[#064E3B] font-medium mb-1 flex items-start gap-2" style="font-family: 'Figtree', sans-serif;">
-                                            <span class="w-1.5 h-1.5 rounded-full bg-[#4ade80] mt-1.5 flex-shrink-0"></span>
+                                        <p class="text-sm text-[#003d5c] font-medium mb-1 flex items-start gap-2" style="font-family: 'Figtree', sans-serif;">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-[#38bdf8] mt-1.5 flex-shrink-0"></span>
                                             {{ $notif['title'] }}
                                         </p>
                                         <p class="text-xs text-[#666666] mb-1 ml-3.5" style="font-family: 'Figtree', sans-serif;">{{ $notif['order'] }}</p>
@@ -389,17 +389,17 @@
                                     </div>
                                     @endforeach
                                 </div>
-                                <button class="w-full mt-6 text-sm text-[#167E6C] hover:text-[#064E3B] font-medium transition-colors flex items-center justify-center gap-1" style="font-family: 'Figtree', sans-serif;">
+                                <button class="w-full mt-6 text-sm text-[#0078b7] hover:text-[#003d5c] font-medium transition-colors flex items-center justify-center gap-1" style="font-family: 'Figtree', sans-serif;">
                                     Lihat Semua
                                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
                                 </button>
                             </div>
 
                             <!-- Help Section -->
-                            <div class="bg-gradient-to-br from-[#167E6C] to-[#064E3B] rounded-3xl p-8 text-white shadow-md">
+                            <div class="bg-gradient-to-br from-[#0078b7] to-[#003d5c] rounded-3xl p-8 text-white shadow-md">
                                 <h3 class="text-xl font-semibold mb-2" style="font-family: 'Figtree', sans-serif;">Butuh Bantuan?</h3>
                                 <p class="text-sm text-white/80 mb-6" style="font-family: 'Figtree', sans-serif;">Kami siap membantu Anda 24/7</p>
-                                <button class="w-full bg-white text-[#064E3B] px-6 py-4 rounded-xl text-base font-semibold hover:bg-gray-100 transition-all duration-200 hover:shadow-sm flex items-center justify-center gap-2" style="font-family: 'Figtree', sans-serif;">
+                                <button class="w-full bg-white text-[#003d5c] px-6 py-4 rounded-xl text-base font-semibold hover:bg-gray-100 transition-all duration-200 hover:shadow-sm flex items-center justify-center gap-2" style="font-family: 'Figtree', sans-serif;">
                                     Hubungi Support
                                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
                                 </button>
@@ -416,14 +416,14 @@
                 <div class="grid grid-cols-2 md:grid-cols-6 gap-8 mb-12">
                     <div class="col-span-2">
                         <div class="mb-4">
-                            <h3 class="text-2xl font-semibold text-[#064E3B] mb-2" style="font-family: 'Figtree', sans-serif; font-weight: 500;">UMKM Connect</h3>
+                            <h3 class="text-2xl font-semibold text-[#003d5c] mb-2" style="font-family: 'Figtree', sans-serif; font-weight: 500;">UMKM Connect</h3>
                             <p class="text-sm leading-5 text-[#666666] max-w-xs" style="font-family: 'Figtree', sans-serif;">Platform digital untuk memajukan UMKM Indonesia.</p>
                         </div>
                         <div class="flex items-center gap-3 mt-6">
-                            <a href="#" class="w-9 h-9 flex items-center justify-center rounded-full bg-white border border-[#e5e5e5] text-[#666666] hover:text-[#064E3B] hover:border-[#064E3B] transition-colors duration-150">
+                            <a href="#" class="w-9 h-9 flex items-center justify-center rounded-full bg-white border border-[#e5e5e5] text-[#666666] hover:text-[#003d5c] hover:border-[#003d5c] transition-colors duration-150">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
                             </a>
-                            <a href="#" class="w-9 h-9 flex items-center justify-center rounded-full bg-white border border-[#e5e5e5] text-[#666666] hover:text-[#064E3B] hover:border-[#064E3B] transition-colors duration-150">
+                            <a href="#" class="w-9 h-9 flex items-center justify-center rounded-full bg-white border border-[#e5e5e5] text-[#666666] hover:text-[#003d5c] hover:border-[#003d5c] transition-colors duration-150">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
                             </a>
                         </div>
@@ -432,26 +432,26 @@
                     <div class="col-span-1">
                         <h4 class="text-sm font-medium text-[#202020] mb-4 uppercase tracking-wide" style="font-family: 'Figtree', sans-serif; font-weight: 500;">Perusahaan</h4>
                         <ul class="space-y-3">
-                            <li><a href="#" class="text-sm text-[#666666] hover:text-[#064E3B] transition-colors duration-150" style="font-family: 'Figtree', sans-serif;">Tentang Kami</a></li>
-                            <li><a href="#" class="text-sm text-[#666666] hover:text-[#064E3B] transition-colors duration-150" style="font-family: 'Figtree', sans-serif;">Karir</a></li>
-                            <li><a href="#" class="text-sm text-[#666666] hover:text-[#064E3B] transition-colors duration-150" style="font-family: 'Figtree', sans-serif;">Blog</a></li>
+                            <li><a href="#" class="text-sm text-[#666666] hover:text-[#003d5c] transition-colors duration-150" style="font-family: 'Figtree', sans-serif;">Tentang Kami</a></li>
+                            <li><a href="#" class="text-sm text-[#666666] hover:text-[#003d5c] transition-colors duration-150" style="font-family: 'Figtree', sans-serif;">Karir</a></li>
+                            <li><a href="#" class="text-sm text-[#666666] hover:text-[#003d5c] transition-colors duration-150" style="font-family: 'Figtree', sans-serif;">Blog</a></li>
                         </ul>
                     </div>
 
                     <div class="col-span-1">
                         <h4 class="text-sm font-medium text-[#202020] mb-4 uppercase tracking-wide" style="font-family: 'Figtree', sans-serif; font-weight: 500;">Bantuan</h4>
                         <ul class="space-y-3">
-                            <li><a href="#" class="text-sm text-[#666666] hover:text-[#064E3B] transition-colors duration-150" style="font-family: 'Figtree', sans-serif;">Pusat Bantuan</a></li>
-                            <li><a href="#" class="text-sm text-[#666666] hover:text-[#064E3B] transition-colors duration-150" style="font-family: 'Figtree', sans-serif;">Syarat & Ketentuan</a></li>
-                            <li><a href="#" class="text-sm text-[#666666] hover:text-[#064E3B] transition-colors duration-150" style="font-family: 'Figtree', sans-serif;">Kebijakan Privasi</a></li>
+                            <li><a href="#" class="text-sm text-[#666666] hover:text-[#003d5c] transition-colors duration-150" style="font-family: 'Figtree', sans-serif;">Pusat Bantuan</a></li>
+                            <li><a href="#" class="text-sm text-[#666666] hover:text-[#003d5c] transition-colors duration-150" style="font-family: 'Figtree', sans-serif;">Syarat & Ketentuan</a></li>
+                            <li><a href="#" class="text-sm text-[#666666] hover:text-[#003d5c] transition-colors duration-150" style="font-family: 'Figtree', sans-serif;">Kebijakan Privasi</a></li>
                         </ul>
                     </div>
 
                     <div class="col-span-1">
                         <h4 class="text-sm font-medium text-[#202020] mb-4 uppercase tracking-wide" style="font-family: 'Figtree', sans-serif; font-weight: 500;">Hubungi Kami</h4>
                         <ul class="space-y-3">
-                            <li><a href="#" class="text-sm text-[#666666] hover:text-[#064E3B] transition-colors duration-150" style="font-family: 'Figtree', sans-serif;">support@umkmconnect.id</a></li>
-                            <li><a href="#" class="text-sm text-[#666666] hover:text-[#064E3B] transition-colors duration-150" style="font-family: 'Figtree', sans-serif;">+62 812 3456 7890</a></li>
+                            <li><a href="#" class="text-sm text-[#666666] hover:text-[#003d5c] transition-colors duration-150" style="font-family: 'Figtree', sans-serif;">support@umkmconnect.id</a></li>
+                            <li><a href="#" class="text-sm text-[#666666] hover:text-[#003d5c] transition-colors duration-150" style="font-family: 'Figtree', sans-serif;">+62 812 3456 7890</a></li>
                         </ul>
                     </div>
                 </div>

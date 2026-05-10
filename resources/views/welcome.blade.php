@@ -10,7 +10,7 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&family=Inter:wght@100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
     <!-- Geist Mono CDN (Simulated/Fallback) -->
     <link href="https://cdn.jsdelivr.net/npm/geist-mono@1.0.1/dist/geist-mono.min.css" rel="stylesheet">
 
@@ -22,9 +22,19 @@
     
     <style>
         /* Fallback for Geist Mono if CDN fails or if we want specific overrides */
+        /* Font Face removed for commercial safety */
         :root {
             --font-figtree: 'Figtree', sans-serif;
             --font-geist-mono: 'Geist Mono', monospace;
+            --font-accent: 'Plus Jakarta Sans', sans-serif;
+        }
+        .font-circular-medium { font-family: var(--font-accent); font-weight: 500; }
+        .font-circular-book { font-family: var(--font-accent); font-weight: 400; }
+        .font-circular-bold { font-family: var(--font-accent); font-weight: 700; }
+        .font-georgia-italic { font-family: Georgia, serif; font-style: italic; }
+        .logo-hover-blue:hover {
+            filter: invert(31%) sepia(97%) saturate(1478%) hue-rotate(181deg) brightness(94%) contrast(101%) !important;
+            opacity: 1 !important;
         }
         @keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
         .animate-scroll { animation: scroll 30s linear infinite; }
@@ -186,69 +196,82 @@
                 handleLinkClick(href) {
                     this.isMobileMenuOpen = false;
                     const element = document.querySelector(href);
-                    if (element) element.scrollIntoView({ behavior: 'smooth' });
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth' });
+                    } else if (!href.startsWith('#')) {
+                        window.location.href = href;
+                    }
                 }
             }"
-            :class="isScrolled ? 'bg-white/95 backdrop-blur-md shadow-sm text-gray-900' : 'bg-transparent text-white'"
-            class="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
+            class="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[95%] lg:w-fit transition-all duration-500"
         >
-            <div class="max-w-7xl mx-auto px-6 lg:px-8">
-                <div class="flex items-center justify-between h-20">
-                    <div class="flex-shrink-0 flex items-center gap-3">
-                        <!-- Branding: JOS (Logo removed) -->
-                        <button @click="handleLinkClick('#home')" 
-                                :class="isScrolled ? 'text-gray-900' : 'text-white'"
-                                class="text-2xl font-bold hover:text-[#167E6C] transition-colors duration-200" 
-                                style="font-family: 'Plus Jakarta Sans', sans-serif;">
-                            <span style="font-family: 'Figtree', sans-serif; font-weight: 800;">JOS</span>
-                        </button>
-                    </div>
-                    <div class="hidden md:block">
-                        <div class="ml-10 flex items-baseline space-x-8">
-                            @foreach($navigationLinks as $link)
-                                <button @click="handleLinkClick('{{ $link['href'] }}')" 
-                                        :class="isScrolled ? 'text-gray-900 hover:text-[#167E6C]' : 'text-white hover:text-white/80'"
-                                        class="px-3 py-2 text-base font-medium transition-colors duration-200 relative group" 
-                                        style="font-family: 'Figtree', sans-serif; font-weight: 400;">
-                                    <span>{{ $link['name'] }}</span>
-                                    <div class="absolute bottom-0 left-0 w-0 h-0.5 bg-current transition-all duration-300 group-hover:w-full"></div>
-                                </button>
-                            @endforeach
-                        </div>
-                    </div>
-                    <div class="hidden md:block">
-                        <div class="flex items-center gap-4">
-                            <a href="{{ route('customer.dashboard.preview') }}" 
-                               :class="isScrolled ? 'text-gray-900 hover:text-[#167E6C]' : 'text-white hover:text-white/80'"
-                               class="font-medium transition-colors px-3 py-2" 
-                               style="font-family: 'Figtree', sans-serif;">Masuk</a>
-                            <button class="bg-[#167E6C] text-white px-[18px] rounded-full text-base font-semibold hover:bg-[#167E6C]/90 transition-all duration-200 hover:rounded-2xl shadow-sm hover:shadow-md whitespace-nowrap leading-4 py-[15px]" style="font-family: 'Plus Jakarta Sans', sans-serif;">
-                                <span style="font-family: 'Figtree', sans-serif; font-weight: 500;">Daftar</span>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="md:hidden">
-                        <button @click="isMobileMenuOpen = !isMobileMenuOpen" 
-                                :class="isScrolled ? 'text-gray-900' : 'text-white'"
-                                class="hover:text-[#167E6C] p-2 rounded-md transition-colors duration-200" 
-                                aria-label="Toggle mobile menu">
-                            <svg x-show="!isMobileMenuOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
-                            <svg x-show="isMobileMenuOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                        </button>
-                    </div>
+            <div 
+                :class="isScrolled ? 'bg-black/40 border-white/10' : 'bg-white/5 border-white/10'"
+                class="backdrop-blur-xl border rounded-full px-6 lg:px-10 py-3 flex items-center justify-between lg:justify-center gap-6 lg:gap-32"
+            >
+                <div class="flex-shrink-0 flex items-center">
+                    <button @click="handleLinkClick('#home')" 
+                            class="text-xl font-bold text-white hover:text-[#38bdf8] transition-colors duration-200" 
+                            style="font-family: 'Figtree', sans-serif; font-weight: 800; letter-spacing: -0.02em;">
+                        JOS
+                    </button>
                 </div>
-            </div>
-            <div x-show="isMobileMenuOpen" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 h-0" x-transition:enter-end="opacity-100 h-auto" x-transition:leave="transition ease-in duration-300" x-transition:leave-start="opacity-100 h-auto" x-transition:leave-end="opacity-0 h-0" class="md:hidden bg-white/95 backdrop-blur-md border-t border-gray-200 overflow-hidden">
-                <div class="px-6 py-6 space-y-4">
+
+                <!-- Links (Desktop) -->
+                <div class="hidden lg:flex items-center space-x-10">
                     @foreach($navigationLinks as $link)
-                        <button @click="handleLinkClick('{{ $link['href'] }}')" class="block w-full text-left text-gray-900 hover:text-[#167E6C] py-3 text-lg font-medium transition-colors duration-200" style="font-family: 'Figtree', sans-serif; font-weight: 400;">
-                            <span>{{ $link['name'] }}</span>
+                        <button @click="handleLinkClick('{{ $link['href'] }}')" 
+                                class="text-sm font-medium text-white/70 hover:text-white transition-colors duration-200" 
+                                style="font-family: 'Figtree', sans-serif;">
+                            {{ $link['name'] }}
                         </button>
                     @endforeach
-                    <div class="pt-4 border-t border-gray-200 flex flex-col gap-3">
-                         <a href="{{ route('customer.dashboard.preview') }}" class="block w-full text-center text-gray-900 font-medium hover:text-[#167E6C] transition-colors py-2" style="font-family: 'Figtree', sans-serif;">Masuk</a>
-                        <button class="w-full bg-[#167E6C] text-white px-[18px] py-[15px] rounded-full text-base font-semibold hover:bg-[#167E6C]/90 transition-all duration-200" style="font-family: 'Plus Jakarta Sans', sans-serif;">
+                </div>
+
+                <!-- Auth Buttons (Desktop) -->
+                <div class="hidden lg:flex items-center gap-6">
+                    <a href="{{ route('customer.dashboard.preview') }}" 
+                       class="text-sm font-medium text-white/70 hover:text-white transition-colors" 
+                       style="font-family: 'Figtree', sans-serif;">Masuk</a>
+                    <button class="bg-white/10 text-white pl-5 pr-1 py-1 rounded-full text-sm font-semibold hover:bg-white transition-all duration-300 hover:text-gray-900 group flex items-center gap-4">
+                        <span style="font-family: 'Figtree', sans-serif; font-weight: 600;">Daftar</span>
+                        <div class="w-8 h-8 bg-[#0078b7] rounded-full flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-white"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+                        </div>
+                    </button>
+                </div>
+
+                <!-- Mobile Toggle -->
+                <div class="lg:hidden">
+                    <button @click="isMobileMenuOpen = !isMobileMenuOpen" 
+                            class="text-white hover:text-[#38bdf8] p-2 rounded-md transition-colors duration-200">
+                        <svg x-show="!isMobileMenuOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                        <svg x-show="isMobileMenuOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile Menu -->
+            <div x-show="isMobileMenuOpen" 
+                 x-transition:enter="transition ease-out duration-300"
+                 x-transition:enter-start="opacity-0 -translate-y-4"
+                 x-transition:enter-end="opacity-100 translate-y-0"
+                 x-transition:leave="transition ease-in duration-200"
+                 x-transition:leave-start="opacity-100 translate-y-0"
+                 x-transition:leave-end="opacity-0 -translate-y-4"
+                 class="absolute top-full left-0 right-0 mt-4 mx-4 bg-[#0A0A0A]/95 backdrop-blur-xl border border-white/10 rounded-3xl overflow-hidden lg:hidden"
+            >
+                <div class="px-6 py-8 space-y-6">
+                    @foreach($navigationLinks as $link)
+                        <button @click="handleLinkClick('{{ $link['href'] }}')" class="block w-full text-left text-white/70 hover:text-white py-2 text-xl font-medium transition-colors duration-200" style="font-family: 'Figtree', sans-serif;">
+                            {{ $link['name'] }}
+                        </button>
+                    @endforeach
+                    <div class="pt-6 border-t border-white/10 flex flex-col gap-4">
+                         <a href="{{ route('customer.dashboard.preview') }}" class="block w-full text-center text-white/70 font-medium hover:text-white transition-colors py-2 text-lg" style="font-family: 'Figtree', sans-serif;">Masuk</a>
+                        <button class="w-full bg-[#0078b7] text-white px-6 py-5 rounded-2xl text-lg font-semibold hover:bg-[#0078b7]/90 transition-all duration-200 flex items-center justify-center gap-3">
                             <span>Daftar</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
                         </button>
                     </div>
                 </div>
@@ -256,126 +279,249 @@
         </nav>
 
         <!-- Full Screen Video Hero Section -->
-        <section id="home" class="relative w-full min-h-screen flex items-end justify-start overflow-hidden">
+        <section id="home" class="relative w-full min-h-screen flex items-center justify-start overflow-hidden pt-20">
             <!-- Video Background -->
             <div class="absolute inset-0 w-full h-full">
                 <video autoplay muted loop playsinline class="w-full h-full object-cover">
                     <source src="{{ asset('storage/videos/hero.mp4') }}" type="video/mp4">
                     <!-- Fallback if needed, possibly an image -->
                 </video>
-                <!-- Opaque Overlay to ensure text readability -->
-                <div class="absolute inset-0 bg-black/40"></div>
+                <!-- Dark Overlay to ensure text readability -->
+                <div class="absolute inset-0 bg-black/50"></div>
+                <!-- Gradient Bottom Overlay -->
+                <div class="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-[#0A0A0A]/20 to-transparent"></div>
             </div>
 
-            <!-- Content Container (Bottom Left) -->
-            <div class="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-8 pb-24 lg:pb-32">
-                <div class="max-w-3xl">
-                    <div class="col-span-12 lg:col-span-6 flex flex-col justify-end">
-                        <div class="flex flex-col gap-1 text-[#4ade80] mb-6 hero-text-anim">
-                            <span class="text-sm uppercase tracking-tight font-mono flex items-center gap-1" style="font-family: 'Geist Mono', monospace;">
-                                SOLUSI UMKM TERDEPAN
-                                <span class="w-1.5 h-3 bg-[#4ade80] ml-1 rounded-sm animate-pulse"></span>
-                            </span>
-                        </div>
-                        <h1 class="text-[56px] leading-[1.1] tracking-tight text-white mb-6 hero-text-anim" style="font-weight: 500; font-family: 'Figtree', sans-serif;">
-                            Bangun <span class="relative inline-block text-[#4ade80]" 
-                                x-data="{
-                                    words: ['Identitas Digital', 'Bisnis Modern', 'Relasi Kuat', 'Pasar Luas'],
-                                    current: 0,
-                                    init() {
-                                        setInterval(() => {
-                                            this.current = (this.current + 1) % this.words.length;
-                                        }, 2000);
-                                    }
-                                }">
-                                <template x-for="(word, index) in words" :key="index">
-                                    <span x-text="word" 
-                                          class="absolute top-0 left-0 transition-all duration-500 transform whitespace-nowrap"
-                                          :class="{
-                                              'opacity-100 translate-y-0': current === index,
-                                              'opacity-0 translate-y-4': current !== index
-                                          }"
-                                    ></span>
-                                </template>
-                                <span class="opacity-0">Identitas Digital</span>
-                            </span><br>
-                            dan Tingkatkan Daya Saing <span class="opacity-80 text-white">UMKM Anda.</span>
-                        </h1>
-                        <p class="text-lg leading-7 text-gray-200 max-w-[520px] mb-8 hero-text-anim" style="font-family: 'Figtree', sans-serif;">
-                            Platform terintegrasi yang menghubungkan UMKM dengan peluang pasar yang lebih luas, teknologi terkini, dan komunitas yang mendukung pertumbuhan bisnis Anda.
-                        </p>
-                        <ul class="flex gap-1.5 flex-wrap mt-2 hero-text-anim">
-                            <li>
-                                <button class="relative inline-flex justify-center items-center leading-4 text-center cursor-pointer whitespace-nowrap outline-none font-medium h-12 text-[#064E3B] bg-white transition-all duration-200 ease-in-out rounded-lg px-6 text-base group hover:bg-gray-100 hover:shadow-lg">
-                                    <span class="relative z-10 flex items-center gap-2">Mulai Sekarang <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 transition-transform duration-150 group-hover:translate-x-1"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></span>
-                                </button>
-                            </li>
-                        </ul>
+            <!-- Content Container -->
+            <div class="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-8">
+                <div class="max-w-4xl">
+                    <div class="flex flex-col gap-1 text-white mb-8 hero-text-anim">
+                        <span class="text-sm flex items-center gap-3 opacity-90 font-circular-bold">
+                            <div class="w-6 h-6 bg-white/10 backdrop-blur-md rounded-md flex items-center justify-center border border-white/10">
+                                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-[#38bdf8]"><path d="M12 2v20"/><path d="m17 7-5-5-5 5"/><path d="m17 17-5 5-5-5"/></svg>
+                            </div>
+                            Solusi UMKM Digital
+                        </span>
+                    </div>
+                    
+                    <h1 class="text-[64px] lg:text-[110px] leading-[0.9] tracking-tight text-white mb-10 hero-text-anim" style="font-weight: 500; font-family: 'Figtree', sans-serif;">
+                        Ubah Tantangan<br>
+                        Jadi <span class="relative inline-block text-white" 
+                            x-data="{
+                                words: ['Peluang Baru', 'Ekosistem Digital', 'Pasar Global', 'Bisnis Modern'],
+                                current: 0,
+                                init() {
+                                    setInterval(() => {
+                                        this.current = (this.current + 1) % this.words.length;
+                                    }, 3000);
+                                }
+                            }">
+                            <template x-for="(word, index) in words" :key="index">
+                                <span x-text="word" 
+                                      class="absolute top-0 left-0 transition-all duration-700 transform whitespace-nowrap font-georgia-italic"
+                                      :class="{
+                                          'opacity-100 translate-y-0': current === index,
+                                          'opacity-0 translate-y-12': current !== index
+                                      }"
+                                ></span>
+                            </template>
+                            <span class="opacity-0 font-georgia-italic">Peluang Baru</span>
+                        </span>
+                    </h1>
+
+                    <p class="text-lg leading-relaxed text-gray-300 max-w-[650px] mb-12 hero-text-anim font-circular-book">
+                        Kami membantu UMKM Indonesia bertransformasi ke era digital. Dari strategi hingga eksekusi, kami membangun ekosistem yang mendorong pertumbuhan bisnis Anda ke level berikutnya.
+                    </p>
+
+                    <div class="flex flex-wrap items-center gap-6 hero-text-anim">
+                        <a href="{{ route('register') }}" class="bg-black/20 backdrop-blur-xl border border-white/10 text-white pl-8 pr-2 py-2 rounded-2xl text-lg font-semibold hover:bg-white hover:text-gray-900 transition-all duration-500 flex items-center gap-8 group shadow-2xl">
+                            <span class="font-circular-book">Mulai Sekarang</span>
+                            <div class="w-12 h-12 bg-[#0078b7] rounded-xl flex items-center justify-center transition-all duration-500 group-hover:scale-110 group-hover:rounded-full shadow-lg">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="text-white"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Absolute Bottom Elements (Scroll Indicator) -->
+            <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-50 hero-text-anim">
+                <span class="text-[10px] uppercase tracking-widest text-white font-medium" style="font-family: 'Figtree', sans-serif;">Scroll for more</span>
+                <div class="w-[1px] h-12 bg-gradient-to-b from-white to-transparent"></div>
+            </div>
+
+            <!-- Floating Badge (Right) -->
+            <div class="absolute bottom-10 right-10 z-20 hero-text-anim hidden lg:block">
+                <div class="relative w-28 h-28 flex items-center justify-center">
+                    <div class="absolute inset-0 border border-white/20 rounded-full animate-[spin_10s_linear_infinite]">
+                         <svg class="w-full h-full" viewBox="0 0 100 100">
+                            <defs>
+                                <path id="circlePath" d="M 50, 50 m -37, 0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0" />
+                            </defs>
+                            <text class="text-[9.5px] uppercase tracking-[0.25em] fill-white opacity-40">
+                                <textPath xlink:href="#circlePath">
+                                    Jasa Order Service &nbsp;&bull;&nbsp; Jasa Order Service &nbsp;&bull;&nbsp;
+                                </textPath>
+                            </text>
+                        </svg>
+                    </div>
+                    <div class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-2xl">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-gray-900"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
                     </div>
                 </div>
             </div>
         </section>
 
-        <div class="w-full py-12 bg-white overflow-hidden">
-            <div class="max-w-[680px] mx-auto text-center mb-10 px-4 partner-header-section">
-                <h2 class="text-[40px] leading-tight font-normal text-[#064E3B] tracking-tight mb-4 partner-header-anim" style="font-family: 'Figtree', sans-serif;">Pilih UMKM Partner Anda</h2>
-                <p class="text-lg leading-7 text-[#666666] max-w-[600px] mx-auto partner-header-anim" style="font-family: 'Figtree', sans-serif;">Temukan dan berkolaborasi dengan UMKM terbaik dari berbagai industri untuk mendukung pertumbuhan bisnis Anda.</p>
-                <div class="mt-8 partner-header-anim"><a href="#" class="inline-block px-5 py-2.5 rounded-full bg-white text-[#064E3B] text-[15px] font-medium transition-all duration-75 hover:shadow-lg border border-[#e3e3e3]">Lihat Semua UMKM Partner</a></div>
-            </div>
-            <div class="relative h-[268px] -mt-6">
-                <div class="flex items-start gap-6 absolute top-6 whitespace-nowrap animate-scroll w-max">
-                    @foreach($apps as $app)<div class="flex items-center justify-center w-24 h-24 rounded-3xl flex-shrink-0 bg-white shadow-[0_0_0_1px_rgba(0,0,0,0.04),0_1px_1px_0_rgba(0,0,0,0.04),0_3px_3px_-1.4px_rgba(0,0,0,0.04)]"><img src="{{ $app['logo'] }}" alt="{{ $app['name'] }}" class="w-9 h-9 object-contain" loading="lazy"></div>@endforeach
-                    @foreach($apps as $app)<div class="flex items-center justify-center w-24 h-24 rounded-3xl flex-shrink-0 bg-white shadow-[0_0_0_1px_rgba(0,0,0,0.04),0_1px_1px_0_rgba(0,0,0,0.04),0_3px_3px_-1.4px_rgba(0,0,0,0.04)]"><img src="{{ $app['logo'] }}" alt="{{ $app['name'] }}" class="w-9 h-9 object-contain" loading="lazy"></div>@endforeach
+        <div class="w-full py-12 bg-[#0A0A0A] overflow-hidden">
+            <div class="max-w-7xl mx-auto px-6 lg:px-8">
+                <!-- Trusted By Section -->
+                <div class="partners-animate-container flex flex-col lg:flex-row items-center justify-between gap-12 mb-12 border-b border-white/5 pb-8">
+                    <div class="text-white text-lg lg:text-xl max-w-md leading-tight font-circular-bold">
+                        Dipercaya oleh berbagai <span class="font-georgia-italic italic text-white">mitra UMKM</span> di seluruh Indonesia
+                    </div>
+                    <div class="flex-1 w-full relative overflow-hidden">
+                        <div class="flex items-center gap-16 animate-scroll whitespace-nowrap">
+                            @foreach($apps as $app)
+                                <img src="{{ $app['logo'] }}" alt="{{ $app['name'] }}" class="h-8 lg:h-10 w-auto object-contain brightness-0 invert opacity-40 logo-hover-blue transition-all duration-300">
+                            @endforeach
+                            @foreach($apps as $app)
+                                <img src="{{ $app['logo'] }}" alt="{{ $app['name'] }}" class="h-8 lg:h-10 w-auto object-contain brightness-0 invert opacity-40 logo-hover-blue transition-all duration-300">
+                            @endforeach
+                        </div>
+                    </div>
                 </div>
-                <div class="flex items-start gap-6 absolute top-[148px] whitespace-nowrap animate-scroll-reverse w-max">
-                    @foreach(array_reverse($apps) as $app)<div class="flex items-center justify-center w-24 h-24 rounded-3xl flex-shrink-0 bg-white shadow-[0_0_0_1px_rgba(0,0,0,0.04),0_1px_1px_0_rgba(0,0,0,0.04),0_3px_3px_-1.4px_rgba(0,0,0,0.04)]"><img src="{{ $app['logo'] }}" alt="{{ $app['name'] }}" class="w-9 h-9 object-contain" loading="lazy"></div>@endforeach
-                    @foreach(array_reverse($apps) as $app)<div class="flex items-center justify-center w-24 h-24 rounded-3xl flex-shrink-0 bg-white shadow-[0_0_0_1px_rgba(0,0,0,0.04),0_1px_1px_0_rgba(0,0,0,0.04),0_3px_3px_-1.4px_rgba(0,0,0,0.04)]"><img src="{{ $app['logo'] }}" alt="{{ $app['name'] }}" class="w-9 h-9 object-contain" loading="lazy"></div>@endforeach
+
+                <!-- Main Content Header -->
+                <div class="flex flex-col gap-4 mb-12 max-w-3xl">
+                    <div class="flex items-center gap-3">
+                         <div class="w-10 h-0.5 bg-[#0078b7]"></div>
+                         <h2 class="text-4xl lg:text-5xl font-medium text-white tracking-tight" style="font-family: 'Figtree', sans-serif;">
+                            Built for Serious <span class="font-georgia-italic italic">Growth</span>
+                         </h2>
+                    </div>
+                    <p class="text-[#666666] text-lg leading-relaxed font-circular-book">
+                        Tingkatkan kredibilitas usaha dengan sistem manajemen website dan pesanan berstandar profesional.
+                    </p>
                 </div>
-                <div class="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none"></div>
-                <div class="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none"></div>
+
+                <!-- Services Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                    <!-- Card 1 -->
+                    <div class="bg-[#111111] p-8 h-52 rounded-2xl border border-white/5 flex flex-col group hover:bg-white transition-all duration-500 relative overflow-hidden">
+                        <div class="z-10">
+                            <h3 class="text-white group-hover:text-black text-xl font-circular-bold mb-3 transition-colors duration-500">Website Builder</h3>
+                            <p class="text-gray-400 group-hover:text-black text-[15px] font-circular-book opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500 max-w-[90%] leading-relaxed">
+                                Setiap UMKM memiliki landing page profesional sendiri yang dapat dikustomisasi secara fleksibel sesuai kebutuhan bisnis.
+                            </p>
+                        </div>
+                        <div class="absolute bottom-6 right-6 z-10 transition-transform duration-500 group-hover:scale-110">
+                             <div class="w-8 h-8 bg-white/5 rounded-lg flex items-center justify-center border border-white/10 group-hover:bg-[#0078b7] group-hover:border-[#0078b7] transition-all duration-300">
+                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-white group-hover:text-white"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+                             </div>
+                        </div>
+                    </div>
+                    <!-- Card 2 -->
+                    <div class="bg-[#111111] p-8 h-52 rounded-2xl border border-white/5 flex flex-col group hover:bg-white transition-all duration-500 relative overflow-hidden">
+                        <div class="z-10">
+                            <h3 class="text-white group-hover:text-black text-xl font-circular-bold mb-3 transition-colors duration-500">Order Management</h3>
+                            <p class="text-gray-400 group-hover:text-black text-[15px] font-circular-book opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500 max-w-[90%] leading-relaxed">
+                                Kelola setiap pesanan masuk dengan sistem yang terorganisir dan efisien untuk meningkatkan produktivitas.
+                            </p>
+                        </div>
+                        <div class="absolute bottom-6 right-6 z-10 transition-transform duration-500 group-hover:scale-110">
+                             <div class="w-8 h-8 bg-white/5 rounded-lg flex items-center justify-center border border-white/10 group-hover:bg-[#0078b7] group-hover:border-[#0078b7] transition-all duration-300">
+                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-white group-hover:text-white"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+                             </div>
+                        </div>
+                    </div>
+                    <!-- Card 3 -->
+                    <div class="bg-[#111111] p-8 h-52 rounded-2xl border border-white/5 flex flex-col group hover:bg-white transition-all duration-500 relative overflow-hidden">
+                        <div class="z-10">
+                            <h3 class="text-white group-hover:text-black text-xl font-circular-bold mb-3 transition-colors duration-500">Sales Reports</h3>
+                            <p class="text-gray-400 group-hover:text-black text-[15px] font-circular-book opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500 max-w-[90%] leading-relaxed">
+                                Pantau pertumbuhan bisnis Anda melalui laporan penjualan otomatis yang akurat dan mudah dipahami.
+                            </p>
+                        </div>
+                        <div class="absolute bottom-6 right-6 z-10 transition-transform duration-500 group-hover:scale-110">
+                             <div class="w-8 h-8 bg-white/5 rounded-lg flex items-center justify-center border border-white/10 group-hover:bg-[#0078b7] group-hover:border-[#0078b7] transition-all duration-300">
+                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-white group-hover:text-white"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+                             </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Card 4 -->
+                    <div class="bg-[#111111] p-8 h-52 rounded-2xl border border-white/5 flex flex-col group hover:bg-white transition-all duration-500 relative overflow-hidden">
+                        <div class="z-10">
+                            <h3 class="text-white group-hover:text-black text-xl font-circular-bold mb-3 transition-colors duration-500">Tracking</h3>
+                            <p class="text-gray-400 group-hover:text-black text-[15px] font-circular-book opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500 max-w-[90%] leading-relaxed">
+                                Lacak status pengiriman dan pesanan secara real-time untuk memberikan transparansi penuh kepada pelanggan.
+                            </p>
+                        </div>
+                        <div class="absolute bottom-6 right-6 z-10 transition-transform duration-500 group-hover:scale-110">
+                             <div class="w-8 h-8 bg-white/5 rounded-lg flex items-center justify-center border border-white/10 group-hover:bg-[#0078b7] group-hover:border-[#0078b7] transition-all duration-300">
+                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-white group-hover:text-white"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+                             </div>
+                        </div>
+                    </div>
+                    <!-- Card 5 -->
+                    <div class="bg-[#111111] p-8 h-52 rounded-2xl border border-white/5 flex flex-col group hover:bg-white transition-all duration-500 relative overflow-hidden">
+                        <div class="z-10">
+                            <h3 class="text-white group-hover:text-black text-xl font-circular-bold mb-3 transition-colors duration-500">Chat</h3>
+                            <p class="text-gray-400 group-hover:text-black text-[15px] font-circular-book opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500 max-w-[90%] leading-relaxed">
+                                Terhubung langsung dengan pelanggan melalui integrasi pesan instan yang cepat, mudah, dan terintegrasi.
+                            </p>
+                        </div>
+                        <div class="absolute bottom-6 right-6 z-10 transition-transform duration-500 group-hover:scale-110">
+                             <div class="w-8 h-8 bg-white/5 rounded-lg flex items-center justify-center border border-white/10 group-hover:bg-[#0078b7] group-hover:border-[#0078b7] transition-all duration-300">
+                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-white group-hover:text-white"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+                             </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
         <!-- Why Choose Us (Section 3) -->
-        <div class="w-full bg-gradient-to-br from-background via-background to-[#167E6C]/5 py-24 px-8 features-section">
+        <div class="w-full bg-gradient-to-br from-background via-background to-[#0078b7]/5 py-24 px-8 features-section">
             <div class="max-w-7xl mx-auto">
                 <div class="text-center mb-16">
-                    <h2 class="text-[40px] leading-tight font-normal text-[#064E3B] mb-6 tracking-tight" style="font-weight: 400; font-family: 'Figtree', sans-serif;">Mengapa Memilih Platform Kami</h2>
+                    <h2 class="text-[40px] leading-tight font-normal text-[#003d5c] mb-6 tracking-tight" style="font-weight: 400; font-family: 'Figtree', sans-serif;">Mengapa Memilih Platform Kami</h2>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                     <!-- Feature 1 -->
                     <div class="bg-white p-8 rounded-3xl shadow-[0_2px_8px_rgba(0,0,0,0.04)] border border-[#e5e5e5]/50 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col items-center text-center group feature-card">
-                        <div class="w-14 h-14 rounded-full bg-[#167E6C]/10 flex items-center justify-center mb-6 group-hover:bg-[#167E6C] transition-colors duration-300">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-[#167E6C] group-hover:text-white transition-colors duration-300"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        <div class="w-14 h-14 rounded-full bg-[#0078b7]/10 flex items-center justify-center mb-6 group-hover:bg-[#0078b7] transition-colors duration-300">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-[#0078b7] group-hover:text-white transition-colors duration-300"><polyline points="20 6 9 17 4 12"></polyline></svg>
                         </div>
-                        <h3 class="text-xl font-semibold text-[#064E3B] mb-3" style="font-family: 'Figtree', sans-serif;">Mudah & Cepat</h3>
+                        <h3 class="text-xl font-semibold text-[#003d5c] mb-3" style="font-family: 'Figtree', sans-serif;">Mudah & Cepat</h3>
                         <p class="text-[#666666] leading-relaxed text-sm" style="font-family: 'Figtree', sans-serif;">Akses ribuan UMKM dalam satu platform dengan navigasi yang mudah.</p>
                     </div>
 
                     <!-- Feature 2 -->
                     <div class="bg-white p-8 rounded-3xl shadow-[0_2px_8px_rgba(0,0,0,0.04)] border border-[#e5e5e5]/50 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col items-center text-center group feature-card">
-                        <div class="w-14 h-14 rounded-full bg-[#167E6C]/10 flex items-center justify-center mb-6 group-hover:bg-[#167E6C] transition-colors duration-300">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-[#167E6C] group-hover:text-white transition-colors duration-300"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                        <div class="w-14 h-14 rounded-full bg-[#0078b7]/10 flex items-center justify-center mb-6 group-hover:bg-[#0078b7] transition-colors duration-300">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-[#0078b7] group-hover:text-white transition-colors duration-300"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
                         </div>
-                        <h3 class="text-xl font-semibold text-[#064E3B] mb-3" style="font-family: 'Figtree', sans-serif;">Terpercaya</h3>
+                        <h3 class="text-xl font-semibold text-[#003d5c] mb-3" style="font-family: 'Figtree', sans-serif;">Terpercaya</h3>
                         <p class="text-[#666666] leading-relaxed text-sm" style="font-family: 'Figtree', sans-serif;">Semua UMKM partner terverifikasi dan terpercaya.</p>
                     </div>
 
                     <!-- Feature 3 -->
                     <div class="bg-white p-8 rounded-3xl shadow-[0_2px_8px_rgba(0,0,0,0.04)] border border-[#e5e5e5]/50 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col items-center text-center group feature-card">
-                        <div class="w-14 h-14 rounded-full bg-[#167E6C]/10 flex items-center justify-center mb-6 group-hover:bg-[#167E6C] transition-colors duration-300">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-[#167E6C] group-hover:text-white transition-colors duration-300"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                        <div class="w-14 h-14 rounded-full bg-[#0078b7]/10 flex items-center justify-center mb-6 group-hover:bg-[#0078b7] transition-colors duration-300">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-[#0078b7] group-hover:text-white transition-colors duration-300"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
                         </div>
-                        <h3 class="text-xl font-semibold text-[#064E3B] mb-3" style="font-family: 'Figtree', sans-serif;">Harga Transparan</h3>
+                        <h3 class="text-xl font-semibold text-[#003d5c] mb-3" style="font-family: 'Figtree', sans-serif;">Harga Transparan</h3>
                         <p class="text-[#666666] leading-relaxed text-sm" style="font-family: 'Figtree', sans-serif;">Lihat harga jelas tanpa biaya tersembunyi.</p>
                     </div>
 
                     <!-- Feature 4 -->
                     <div class="bg-white p-8 rounded-3xl shadow-[0_2px_8px_rgba(0,0,0,0.04)] border border-[#e5e5e5]/50 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col items-center text-center group feature-card">
-                        <div class="w-14 h-14 rounded-full bg-[#167E6C]/10 flex items-center justify-center mb-6 group-hover:bg-[#167E6C] transition-colors duration-300">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-[#167E6C] group-hover:text-white transition-colors duration-300"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+                        <div class="w-14 h-14 rounded-full bg-[#0078b7]/10 flex items-center justify-center mb-6 group-hover:bg-[#0078b7] transition-colors duration-300">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-[#0078b7] group-hover:text-white transition-colors duration-300"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
                         </div>
-                        <h3 class="text-xl font-semibold text-[#064E3B] mb-3" style="font-family: 'Figtree', sans-serif;">Dukungan 24/7</h3>
+                        <h3 class="text-xl font-semibold text-[#003d5c] mb-3" style="font-family: 'Figtree', sans-serif;">Dukungan 24/7</h3>
                         <p class="text-[#666666] leading-relaxed text-sm" style="font-family: 'Figtree', sans-serif;">Tim support siap membantu kapanpun Anda butuhkan.</p>
                     </div>
                 </div>
@@ -386,7 +532,7 @@
         <div class="w-full bg-white py-24 px-8 steps-section" x-data="{ activeStep: null }">
             <div class="max-w-7xl mx-auto">
                 <div class="text-center mb-20">
-                    <h2 class="text-[40px] leading-tight font-normal text-[#064E3B] tracking-tight" style="font-weight: 400; font-family: 'Figtree', sans-serif;">Cara Kerja</h2>
+                    <h2 class="text-[40px] leading-tight font-normal text-[#003d5c] tracking-tight" style="font-weight: 400; font-family: 'Figtree', sans-serif;">Cara Kerja</h2>
                 </div>
                 
                 <div class="relative">
@@ -397,11 +543,11 @@
                         <!-- Step 1 -->
                         <div class="flex flex-col items-center text-center group cursor-pointer step-item" @mouseenter="activeStep = 1" @mouseleave="activeStep = null">
                             <div class="w-24 h-24 rounded-full flex items-center justify-center text-2xl font-bold mb-6 transition-all duration-300 relative bg-white border-4" 
-                                :class="activeStep === 1 ? 'border-[#167E6C] text-[#167E6C] scale-110 shadow-lg' : 'border-gray-900 text-gray-900'">
+                                :class="activeStep === 1 ? 'border-[#0078b7] text-[#0078b7] scale-110 shadow-lg' : 'border-gray-900 text-gray-900'">
                                 1
                             </div>
-                            <h3 class="text-xl font-bold text-[#064E3B] mb-3 transition-colors duration-300" 
-                                :class="activeStep === 1 ? 'text-[#167E6C]' : 'text-[#064E3B]'"
+                            <h3 class="text-xl font-bold text-[#003d5c] mb-3 transition-colors duration-300" 
+                                :class="activeStep === 1 ? 'text-[#0078b7]' : 'text-[#003d5c]'"
                                 style="font-family: 'Figtree', sans-serif;">Pilih UMKM</h3>
                             <p class="text-[#666666] text-sm leading-relaxed" style="font-family: 'Figtree', sans-serif;">Jelajahi dan pilih UMKM partner sesuai kebutuhan</p>
                         </div>
@@ -409,11 +555,11 @@
                         <!-- Step 2 -->
                         <div class="flex flex-col items-center text-center group cursor-pointer step-item" @mouseenter="activeStep = 2" @mouseleave="activeStep = null">
                             <div class="w-24 h-24 rounded-full flex items-center justify-center text-2xl font-bold mb-6 transition-all duration-300 relative bg-white border-4" 
-                                :class="activeStep === 2 ? 'border-[#167E6C] text-[#167E6C] scale-110 shadow-lg' : 'border-gray-900 text-gray-900'">
+                                :class="activeStep === 2 ? 'border-[#0078b7] text-[#0078b7] scale-110 shadow-lg' : 'border-gray-900 text-gray-900'">
                                 2
                             </div>
-                            <h3 class="text-xl font-bold text-[#064E3B] mb-3 transition-colors duration-300"
-                                :class="activeStep === 2 ? 'text-[#167E6C]' : 'text-[#064E3B]'"
+                            <h3 class="text-xl font-bold text-[#003d5c] mb-3 transition-colors duration-300"
+                                :class="activeStep === 2 ? 'text-[#0078b7]' : 'text-[#003d5c]'"
                                 style="font-family: 'Figtree', sans-serif;">Lihat Produk</h3>
                             <p class="text-[#666666] text-sm leading-relaxed" style="font-family: 'Figtree', sans-serif;">Telusuri produk atau layanan yang ditawarkan</p>
                         </div>
@@ -421,11 +567,11 @@
                         <!-- Step 3 -->
                         <div class="flex flex-col items-center text-center group cursor-pointer step-item" @mouseenter="activeStep = 3" @mouseleave="activeStep = null">
                             <div class="w-24 h-24 rounded-full flex items-center justify-center text-2xl font-bold mb-6 transition-all duration-300 relative bg-white border-4" 
-                                :class="activeStep === 3 ? 'border-[#167E6C] text-[#167E6C] scale-110 shadow-lg' : 'border-gray-900 text-gray-900'">
+                                :class="activeStep === 3 ? 'border-[#0078b7] text-[#0078b7] scale-110 shadow-lg' : 'border-gray-900 text-gray-900'">
                                 3
                             </div>
-                            <h3 class="text-xl font-bold text-[#064E3B] mb-3 transition-colors duration-300"
-                                :class="activeStep === 3 ? 'text-[#167E6C]' : 'text-[#064E3B]'"
+                            <h3 class="text-xl font-bold text-[#003d5c] mb-3 transition-colors duration-300"
+                                :class="activeStep === 3 ? 'text-[#0078b7]' : 'text-[#003d5c]'"
                                 style="font-family: 'Figtree', sans-serif;">Pesan & Bayar</h3>
                             <p class="text-[#666666] text-sm leading-relaxed" style="font-family: 'Figtree', sans-serif;">Lakukan pemesanan dan pembayaran digital</p>
                         </div>
@@ -433,11 +579,11 @@
                         <!-- Step 4 -->
                         <div class="flex flex-col items-center text-center group cursor-pointer step-item" @mouseenter="activeStep = 4" @mouseleave="activeStep = null">
                             <div class="w-24 h-24 rounded-full flex items-center justify-center text-2xl font-bold mb-6 transition-all duration-300 relative bg-white border-4" 
-                                :class="activeStep === 4 ? 'border-[#167E6C] text-[#167E6C] scale-110 shadow-lg' : 'border-gray-900 text-gray-900'">
+                                :class="activeStep === 4 ? 'border-[#0078b7] text-[#0078b7] scale-110 shadow-lg' : 'border-gray-900 text-gray-900'">
                                 4
                             </div>
-                            <h3 class="text-xl font-bold text-[#064E3B] mb-3 transition-colors duration-300"
-                                :class="activeStep === 4 ? 'text-[#167E6C]' : 'text-[#064E3B]'"
+                            <h3 class="text-xl font-bold text-[#003d5c] mb-3 transition-colors duration-300"
+                                :class="activeStep === 4 ? 'text-[#0078b7]' : 'text-[#003d5c]'"
                                 style="font-family: 'Figtree', sans-serif;">Enjoy & Review</h3>
                             <p class="text-[#666666] text-sm leading-relaxed" style="font-family: 'Figtree', sans-serif;">Nikmati produk/layanan dan berikan review</p>
                         </div>
@@ -450,7 +596,7 @@
         <section class="w-full py-24 px-8 bg-white faq-section" x-data="{ openIndex: null }">
             <div class="max-w-7xl mx-auto">
                 <div class="grid lg:grid-cols-12 gap-16">
-                    <div class="lg:col-span-4"><h2 class="text-[40px] leading-tight font-normal text-[#064E3B] tracking-tight sticky top-24" style="font-family: 'Figtree', sans-serif; font-weight: 400;">Pertanyaan yang Sering Diajukan</h2></div>
+                    <div class="lg:col-span-4"><h2 class="text-[40px] leading-tight font-normal text-[#003d5c] tracking-tight sticky top-24" style="font-family: 'Figtree', sans-serif; font-weight: 400;">Pertanyaan yang Sering Diajukan</h2></div>
                     <div class="lg:col-span-8">
                         <div class="space-y-0">
                             <!-- FAQ Item 1 -->
@@ -513,15 +659,15 @@
                 <div class="grid grid-cols-2 md:grid-cols-6 gap-8 mb-12">
                     <div class="col-span-2">
                         <div class="mb-4">
-                            <h3 class="text-2xl font-semibold text-[#064E3B] mb-2" style="font-family: 'Figtree', sans-serif; font-weight: 500;">UMKM Connect</h3>
+                            <h3 class="text-2xl font-semibold text-[#003d5c] mb-2" style="font-family: 'Figtree', sans-serif; font-weight: 500;">UMKM Connect</h3>
                             <p class="text-sm leading-5 text-[#666666] max-w-xs" style="font-family: 'Figtree', sans-serif;">Platform digital untuk memajukan UMKM Indonesia.</p>
                         </div>
                         <div class="flex items-center gap-3 mt-6">
                             <!-- Social Icons (Placeholder) -->
-                            <a href="#" class="w-9 h-9 flex items-center justify-center rounded-full bg-white border border-[#e5e5e5] text-[#666666] hover:text-[#064E3B] hover:border-[#064E3B] transition-colors duration-150">
+                            <a href="#" class="w-9 h-9 flex items-center justify-center rounded-full bg-white border border-[#e5e5e5] text-[#666666] hover:text-[#003d5c] hover:border-[#003d5c] transition-colors duration-150">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
                             </a>
-                            <a href="#" class="w-9 h-9 flex items-center justify-center rounded-full bg-white border border-[#e5e5e5] text-[#666666] hover:text-[#064E3B] hover:border-[#064E3B] transition-colors duration-150">
+                            <a href="#" class="w-9 h-9 flex items-center justify-center rounded-full bg-white border border-[#e5e5e5] text-[#666666] hover:text-[#003d5c] hover:border-[#003d5c] transition-colors duration-150">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
                             </a>
                         </div>
@@ -531,9 +677,9 @@
                     <div class="col-span-1">
                         <h4 class="text-sm font-medium text-[#202020] mb-4 uppercase tracking-wide" style="font-family: 'Figtree', sans-serif; font-weight: 500;">Perusahaan</h4>
                         <ul class="space-y-3">
-                            <li><a href="#" class="text-sm text-[#666666] hover:text-[#064E3B] transition-colors duration-150" style="font-family: 'Figtree', sans-serif;">Tentang Kami</a></li>
-                            <li><a href="#" class="text-sm text-[#666666] hover:text-[#064E3B] transition-colors duration-150" style="font-family: 'Figtree', sans-serif;">Karir</a></li>
-                            <li><a href="#" class="text-sm text-[#666666] hover:text-[#064E3B] transition-colors duration-150" style="font-family: 'Figtree', sans-serif;">Blog</a></li>
+                            <li><a href="#" class="text-sm text-[#666666] hover:text-[#003d5c] transition-colors duration-150" style="font-family: 'Figtree', sans-serif;">Tentang Kami</a></li>
+                            <li><a href="#" class="text-sm text-[#666666] hover:text-[#003d5c] transition-colors duration-150" style="font-family: 'Figtree', sans-serif;">Karir</a></li>
+                            <li><a href="#" class="text-sm text-[#666666] hover:text-[#003d5c] transition-colors duration-150" style="font-family: 'Figtree', sans-serif;">Blog</a></li>
                         </ul>
                     </div>
 
@@ -541,9 +687,9 @@
                     <div class="col-span-1">
                         <h4 class="text-sm font-medium text-[#202020] mb-4 uppercase tracking-wide" style="font-family: 'Figtree', sans-serif; font-weight: 500;">Bantuan</h4>
                         <ul class="space-y-3">
-                            <li><a href="#" class="text-sm text-[#666666] hover:text-[#064E3B] transition-colors duration-150" style="font-family: 'Figtree', sans-serif;">Pusat Bantuan</a></li>
-                            <li><a href="#" class="text-sm text-[#666666] hover:text-[#064E3B] transition-colors duration-150" style="font-family: 'Figtree', sans-serif;">Syarat & Ketentuan</a></li>
-                            <li><a href="#" class="text-sm text-[#666666] hover:text-[#064E3B] transition-colors duration-150" style="font-family: 'Figtree', sans-serif;">Kebijakan Privasi</a></li>
+                            <li><a href="#" class="text-sm text-[#666666] hover:text-[#003d5c] transition-colors duration-150" style="font-family: 'Figtree', sans-serif;">Pusat Bantuan</a></li>
+                            <li><a href="#" class="text-sm text-[#666666] hover:text-[#003d5c] transition-colors duration-150" style="font-family: 'Figtree', sans-serif;">Syarat & Ketentuan</a></li>
+                            <li><a href="#" class="text-sm text-[#666666] hover:text-[#003d5c] transition-colors duration-150" style="font-family: 'Figtree', sans-serif;">Kebijakan Privasi</a></li>
                         </ul>
                     </div>
 
@@ -551,8 +697,8 @@
                     <div class="col-span-1">
                         <h4 class="text-sm font-medium text-[#202020] mb-4 uppercase tracking-wide" style="font-family: 'Figtree', sans-serif; font-weight: 500;">Hubungi Kami</h4>
                         <ul class="space-y-3">
-                            <li><a href="#" class="text-sm text-[#666666] hover:text-[#064E3B] transition-colors duration-150" style="font-family: 'Figtree', sans-serif;">support@umkmconnect.id</a></li>
-                            <li><a href="#" class="text-sm text-[#666666] hover:text-[#064E3B] transition-colors duration-150" style="font-family: 'Figtree', sans-serif;">+62 812 3456 7890</a></li>
+                            <li><a href="#" class="text-sm text-[#666666] hover:text-[#003d5c] transition-colors duration-150" style="font-family: 'Figtree', sans-serif;">support@umkmconnect.id</a></li>
+                            <li><a href="#" class="text-sm text-[#666666] hover:text-[#003d5c] transition-colors duration-150" style="font-family: 'Figtree', sans-serif;">+62 812 3456 7890</a></li>
                         </ul>
                     </div>
                 </div>
@@ -574,11 +720,28 @@
 
                 gsap.registerPlugin(ScrollTrigger);
 
-                // 1. Hero Text Reveal (On Load)
-                gsap.fromTo(".hero-text-anim", 
-                    { y: 50, opacity: 0 },
-                    { y: 0, opacity: 1, duration: 1, stagger: 0.2, ease: "power3.out" }
-                );
+                // 0. Hero Section "Breathing" (Scroll Reactive) - INTENSIFIED
+                gsap.to(".hero-text-anim", {
+                    y: -200,
+                    opacity: 0,
+                    scale: 0.8,
+                    filter: "blur(10px)",
+                    scrollTrigger: {
+                        trigger: ".hero-section",
+                        start: "top top",
+                        end: "bottom top",
+                        scrub: 1
+                    }
+                });
+
+                // 1. Hero Content Entrance (Initial load)
+                gsap.from(".hero-text-anim", {
+                    y: 30,
+                    opacity: 0,
+                    duration: 1,
+                    stagger: 0.2,
+                    ease: "power3.out"
+                });
 
                 // 2. Partner Header (Staggered Reveal)
                 gsap.fromTo(".partner-header-anim", 
@@ -592,7 +755,21 @@
                     }
                 );
 
-                // 3. Feature Cards (ScrollTrigger Batch/Stagger)
+                // 1. Partners Section Entry (Slide from Left)
+                gsap.fromTo(".partners-animate-container",
+                    { x: -100, opacity: 0 },
+                    {
+                        x: 0, opacity: 1, duration: 1.2, ease: "power2.out",
+                        scrollTrigger: {
+                            trigger: ".partners-animate-container",
+                            start: "top 90%",
+                            end: "top 60%",
+                            scrub: 1, // Makes it move with scroll in both directions
+                        }
+                    }
+                );
+
+                // 2. Feature Cards (ScrollTrigger Batch/Stagger)
                 gsap.fromTo(".feature-card", 
                     { y: 50, opacity: 0 },
                     {

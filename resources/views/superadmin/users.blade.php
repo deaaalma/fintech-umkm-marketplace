@@ -137,7 +137,7 @@
                     <!-- Logo & Brand -->
                     <div class="flex items-center gap-4">
                         <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 bg-[#064E3B] rounded-xl flex items-center justify-center">
+                            <div class="w-10 h-10 bg-[#003d5c] rounded-xl flex items-center justify-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
                                     <line x1="3" y1="9" x2="21" y2="9"></line>
@@ -157,7 +157,7 @@
                             <input 
                                 type="text" 
                                 placeholder="Search UMKMs, users, orders..."
-                                class="w-full px-4 py-2.5 pl-10 rounded-lg border border-[#e5e5e5] focus:outline-none focus:ring-2 focus:ring-[#167E6C] focus:border-transparent text-sm"
+                                class="w-full px-4 py-2.5 pl-10 rounded-lg border border-[#e5e5e5] focus:outline-none focus:ring-2 focus:ring-[#0078b7] focus:border-transparent text-sm"
                                 style="font-family: 'Figtree', sans-serif;">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="absolute left-3 top-1/2 -translate-y-1/2 text-[#999999]">
                                 <circle cx="11" cy="11" r="8"></circle>
@@ -177,7 +177,7 @@
                         </button>
                         
                         <div class="flex items-center gap-3 pl-4 border-l border-[#e5e5e5]">
-                            <div class="w-9 h-9 rounded-full bg-[#167E6C] flex items-center justify-center">
+                            <div class="w-9 h-9 rounded-full bg-[#0078b7] flex items-center justify-center">
                                 <span class="text-white font-semibold text-sm" style="font-family: 'Figtree', sans-serif;">A</span>
                             </div>
                             <div class="text-left">
@@ -192,7 +192,7 @@
 
                     <div class="md:hidden">
                         <button @click="isMobileMenuOpen = !isMobileMenuOpen" 
-                                class="text-gray-900 hover:text-[#167E6C] p-2 rounded-md transition-colors duration-200">
+                                class="text-gray-900 hover:text-[#0078b7] p-2 rounded-md transition-colors duration-200">
                             <svg x-show="!isMobileMenuOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
                             <svg x-show="isMobileMenuOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                         </button>
@@ -203,11 +203,11 @@
                 <div class="hidden md:flex items-center gap-6 pb-4 border-b border-[#e5e5e5]">
                     @foreach($navigationLinks as $link)
                     <a href="{{ $link['href'] }}" 
-                       class="flex items-center gap-2 px-3 py-2 text-sm font-medium transition-colors duration-200 relative group {{ isset($link['active']) && $link['active'] ? 'text-[#167E6C]' : 'text-gray-900 hover:text-[#167E6C]' }}" 
+                       class="flex items-center gap-2 px-3 py-2 text-sm font-medium transition-colors duration-200 relative group {{ isset($link['active']) && $link['active'] ? 'text-[#0078b7]' : 'text-gray-900 hover:text-[#0078b7]' }}" 
                        style="font-family: 'Figtree', sans-serif; font-weight: 400;">
                         <span>{{ $link['name'] }}</span>
                         @if(isset($link['badge']))
-                        <span class="px-2 py-0.5 bg-[#064E3B] text-white text-xs font-semibold rounded-full">{{ $link['badge'] }}</span>
+                        <span class="px-2 py-0.5 bg-[#003d5c] text-white text-xs font-semibold rounded-full">{{ $link['badge'] }}</span>
                         @endif
                         <div class="absolute bottom-0 left-0 {{ isset($link['active']) && $link['active'] ? 'w-full' : 'w-0' }} h-0.5 bg-current transition-all duration-300 group-hover:w-full"></div>
                     </a>
@@ -222,11 +222,11 @@
             <div class="w-full bg-white border-b border-[#e5e5e5]">
                 <div class="max-w-[1400px] mx-auto px-6 lg:px-8 py-4">
                     <div class="flex items-center gap-2 text-sm">
-                        <a href="{{ route('superadmin.dashboard.preview') }}" class="text-[#666666] hover:text-[#167E6C] transition-colors" style="font-family: 'Figtree', sans-serif;">Dashboard</a>
+                        <a href="{{ route('superadmin.dashboard.preview') }}" class="text-[#666666] hover:text-[#0078b7] transition-colors" style="font-family: 'Figtree', sans-serif;">Dashboard</a>
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[#999999]">
                             <polyline points="9 18 15 12 9 6"></polyline>
                         </svg>
-                        <span class="text-[#064E3B] font-medium" style="font-family: 'Figtree', sans-serif;">Manajemen Pengguna</span>
+                        <span class="text-[#003d5c] font-medium" style="font-family: 'Figtree', sans-serif;">Manajemen Pengguna</span>
                     </div>
                 </div>
             </div>
@@ -234,20 +234,20 @@
             <!-- Page Header -->
             <div class="w-full bg-white border-b border-[#e5e5e5]">
                 <div class="max-w-[1400px] mx-auto px-6 lg:px-8 py-8">
-                    <h1 class="text-[32px] leading-tight font-normal text-[#064E3B] tracking-tight mb-2" style="font-weight: 400; font-family: 'Figtree', sans-serif;">Manajemen Pengguna</h1>
+                    <h1 class="text-[32px] leading-tight font-normal text-[#003d5c] tracking-tight mb-2" style="font-weight: 400; font-family: 'Figtree', sans-serif;">Manajemen Pengguna</h1>
                     <p class="text-sm text-[#666666]" style="font-family: 'Figtree', sans-serif;">Kelola seluruh pengguna platform</p>
                 </div>
             </div>
 
             <!-- Stats & Content -->
-            <div class="w-full bg-gradient-to-br from-background via-background to-[#167E6C]/5 py-12">
+            <div class="w-full bg-gradient-to-br from-background via-background to-[#0078b7]/5 py-12">
                 <div class="max-w-[1400px] mx-auto px-6 lg:px-8">
                     <!-- Stats Cards -->
                     <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
                         @foreach($stats as $stat)
                         <div class="bg-white rounded-3xl p-6 border border-[#e5e5e5] hover:shadow-md transition-all duration-300">
                             <p class="text-xs uppercase tracking-wide mb-2 text-[#999999]" style="font-family: 'Figtree', sans-serif;">{{ $stat['title'] }}</p>
-                            <div class="text-3xl font-bold text-[#064E3B]" style="font-family: 'Figtree', sans-serif;">{{ $stat['value'] }}</div>
+                            <div class="text-3xl font-bold text-[#003d5c]" style="font-family: 'Figtree', sans-serif;">{{ $stat['value'] }}</div>
                         </div>
                         @endforeach
                     </div>
@@ -261,7 +261,7 @@
                                     <input 
                                         type="text" 
                                         placeholder="Cari nama, email, phone..."
-                                        class="w-full px-4 py-3 pl-10 rounded-lg border border-[#e5e5e5] focus:outline-none focus:ring-2 focus:ring-[#167E6C] focus:border-transparent text-sm"
+                                        class="w-full px-4 py-3 pl-10 rounded-lg border border-[#e5e5e5] focus:outline-none focus:ring-2 focus:ring-[#0078b7] focus:border-transparent text-sm"
                                         style="font-family: 'Figtree', sans-serif;">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="absolute left-3 top-1/2 -translate-y-1/2 text-[#999999]">
                                         <circle cx="11" cy="11" r="8"></circle>
@@ -272,7 +272,7 @@
 
                             <!-- Role Filter -->
                             <div class="md:col-span-2">
-                                <select class="w-full px-4 py-3 rounded-lg border border-[#e5e5e5] focus:outline-none focus:ring-2 focus:ring-[#167E6C] text-sm" style="font-family: 'Figtree', sans-serif;">
+                                <select class="w-full px-4 py-3 rounded-lg border border-[#e5e5e5] focus:outline-none focus:ring-2 focus:ring-[#0078b7] text-sm" style="font-family: 'Figtree', sans-serif;">
                                     <option value="">ROLE</option>
                                     <option>Customer</option>
                                     <option>UMKM Admin</option>
@@ -282,7 +282,7 @@
 
                             <!-- Status Filter -->
                             <div class="md:col-span-2">
-                                <select class="w-full px-4 py-3 rounded-lg border border-[#e5e5e5] focus:outline-none focus:ring-2 focus:ring-[#167E6C] text-sm" style="font-family: 'Figtree', sans-serif;">
+                                <select class="w-full px-4 py-3 rounded-lg border border-[#e5e5e5] focus:outline-none focus:ring-2 focus:ring-[#0078b7] text-sm" style="font-family: 'Figtree', sans-serif;">
                                     <option value="">STATUS</option>
                                     <option>Active</option>
                                     <option>Suspended</option>
@@ -292,7 +292,7 @@
 
                             <!-- Date Filter -->
                             <div class="md:col-span-3">
-                                <select class="w-full px-4 py-3 rounded-lg border border-[#e5e5e5] focus:outline-none focus:ring-2 focus:ring-[#167E6C] text-sm" style="font-family: 'Figtree', sans-serif;">
+                                <select class="w-full px-4 py-3 rounded-lg border border-[#e5e5e5] focus:outline-none focus:ring-2 focus:ring-[#0078b7] text-sm" style="font-family: 'Figtree', sans-serif;">
                                     <option value="">TANGGAL DAFTAR</option>
                                     <option>Hari Ini</option>
                                     <option>7 Hari Terakhir</option>
@@ -329,7 +329,7 @@
                                     @foreach($users as $userData)
                                     <tr class="border-b border-[#e5e5e5] hover:bg-gray-50 transition-colors">
                                         <td class="py-4 px-4">
-                                            <span class="text-sm font-semibold text-[#064E3B]" style="font-family: 'Figtree', sans-serif;">{{ $userData['name'] }}</span>
+                                            <span class="text-sm font-semibold text-[#003d5c]" style="font-family: 'Figtree', sans-serif;">{{ $userData['name'] }}</span>
                                         </td>
                                         <td class="py-4 px-4">
                                             <span class="text-sm text-[#666666]" style="font-family: 'Figtree', sans-serif;">{{ $userData['email'] }}</span>
@@ -381,7 +381,7 @@
                             <p class="text-sm text-[#666666]" style="font-family: 'Figtree', sans-serif;">Showing 1-25 of 1,247 • Page size:</p>
                             <div class="flex items-center gap-2">
                                 <button class="px-3 py-1.5 bg-white border border-[#e5e5e5] rounded-lg text-sm font-medium hover:bg-gray-50">Previous</button>
-                                <button class="px-3 py-1.5 bg-[#064E3B] text-white rounded-lg text-sm font-semibold">1</button>
+                                <button class="px-3 py-1.5 bg-[#003d5c] text-white rounded-lg text-sm font-semibold">1</button>
                                 <button class="px-3 py-1.5 bg-white border border-[#e5e5e5] rounded-lg text-sm font-medium hover:bg-gray-50">2</button>
                                 <button class="px-3 py-1.5 bg-white border border-[#e5e5e5] rounded-lg text-sm font-medium hover:bg-gray-50">3</button>
                                 <span class="px-2 text-[#999999]">...</span>

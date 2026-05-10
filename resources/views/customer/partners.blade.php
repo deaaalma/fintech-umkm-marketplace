@@ -133,7 +133,7 @@
             <div class="max-w-7xl mx-auto px-6 lg:px-8">
                 <div class="flex items-center justify-between h-20">
                     <div class="flex-shrink-0 flex items-center gap-3">
-                        <a href="/" class="text-2xl font-bold text-gray-900 hover:text-[#167E6C] transition-colors duration-200" style="font-family: 'Figtree', sans-serif; font-weight: 800;">
+                        <a href="/" class="text-2xl font-bold text-gray-900 hover:text-[#0078b7] transition-colors duration-200" style="font-family: 'Figtree', sans-serif; font-weight: 800;">
                             JOS
                         </a>
                     </div>
@@ -141,7 +141,7 @@
                         <div class="ml-10 flex items-baseline space-x-8">
                             @foreach($navigationLinks as $link)
                                 <a href="{{ $link['href'] }}" 
-                                   class="px-3 py-2 text-base font-medium transition-colors duration-200 relative group {{ isset($link['active']) && $link['active'] ? 'text-[#167E6C]' : 'text-gray-900 hover:text-[#167E6C]' }}" 
+                                   class="px-3 py-2 text-base font-medium transition-colors duration-200 relative group {{ isset($link['active']) && $link['active'] ? 'text-[#0078b7]' : 'text-gray-900 hover:text-[#0078b7]' }}" 
                                    style="font-family: 'Figtree', sans-serif; font-weight: 400;">
                                     <span>{{ $link['name'] }}</span>
                                     <div class="absolute bottom-0 left-0 {{ isset($link['active']) && $link['active'] ? 'w-full' : 'w-0' }} h-0.5 bg-current transition-all duration-300 group-hover:w-full"></div>
@@ -160,8 +160,8 @@
                             </button>
                             
                             <div class="flex items-center gap-3 pl-4 border-l border-[#e5e5e5]">
-                                <div class="w-9 h-9 rounded-full bg-[#167E6C]/10 flex items-center justify-center">
-                                    <span class="text-[#167E6C] font-semibold text-sm" style="font-family: 'Figtree', sans-serif;">A</span>
+                                <div class="w-9 h-9 rounded-full bg-[#0078b7]/10 flex items-center justify-center">
+                                    <span class="text-[#0078b7] font-semibold text-sm" style="font-family: 'Figtree', sans-serif;">A</span>
                                 </div>
                                 <div class="text-left">
                                     <div class="text-sm font-semibold text-gray-900" style="font-family: 'Figtree', sans-serif;">{{ $user['name'] }}</div>
@@ -172,7 +172,7 @@
                     </div>
                     <div class="md:hidden">
                         <button @click="isMobileMenuOpen = !isMobileMenuOpen" 
-                                class="text-gray-900 hover:text-[#167E6C] p-2 rounded-md transition-colors duration-200" 
+                                class="text-gray-900 hover:text-[#0078b7] p-2 rounded-md transition-colors duration-200" 
                                 aria-label="Toggle mobile menu">
                             <svg x-show="!isMobileMenuOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
                             <svg x-show="isMobileMenuOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
@@ -183,7 +183,7 @@
             <div x-show="isMobileMenuOpen" x-transition class="md:hidden bg-white/95 backdrop-blur-md border-t border-gray-200 overflow-hidden">
                 <div class="px-6 py-6 space-y-4">
                     @foreach($navigationLinks as $link)
-                        <a href="{{ $link['href'] }}" class="block w-full text-left text-gray-900 hover:text-[#167E6C] py-3 text-lg font-medium transition-colors duration-200 {{ isset($link['active']) && $link['active'] ? 'text-[#167E6C]' : '' }}" style="font-family: 'Figtree', sans-serif; font-weight: 400;">
+                        <a href="{{ $link['href'] }}" class="block w-full text-left text-gray-900 hover:text-[#0078b7] py-3 text-lg font-medium transition-colors duration-200 {{ isset($link['active']) && $link['active'] ? 'text-[#0078b7]' : '' }}" style="font-family: 'Figtree', sans-serif; font-weight: 400;">
                             <span>{{ $link['name'] }}</span>
                         </a>
                     @endforeach
@@ -196,13 +196,13 @@
             <!-- Page Header -->
             <div class="w-full bg-white border-b border-[#e5e5e5]">
                 <div class="max-w-7xl mx-auto px-6 lg:px-8 py-12">
-                    <h1 class="text-[40px] leading-tight font-normal text-[#064E3B] tracking-tight mb-2" style="font-weight: 400; font-family: 'Figtree', sans-serif;">UMKM Partner</h1>
+                    <h1 class="text-[40px] leading-tight font-normal text-[#003d5c] tracking-tight mb-2" style="font-weight: 400; font-family: 'Figtree', sans-serif;">UMKM Partner</h1>
                     <p class="text-base text-[#666666]" style="font-family: 'Figtree', sans-serif;">Temukan mitra UMKM terbaik untuk kebutuhan Anda</p>
                 </div>
             </div>
 
             <!-- Search & Filters -->
-            <div class="w-full bg-gradient-to-br from-background via-background to-[#167E6C]/5 py-12">
+            <div class="w-full bg-gradient-to-br from-background via-background to-[#0078b7]/5 py-12">
                 <div class="max-w-7xl mx-auto px-6 lg:px-8">
                     <!-- Search Bar -->
                     <div class="mb-8">
@@ -211,14 +211,14 @@
                                 <input 
                                     type="text" 
                                     placeholder="Cari UMKM atau layanan..."
-                                    class="w-full px-5 py-4 pl-12 rounded-xl border border-[#e5e5e5] focus:outline-none focus:ring-2 focus:ring-[#167E6C] focus:border-transparent"
+                                    class="w-full px-5 py-4 pl-12 rounded-xl border border-[#e5e5e5] focus:outline-none focus:ring-2 focus:ring-[#0078b7] focus:border-transparent"
                                     style="font-family: 'Figtree', sans-serif;">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="absolute left-4 top-1/2 -translate-y-1/2 text-[#999999]">
                                     <circle cx="11" cy="11" r="8"></circle>
                                     <path d="m21 21-4.35-4.35"></path>
                                 </svg>
                             </div>
-                            <button class="px-8 py-4 bg-[#064E3B] text-white rounded-xl hover:bg-[#167E6C] transition-colors font-semibold flex items-center gap-2" style="font-family: 'Figtree', sans-serif;">
+                            <button class="px-8 py-4 bg-[#003d5c] text-white rounded-xl hover:bg-[#0078b7] transition-colors font-semibold flex items-center gap-2" style="font-family: 'Figtree', sans-serif;">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <circle cx="11" cy="11" r="8"></circle>
                                     <path d="m21 21-4.35-4.35"></path>
@@ -234,7 +234,7 @@
                             @foreach($categories as $category)
                             <button 
                                 @click="activeCategory = '{{ $category['id'] }}'"
-                                :class="activeCategory === '{{ $category['id'] }}' ? 'bg-[#064E3B] text-white' : 'bg-white text-[#064E3B] hover:bg-gray-50'"
+                                :class="activeCategory === '{{ $category['id'] }}' ? 'bg-[#003d5c] text-white' : 'bg-white text-[#003d5c] hover:bg-gray-50'"
                                 class="px-6 py-3 rounded-xl font-medium transition-all duration-200 whitespace-nowrap"
                                 style="font-family: 'Figtree', sans-serif;">
                                 {{ $category['label'] }}
@@ -246,7 +246,7 @@
                     <!-- Results Count -->
                     <div class="mb-6">
                         <p class="text-sm text-[#666666]" style="font-family: 'Figtree', sans-serif;">
-                            Menampilkan <span class="font-semibold text-[#064E3B]">{{ count($partners) }} UMKM</span>
+                            Menampilkan <span class="font-semibold text-[#003d5c]">{{ count($partners) }} UMKM</span>
                         </p>
                     </div>
 
@@ -260,7 +260,7 @@
                                 <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
                                 <div class="absolute bottom-4 left-4 right-4">
                                     <div class="flex items-center justify-center w-12 h-12 bg-white rounded-xl shadow-md">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[#064E3B]">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[#003d5c]">
                                             <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path>
                                             <circle cx="12" cy="10" r="3"></circle>
                                         </svg>
@@ -273,9 +273,9 @@
                                 <!-- Name & Rating -->
                                 <div class="flex items-start justify-between mb-3">
                                     <div class="flex-1">
-                                        <h3 class="text-xl font-semibold text-[#064E3B] mb-1" style="font-family: 'Figtree', sans-serif;">{{ $partner['name'] }}</h3>
+                                        <h3 class="text-xl font-semibold text-[#003d5c] mb-1" style="font-family: 'Figtree', sans-serif;">{{ $partner['name'] }}</h3>
                                         <div class="flex items-center gap-2 text-sm text-[#666666]">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[#167E6C]">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[#0078b7]">
                                                 <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path>
                                                 <circle cx="12" cy="10" r="3"></circle>
                                             </svg>
@@ -294,22 +294,22 @@
                                 <!-- Services Tags -->
                                 <div class="flex flex-wrap gap-2 mb-4">
                                     @foreach($partner['services'] as $service)
-                                    <span class="px-3 py-1 bg-[#167E6C]/10 text-[#064E3B] text-xs font-medium rounded-full" style="font-family: 'Figtree', sans-serif;">{{ $service }}</span>
+                                    <span class="px-3 py-1 bg-[#0078b7]/10 text-[#003d5c] text-xs font-medium rounded-full" style="font-family: 'Figtree', sans-serif;">{{ $service }}</span>
                                     @endforeach
                                 </div>
 
                                 <!-- Price Range -->
                                 <div class="mb-4 pb-4 border-b border-[#e5e5e5]">
                                     <p class="text-xs text-[#999999] mb-1" style="font-family: 'Figtree', sans-serif;">Kisaran Harga</p>
-                                    <p class="text-sm font-semibold text-[#064E3B]" style="font-family: 'Figtree', sans-serif;">{{ $partner['priceRange'] }}</p>
+                                    <p class="text-sm font-semibold text-[#003d5c]" style="font-family: 'Figtree', sans-serif;">{{ $partner['priceRange'] }}</p>
                                 </div>
 
                                 <!-- Action Buttons -->
                                 <div class="flex gap-3">
-                                    <button class="flex-1 bg-[#064E3B] text-white px-6 py-3 rounded-xl text-sm font-semibold hover:bg-[#167E6C] transition-all duration-200 hover:shadow-sm flex items-center justify-center gap-2" style="font-family: 'Figtree', sans-serif;">
+                                    <button class="flex-1 bg-[#003d5c] text-white px-6 py-3 rounded-xl text-sm font-semibold hover:bg-[#0078b7] transition-all duration-200 hover:shadow-sm flex items-center justify-center gap-2" style="font-family: 'Figtree', sans-serif;">
                                         Lihat Detail
                                     </button>
-                                    <button class="p-3 bg-white border-2 border-[#e5e5e5] text-[#064E3B] rounded-xl hover:border-[#167E6C] hover:text-[#167E6C] transition-all duration-200">
+                                    <button class="p-3 bg-white border-2 border-[#e5e5e5] text-[#003d5c] rounded-xl hover:border-[#0078b7] hover:text-[#0078b7] transition-all duration-200">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                             <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
                                         </svg>
@@ -327,7 +327,7 @@
                                 <polyline points="15 18 9 12 15 6"></polyline>
                             </svg>
                         </button>
-                        <button class="w-10 h-10 rounded-lg bg-[#064E3B] text-white flex items-center justify-center font-semibold">1</button>
+                        <button class="w-10 h-10 rounded-lg bg-[#003d5c] text-white flex items-center justify-center font-semibold">1</button>
                         <button class="w-10 h-10 rounded-lg bg-white border border-[#e5e5e5] flex items-center justify-center hover:bg-gray-50 transition-colors font-medium">2</button>
                         <button class="w-10 h-10 rounded-lg bg-white border border-[#e5e5e5] flex items-center justify-center hover:bg-gray-50 transition-colors font-medium">3</button>
                         <span class="px-2 text-[#999999]">...</span>
@@ -348,14 +348,14 @@
                 <div class="grid grid-cols-2 md:grid-cols-6 gap-8 mb-12">
                     <div class="col-span-2">
                         <div class="mb-4">
-                            <h3 class="text-2xl font-semibold text-[#064E3B] mb-2" style="font-family: 'Figtree', sans-serif; font-weight: 500;">UMKM Connect</h3>
+                            <h3 class="text-2xl font-semibold text-[#003d5c] mb-2" style="font-family: 'Figtree', sans-serif; font-weight: 500;">UMKM Connect</h3>
                             <p class="text-sm leading-5 text-[#666666] max-w-xs" style="font-family: 'Figtree', sans-serif;">Platform digital untuk memajukan UMKM Indonesia.</p>
                         </div>
                         <div class="flex items-center gap-3 mt-6">
-                            <a href="#" class="w-9 h-9 flex items-center justify-center rounded-full bg-white border border-[#e5e5e5] text-[#666666] hover:text-[#064E3B] hover:border-[#064E3B] transition-colors duration-150">
+                            <a href="#" class="w-9 h-9 flex items-center justify-center rounded-full bg-white border border-[#e5e5e5] text-[#666666] hover:text-[#003d5c] hover:border-[#003d5c] transition-colors duration-150">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
                             </a>
-                            <a href="#" class="w-9 h-9 flex items-center justify-center rounded-full bg-white border border-[#e5e5e5] text-[#666666] hover:text-[#064E3B] hover:border-[#064E3B] transition-colors duration-150">
+                            <a href="#" class="w-9 h-9 flex items-center justify-center rounded-full bg-white border border-[#e5e5e5] text-[#666666] hover:text-[#003d5c] hover:border-[#003d5c] transition-colors duration-150">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
                             </a>
                         </div>
@@ -364,26 +364,26 @@
                     <div class="col-span-1">
                         <h4 class="text-sm font-medium text-[#202020] mb-4 uppercase tracking-wide" style="font-family: 'Figtree', sans-serif; font-weight: 500;">Perusahaan</h4>
                         <ul class="space-y-3">
-                            <li><a href="#" class="text-sm text-[#666666] hover:text-[#064E3B] transition-colors duration-150" style="font-family: 'Figtree', sans-serif;">Tentang Kami</a></li>
-                            <li><a href="#" class="text-sm text-[#666666] hover:text-[#064E3B] transition-colors duration-150" style="font-family: 'Figtree', sans-serif;">Karir</a></li>
-                            <li><a href="#" class="text-sm text-[#666666] hover:text-[#064E3B] transition-colors duration-150" style="font-family: 'Figtree', sans-serif;">Blog</a></li>
+                            <li><a href="#" class="text-sm text-[#666666] hover:text-[#003d5c] transition-colors duration-150" style="font-family: 'Figtree', sans-serif;">Tentang Kami</a></li>
+                            <li><a href="#" class="text-sm text-[#666666] hover:text-[#003d5c] transition-colors duration-150" style="font-family: 'Figtree', sans-serif;">Karir</a></li>
+                            <li><a href="#" class="text-sm text-[#666666] hover:text-[#003d5c] transition-colors duration-150" style="font-family: 'Figtree', sans-serif;">Blog</a></li>
                         </ul>
                     </div>
 
                     <div class="col-span-1">
                         <h4 class="text-sm font-medium text-[#202020] mb-4 uppercase tracking-wide" style="font-family: 'Figtree', sans-serif; font-weight: 500;">Bantuan</h4>
                         <ul class="space-y-3">
-                            <li><a href="#" class="text-sm text-[#666666] hover:text-[#064E3B] transition-colors duration-150" style="font-family: 'Figtree', sans-serif;">Pusat Bantuan</a></li>
-                            <li><a href="#" class="text-sm text-[#666666] hover:text-[#064E3B] transition-colors duration-150" style="font-family: 'Figtree', sans-serif;">Syarat & Ketentuan</a></li>
-                            <li><a href="#" class="text-sm text-[#666666] hover:text-[#064E3B] transition-colors duration-150" style="font-family: 'Figtree', sans-serif;">Kebijakan Privasi</a></li>
+                            <li><a href="#" class="text-sm text-[#666666] hover:text-[#003d5c] transition-colors duration-150" style="font-family: 'Figtree', sans-serif;">Pusat Bantuan</a></li>
+                            <li><a href="#" class="text-sm text-[#666666] hover:text-[#003d5c] transition-colors duration-150" style="font-family: 'Figtree', sans-serif;">Syarat & Ketentuan</a></li>
+                            <li><a href="#" class="text-sm text-[#666666] hover:text-[#003d5c] transition-colors duration-150" style="font-family: 'Figtree', sans-serif;">Kebijakan Privasi</a></li>
                         </ul>
                     </div>
 
                     <div class="col-span-1">
                         <h4 class="text-sm font-medium text-[#202020] mb-4 uppercase tracking-wide" style="font-family: 'Figtree', sans-serif; font-weight: 500;">Hubungi Kami</h4>
                         <ul class="space-y-3">
-                            <li><a href="#" class="text-sm text-[#666666] hover:text-[#064E3B] transition-colors duration-150" style="font-family: 'Figtree', sans-serif;">support@umkmconnect.id</a></li>
-                            <li><a href="#" class="text-sm text-[#666666] hover:text-[#064E3B] transition-colors duration-150" style="font-family: 'Figtree', sans-serif;">+62 812 3456 7890</a></li>
+                            <li><a href="#" class="text-sm text-[#666666] hover:text-[#003d5c] transition-colors duration-150" style="font-family: 'Figtree', sans-serif;">support@umkmconnect.id</a></li>
+                            <li><a href="#" class="text-sm text-[#666666] hover:text-[#003d5c] transition-colors duration-150" style="font-family: 'Figtree', sans-serif;">+62 812 3456 7890</a></li>
                         </ul>
                     </div>
                 </div>
