@@ -18,6 +18,10 @@ Route::get('/customer/partners/preview', function () {
     return view('customer.partners');
 })->name('customer.partners.preview');
 
+Route::get('/customer/order-details/preview', function () {
+    return view('customer.order-details');
+})->name('customer.order-details.preview');
+
 Route::get('/superadmin/dashboard/preview', function () {
     return view('superadmin.dashboard');
 })->name('superadmin.dashboard.preview');
