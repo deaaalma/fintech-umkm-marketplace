@@ -12,11 +12,11 @@
         </p>
     </div>
     <div class="flex gap-4 animate-on-load">
-        <button class="px-10 py-5 bg-brand-dark text-white text-[10px] font-black uppercase tracking-[0.2em] rounded-3xl hover:bg-brand-primary transition-all duration-500 shadow-2xl shadow-brand-dark/20 flex items-center gap-4 group">
+        <a href="{{ route('customer.chat.preview') }}" class="px-10 py-5 bg-brand-dark text-white text-[10px] font-black uppercase tracking-[0.2em] rounded-3xl hover:bg-brand-primary transition-all duration-500 shadow-2xl shadow-brand-dark/20 flex items-center gap-4 group">
             <div class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center group-hover:scale-110 transition-transform">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 1 1-7.6-12.7 8.19 8.19 0 0 1 4.9 1.5L22 3l-1.5 5.5a8.19 8.19 0 0 1 1.5 4.9z"/></svg>
             </div>
             Chat with Admin
-        </button>
+        </a>
     </div>
 </div>

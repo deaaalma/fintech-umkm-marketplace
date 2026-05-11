@@ -36,7 +36,7 @@
         </div>
     </div>
 
-    <button class="w-full mt-6 py-4 rounded-xl bg-slate-50 text-slate-600 text-[11px] font-black uppercase tracking-widest hover:bg-slate-100 transition-all">
+    <a href="{{ route('customer.notifications.preview') }}" class="w-full mt-6 py-4 rounded-xl bg-slate-50 text-slate-600 text-[11px] font-black uppercase tracking-widest hover:bg-brand-dark hover:text-white transition-all flex items-center justify-center">
         Lihat Semua
-    </button>
+    </a>
 </div>

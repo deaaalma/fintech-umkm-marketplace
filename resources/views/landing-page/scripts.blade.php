@@ -9,10 +9,10 @@
             gsap.registerPlugin(ScrollTrigger);
 
             gsap.to(".hero-text-anim", {
-                y: -200,
+                y: -150,
                 opacity: 0,
-                scale: 0.8,
-                filter: "blur(10px)",
+                scale: 0.9,
+                filter: "blur(8px)",
                 scrollTrigger: {
                     trigger: ".hero-section",
                     start: "top top",
@@ -21,7 +21,18 @@
                 }
             });
 
-            gsap.from(".hero-text-anim", {
+            gsap.to(".scroll-indicator", {
+                y: 100,
+                opacity: 0,
+                scrollTrigger: {
+                    trigger: ".hero-section",
+                    start: "top top",
+                    end: "30% top",
+                    scrub: 1
+                }
+            });
+
+            gsap.from(".hero-text-anim, .scroll-indicator", {
                 y: 30,
                 opacity: 0,
                 duration: 1,

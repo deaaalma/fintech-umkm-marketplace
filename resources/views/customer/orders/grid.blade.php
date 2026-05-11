@@ -89,11 +89,13 @@
         </div>
     </template>
 
-    <div x-show="filteredOrders.length === 0" class="py-20 text-center animate-on-load">
-        <div class="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-6">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-slate-300"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+    <template x-if="filteredOrders.length === 0">
+        <div class="py-20 text-center">
+            <div class="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-6">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-slate-300"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+            </div>
+            <h3 class="text-lg font-bold text-brand-dark mb-2">Tidak ada pesanan ditemukan</h3>
+            <p class="text-slate-400 text-sm">Coba cari dengan kata kunci lain atau filter berbeda.</p>
         </div>
-        <h3 class="text-lg font-bold text-brand-dark mb-2">Tidak ada pesanan ditemukan</h3>
-        <p class="text-slate-400 text-sm">Coba cari dengan kata kunci lain atau filter berbeda.</p>
-    </div>
+    </template>
 </div>

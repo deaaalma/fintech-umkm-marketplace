@@ -45,10 +45,12 @@
             <a href="{{ route('customer.dashboard.preview') }}" 
                class="text-sm font-medium text-white/70 hover:text-white transition-colors" 
                style="font-family: 'Figtree', sans-serif;">Masuk</a>
-            <button class="bg-white/10 text-white pl-5 pr-1 py-1 rounded-full text-sm font-semibold hover:bg-white transition-all duration-300 hover:text-gray-900 group flex items-center gap-4">
+            <button class="text-white px-6 py-2.5 rounded-full text-sm font-semibold transition-all duration-500 group flex items-center gap-0 hover:gap-4 border border-white/20 hover:bg-white/10 hover:border-white/30 backdrop-blur-sm">
                 <span style="font-family: 'Figtree', sans-serif; font-weight: 600;">Daftar</span>
-                <div class="w-8 h-8 bg-[#0078b7] rounded-full flex items-center justify-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-white"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+                <div class="w-0 opacity-0 group-hover:w-8 group-hover:opacity-100 transition-all duration-500 overflow-hidden">
+                    <div class="w-8 h-8 bg-[#0078b7] rounded-full flex items-center justify-center shrink-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-white"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+                    </div>
                 </div>
             </button>
         </div>

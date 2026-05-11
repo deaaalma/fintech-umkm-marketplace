@@ -27,13 +27,13 @@
         </div>
 
         <div class="flex items-center gap-6">
-            <button class="relative w-10 h-10 flex items-center justify-center rounded-xl transition-all hover:bg-white/50" :class="isScrolled ? 'text-gray-400 hover:text-white' : ''">
+            <a href="{{ route('customer.chat.preview') }}" class="relative w-10 h-10 flex items-center justify-center rounded-xl transition-all hover:bg-white/50 {{ request()->routeIs('customer.chat.preview') ? 'text-brand-primary' : '' }}" :class="isScrolled ? '{{ request()->routeIs('customer.chat.preview') ? 'text-brand-cyan' : 'text-gray-400 hover:text-white' }}' : ''">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 1 1-7.6-12.7 8.19 8.19 0 0 1 4.9 1.5L22 3l-1.5 5.5a8.19 8.19 0 0 1 1.5 4.9z"/></svg>
-            </button>
-            <button class="relative w-10 h-10 flex items-center justify-center rounded-xl transition-all hover:bg-white/50" :class="isScrolled ? 'text-gray-400 hover:text-white' : ''">
+            </a>
+            <a href="{{ route('customer.notifications.preview') }}" class="relative w-10 h-10 flex items-center justify-center rounded-xl transition-all hover:bg-white/50 {{ request()->routeIs('customer.notifications.preview') ? 'text-brand-primary' : '' }}" :class="isScrolled ? '{{ request()->routeIs('customer.notifications.preview') ? 'text-brand-cyan' : 'text-gray-400 hover:text-white' }}' : ''">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
                 <span class="absolute top-2.5 right-2.5 w-2 h-2 bg-brand-primary rounded-full border-2 border-white"></span>
-            </button>
+            </a>
             <div class="flex items-center gap-3 pl-6 border-l" :class="isScrolled ? 'border-white/10' : 'border-gray-100'">
                 <div class="text-right hidden sm:block">
                     <div class="text-xs font-bold uppercase tracking-widest">{{ $user['name'] }}</div>

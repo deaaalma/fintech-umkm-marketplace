@@ -22,6 +22,14 @@ Route::get('/customer/order-details/preview', function () {
     return view('customer.order-details');
 })->name('customer.order-details.preview');
 
+Route::get('/customer/notifications/preview', function () {
+    return view('customer.notifications');
+})->name('customer.notifications.preview');
+
+Route::get('/customer/chat/preview', function () {
+    return view('customer.chat');
+})->name('customer.chat.preview');
+
 Route::get('/superadmin/dashboard/preview', function () {
     return view('superadmin.dashboard');
 })->name('superadmin.dashboard.preview');

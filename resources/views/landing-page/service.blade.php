@@ -17,12 +17,9 @@
         </div>
 
         <div class="flex flex-col gap-4 mb-12 max-w-3xl solution-header">
-            <div class="flex items-center gap-3">
-                 <div class="w-10 h-0.5 bg-[#0078b7]"></div>
-                 <h2 class="text-4xl lg:text-5xl font-medium text-white tracking-tight" style="font-family: 'Figtree', sans-serif;">
-                    Built for Serious <span class="font-georgia-italic italic">Growth</span>
-                 </h2>
-            </div>
+            <h2 class="text-4xl lg:text-5xl font-medium text-white tracking-tight" style="font-family: 'Figtree', sans-serif;">
+                Built for Serious <span class="font-georgia-italic italic">Growth</span>
+            </h2>
             <p class="text-[#666666] text-lg leading-relaxed font-circular-book">
                 Tingkatkan kredibilitas usaha dengan sistem manajemen website dan pesanan berstandar profesional.
             </p>

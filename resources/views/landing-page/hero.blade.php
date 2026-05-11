@@ -1,4 +1,4 @@
-<section id="home" class="relative w-full min-h-screen flex items-center justify-start overflow-hidden pt-20">
+<section id="home" class="relative w-full min-h-screen flex items-center justify-start overflow-hidden pt-20 hero-section">
     <div class="absolute inset-0 w-full h-full">
         <video autoplay muted loop playsinline class="w-full h-full object-cover">
             <source src="{{ asset('storage/videos/hero.mp4') }}" type="video/mp4">
@@ -48,17 +48,19 @@
             </p>
 
             <div class="flex flex-wrap items-center gap-6 hero-text-anim">
-                <a href="{{ route('register') }}" class="bg-black/20 backdrop-blur-xl border border-white/10 text-white pl-8 pr-2 py-2 rounded-2xl text-lg font-semibold hover:bg-white hover:text-gray-900 transition-all duration-500 flex items-center gap-8 group shadow-2xl">
+                <a href="{{ route('register') }}" class="text-white px-8 py-3 rounded-2xl text-lg font-semibold transition-all duration-500 flex items-center gap-0 hover:gap-8 border border-white/20 hover:bg-white/10 hover:border-white/30 group shadow-2xl backdrop-blur-sm">
                     <span class="font-circular-book">Mulai Sekarang</span>
-                    <div class="w-12 h-12 bg-[#0078b7] rounded-xl flex items-center justify-center transition-all duration-500 group-hover:scale-110 group-hover:rounded-full shadow-lg">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="text-white"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+                    <div class="w-0 opacity-0 group-hover:w-12 group-hover:opacity-100 transition-all duration-500 overflow-hidden">
+                        <div class="w-12 h-12 bg-[#0078b7] rounded-xl flex items-center justify-center transition-all duration-500 group-hover:scale-110 group-hover:rounded-full shadow-lg shrink-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="text-white"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+                        </div>
                     </div>
                 </a>
             </div>
         </div>
     </div>
 
-    <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-50 hero-text-anim">
+    <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-50 scroll-indicator">
         <span class="text-[10px] uppercase tracking-widest text-white font-medium" style="font-family: 'Figtree', sans-serif;">Scroll for more</span>
         <div class="w-[1px] h-12 bg-gradient-to-b from-white to-transparent"></div>
     </div>
