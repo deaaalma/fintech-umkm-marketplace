@@ -90,28 +90,19 @@
             });
 
             sectionTransitionTl.to("#workflow .max-w-7xl", {
-                opacity: 0.3,
-                scale: 0.95,
-                filter: "blur(15px)",
-                y: -50,
+                opacity: 0.5,
+                y: -30,
                 ease: "power1.inOut"
             }, 0);
 
             sectionTransitionTl.to(["#workflow", "#faq"], {
-                backgroundColor: "#f0f7ff",
+                backgroundColor: "#f8fafc",
                 duration: 0.5,
             }, 0.2);
 
-            sectionTransitionTl.to(["#workflow", "#faq"], {
-                backgroundColor: "#ffffff",
-                duration: 0.5,
-            }, 0.7);
-
-            sectionTransitionTl.from(".faq-content-wrapper", {
-                y: 100,
+            sectionTransitionTl.from("#faq .max-w-7xl", {
+                y: 50,
                 opacity: 0,
-                scale: 0.98,
-                filter: "blur(5px)",
                 ease: "power2.out"
             }, 0.3);
 
@@ -230,17 +221,6 @@
                 scrollTrigger: { trigger: ".workflow-header", start: "top 90%" }
             });
 
-            gsap.from("#faq h2", {
-                x: -30,
-                opacity: 0,
-                duration: 1.2,
-                ease: "power3.out",
-                scrollTrigger: {
-                    trigger: "#faq",
-                    start: "top 90%",
-                    scrub: 1
-                }
-            });
         };
         
         initAnimations();

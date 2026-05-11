@@ -26,6 +26,12 @@ export default {
                 mono: ["Geist Mono", ...defaultTheme.fontFamily.mono],
             },
             colors: {
+                brand: {
+                    dark: "#000B44",
+                    primary: "#0077B6",
+                    cyan: "#00B4D8",
+                    soft: "#ADE8F4",
+                },
                 border: "hsl(var(--border))",
                 input: "hsl(var(--input))",
                 ring: "hsl(var(--ring))",
