@@ -59,10 +59,10 @@ Route::view('profile', 'profile')
     ->name('profile');
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    
+
     // 1. Dashboard untuk Customer (Default)
     Route::get('/dashboard', function () {
-        return view('dashboard'); 
+        return view('dashboard');
     })->name('dashboard');
 
     // 2. Dashboard Super Admin
@@ -71,9 +71,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('admin.dashboard');
 
     // 3. Dashboard UMKM
-    Route::get('/umkm/dashboard', function () {
-        return view('livewire.umkm.index'); // Pastikan view ini ada
-    })->name('umkm.dashboard');
+    Route::get('/dashboard', function () {
+        return view('livewire.customer.index'); // Tampilan default customer/pembeli
+    })->name('dashboard');
+
+    Route::get('/onboarding', \App\Livewire\Umkm\Onboarding::class)->name('onboarding');
 
     // 4. Dashboard Worker
     Route::get('/worker/dashboard', function () {
@@ -95,4 +97,4 @@ Route::post('/logout', function (Request $request) {
     return redirect('/login');
 })->name('logout');
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

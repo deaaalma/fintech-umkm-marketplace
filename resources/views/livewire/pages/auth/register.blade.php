@@ -210,14 +210,14 @@ new
                         </a>
                     </div>
 
-                    <div class="text-center mt-6">
-                        <p class="text-sm text-gray-500">
-                            Already have an account? <a href="{{ route('login') }}"
-                                class="font-bold text-black hover:underline" wire:navigate>Sign In</a>
-                        </p>
-                    </div>
-
                 </form>
+
+                <div class="text-center mt-6">
+                    <p class="text-sm text-gray-500">
+                        Already have an account? <a href="{{ route('login') }}"
+                            class="font-bold text-black hover:underline" wire:navigate>Sign In</a>
+                    </p>
+                </div>
             </div>
         </div>
     </div>
