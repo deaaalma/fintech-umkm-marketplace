@@ -25,75 +25,188 @@
             </p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-            <div class="bg-[#111111] p-8 h-52 rounded-2xl border border-white/5 flex flex-col group hover:bg-white transition-all duration-500 relative overflow-hidden solution-card">
-                <div class="z-10">
-                    <h3 class="text-white group-hover:text-black text-xl font-circular-bold mb-3 transition-colors duration-500">Website Builder</h3>
-                    <p class="text-gray-400 group-hover:text-black text-[15px] font-circular-book opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500 max-w-[90%] leading-relaxed">
-                        Setiap UMKM memiliki landing page profesional sendiri yang dapat dikustomisasi secara fleksibel sesuai kebutuhan bisnis.
-                    </p>
-                </div>
-                <div class="absolute bottom-6 right-6 z-10 transition-transform duration-500 group-hover:scale-110">
-                     <div class="w-8 h-8 bg-white/5 rounded-lg flex items-center justify-center border border-white/10 group-hover:bg-[#0078b7] group-hover:border-[#0078b7] transition-all duration-300">
-                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-white group-hover:text-white"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
-                     </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+            <!-- Card 1: Website Builder -->
+            <div class="aceternity-3d-card flex items-center justify-center relative w-full h-[380px]" style="perspective: 1000px;">
+                <div class="aceternity-3d-body relative w-full h-full rounded-[32px] group/card shadow-lg shadow-black/20 transition-all duration-200 ease-linear" style="transform-style: preserve-3d;">
+                    <!-- Base Layer (Image & Gradients) with overflow hidden -->
+                    <div class="absolute inset-0 rounded-[32px] overflow-hidden">
+                        <div class="absolute inset-x-0 top-0 h-[70%]">
+                            <img src="{{ asset('storage/images/website builder.jpg') }}" alt="Website Builder" class="w-full h-full object-cover transition-transform duration-700 group-hover/card:scale-110" />
+                            <div class="absolute inset-x-0 bottom-0 h-[80%] bg-gradient-to-t from-[#0B1526] via-[#0B1526]/80 via-35% to-transparent"></div>
+                        </div>
+                        <div class="absolute inset-x-0 bottom-0 h-[35%] bg-[#0B1526]"></div>
+                    </div>
+                    
+                    <!-- Floating Content Layer -->
+                    <div class="absolute inset-x-0 bottom-0 p-6 pb-7 flex flex-col justify-end z-10" style="transform-style: preserve-3d;">
+                        <div class="aceternity-3d-item transition-transform duration-200 ease-linear w-fit" data-translate-z="40">
+                            <h3 class="text-white text-[20px] font-circular-bold mb-1.5">Website Builder</h3>
+                        </div>
+                        <div class="aceternity-3d-item transition-transform duration-200 ease-linear w-full" data-translate-z="60">
+                            <p class="text-gray-300/90 text-[13px] font-circular-book line-clamp-2 leading-relaxed mb-4">
+                                Setiap UMKM memiliki landing page profesional sendiri yang dapat dikustomisasi secara fleksibel sesuai kebutuhan bisnis.
+                            </p>
+                        </div>
+                        <div class="flex flex-wrap gap-2 aceternity-3d-item transition-transform duration-200 ease-linear w-fit" data-translate-z="80">
+                            <span class="px-3.5 py-1.5 bg-white/10 rounded-full text-white/90 text-[11px] font-circular-medium">Customizable</span>
+                            <span class="px-3.5 py-1.5 bg-white/10 rounded-full text-white/90 text-[11px] font-circular-medium">Responsive</span>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="bg-[#111111] p-8 h-52 rounded-2xl border border-white/5 flex flex-col group hover:bg-white transition-all duration-500 relative overflow-hidden solution-card">
-                <div class="z-10">
-                    <h3 class="text-white group-hover:text-black text-xl font-circular-bold mb-3 transition-colors duration-500">Order Management</h3>
-                    <p class="text-gray-400 group-hover:text-black text-[15px] font-circular-book opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500 max-w-[90%] leading-relaxed">
-                        Kelola setiap pesanan masuk dengan sistem yang terorganisir dan efisien untuk meningkatkan produktivitas.
-                    </p>
-                </div>
-                <div class="absolute bottom-6 right-6 z-10 transition-transform duration-500 group-hover:scale-110">
-                     <div class="w-8 h-8 bg-white/5 rounded-lg flex items-center justify-center border border-white/10 group-hover:bg-[#0078b7] group-hover:border-[#0078b7] transition-all duration-300">
-                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-white group-hover:text-white"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
-                     </div>
+
+            <!-- Card 2: Order Management -->
+            <div class="aceternity-3d-card flex items-center justify-center relative w-full h-[380px]" style="perspective: 1000px;">
+                <div class="aceternity-3d-body relative w-full h-full rounded-[32px] group/card shadow-lg shadow-black/20 transition-all duration-200 ease-linear" style="transform-style: preserve-3d;">
+                    <div class="absolute inset-0 rounded-[32px] overflow-hidden">
+                        <div class="absolute inset-x-0 top-0 h-[70%]">
+                            <img src="{{ asset('storage/images/order management.jpg') }}" alt="Order Management" class="w-full h-full object-cover transition-transform duration-700 group-hover/card:scale-110" />
+                            <div class="absolute inset-x-0 bottom-0 h-[80%] bg-gradient-to-t from-[#0B1526] via-[#0B1526]/80 via-35% to-transparent"></div>
+                        </div>
+                        <div class="absolute inset-x-0 bottom-0 h-[35%] bg-[#0B1526]"></div>
+                    </div>
+                    
+                    <div class="absolute inset-x-0 bottom-0 p-6 pb-7 flex flex-col justify-end z-10" style="transform-style: preserve-3d;">
+                        <div class="aceternity-3d-item transition-transform duration-200 ease-linear w-fit" data-translate-z="40">
+                            <h3 class="text-white text-[20px] font-circular-bold mb-1.5">Order Management</h3>
+                        </div>
+                        <div class="aceternity-3d-item transition-transform duration-200 ease-linear w-full" data-translate-z="60">
+                            <p class="text-gray-300/90 text-[13px] font-circular-book line-clamp-2 leading-relaxed mb-4">
+                                Kelola setiap pesanan masuk dengan sistem yang terorganisir dan efisien untuk meningkatkan produktivitas.
+                            </p>
+                        </div>
+                        <div class="flex flex-wrap gap-2 aceternity-3d-item transition-transform duration-200 ease-linear w-fit" data-translate-z="80">
+                            <span class="px-3.5 py-1.5 bg-white/10 rounded-full text-white/90 text-[11px] font-circular-medium">Real-time</span>
+                            <span class="px-3.5 py-1.5 bg-white/10 rounded-full text-white/90 text-[11px] font-circular-medium">Organized</span>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="bg-[#111111] p-8 h-52 rounded-2xl border border-white/5 flex flex-col group hover:bg-white transition-all duration-500 relative overflow-hidden solution-card">
-                <div class="z-10">
-                    <h3 class="text-white group-hover:text-black text-xl font-circular-bold mb-3 transition-colors duration-500">Sales Reports</h3>
-                    <p class="text-gray-400 group-hover:text-black text-[15px] font-circular-book opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500 max-w-[90%] leading-relaxed">
-                        Pantau pertumbuhan bisnis Anda melalui laporan penjualan otomatis yang akurat dan mudah dipahami.
-                    </p>
-                </div>
-                <div class="absolute bottom-6 right-6 z-10 transition-transform duration-500 group-hover:scale-110">
-                     <div class="w-8 h-8 bg-white/5 rounded-lg flex items-center justify-center border border-white/10 group-hover:bg-[#0078b7] group-hover:border-[#0078b7] transition-all duration-300">
-                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-white group-hover:text-white"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
-                     </div>
+
+            <!-- Card 3: Sales Reports -->
+            <div class="aceternity-3d-card flex items-center justify-center relative w-full h-[380px]" style="perspective: 1000px;">
+                <div class="aceternity-3d-body relative w-full h-full rounded-[32px] group/card shadow-lg shadow-black/20 transition-all duration-200 ease-linear" style="transform-style: preserve-3d;">
+                    <div class="absolute inset-0 rounded-[32px] overflow-hidden">
+                        <div class="absolute inset-x-0 top-0 h-[70%]">
+                            <img src="{{ asset('storage/images/sales report.jpg') }}" alt="Sales Reports" class="w-full h-full object-cover transition-transform duration-700 group-hover/card:scale-110" />
+                            <div class="absolute inset-x-0 bottom-0 h-[80%] bg-gradient-to-t from-[#0B1526] via-[#0B1526]/80 via-35% to-transparent"></div>
+                        </div>
+                        <div class="absolute inset-x-0 bottom-0 h-[35%] bg-[#0B1526]"></div>
+                    </div>
+                    
+                    <div class="absolute inset-x-0 bottom-0 p-6 pb-7 flex flex-col justify-end z-10" style="transform-style: preserve-3d;">
+                        <div class="aceternity-3d-item transition-transform duration-200 ease-linear w-fit" data-translate-z="40">
+                            <h3 class="text-white text-[20px] font-circular-bold mb-1.5">Sales Reports</h3>
+                        </div>
+                        <div class="aceternity-3d-item transition-transform duration-200 ease-linear w-full" data-translate-z="60">
+                            <p class="text-gray-300/90 text-[13px] font-circular-book line-clamp-2 leading-relaxed mb-4">
+                                Pantau pertumbuhan bisnis Anda melalui laporan penjualan otomatis yang akurat dan mudah dipahami.
+                            </p>
+                        </div>
+                        <div class="flex flex-wrap gap-2 aceternity-3d-item transition-transform duration-200 ease-linear w-fit" data-translate-z="80">
+                            <span class="px-3.5 py-1.5 bg-white/10 rounded-full text-white/90 text-[11px] font-circular-medium">Accurate</span>
+                            <span class="px-3.5 py-1.5 bg-white/10 rounded-full text-white/90 text-[11px] font-circular-medium">Insightful</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 relative z-30 -mb-28 lg:-mb-40 bridge-cards">
-            <div class="bg-[#111111] p-8 h-52 rounded-2xl border border-white/5 flex flex-col group hover:bg-white transition-all duration-500 relative overflow-hidden solution-card">
-                <div class="z-10">
-                    <h3 class="text-white group-hover:text-black text-xl font-circular-bold mb-3 transition-colors duration-500">Tracking</h3>
-                    <p class="text-gray-400 group-hover:text-black text-[15px] font-circular-book opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500 max-w-[90%] leading-relaxed">
-                        Lacak status pengiriman dan pesanan secara real-time untuk memberikan transparansi penuh kepada pelanggan.
-                    </p>
-                </div>
-                <div class="absolute bottom-6 right-6 z-10 transition-transform duration-500 group-hover:scale-110">
-                     <div class="w-8 h-8 bg-white/5 rounded-lg flex items-center justify-center border border-white/10 group-hover:bg-[#0078b7] group-hover:border-[#0078b7] transition-all duration-300">
-                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-white group-hover:text-white"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
-                     </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 relative z-30 -mb-12 lg:-mb-24 bridge-cards">
+            <!-- Card 4: Tracking -->
+            <div class="aceternity-3d-card flex items-center justify-center relative w-full h-[380px]" style="perspective: 1000px;">
+                <div class="aceternity-3d-body relative w-full h-full rounded-[32px] group/card shadow-lg shadow-black/20 transition-all duration-200 ease-linear" style="transform-style: preserve-3d;">
+                    <div class="absolute inset-0 rounded-[32px] overflow-hidden">
+                        <div class="absolute inset-x-0 top-0 h-[70%]">
+                            <img src="{{ asset('storage/images/tracking.jpg') }}" alt="Tracking" class="w-full h-full object-cover transition-transform duration-700 group-hover/card:scale-110" />
+                            <div class="absolute inset-x-0 bottom-0 h-[80%] bg-gradient-to-t from-[#0B1526] via-[#0B1526]/80 via-35% to-transparent"></div>
+                        </div>
+                        <div class="absolute inset-x-0 bottom-0 h-[35%] bg-[#0B1526]"></div>
+                    </div>
+                    
+                    <div class="absolute inset-x-0 bottom-0 p-6 pb-7 flex flex-col justify-end z-10" style="transform-style: preserve-3d;">
+                        <div class="aceternity-3d-item transition-transform duration-200 ease-linear w-fit" data-translate-z="40">
+                            <h3 class="text-white text-[20px] font-circular-bold mb-1.5">Tracking</h3>
+                        </div>
+                        <div class="aceternity-3d-item transition-transform duration-200 ease-linear w-full" data-translate-z="60">
+                            <p class="text-gray-300/90 text-[13px] font-circular-book line-clamp-2 leading-relaxed mb-4">
+                                Lacak status pengiriman dan pesanan secara real-time untuk memberikan transparansi penuh kepada pelanggan.
+                            </p>
+                        </div>
+                        <div class="flex flex-wrap gap-2 aceternity-3d-item transition-transform duration-200 ease-linear w-fit" data-translate-z="80">
+                            <span class="px-3.5 py-1.5 bg-white/10 rounded-full text-white/90 text-[11px] font-circular-medium">Live Update</span>
+                            <span class="px-3.5 py-1.5 bg-white/10 rounded-full text-white/90 text-[11px] font-circular-medium">Transparent</span>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="bg-[#111111] p-8 h-52 rounded-2xl border border-white/5 flex flex-col group hover:bg-white transition-all duration-500 relative overflow-hidden solution-card">
-                <div class="z-10">
-                    <h3 class="text-white group-hover:text-black text-xl font-circular-bold mb-3 transition-colors duration-500">Chat</h3>
-                    <p class="text-gray-400 group-hover:text-black text-[15px] font-circular-book opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500 max-w-[90%] leading-relaxed">
-                        Terhubung langsung dengan pelanggan melalui integrasi pesan instan yang cepat, mudah, dan terintegrasi.
-                    </p>
-                </div>
-                <div class="absolute bottom-6 right-6 z-10 transition-transform duration-500 group-hover:scale-110">
-                     <div class="w-8 h-8 bg-white/5 rounded-lg flex items-center justify-center border border-white/10 group-hover:bg-[#0078b7] group-hover:border-[#0078b7] transition-all duration-300">
-                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-white group-hover:text-white"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
-                     </div>
+
+            <!-- Card 5: Chat -->
+            <div class="aceternity-3d-card flex items-center justify-center relative w-full h-[380px]" style="perspective: 1000px;">
+                <div class="aceternity-3d-body relative w-full h-full rounded-[32px] group/card shadow-lg shadow-black/20 transition-all duration-200 ease-linear" style="transform-style: preserve-3d;">
+                    <div class="absolute inset-0 rounded-[32px] overflow-hidden">
+                        <div class="absolute inset-x-0 top-0 h-[70%]">
+                            <img src="{{ asset('storage/images/chat.jpg') }}" alt="Chat" class="w-full h-full object-cover transition-transform duration-700 group-hover/card:scale-110" />
+                            <div class="absolute inset-x-0 bottom-0 h-[80%] bg-gradient-to-t from-[#0B1526] via-[#0B1526]/80 via-35% to-transparent"></div>
+                        </div>
+                        <div class="absolute inset-x-0 bottom-0 h-[35%] bg-[#0B1526]"></div>
+                    </div>
+                    
+                    <div class="absolute inset-x-0 bottom-0 p-6 pb-7 flex flex-col justify-end z-10" style="transform-style: preserve-3d;">
+                        <div class="aceternity-3d-item transition-transform duration-200 ease-linear w-fit" data-translate-z="40">
+                            <h3 class="text-white text-[20px] font-circular-bold mb-1.5">Chat</h3>
+                        </div>
+                        <div class="aceternity-3d-item transition-transform duration-200 ease-linear w-full" data-translate-z="60">
+                            <p class="text-gray-300/90 text-[13px] font-circular-book line-clamp-2 leading-relaxed mb-4">
+                                Terhubung langsung dengan pelanggan melalui integrasi pesan instan yang cepat, mudah, dan terintegrasi.
+                            </p>
+                        </div>
+                        <div class="flex flex-wrap gap-2 aceternity-3d-item transition-transform duration-200 ease-linear w-fit" data-translate-z="80">
+                            <span class="px-3.5 py-1.5 bg-white/10 rounded-full text-white/90 text-[11px] font-circular-medium">Fast</span>
+                            <span class="px-3.5 py-1.5 bg-white/10 rounded-full text-white/90 text-[11px] font-circular-medium">Integrated</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
+
+        <!-- Aceternity 3D Card Animation Script -->
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const cards = document.querySelectorAll('.aceternity-3d-card');
+                
+                cards.forEach(card => {
+                    const body = card.querySelector('.aceternity-3d-body');
+                    const items = card.querySelectorAll('.aceternity-3d-item');
+                    let isMouseEntered = false;
+                    
+                    card.addEventListener('mousemove', (e) => {
+                        if (!isMouseEntered) return;
+                        const rect = card.getBoundingClientRect();
+                        const x = (e.clientX - rect.left - rect.width / 2) / 25;
+                        const y = (e.clientY - rect.top - rect.height / 2) / 25;
+                        
+                        body.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
+                    });
+                    
+                    card.addEventListener('mouseenter', () => {
+                        isMouseEntered = true;
+                        items.forEach(item => {
+                            const z = item.getAttribute('data-translate-z') || 50;
+                            item.style.transform = `translateZ(${z}px)`;
+                        });
+                    });
+                    
+                    card.addEventListener('mouseleave', () => {
+                        isMouseEntered = false;
+                        body.style.transform = `rotateY(0deg) rotateX(0deg)`;
+                        items.forEach(item => {
+                            item.style.transform = `translateZ(0px)`;
+                        });
+                    });
+                });
+            });
+        </script>
     </div>
 </div>

@@ -100,13 +100,7 @@
                 }
             });
 
-            sectionTransitionTl.to("#workflow .max-w-7xl", {
-                opacity: 0.5,
-                y: -30,
-                ease: "power1.inOut"
-            }, 0);
-
-            sectionTransitionTl.to(["#workflow", "#faq"], {
+            sectionTransitionTl.to(["#faq"], {
                 backgroundColor: "#f8fafc",
                 duration: 0.5,
             }, 0.2);
@@ -116,94 +110,6 @@
                 opacity: 0,
                 ease: "power2.out"
             }, 0.3);
-
-            const workflowSection = document.querySelector("#workflow");
-            const stepContents = gsap.utils.toArray(".workflow-step-content");
-            const mockups = gsap.utils.toArray(".workflow-mockup");
-            const stickyBox = document.querySelector("#sticky-visual-box");
-
-            const bgColors = ["#ffffff", "#f0f7ff", "#e8f2ff", "#deedff"];
-
-            let currentIndex = -1;
-
-            ScrollTrigger.create({
-                trigger: "#workflow",
-                start: "top 80%",
-                end: "bottom 20%",
-                onUpdate: (self) => {
-                    let closestIndex = 0;
-                    let minDistance = Infinity;
-                    const centerY = window.innerHeight / 2;
-
-                    stepContents.forEach((step, i) => {
-                        const rect = step.getBoundingClientRect();
-                        const stepCenterY = rect.top + rect.height / 2;
-                        const distance = Math.abs(centerY - stepCenterY);
-
-                        if (distance < minDistance) {
-                            minDistance = distance;
-                            closestIndex = i;
-                        }
-                    });
-
-                    if (closestIndex !== currentIndex) {
-                        currentIndex = closestIndex;
-                        updateWorkflow(currentIndex);
-                    }
-                }
-            });
-
-            function updateWorkflow(i) {
-                gsap.to(workflowSection, { 
-                    backgroundColor: bgColors[i], 
-                    duration: 0.6, 
-                    ease: "power2.out" 
-                });
-
-                const mainTitle = workflowSection.querySelector("h2");
-                const mainDesc = workflowSection.querySelector(".workflow-header p");
-
-                gsap.to(mainTitle, { color: "#003d5c", duration: 0.3 });
-                gsap.to(mainDesc, { color: "#666666", duration: 0.3 });
-
-                stepContents.forEach((s, idx) => {
-                    const h3 = s.querySelector("h3");
-                    const p = s.querySelector("p");
-                    const num = s.querySelector("span");
-
-                    const isActive = i === idx;
-                    
-                    gsap.to(s, { 
-                        opacity: isActive ? 1 : 0.2, 
-                        x: isActive ? 0 : -2,
-                        duration: 0.05,
-                        ease: "none"
-                    });
-
-                    if (isActive) {
-                        gsap.to(h3, { color: "#003d5c", duration: 0.2 });
-                        gsap.to(p, { color: "#666666", duration: 0.2 });
-                        gsap.to(num, { color: "#003d5c", duration: 0.2 });
-                    }
-                });
-                
-                mockups.forEach((mock, idx) => {
-                    const isActiveMock = i === idx;
-
-                    gsap.to(mock, {
-                        opacity: isActiveMock ? 1 : 0,
-                        scale: isActiveMock ? 1 : 0.99,
-                        duration: 0.3,
-                        ease: "power2.out"
-                    });
-                });
-
-                gsap.fromTo(stickyBox, { y: 3 }, { y: 0, duration: 0.1, ease: "power2.out" });
-                gsap.to(stickyBox, { 
-                    borderColor: "rgba(0,0,0,0.05)",
-                    duration: 0.3 
-                });
-            }
 
             gsap.utils.toArray(".faq-item").forEach((item) => {
                 gsap.fromTo(item, 
