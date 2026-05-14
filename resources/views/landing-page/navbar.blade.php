@@ -42,7 +42,7 @@
         </div>
 
         <div class="hidden lg:flex items-center gap-6">
-            <a href="{{ route('login') }}" 
+            <a href="{{ route('customer.dashboard.preview') }}" 
                class="text-sm font-medium text-white/70 hover:text-white transition-colors" 
                style="font-family: 'Figtree', sans-serif;">Masuk</a>
             <button class="text-white px-6 py-2.5 rounded-full text-sm font-semibold transition-all duration-500 group flex items-center gap-0 hover:gap-4 border border-white/20 hover:bg-white/10 hover:border-white/30 backdrop-blur-sm">
