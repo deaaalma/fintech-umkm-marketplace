@@ -152,8 +152,8 @@
                             <div>
                                 <label class="block text-sm font-semibold text-gray-800 mb-2">Nomor Telepon <span
                                         class="text-red-500">*</span></label>
-                                <input wire:model="business_phone" type="text"
-                                    class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-black focus:border-black text-sm transition-all"
+                                <input wire:model="business_phone" type="number"
+                                    class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-black focus:border-black text-sm transition-all [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                                     placeholder="08123456789">
                                 @error('business_phone') <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
                                 @enderror
@@ -193,8 +193,8 @@
                         <div>
                             <label class="block text-sm font-semibold text-gray-800 mb-2">NIK (Nomor Induk Kependudukan)
                                 <span class="text-red-500">*</span></label>
-                            <input wire:model="owner_nik" type="text"
-                                class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-black focus:border-black text-sm transition-all"
+                            <input wire:model="owner_nik" type="number"
+                                class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-black focus:border-black text-sm transition-all [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                                 placeholder="3174012345678901">
                             <p class="mt-1.5 text-xs text-gray-400">16 digit sesuai KTP</p>
                             @error('owner_nik') <span class="text-red-500 text-xs mt-1">{{ $message }}</span> @enderror
@@ -212,33 +212,22 @@
                         <div class="space-y-4">
                             <div>
                                 <label class="block text-sm font-semibold text-gray-800 mb-2">Upload Foto KTP</label>
-                                <div
-                                    class="w-full bg-gray-50 rounded-xl border border-gray-200 p-4 flex items-center justify-between">
-                                    <div class="flex items-center gap-4">
-                                        <div class="w-12 h-12 bg-gray-400 rounded flex-shrink-0"></div>
-                                        <div>
-                                            <p class="text-sm font-bold text-gray-800">ktp_pemilik.jpg</p>
-                                            <p class="text-xs text-gray-500">2.4 MB • JPG</p>
-                                        </div>
-                                    </div>
-                                    <button type="button" class="text-gray-400 hover:text-gray-600">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M6 18L18 6M6 6l12 12"></path>
-                                        </svg>
-                                    </button>
-                                </div>
+                                <input type="file" wire:model="owner_ktp_photo" accept="image/*" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-gray-50 file:text-gray-700 hover:file:bg-gray-100 border border-gray-300 rounded-xl cursor-pointer">
+                                <div wire:loading wire:target="owner_ktp_photo" class="text-xs text-gray-500 mt-1">Uploading...</div>
+                                @if ($owner_ktp_photo)
+                                    <p class="text-xs text-green-600 mt-1">File uploaded: {{ $owner_ktp_photo->getClientOriginalName() }}</p>
+                                @endif
+                                @error('owner_ktp_photo') <span class="text-red-500 text-xs mt-1">{{ $message }}</span> @enderror
                             </div>
 
                             <div>
-                                <label class="block text-sm font-semibold text-gray-800 mb-2">Upload Foto Selfie dengan
-                                    KTP</label>
-                                <div
-                                    class="w-full h-32 bg-gray-50 rounded-xl border-2 border-dashed border-gray-300 flex flex-col items-center justify-center text-gray-500 hover:bg-gray-100 transition-colors cursor-pointer">
-                                    <div class="w-8 h-8 bg-gray-300 rounded mb-2"></div>
-                                    <p class="text-sm font-semibold text-gray-700">Selfie sambil memegang KTP</p>
-                                    <p class="text-xs text-gray-400 mt-1">Drag & drop atau klik untuk browse</p>
-                                </div>
+                                <label class="block text-sm font-semibold text-gray-800 mb-2">Upload Foto Selfie dengan KTP</label>
+                                <input type="file" wire:model="owner_selfie_photo" accept="image/*" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-gray-50 file:text-gray-700 hover:file:bg-gray-100 border border-gray-300 rounded-xl cursor-pointer">
+                                <div wire:loading wire:target="owner_selfie_photo" class="text-xs text-gray-500 mt-1">Uploading...</div>
+                                @if ($owner_selfie_photo)
+                                    <p class="text-xs text-green-600 mt-1">File uploaded: {{ $owner_selfie_photo->getClientOriginalName() }}</p>
+                                @endif
+                                @error('owner_selfie_photo') <span class="text-red-500 text-xs mt-1">{{ $message }}</span> @enderror
                             </div>
                         </div>
                     </div>
@@ -256,55 +245,37 @@
                     </div>
 
                     <div class="space-y-4">
-                        <div class="flex items-center justify-between border-b border-gray-100 py-3">
-                            <div class="flex items-center gap-3">
-                                <div
-                                    class="w-6 h-6 rounded-full bg-gray-400 flex items-center justify-center text-white">
-                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
-                                            d="M5 13l4 4L19 7"></path>
-                                    </svg>
-                                </div>
-                                <span class="text-sm font-semibold text-gray-800">Foto KTP Pemilik</span>
-                            </div>
-                            <span class="text-xs text-gray-500 font-medium">Uploaded</span>
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-800 mb-2">Foto KTP Pemilik <span class="text-red-500">*</span></label>
+                            <input type="file" wire:model="document_ktp" accept=".jpg,.jpeg,.png,.pdf" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-gray-50 file:text-gray-700 hover:file:bg-gray-100 border border-gray-300 rounded-xl cursor-pointer">
+                            <div wire:loading wire:target="document_ktp" class="text-xs text-gray-500 mt-1">Uploading...</div>
+                            @if ($document_ktp) <p class="text-xs text-green-600 mt-1">File uploaded: {{ $document_ktp->getClientOriginalName() }}</p> @endif
+                            @error('document_ktp') <span class="text-red-500 text-xs mt-1">{{ $message }}</span> @enderror
                         </div>
 
-                        <div class="flex items-center justify-between border-b border-gray-100 py-3">
-                            <div class="flex items-center gap-3">
-                                <div
-                                    class="w-6 h-6 rounded-full bg-gray-400 flex items-center justify-center text-white">
-                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
-                                            d="M5 13l4 4L19 7"></path>
-                                    </svg>
-                                </div>
-                                <span class="text-sm font-semibold text-gray-800">Sertifikasi Izin Usaha</span>
-                            </div>
-                            <span class="text-xs text-gray-500 font-medium">Uploaded</span>
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-800 mb-2">Sertifikasi Izin Usaha <span class="text-red-500">*</span></label>
+                            <input type="file" wire:model="document_certificate" accept=".jpg,.jpeg,.png,.pdf" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-gray-50 file:text-gray-700 hover:file:bg-gray-100 border border-gray-300 rounded-xl cursor-pointer">
+                            <div wire:loading wire:target="document_certificate" class="text-xs text-gray-500 mt-1">Uploading...</div>
+                            @if ($document_certificate) <p class="text-xs text-green-600 mt-1">File uploaded: {{ $document_certificate->getClientOriginalName() }}</p> @endif
+                            @error('document_certificate') <span class="text-red-500 text-xs mt-1">{{ $message }}</span> @enderror
                         </div>
 
-                        <div class="flex items-center justify-between border-b border-gray-100 py-3">
-                            <div class="flex items-center gap-3">
-                                <div class="w-6 h-6 rounded-full border-2 border-gray-200 bg-gray-100"></div>
-                                <span class="text-sm font-semibold text-gray-800">NPWP (Opsional)</span>
-                            </div>
-                            <button type="button"
-                                class="px-3 py-1.5 border border-gray-200 rounded text-xs font-semibold text-gray-600 hover:bg-gray-50">Upload</button>
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-800 mb-2">NPWP (Opsional)</label>
+                            <input type="file" wire:model="document_npwp" accept=".jpg,.jpeg,.png,.pdf" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-gray-50 file:text-gray-700 hover:file:bg-gray-100 border border-gray-300 rounded-xl cursor-pointer">
+                            <div wire:loading wire:target="document_npwp" class="text-xs text-gray-500 mt-1">Uploading...</div>
+                            @if ($document_npwp) <p class="text-xs text-green-600 mt-1">File uploaded: {{ $document_npwp->getClientOriginalName() }}</p> @endif
+                            @error('document_npwp') <span class="text-red-500 text-xs mt-1">{{ $message }}</span> @enderror
                         </div>
 
-                        <div class="flex items-center justify-between py-3">
-                            <div class="flex items-center gap-3">
-                                <div class="w-6 h-6 rounded-full border-2 border-gray-200 bg-gray-100"></div>
-                                <span class="text-sm font-semibold text-gray-800">Foto Tempat Usaha</span>
-                            </div>
-                            <button type="button"
-                                class="px-3 py-1.5 border border-gray-200 rounded text-xs font-semibold text-gray-600 hover:bg-gray-50">Upload</button>
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-800 mb-2">Foto Tempat Usaha <span class="text-red-500">*</span></label>
+                            <input type="file" wire:model="document_place" accept=".jpg,.jpeg,.png,.pdf" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-gray-50 file:text-gray-700 hover:file:bg-gray-100 border border-gray-300 rounded-xl cursor-pointer">
+                            <div wire:loading wire:target="document_place" class="text-xs text-gray-500 mt-1">Uploading...</div>
+                            @if ($document_place) <p class="text-xs text-green-600 mt-1">File uploaded: {{ $document_place->getClientOriginalName() }}</p> @endif
+                            @error('document_place') <span class="text-red-500 text-xs mt-1">{{ $message }}</span> @enderror
                         </div>
-                    </div>
-
-                    <div class="mt-8 text-center">
-                        <p class="text-xs text-gray-400">2 dari 4 dokumen telah diupload</p>
                     </div>
                 </div>
 
@@ -335,8 +306,8 @@
                         <div>
                             <label class="block text-sm font-semibold text-gray-800 mb-2">Nomor Rekening <span
                                     class="text-red-500">*</span></label>
-                            <input wire:model="bank_account_number" type="text"
-                                class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-black focus:border-black text-sm transition-all"
+                            <input wire:model="bank_account_number" type="number"
+                                class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-black focus:border-black text-sm transition-all [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                                 placeholder="1234567890">
                             <p class="mt-1.5 text-xs text-gray-400">Masukkan nomer rekening tanpa spasi atau tanda baca
                             </p>

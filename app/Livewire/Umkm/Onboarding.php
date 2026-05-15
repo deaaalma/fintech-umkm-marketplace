@@ -3,9 +3,12 @@
 namespace App\Livewire\Umkm;
 
 use Livewire\Component;
+use Livewire\WithFileUploads;
 
 class Onboarding extends Component
 {
+    use WithFileUploads;
+
     public int $step = 1;
 
     // Step 1: Informasi Bisnis
@@ -60,18 +63,18 @@ class Onboarding extends Component
                     'business_description' => 'required',
                     'business_address' => 'required',
                     'business_city' => 'required',
-                    'business_phone' => 'required',
+                    'business_phone' => 'required|numeric',
                 ]);
             } elseif ($this->step === 2) {
                 $this->validate([
                     'owner_name' => 'required',
-                    'owner_nik' => 'required',
-                    'owner_birthdate' => 'required',
+                    'owner_nik' => 'required|numeric|digits:16',
+                    'owner_birthdate' => 'required|date',
                 ]);
             } elseif ($this->step === 4) {
                 $this->validate([
                     'bank_name' => 'required',
-                    'bank_account_number' => 'required',
+                    'bank_account_number' => 'required|numeric',
                     'bank_account_name' => 'required',
                 ]);
             }
@@ -84,9 +87,20 @@ class Onboarding extends Component
     public function submit()
     {
         $this->validateCurrentStep();
-        // Database saving logic will go here
 
-        session()->flash('success', 'Onboarding completed successfully!');
+        // Save to Database status: pending_verification
+        \Illuminate\Support\Facades\DB::table('umkms')->insert([
+            'owner_id' => auth()->id(),
+            'name' => $this->business_name,
+            'slug' => \Illuminate\Support\Str::slug($this->business_name . '-' . time()),
+            'description' => $this->business_description,
+            'address' => $this->business_address . ', ' . $this->business_city,
+            'status' => 'pending_verification',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        session()->flash('success', 'Onboarding completed successfully! Your application is pending verification.');
         $this->redirect(route('dashboard'), navigate: true);
     }
 
