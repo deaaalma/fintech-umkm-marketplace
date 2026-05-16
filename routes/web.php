@@ -51,10 +51,6 @@ Route::get('/superadmin/settings/preview', function () {
     return view('templates.superadmin.settings');
 })->name('superadmin.settings.preview');
 
-Route::view('templates.dashboard', 'dashboard')
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
-
 Route::view('templates.profile', 'profile')
     ->middleware(['auth'])
     ->name('profile');
