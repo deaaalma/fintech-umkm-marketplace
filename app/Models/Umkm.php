@@ -32,4 +32,14 @@ class Umkm extends Model
     {
         return $this->belongsTo(Category::class);
     }
+
+    public function reviews()
+    {
+        return $this->hasMany(OrderReview::class);
+    }
+
+    public function detail()
+    {
+        return $this->hasOne(UmkmDetail::class);
+    }
 }

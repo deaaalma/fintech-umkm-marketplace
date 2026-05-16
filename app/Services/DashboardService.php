@@ -3,34 +3,36 @@
 namespace App\Services;
 
 use App\Models\Umkm;
-use App\Models\Order;
-use Carbon\Carbon;
+use App\Models\OrderReview;
+use App\Models\IssueType;
 use Illuminate\Support\Facades\DB;
 
 class DashboardService
 {
-    public function getStatsSummary(): array
+    public function getStatsSummary()
     {
-        $now = Carbon::now();
-        $last30Days = $now->copy()->subDays(30);
-        $last60Days = $now->copy()->subDays(60);
+        // 1. Ambil data dasar dari tabel umkms
+        $totalUmkm = \App\Models\Umkm::count();
+        $activeUmkm = \App\Models\Umkm::where('status', 'active')->count();
+        $pendingUmkm = \App\Models\Umkm::where('status', 'pending_verification')->count();
+        $suspendedUmkm = \App\Models\Umkm::where('status', 'suspended')->count();
 
-        // Perhitungan UMKM
-        $totalUmkm = Umkm::count();
-        $activeUmkm = Umkm::where('status', 'active')->count();
-        $pendingUmkm = Umkm::where('status', 'pending_verification')->count();
-        $suspendedUmkm = Umkm::where('status', 'suspended')->count();
+        // 2. Hitung Growth UMKM (30 hari terakhir vs 30 hari sebelumnya)
+        $newUmkmThisMonth = \App\Models\Umkm::where('created_at', '>=', now()->subDays(30))->count();
+        $umkmBeforeLastMonth = \App\Models\Umkm::where('created_at', '<', now()->subDays(30))->count();
         
-        $umkmThisMonth = Umkm::where('created_at', '>=', $last30Days)->count();
-        $umkmLastMonth = Umkm::whereBetween('created_at', [$last60Days, $last30Days])->count();
-        $umkmGrowth = $umkmLastMonth > 0 ? (($umkmThisMonth - $umkmLastMonth) / $umkmLastMonth) * 100 : ($umkmThisMonth > 0 ? 100 : 0);
+        // Rumus growth: (Baru / Total Sebelum) * 100
+        $umkmGrowth = $umkmBeforeLastMonth > 0 
+            ? ($newUmkmThisMonth / $umkmBeforeLastMonth) * 100 
+            : ($newUmkmThisMonth > 0 ? 100 : 0);
 
-        // Perhitungan Transaksi
-        $totalOrders = Order::count();
-        $successOrders = Order::whereIn('status', ['paid', 'processing', 'completed'])->count();
-        $cancelledOrders = Order::where('status', 'cancelled')->count();
+        // 3. Ambil data rating dan review
+        $avgRating = \App\Models\OrderReview::avg('rating') ?? 0;
+        $totalReviews = \App\Models\OrderReview::count();
+        $resolvedReviews = \App\Models\OrderReview::where('is_resolved', true)->count();
 
         return [
+            // Card 1: UMKM Stats
             [
                 'title' => 'TOTAL UMKM TERDAFTAR',
                 'value' => number_format($totalUmkm),
@@ -40,95 +42,68 @@ class DashboardService
                     ['label' => 'Suspended', 'value' => number_format($suspendedUmkm)],
                 ],
                 'change' => ($umkmGrowth >= 0 ? '+' : '') . number_format($umkmGrowth, 1) . '%',
-                'changeLabel' => '30 hari ini'
+                'changeLabel' => '30 hari ini',
+                'highlight' => false
             ],
-            [
-                'title' => 'APPROVAL PENDING',
-                'value' => number_format($pendingUmkm),
-                'highlight' => true,
-                'details' => [
-                    ['label' => 'High risk auto-reject', 'value' => '12 hari'],
-                    ['label' => 'Avg approval (30 d)', 'value' => '2.4 hari'],
-                ],
-                'action' => 'Review Sekarang'
-            ],
-            [
-                'title' => 'TOTAL TRANSAKSI',
-                'value' => number_format($totalOrders),
-                'details' => [
-                    ['label' => 'Sukses (Selesai/Dibayar)', 'value' => number_format($successOrders)],
-                    ['label' => 'Dibatalkan', 'value' => number_format($cancelledOrders)],
-                ]
-            ],
-            // Dummy Data Kepuasan & Rating...
+
+            // Card 2: Kepuasan Pelanggan (Contoh kartu kedua)
             [
                 'title' => 'KEPUASAN PELANGGAN',
-                'value' => '189',
+                'value' => number_format($avgRating, 1) . ' / 5.0',
                 'details' => [
-                    ['label' => 'Resolusi tiketnya', 'value' => '78'],
-                    ['label' => 'Lainnya', 'value' => '32'],
-                ]
+                    ['label' => 'Total Review', 'value' => number_format($totalReviews)],
+                    ['label' => 'Resolved', 'value' => number_format($resolvedReviews)],
+                    ['label' => 'Pending Issue', 'value' => number_format($totalReviews - $resolvedReviews)],
+                ],
+                'change' => 'Rating Live',
+                'changeLabel' => 'Dari semua pesanan',
+                'highlight' => true // Misal ini yang mau di-highlight putih
             ],
-            [
-                'title' => 'RATING RATA-RATA',
-                'value' => '4.7',
-                'rating' => true,
-                'ratingBars' => [
-                    ['stars' => 5, 'count' => 892],
-                    ['stars' => 4, 'count' => 456],
-                ]
-            ]
         ];
     }
 
     public function getPendingApplications()
     {
-        return Umkm::where('status', 'pending_verification')
-            ->orderBy('created_at', 'asc')
-            ->get()
-            ->map(function ($umkm) {
-                $waitingDays = Carbon::parse($umkm->created_at)->diffInDays(Carbon::now());
-                $priority = $waitingDays > 3 ? 'TINGGI' : ($waitingDays == 0 ? 'RENDAH' : 'NORMAL');
-                
-                $completeness = 50; 
-                if ($umkm->description) $completeness += 20;
-                if ($umkm->address) $completeness += 30;
-
-                return [
-                    'id' => 'APP-' . str_pad($umkm->id, 4, '0', STR_PAD_LEFT),
-                    'name' => $umkm->name,
-                    'category' => 'General',
-                    'date' => Carbon::parse($umkm->created_at)->diffForHumans(),
-                    'completeness' => $completeness,
-                    'priority' => $priority,
-                    'status' => 'Review'
-                ];
-            });
+        // Mengambil UMKM yang butuh verifikasi beserta detailnya
+        return Umkm::with(['detail', 'category', 'owner'])
+            ->where('status', 'pending_verification')
+            ->orderBy('created_at', 'desc')
+            ->limit(5)
+            ->get();
     }
 
-    public function getRecentUmkms($limit = 5)
+    public function getRecentUmkms()
     {
-        return Umkm::where('status', 'active')
-            ->orderBy('updated_at', 'desc')
-            ->take($limit)
-            ->get()
-            ->map(fn($umkm) => [
-                'name' => $umkm->name,
-                'category' => 'General UMKM',
-                'time' => Carbon::parse($umkm->updated_at)->diffForHumans(),
-            ]);
+        // List UMKM terbaru yang masuk ke sistem
+        return Umkm::with('category')
+            ->orderBy('created_at', 'desc')
+            ->limit(10)
+            ->get();
     }
 
-    public function getGrowthChartData(): array
+    public function getReviewStats()
     {
-        $trendUmkm = Umkm::select(DB::raw('MONTH(created_at) as month'), DB::raw('COUNT(*) as total'))
-            ->whereYear('created_at', Carbon::now()->year)
-            ->groupBy('month')->orderBy('month')->pluck('total', 'month')->toArray();
+        // Menghitung statistik berdasarkan issue_type_id sesuai tabel order_reviews
+        // Ini akan menghasilkan data seperti: Resolusi Tiket: 78, Policy: 45, dsb.
+        return DB::table('order_reviews')
+            ->join('issue_types', 'order_reviews.issue_type_id', '=', 'issue_types.id')
+            ->select('issue_types.name', DB::raw('count(*) as total'))
+            ->groupBy('issue_types.name')
+            ->get();
+    }
 
-        $chartData = [];
-        for ($i = 1; $i <= 12; $i++) {
-            $chartData[] = $trendUmkm[$i] ?? 0;
-        }
-        return $chartData;
+    public function getGrowthChartData()
+    {
+        $data = Umkm::select(
+                DB::raw('COUNT(id) as total'), 
+                DB::raw("DATE_FORMAT(created_at, '%M') as month"),
+                DB::raw('MIN(created_at) as sort_date') 
+            )
+            ->groupBy('month')
+            ->orderBy('sort_date', 'asc') 
+            ->get();
+
+        // Pastikan jika data kosong, tetap mengembalikan collection kosong, bukan null/0
+        return $data ?? collect([]); 
     }
 }

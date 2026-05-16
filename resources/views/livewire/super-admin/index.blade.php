@@ -57,52 +57,76 @@
         </div>
 
         <div class="overflow-x-auto">
-            <table class="w-full text-left border-collapse">
+            <table class="w-full">
                 <thead>
-                    <tr class="text-[10px] uppercase tracking-widest text-[#999999] border-b border-gray-100">
-                        <th class="pb-4 font-bold">ID Aplikasi</th>
-                        <th class="pb-4 font-bold">Nama Bisnis</th>
-                        <th class="pb-4 font-bold">Kategori</th>
-                        <th class="pb-4 font-bold">Tanggal</th>
-                        <th class="pb-4 font-bold">Kelengkapan</th>
-                        <th class="pb-4 font-bold">Prioritas</th>
-                        <th class="pb-4 font-bold text-right">Aksi</th>
+                    <tr class="border-b border-[#e5e5e5]">
+                        <th class="text-left py-3 px-4 text-xs font-semibold text-[#999999] uppercase tracking-wide" style="font-family: 'Figtree', sans-serif;">ID Aplikasi</th>
+                        <th class="text-left py-3 px-4 text-xs font-semibold text-[#999999] uppercase tracking-wide" style="font-family: 'Figtree', sans-serif;">Nama Bisnis</th>
+                        <th class="text-left py-3 px-4 text-xs font-semibold text-[#999999] uppercase tracking-wide" style="font-family: 'Figtree', sans-serif;">Kategori</th>
+                        <th class="text-left py-3 px-4 text-xs font-semibold text-[#999999] uppercase tracking-wide" style="font-family: 'Figtree', sans-serif;">Tanggal Apply</th>
+                        <th class="text-left py-3 px-4 text-xs font-semibold text-[#999999] uppercase tracking-wide" style="font-family: 'Figtree', sans-serif;">Kelengkapan</th>
+                        <th class="text-left py-3 px-4 text-xs font-semibold text-[#999999] uppercase tracking-wide" style="font-family: 'Figtree', sans-serif;">Prioritas</th>
+                        <th class="text-left py-3 px-4 text-xs font-semibold text-[#999999] uppercase tracking-wide" style="font-family: 'Figtree', sans-serif;">Aksi</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-gray-50">
+                <tbody>
                     @foreach($pendingApplications as $app)
-                        <tr class="group hover:bg-gray-50/50 transition-colors">
-                            <td class="py-5 text-xs font-mono text-gray-400">{{ $app['id'] }}</td>
-                            <td class="py-5">
-                                <span class="text-sm font-bold text-[#003d5c]">{{ $app['name'] }}</span>
-                            </td>
-                            <td class="py-5 text-xs text-gray-600">{{ $app['category'] }}</td>
-                            <td class="py-5 text-xs text-gray-500">{{ $app['date'] }}</td>
-                            <td class="py-5">
-                                <div class="flex items-center gap-2">
-                                    <div class="w-16 h-1.5 bg-gray-100 rounded-full overflow-hidden">
-                                        <div class="h-full bg-[#0078b7]" style="width: {{ $app['completeness'] }}%"></div>
-                                    </div>
-                                    <span class="text-[10px] font-bold">{{ $app['completeness'] }}%</span>
+                    <tr class="border-b border-[#e5e5e5] hover:bg-gray-50 transition-colors">
+                        <td class="py-4 px-4">
+                            <span class="text-sm font-mono text-[#999999]" style="font-family: 'Geist Mono', monospace;">{{ $app->application_code }}</span>
+                        </td>
+                        <td class="py-4 px-4">
+                            <span class="text-sm font-semibold text-[#003d5c]" style="font-family: 'Figtree', sans-serif;">{{ $app->name }}</span>
+                        </td>
+                        <td class="py-4 px-4">
+                            <span class="text-sm text-[#666666]" style="font-family: 'Figtree', sans-serif;">{{ $app->category->name ?? 'N/A' }}</span>
+                        </td>
+                        <td class="py-4 px-4">
+                            <span class="text-sm text-[#666666]" style="font-family: 'Figtree', sans-serif;">{{ $app->created_at->format('d M Y') }}</span>
+                        </td>
+                        <td class="py-4 px-4">
+                            <div class="flex items-center gap-2">
+                                <div class="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden max-w-[100px]">
+                                    <div class="h-full bg-[#0078b7] rounded-full" style="width: {{ $app->completeness ?? 100 }}%"></div>
                                 </div>
-                            </td>
-                            <td class="py-5">
-                                <span @class([
-                                    'px-2.5 py-1 rounded-full text-[9px] font-bold uppercase tracking-wider',
-                                    'bg-red-50 text-red-600' => $app['priority'] === 'TINGGI',
-                                    'bg-blue-50 text-blue-600' => $app['priority'] === 'NORMAL',
-                                    'bg-gray-100 text-gray-600' => $app['priority'] === 'RENDAH',
-                                ])>
-                                    {{ $app['priority'] }}
-                                </span>
-                            </td>
-                            <td class="py-5 text-right">
-                                <div class="flex justify-end gap-2">
-                                    <button class="bg-[#003d5c] text-white px-3 py-1.5 rounded-lg text-[10px] font-bold hover:bg-[#0078b7] transition-colors">REVIEW</button>
-                                    <button class="p-1.5 text-gray-400 hover:text-red-500 transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>
-                                </div>
-                            </td>
-                        </tr>
+                                <span class="text-xs font-semibold text-[#003d5c]" style="font-family: 'Figtree', sans-serif;">{{ $app->completeness ?? 100 }}%</span>
+                            </div>
+                        </td>
+                        <td class="py-4 px-4">
+                            <span class="px-3 py-1 rounded-full text-xs font-semibold
+                                {{ $app->priority === 'TINGGI' ? 'bg-red-100 text-red-700' : '' }}
+                                {{ $app->priority === 'NORMAL' ? 'bg-gray-100 text-gray-700' : '' }}
+                                {{ $app->priority === 'RENDAH' ? 'bg-blue-100 text-blue-700' : '' }}"
+                                style="font-family: 'Figtree', sans-serif;">
+                                {{ $app->priority ?? 'N/A' }}
+                            </span>
+                        </td>
+                        <td class="py-4 px-4">
+                            <div class="flex items-center gap-2">
+                                <button class="px-4 py-2 bg-[#003d5c] text-white rounded-lg text-xs font-semibold hover:bg-[#0078b7] transition-colors" style="font-family: 'Figtree', sans-serif;">
+                                    {{ $app->status }}
+                                </button>
+                                <button class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-green-600">
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                </button>
+                                <button class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-red-600">
+                                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                                    </svg>
+                                </button>
+                                <button class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[#666666]">
+                                        <circle cx="12" cy="12" r="1"></circle>
+                                        <circle cx="12" cy="5" r="1"></circle>
+                                        <circle cx="12" cy="19" r="1"></circle>
+                                    </svg>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
                     @endforeach
                 </tbody>
             </table>
@@ -119,14 +143,14 @@
                     <div class="flex items-center justify-between group cursor-pointer">
                         <div class="flex items-center gap-3">
                             <div class="w-10 h-10 rounded-xl bg-gray-50 flex items-center justify-center text-[#0078b7] group-hover:bg-[#003d5c] group-hover:text-white transition-colors font-bold text-xs">
-                                {{ substr($umkm['name'], 0, 1) }}
+                                {{ substr($umkm->name, 0, 1) }}
                             </div>
                             <div>
-                                <h4 class="text-xs font-bold text-[#003d5c]">{{ $umkm['name'] }}</h4>
-                                <p class="text-[10px] text-gray-400">{{ $umkm['category'] }}</p>
+                                <h4 class="text-xs font-bold text-[#003d5c]">{{ $umkm->name }}</h4>
+                                <p class="text-[10px] text-gray-400">{{ $umkm->category->name }}</p>
                             </div>
                         </div>
-                        <span class="text-[9px] text-gray-300 font-medium">{{ $umkm['time'] }}</span>
+                        <span class="text-[9px] text-gray-300 font-medium">{{ $umkm->time }}</span>
                     </div>
                 @endforeach
             </div>
