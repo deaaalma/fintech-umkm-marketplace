@@ -12,13 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('user_notifications', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade'); // Penerima notif
+           $table->id();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('title');
             $table->text('message');
-            $table->string('type'); // e.g., 'invoice', 'order_update', 'system'
+            $table->string('type'); // e.g. invoice, order_status, info
             $table->string('link')->nullable(); // URL tujuan saat diklik
-            $table->timestamp('read_at')->nullable(); // Untuk membedakan belum/sudah dibaca
+            $table->timestamp('read_at')->nullable(); // NULL = belum dibaca
             $table->timestamps();
         });
     }

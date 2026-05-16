@@ -27,4 +27,9 @@ class Umkm extends Model
     {
         return $this->belongsTo(Umkm::class);
     }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
 }
