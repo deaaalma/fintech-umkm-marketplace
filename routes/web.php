@@ -1,98 +1,88 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Livewire\Volt\Volt;
 
+/*
+|--------------------------------------------------------------------------
+| Guest Routes
+|--------------------------------------------------------------------------
+*/
 Route::view('/', 'welcome');
 
-Route::get('/customer/dashboard/preview', function () {
-    return view('customer.dashboard');
-})->name('customer.dashboard.preview');
+/*
+|--------------------------------------------------------------------------
+| Template Preview Routes (Hanya untuk keperluan Design/Development)
+|--------------------------------------------------------------------------
+*/
+Route::prefix('templates')->name('templates.')->group(function () {
+    // Customer Previews
+    Route::prefix('customer')->name('customer.')->group(function () {
+        Route::view('/dashboard', 'templates.customer.dashboard')->name('dashboard');
+        Route::view('/orders', 'templates.customer.orders')->name('orders');
+        Route::view('/order-details', 'templates.customer.order-details')->name('order-details');
+        Route::view('/partners', 'templates.customer.partners')->name('partners');
+        Route::view('/notifications', 'templates.customer.notifications')->name('notifications');
+        Route::view('/chat', 'templates.customer.chat')->name('chat');
+    });
 
-Route::get('/customer/orders/preview', function () {
-    return view('customer.orders');
-})->name('customer.orders.preview');
-
-Route::get('/customer/partners/preview', function () {
-    return view('customer.partners');
-})->name('customer.partners.preview');
-
-Route::get('/customer/order-details/preview', function () {
-    return view('customer.order-details');
-})->name('customer.order-details.preview');
-
-Route::get('/customer/notifications/preview', function () {
-    return view('customer.notifications');
-})->name('customer.notifications.preview');
-
-Route::get('/customer/chat/preview', function () {
-    return view('customer.chat');
-})->name('customer.chat.preview');
-
-Route::get('/superadmin/dashboard/preview', function () {
-    return view('superadmin.dashboard');
-})->name('superadmin.dashboard.preview');
-
-Route::get('/superadmin/users/preview', function () {
-    return view('superadmin.users');
-})->name('superadmin.users.preview');
-
-Route::get('/superadmin/transactions/preview', function () {
-    return view('superadmin.transactions');
-})->name('superadmin.transactions.preview');
-
-Route::get('/superadmin/reports/preview', function () {
-    return view('superadmin.reports');
-})->name('superadmin.reports.preview');
-
-Route::get('/superadmin/settings/preview', function () {
-    return view('superadmin.settings');
-})->name('superadmin.settings.preview');
-
-Route::view('dashboard', 'dashboard')
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
-
-Route::view('profile', 'profile')
-    ->middleware(['auth'])
-    ->name('profile');
-
-Route::middleware(['auth', 'verified'])->group(function () {
-    
-    // 1. Dashboard untuk Customer (Default)
-    Route::get('/dashboard', function () {
-        return view('dashboard'); 
-    })->name('dashboard');
-
-    // 2. Dashboard Super Admin
-    Route::get('/admin/dashboard', function () {
-        return view('livewire.admin.index'); // Pastikan view ini ada
-    })->name('admin.dashboard');
-
-    // 3. Dashboard UMKM
-    Route::get('/umkm/dashboard', function () {
-        return view('livewire.umkm.index'); // Pastikan view ini ada
-    })->name('umkm.dashboard');
-
-    // 4. Dashboard Worker
-    Route::get('/worker/dashboard', function () {
-        return view('livewire.worker.index'); // Pastikan view ini ada
-    })->name('worker.dashboard');
-
-    // 5. Dashboard Customer
-    Route::get('/customer/dashboard', function () {
-        return view('customer.dashboard');
-    })->name('customer.dashboard');
+    // Superadmin Previews
+    Route::prefix('superadmin')->name('superadmin.')->group(function () {
+    Route::view('/dashboard', 'templates.superadmin.dashboard')->name('dashboard.preview');
+    Route::view('/users', 'templates.superadmin.users')->name('users.preview');
+    Route::view('/transactions', 'templates.superadmin.transactions')->name('transactions.preview');
+    Route::view('/reports', 'templates.superadmin.reports')->name('reports.preview');
+    Route::view('/settings', 'templates.superadmin.settings')->name('settings.preview');
+});
 });
 
+/*
+|--------------------------------------------------------------------------
+| Authenticated Routes
+|--------------------------------------------------------------------------
+*/
+Route::middleware(['auth', 'verified'])->group(function () {
+
+    // --- 1. Global Dashboard Redirector ---
+    Route::get('/dashboard', function () {
+        $role = auth()->user()->role;
+        return match($role) {
+            'super_admin' => redirect()->route('admin.dashboard'),
+            'admin_umkm'  => redirect()->route('umkm.dashboard'),
+            'worker'      => redirect()->route('worker.dashboard'),
+            'customer'    => redirect()->route('customer.dashboard'),
+            default       => redirect('/'),
+        };
+    })->name('dashboard');
+
+    // --- 2. UMKM Setup Wizard (Owner Only) ---
+    Volt::route('umkm/setup', 'pages.auth.umkm-setup')->name('umkm.setup');
+
+    // --- 6. Customer Space ---
+    Route::prefix('customer')->name('customer.')->group(function () {
+         Route::get('/dashboard', \App\Livewire\Customer\Index::class)->name('dashboard');
+    });
+
+    // --- 7. Common Auth Routes ---
+    Route::view('/profile', 'profile')->name('profile');
+});
+
+/*
+|--------------------------------------------------------------------------
+| Authentication Actions
+|--------------------------------------------------------------------------
+*/
 Route::post('/logout', function (Request $request) {
     Auth::guard('web')->logout();
-
     $request->session()->invalidate();
     $request->session()->regenerateToken();
-
     return redirect('/login');
 })->name('logout');
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
+require __DIR__ . '/admin.php';
+require __DIR__ . '/umkm.php';
+require __DIR__ . '/worker.php';

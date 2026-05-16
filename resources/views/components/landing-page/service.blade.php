@@ -1,4 +1,4 @@
-<div id="service" class="w-full pt-24 pb-0 bg-[#C5EBF4] overflow-visible relative">
+<div id="service" class="w-full pt-24 pb-0 bg-[#0A0A0A] overflow-visible relative">
     <div class="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
         <div class="partners-animate-container flex flex-col lg:flex-row items-center justify-between gap-12 mb-12 border-b border-[#000066]/10 pb-8">
             <div class="text-[#000066] text-lg lg:text-xl max-w-md leading-tight font-circular-bold">

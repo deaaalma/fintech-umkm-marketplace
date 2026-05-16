@@ -1,6 +1,6 @@
 <div class="flex items-center justify-between mb-8">
     <h2 class="text-3xl font-black text-brand-dark tracking-tighter">Recent Activities</h2>
-    <a href="{{ route('customer.orders.preview') }}" class="text-xs font-bold text-brand-primary uppercase tracking-widest hover:translate-x-1 transition-transform inline-flex items-center gap-2">
+    <a href="{{ route('templates.customer.orders.preview') }}" class="text-xs font-bold text-brand-primary uppercase tracking-widest hover:translate-x-1 transition-transform inline-flex items-center gap-2">
         View All <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
     </a>
 </div>
@@ -38,7 +38,7 @@
                 <div class="text-sm font-bold text-brand-dark">Denpasar, Bali</div>
             </div>
             <div class="col-span-2 md:col-span-1 flex items-center md:justify-end">
-                <a href="{{ route('customer.order-details.preview') }}" class="px-6 py-3 rounded-xl border border-slate-200 text-xs font-bold text-brand-dark hover:bg-slate-50 transition-all flex items-center gap-2">
+                <a href="{{ route('templates.customer.order-details.preview') }}" class="px-6 py-3 rounded-xl border border-slate-200 text-xs font-bold text-brand-dark hover:bg-slate-50 transition-all flex items-center gap-2">
                     Detail Pesanan <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
                 </a>
             </div>

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\UserNotification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -23,6 +24,8 @@ class User extends Authenticatable
         'password',
         'phone',
         'role',
+        'otp_code',
+        'otp_expires_at',
     ];
 
     /**
@@ -46,5 +49,15 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function umkm()
+    {
+        return $this->hasOne(Umkm::class, 'owner_id');
+    }
+
+    public function userNotifications()
+    {
+        return $this->hasMany(UserNotification::class)->latest();
     }
 }
