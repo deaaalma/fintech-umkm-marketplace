@@ -1,5 +1,3 @@
-@props(['apps' => collect([])])
-
 <div id="service" class="w-full pt-24 pb-0 bg-[#C5EBF4] overflow-visible relative">
     <div class="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
         <div class="partners-animate-container flex flex-col lg:flex-row items-center justify-between gap-12 mb-12 border-b border-[#000066]/10 pb-8">
@@ -7,19 +5,13 @@
                 Dipercaya oleh berbagai <span class="font-georgia-italic italic text-[#0072BB]">mitra UMKM</span> di seluruh Indonesia
             </div>
             <div class="flex-1 w-full relative overflow-hidden">
-               <div class="flex items-center gap-16 animate-scroll whitespace-nowrap">
-                    @if($apps->count() > 0)
-                        @foreach($apps as $app)
-                            <img src="{{ data_get($app, 'logo') }}" alt="{{ data_get($app, 'name') }}" class="...">
-                        @endforeach
-                        {{-- Duplikasi untuk efek infinite scroll --}}
-                        @foreach($apps as $app)
-                            <img src="{{ data_get($app, 'logo') }}" alt="{{ data_get($app, 'name') }}" class="...">
-                        @endforeach
-                    @else
-                        {{-- Tampilkan Logo Placeholder jika data kosong agar tidak jelek --}}
-                        <span class="text-[#000066]/20 text-sm italic">Mitra akan segera muncul...</span>
-                    @endif
+                <div class="flex items-center gap-16 animate-scroll whitespace-nowrap">
+                    @foreach($apps as $app)
+                        <img src="{{ $app['logo'] }}" alt="{{ $app['name'] }}" class="h-8 lg:h-10 w-auto object-contain opacity-40 grayscale hover:grayscale-0 logo-hover-blue transition-all duration-300">
+                    @endforeach
+                    @foreach($apps as $app)
+                        <img src="{{ $app['logo'] }}" alt="{{ $app['name'] }}" class="h-8 lg:h-10 w-auto object-contain opacity-40 grayscale hover:grayscale-0 logo-hover-blue transition-all duration-300">
+                    @endforeach
                 </div>
             </div>
         </div>
