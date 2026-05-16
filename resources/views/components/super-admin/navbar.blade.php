@@ -96,7 +96,7 @@
                 <div class="absolute bottom-0 left-0 {{ request()->routeIs('superadmin.umkm.*') ? 'w-full' : 'w-0' }} h-0.5 bg-current transition-all duration-300 group-hover:w-full"></div>
             </a>
 
-            <a href="{{ route('superadmin.users.preview') }}" 
+            <a href="#" 
                 class="flex items-center gap-2 px-3 py-2 text-sm font-medium transition-colors duration-200 relative group {{ request()->routeIs('superadmin.users.*') ? 'text-[#0078b7]' : 'text-gray-900 hover:text-[#0078b7]' }}" 
                 style="font-family: 'Figtree', sans-serif; font-weight: 400;">
                 <span>Pengguna</span>
@@ -104,21 +104,21 @@
                 <div class="absolute bottom-0 left-0 {{ request()->routeIs('superadmin.users.*') ? 'w-full' : 'w-0' }} h-0.5 bg-current transition-all duration-300 group-hover:w-full"></div>
             </a>
 
-            <a href="{{ route('superadmin.transactions.preview') }}" 
+            <a href="#" 
                 class="flex items-center gap-2 px-3 py-2 text-sm font-medium transition-colors duration-200 relative group {{ request()->routeIs('superadmin.transactions.*') ? 'text-[#0078b7]' : 'text-gray-900 hover:text-[#0078b7]' }}" 
                 style="font-family: 'Figtree', sans-serif; font-weight: 400;">
                 <span>Transaksi</span>
                 <div class="absolute bottom-0 left-0 {{ request()->routeIs('superadmin.transactions.*') ? 'w-full' : 'w-0' }} h-0.5 bg-current transition-all duration-300 group-hover:w-full"></div>
             </a>
 
-            <a href="{{ route('superadmin.reports.preview') }}" 
+            <a href="#" 
                 class="flex items-center gap-2 px-3 py-2 text-sm font-medium transition-colors duration-200 relative group {{ request()->routeIs('superadmin.reports.*') ? 'text-[#0078b7]' : 'text-gray-900 hover:text-[#0078b7]' }}" 
                 style="font-family: 'Figtree', sans-serif; font-weight: 400;">
                 <span>Laporan</span>
                 <div class="absolute bottom-0 left-0 {{ request()->routeIs('superadmin.reports.*') ? 'w-full' : 'w-0' }} h-0.5 bg-current transition-all duration-300 group-hover:w-full"></div>
             </a>
 
-            <a href="{{ route('superadmin.settings.preview') }}" 
+            <a href="#" 
                 class="flex items-center gap-2 px-3 py-2 text-sm font-medium transition-colors duration-200 relative group {{ request()->routeIs('superadmin.settings.*') ? 'text-[#0078b7]' : 'text-gray-900 hover:text-[#0078b7]' }}" 
                 style="font-family: 'Figtree', sans-serif; font-weight: 400;">
                 <span>Pengaturan</span>
