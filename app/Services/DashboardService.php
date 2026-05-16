@@ -11,53 +11,74 @@ class DashboardService
 {
     public function getStatsSummary()
     {
-        // 1. Ambil data dasar dari tabel umkms
+        // 1. Ambil data dasar UMKM
         $totalUmkm = \App\Models\Umkm::count();
         $activeUmkm = \App\Models\Umkm::where('status', 'active')->count();
-        $pendingUmkm = \App\Models\Umkm::where('status', 'pending_verification')->count();
         $suspendedUmkm = \App\Models\Umkm::where('status', 'suspended')->count();
+        $pendingUmkm = \App\Models\Umkm::where('status', 'pending_verification')->count();
 
-        // 2. Hitung Growth UMKM (30 hari terakhir vs 30 hari sebelumnya)
-        $newUmkmThisMonth = \App\Models\Umkm::where('created_at', '>=', now()->subDays(30))->count();
-        $umkmBeforeLastMonth = \App\Models\Umkm::where('created_at', '<', now()->subDays(30))->count();
-        
-        // Rumus growth: (Baru / Total Sebelum) * 100
-        $umkmGrowth = $umkmBeforeLastMonth > 0 
-            ? ($newUmkmThisMonth / $umkmBeforeLastMonth) * 100 
-            : ($newUmkmThisMonth > 0 ? 100 : 0);
+        // 2. Data Transaksi & Pendapatan
+        $totalOrders = \App\Models\Order::count();
+        $completedOrders = \App\Models\Order::where('status', 'completed')->count();
+        $totalRevenue = \App\Models\Payment::where('status', 'success')->sum('amount');
 
-        // 3. Ambil data rating dan review
+        // 3. Data Review & Rating
         $avgRating = \App\Models\OrderReview::avg('rating') ?? 0;
         $totalReviews = \App\Models\OrderReview::count();
-        $resolvedReviews = \App\Models\OrderReview::where('is_resolved', true)->count();
+        $resolvedIssues = \App\Models\OrderReview::where('is_resolved', true)->count();
 
         return [
-            // Card 1: UMKM Stats
+            // 1. TOTAL UMKM TERDAFTAR
             [
                 'title' => 'TOTAL UMKM TERDAFTAR',
                 'value' => number_format($totalUmkm),
                 'details' => [
                     ['label' => 'Aktif', 'value' => number_format($activeUmkm)],
-                    ['label' => 'Pending', 'value' => number_format($pendingUmkm)],
                     ['label' => 'Suspended', 'value' => number_format($suspendedUmkm)],
                 ],
-                'change' => ($umkmGrowth >= 0 ? '+' : '') . number_format($umkmGrowth, 1) . '%',
-                'changeLabel' => '30 hari ini',
                 'highlight' => false
             ],
 
-            // Card 2: Kepuasan Pelanggan (Contoh kartu kedua)
+            // 2. PENDING APPROVAL (Fokus ke verifikasi)
+            [
+                'title' => 'PENDING APPROVAL',
+                'value' => number_format($pendingUmkm),
+                'details' => [
+                    ['label' => 'Butuh Review', 'value' => number_format($pendingUmkm)],
+                ],
+                'highlight' => $pendingUmkm > 0 ? true : false, // Highlight jika ada kerjaan pending
+            ],
+
+            // 3. TOTAL TRANSAKSI
+            [
+                'title' => 'TOTAL TRANSAKSI',
+                'value' => number_format($totalOrders),
+                'details' => [
+                    ['label' => 'Selesai', 'value' => number_format($completedOrders)],
+                    ['label' => 'Revenue', 'value' => 'Rp ' . number_format($totalRevenue, 0, ',', '.')],
+                ],
+                'highlight' => false
+            ],
+
+            // 4. KEPUASAN PELANGGAN (Berdasarkan Isu)
             [
                 'title' => 'KEPUASAN PELANGGAN',
+                'value' => number_format($totalReviews),
+                'details' => [
+                    ['label' => 'Isu Selesai', 'value' => number_format($resolvedIssues)],
+                    ['label' => 'Isu Pending', 'value' => number_format($totalReviews - $resolvedIssues)],
+                ],
+                'highlight' => false
+            ],
+
+            // 5. RATING RATA-RATA
+            [
+                'title' => 'RATING RATA-RATA',
                 'value' => number_format($avgRating, 1) . ' / 5.0',
                 'details' => [
-                    ['label' => 'Total Review', 'value' => number_format($totalReviews)],
-                    ['label' => 'Resolved', 'value' => number_format($resolvedReviews)],
-                    ['label' => 'Pending Issue', 'value' => number_format($totalReviews - $resolvedReviews)],
+                    ['label' => 'Dari', 'value' => number_format($totalReviews) . ' Review'],
                 ],
-                'change' => 'Rating Live',
-                'changeLabel' => 'Dari semua pesanan',
-                'highlight' => true // Misal ini yang mau di-highlight putih
+                'highlight' => false
             ],
         ];
     }
