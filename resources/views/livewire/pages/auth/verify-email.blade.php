@@ -21,7 +21,7 @@ new #[Layout('layouts.blank')] class extends Component {
 
         if ($user->hasVerifiedEmail()) {
             // Redirect based on role or to a default onboarding
-            $this->redirectIntended(default: route('onboarding', absolute: false), navigate: true);
+            $this->redirectIntended(default: route('dashboard', absolute: false), navigate: true);
             return;
         }
 
@@ -42,7 +42,7 @@ new #[Layout('layouts.blank')] class extends Component {
 
         Session::flash('status', 'verification-successful');
 
-        $this->redirectIntended(default: route('onboarding', absolute: false), navigate: true);
+        $this->redirectIntended(default: route('dashboard', absolute: false), navigate: true);
     }
 
     /**
@@ -51,7 +51,7 @@ new #[Layout('layouts.blank')] class extends Component {
     public function sendVerification(): void
     {
         if (Auth::user()->hasVerifiedEmail()) {
-            $this->redirectIntended(default: route('onboarding', absolute: false), navigate: true);
+            $this->redirectIntended(default: route('dashboard', absolute: false), navigate: true);
 
             return;
         }
@@ -78,7 +78,8 @@ new #[Layout('layouts.blank')] class extends Component {
 
         $this->redirect('/', navigate: true);
     }
-}; ?>
+}; 
+?>
 
 
 
