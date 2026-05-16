@@ -18,22 +18,22 @@ new
 
         Session::regenerate();
 
-        // 👇 LOGIKA REDIRECT BERDASARKAN ROLE 👇
+        $user = auth()->user();
+        $role = $user->role;
 
-        $role = auth()->user()->role;
-
-        // Tentukan mau kemana berdasarkan role
+        // Tentukan URL berdasarkan role & kondisi data
         $redirectUrl = match ($role) {
             'superadmin' => route('admin.dashboard', absolute: false),
-            'admin_umkm' => route('umkm.dashboard', absolute: false),
-            'worker' => route('worker.dashboard', absolute: false),
-            'customer' => route('customer.dashboard', absolute: false),
-            default => route('dashboard', absolute: false), // customer lari kesini
+            
+            'admin_umkm' => $user->umkm()->exists() 
+                ? route('umkm.dashboard', absolute: false) 
+                : route('umkm.setup', absolute: false), // Paksa setup jika belum ada data
+                
+            'worker'     => route('worker.dashboard', absolute: false),
+            'customer'   => route('customer.dashboard', absolute: false),
+            default      => route('dashboard', absolute: false),
         };
 
-        // RedirectIntended artinya: 
-        // Kalau user tadi mau buka halaman Admin tapi dihadang login, balikin ke Admin.
-        // Tapi kalau login biasa, arahkan ke $redirectUrl yang kita set diatas.
         $this->redirectIntended(default: $redirectUrl, navigate: true);
     }
 }; ?>
