@@ -8,5 +8,8 @@ class Umkm extends Model
 {
     protected $guarded = ['id'];
 
-    
+    public function owner()
+    {
+        return $this->belongsTo(User::class, 'owner_id');
+    }
 }

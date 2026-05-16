@@ -49,4 +49,10 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function umkm()
+    {
+        // Karena di tabel umkms kamu menggunakan 'owner_id', kita definisikan secara spesifik
+        return $this->hasOne(Umkm::class, 'owner_id');
+    }
 }
