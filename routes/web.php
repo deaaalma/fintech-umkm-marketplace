@@ -61,19 +61,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // --- 2. UMKM Setup Wizard (Owner Only) ---
     Volt::route('umkm/setup', 'pages.auth.umkm-setup')->name('umkm.setup');
 
-    // --- 3. Super Admin Space ---
-    Route::prefix('admin')->name('admin.')->group(function () {
-        Route::get('/dashboard', \App\Livewire\SuperAdmin\Index::class)->name('dashboard');
-    });
-
-    // --- 4. UMKM Owner Space ---
-    Route::prefix('umkm')->name('umkm.')->group(function () {
-        Route::get('/dashboard', function () {
-            return view('livewire.umkm.index');
-        })->name('dashboard');
-        Route::get('/onboarding', \App\Livewire\Umkm\Onboarding::class)->name('onboarding');
-    });
-
     // --- 5. Worker Space ---
     Route::prefix('worker')->name('worker.')->group(function () {
         Route::get('/dashboard', function () {
@@ -106,3 +93,4 @@ Route::post('/logout', function (Request $request) {
 
 require __DIR__ . '/auth.php';
 require __DIR__ . '/admin.php';
+require __DIR__ . '/umkm.php';
