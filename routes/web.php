@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Livewire\Landing;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -11,7 +12,7 @@ use Livewire\Volt\Volt;
 | Guest Routes
 |--------------------------------------------------------------------------
 */
-Route::view('/', 'welcome');
+Route::get('/', \App\Livewire\Landing::class)->name('home');
 
 /*
 |--------------------------------------------------------------------------

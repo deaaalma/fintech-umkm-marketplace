@@ -32,17 +32,30 @@
         </div>
 
         <div class="hidden lg:flex items-center space-x-10">
-            @foreach($navigationLinks as $link)
-                <button @click="handleLinkClick('{{ $link['href'] }}')" 
-                        class="text-sm font-medium text-[#000066]/70 hover:text-[#000066] transition-colors duration-200" 
-                        style="font-family: 'Plus Jakarta Sans', sans-serif;">
-                    {{ $link['name'] }}
-                </button>
-            @endforeach
+            <button @click="handleLinkClick('#home')" 
+                    class="text-sm font-medium text-[#000066]/70 hover:text-[#000066] transition-colors duration-200" 
+                    style="font-family: 'Plus Jakarta Sans', sans-serif;">
+                Beranda
+            </button>
+            <button @click="handleLinkClick('#fitur')" 
+                    class="text-sm font-medium text-[#000066]/70 hover:text-[#000066] transition-colors duration-200" 
+                    style="font-family: 'Plus Jakarta Sans', sans-serif;">
+                Fitur
+            </button>
+            <button @click="handleLinkClick('#layanan')" 
+                    class="text-sm font-medium text-[#000066]/70 hover:text-[#000066] transition-colors duration-200" 
+                    style="font-family: 'Plus Jakarta Sans', sans-serif;">
+                Layanan
+            </button>
+            <button @click="handleLinkClick('#tentang')" 
+                    class="text-sm font-medium text-[#000066]/70 hover:text-[#000066] transition-colors duration-200" 
+                    style="font-family: 'Plus Jakarta Sans', sans-serif;">
+                Tentang Kami
+            </button>
         </div>
 
         <div class="hidden lg:flex items-center gap-6">
-            <a href="{{ route('customer.dashboard.preview') }}" 
+            <a href="/login" 
                class="text-sm font-medium text-[#000066]/70 hover:text-[#000066] transition-colors" 
                style="font-family: 'Plus Jakarta Sans', sans-serif;">Masuk</a>
             <button class="bg-[#000066] text-white px-6 py-2.5 rounded-full text-sm font-semibold transition-all duration-500 group flex items-center gap-0 hover:gap-4 border border-[#000066]/20 hover:bg-[#000066]/90 backdrop-blur-sm">
@@ -74,13 +87,21 @@
          class="absolute top-full left-0 right-0 mt-4 mx-4 bg-[#F0F9FF]/95 backdrop-blur-xl border border-[#000066]/10 rounded-3xl overflow-hidden lg:hidden"
     >
         <div class="px-6 py-8 space-y-6">
-            @foreach($navigationLinks as $link)
-                <button @click="handleLinkClick('{{ $link['href'] }}')" class="block w-full text-left text-[#000066]/70 hover:text-[#000066] py-2 text-xl font-medium transition-colors duration-200" style="font-family: 'Plus Jakarta Sans', sans-serif;">
-                    {{ $link['name'] }}
-                </button>
-            @endforeach
+            <button @click="handleLinkClick('#home')" class="block w-full text-left text-[#000066]/70 hover:text-[#000066] py-2 text-xl font-medium transition-colors duration-200" style="font-family: 'Plus Jakarta Sans', sans-serif;">
+                Beranda
+            </button>
+            <button @click="handleLinkClick('#fitur')" class="block w-full text-left text-[#000066]/70 hover:text-[#000066] py-2 text-xl font-medium transition-colors duration-200" style="font-family: 'Plus Jakarta Sans', sans-serif;">
+                Fitur
+            </button>
+            <button @click="handleLinkClick('#layanan')" class="block w-full text-left text-[#000066]/70 hover:text-[#000066] py-2 text-xl font-medium transition-colors duration-200" style="font-family: 'Plus Jakarta Sans', sans-serif;">
+                Layanan
+            </button>
+            <button @click="handleLinkClick('#tentang')" class="block w-full text-left text-[#000066]/70 hover:text-[#000066] py-2 text-xl font-medium transition-colors duration-200" style="font-family: 'Plus Jakarta Sans', sans-serif;">
+                Tentang Kami
+            </button>
+
             <div class="pt-6 border-t border-[#000066]/10 flex flex-col gap-4">
-                 <a href="{{ route('customer.dashboard.preview') }}" class="block w-full text-center text-[#000066]/70 font-medium hover:text-[#000066] transition-colors py-2 text-lg" style="font-family: 'Plus Jakarta Sans', sans-serif;">Masuk</a>
+                 <a href="/login" class="block w-full text-center text-[#000066]/70 font-medium hover:text-[#000066] transition-colors py-2 text-lg" style="font-family: 'Plus Jakarta Sans', sans-serif;">Masuk</a>
                 <button class="w-full bg-[#000066] text-white px-6 py-5 rounded-2xl text-lg font-semibold hover:bg-[#000066]/90 transition-all duration-200 flex items-center justify-center gap-3">
                     <span>Daftar</span>
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
