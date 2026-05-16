@@ -61,18 +61,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // --- 2. UMKM Setup Wizard (Owner Only) ---
     Volt::route('umkm/setup', 'pages.auth.umkm-setup')->name('umkm.setup');
 
-    // --- 5. Worker Space ---
-    Route::prefix('worker')->name('worker.')->group(function () {
-        Route::get('/dashboard', function () {
-            return view('livewire.worker.index');
-        })->name('dashboard');
-    });
-
     // --- 6. Customer Space ---
     Route::prefix('customer')->name('customer.')->group(function () {
-        Route::get('/dashboard', function () {
-            return view('livewire.customer.index');
-        })->name('dashboard');
+         Route::get('/dashboard', \App\Livewire\Customer\Index::class)->name('dashboard');
     });
 
     // --- 7. Common Auth Routes ---

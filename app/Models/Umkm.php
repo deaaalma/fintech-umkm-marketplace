@@ -12,4 +12,19 @@ class Umkm extends Model
     {
         return $this->belongsTo(User::class, 'owner_id');
     }
+
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+
+    public function umkm()
+    {
+        return $this->belongsTo(Umkm::class);
+    }
 }
