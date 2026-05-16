@@ -36,10 +36,10 @@
         $navigationLinks = [
             ['name' => 'Dashboard', 'href' => '#', 'active' => true],
             ['name' => 'UMKM Management', 'href' => '#', 'badge' => 127],
-            ['name' => 'Pengguna', 'href' => route('superadmin.users.preview'), 'badge' => 2],
-            ['name' => 'Transaksi', 'href' => route('superadmin.transactions.preview')],
-            ['name' => 'Laporan', 'href' => route('superadmin.reports.preview')],
-            ['name' => 'Pengaturan', 'href' => route('superadmin.settings.preview')],
+            ['name' => 'Pengguna', 'href' => route('templates.superadmin.users.preview'), 'badge' => 2],
+            ['name' => 'Transaksi', 'href' => route('templates.superadmin.transactions.preview')],
+            ['name' => 'Laporan', 'href' => route('templates.superadmin.reports.preview')],
+            ['name' => 'Pengaturan', 'href' => route('templates.superadmin.settings.preview')],
         ];
 
         $stats = [

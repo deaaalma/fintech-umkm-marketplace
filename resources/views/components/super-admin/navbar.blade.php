@@ -55,17 +55,56 @@
                     <span class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
                 </button>
                 
-                <div class="flex items-center gap-3 pl-4 border-l border-[#e5e5e5]">
-                    <div class="w-9 h-9 rounded-full bg-[#0078b7] flex items-center justify-center">
-                        <span class="text-white font-semibold text-sm" style="font-family: 'Figtree', sans-serif;">A</span>
+               <div class="relative" x-data="{ open: false }">
+                    <div @click="open = !open" @click.outside="open = false" class="flex items-center gap-3 pl-4 border-l border-[#e5e5e5] cursor-pointer hover:opacity-80 transition-opacity">
+                        <div class="w-9 h-9 rounded-full bg-[#0078b7] flex items-center justify-center overflow-hidden">
+                            @if(auth()->user()->profile_picture_url)
+                                <img src="{{ auth()->user()->profile_picture_url }}" class="w-full h-full object-cover">
+                            @else
+                                <span class="text-white font-semibold text-sm" style="font-family: 'Figtree', sans-serif;">
+                                    {{ substr(auth()->user()->name, 0, 1) }}
+                                </span>
+                            @endif
+                        </div>
+                        <div class="text-left hidden md:block">
+                            <div class="text-sm font-semibold text-gray-900 font-figtree">{{ auth()->user()->name }}</div>
+                            <div class="text-xs text-[#666666] font-figtree">{{ ucfirst(str_replace('_', ' ', auth()->user()->role)) }}</div>
+                        </div>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[#999999] transition-transform duration-200" :class="open ? 'rotate-180' : ''">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
                     </div>
-                    <div class="text-left">
-                        <div class="text-sm font-semibold text-gray-900" style="font-family: 'Figtree', sans-serif;">{{ auth()->user()->name }}</div>
-                        <div class="text-xs text-[#666666]" style="font-family: 'Figtree', sans-serif;">{{ auth()->user()->role }}</div>
+
+                    <div x-show="open" 
+                        x-transition:enter="transition ease-out duration-100"
+                        x-transition:enter-start="transform opacity-0 scale-95"
+                        x-transition:enter-end="transform opacity-100 scale-100"
+                        x-transition:leave="transition ease-in duration-75"
+                        x-transition:leave-start="transform opacity-100 scale-100"
+                        x-transition:leave-end="transform opacity-0 scale-95"
+                        class="absolute right-0 mt-2 w-48 bg-white border border-[#e5e5e5] rounded-xl shadow-lg py-2 z-[60]"
+                        x-cloak>
+                        
+                        <div class="px-4 py-2 border-b border-gray-50 md:hidden">
+                            <p class="text-xs font-bold text-gray-900 truncate">{{ auth()->user()->name }}</p>
+                            <p class="text-[10px] text-gray-500 truncate">{{ auth()->user()->email }}</p>
+                        </div>
+
+                        <a href="{{ route('profile') }}" class="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors font-figtree">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                            Profil Saya
+                        </a>
+
+                        <hr class="my-1 border-gray-50">
+
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button type="submit" class="w-full flex items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors font-figtree">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                                Keluar
+                            </button>
+                        </form>
                     </div>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[#999999]">
-                        <polyline points="6 9 12 15 18 9"></polyline>
-                    </svg>
                 </div>
             </div>
 

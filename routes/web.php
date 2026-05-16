@@ -31,12 +31,12 @@ Route::prefix('templates')->name('templates.')->group(function () {
 
     // Superadmin Previews
     Route::prefix('superadmin')->name('superadmin.')->group(function () {
-        Route::view('/dashboard', 'templates.superadmin.dashboard')->name('dashboard');
-        Route::view('/users', 'templates.superadmin.users')->name('users');
-        Route::view('/transactions', 'templates.superadmin.transactions')->name('transactions');
-        Route::view('/reports', 'templates.superadmin.reports')->name('reports');
-        Route::view('/settings', 'templates.superadmin.settings')->name('settings');
-    });
+    Route::view('/dashboard', 'templates.superadmin.dashboard')->name('dashboard.preview');
+    Route::view('/users', 'templates.superadmin.users')->name('users.preview');
+    Route::view('/transactions', 'templates.superadmin.transactions')->name('transactions.preview');
+    Route::view('/reports', 'templates.superadmin.reports')->name('reports.preview');
+    Route::view('/settings', 'templates.superadmin.settings')->name('settings.preview');
+});
 });
 
 /*
