@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Livewire\Volt\Volt;
 
 Route::view('/', 'welcome');
 
@@ -60,33 +61,45 @@ Route::view('templates.profile', 'profile')
 
 Route::middleware(['auth', 'verified'])->group(function () {
 
-    // 1. Dashboard untuk Customer (Default)
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+        // 1. Wizard Setup UMKM
+        Volt::route('umkm/setup', 'pages.auth.umkm-setup')
+            ->name('umkm.setup');
 
-    // 2. Dashboard Super Admin
-    Route::get('/admin/dashboard', function () {
-        return view('livewire.superadmin.index'); // Pastikan view ini ada
-    })->name('admin.dashboard');
+        // 2. Default Dashboard (Pintu Masuk Utama)
+        // Route ini biasanya digunakan untuk redirect general
+        Route::get('/dashboard', function () {
+            $role = auth()->user()->role;
 
-    // 3. Dashboard UMKM
-    Route::get('/dashboard', function () {
-        return view('livewire.customer.index'); // Tampilan default customer/pembeli
-    })->name('dashboard');
+            return match($role) {
+                'super_admin' => redirect()->route('admin.dashboard'),
+                'admin_umkm'  => redirect()->route('umkm.dashboard'), // Ubah ke route dashboard UMKM
+                'worker'      => redirect()->route('worker.dashboard'),
+                default       => view('livewire.customer.index'), // Dashboard Customer
+            };
+        })->name('dashboard');
 
-    Route::get('/onboarding', \App\Livewire\Umkm\Onboarding::class)->name('onboarding');
+        // 3. Dashboard Super Admin
+        Route::get('/admin/dashboard', function () {
+            return view('livewire.superadmin.index');
+        })->name('admin.dashboard');
 
-    // 4. Dashboard Worker
-    Route::get('/worker/dashboard', function () {
-        return view('livewire.worker.index'); // Pastikan view ini ada
-    })->name('worker.dashboard');
+        // 4. Dashboard UMKM (Owner)
+        Route::get('/umkm/dashboard', function () {
+            return view('livewire.umkm.index'); // Buat view khusus Dashboard Owner UMKM
+        })->name('umkm.dashboard');
 
-    // 5. Dashboard Customer
-    Route::get('/customer/dashboard', function () {
-        return view('customer.dashboard');
-    })->name('customer.dashboard');
-});
+        // 5. Dashboard Worker
+        Route::get('/worker/dashboard', function () {
+            return view('livewire.worker.index');
+        })->name('worker.dashboard');
+
+        // 6. Dashboard Customer (Spesifik)
+        Route::get('/customer/dashboard', function () {
+            return view('livewire.customer.index');
+        })->name('customer.dashboard');
+
+        Route::get('/onboarding', \App\Livewire\Umkm\Onboarding::class)->name('onboarding');
+    });
 
 Route::post('/logout', function (Request $request) {
     Auth::guard('web')->logout();

@@ -202,10 +202,12 @@ new
 
             </form>
 
-            <div class="text-center mt-6">
+            <div class="text-center mt-6 space-y-2">
                 <p class="text-sm text-gray-500">
-                    Already have an account? <a href="{{ route('login') }}" class="font-bold text-black hover:underline"
-                        wire:navigate>Sign In</a>
+                    Already have an account? <a href="{{ route('login') }}" class="font-bold text-black hover:underline" wire:navigate>Sign In</a>
+                </p>
+                <p class="text-sm text-gray-500">
+                    Are you a business owner? <a href="{{ route('register.umkm') }}" class="font-bold text-indigo-600 hover:underline" wire:navigate>Register as UMKM</a>
                 </p>
             </div>
         </div>

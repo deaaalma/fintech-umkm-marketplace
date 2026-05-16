@@ -87,13 +87,13 @@
     </style>
 </head>
 <body class="antialiased min-h-screen flex flex-col">
-    @include('customer.partials.navbar')
+    @include('templates.customer.partials.navbar')
 
     <main class="flex-grow pt-40 pb-20">
         @yield('content')
     </main>
 
-    @include('customer.partials.footer')
+    @include('templates.customer.partials.footer')
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {

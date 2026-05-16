@@ -22,18 +22,18 @@
 @endphp
 
 <div class="max-w-6xl mx-auto">
-    @include('customer.dashboard.header', ['user' => $user])
-    @include('customer.dashboard.stats')
+    @include('templates.customer.dashboard.header', ['user' => $user])
+    @include('templates.customer.dashboard.stats')
 
-    <div class="grid lg:grid-cols-3 gap-12">
+    {{-- <div class="grid lg:grid-cols-3 gap-12">
         <div class="lg:col-span-2 space-y-8 animate-on-scroll">
-            @include('customer.dashboard.recent-activities')
+            @include('templates.customer.dashboard.recent-activities')
         </div>
         <div class="space-y-10 animate-on-scroll">
-            @include('customer.dashboard.recommendations')
-            @include('customer.dashboard.notifications')
+            @include('templates.customer.dashboard.recommendations')
+            @include('templates.customer.dashboard.notifications')
         </div>
-    </div>
+    </div> --}}
 </div>
 
 <div id="floating-notification" class="fixed bottom-8 left-1/2 -translate-x-1/2 z-[100] w-[90%] max-w-md pointer-events-none opacity-0 translate-y-20">

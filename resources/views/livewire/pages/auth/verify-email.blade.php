@@ -18,23 +18,25 @@ new #[Layout('layouts.blank')] class extends Component {
     public function verifyOtp(): void
     {
         $user = Auth::user();
-
+        // 1. Cek jika sudah verified (Protection)
         if ($user->hasVerifiedEmail()) {
-            // Redirect based on role or to a default onboarding
-            $this->redirectIntended(default: route('dashboard', absolute: false), navigate: true);
+            $this->handleRedirect($user);
             return;
         }
 
+        // 2. Validasi Input OTP
         $this->validate([
             'otp' => ['required', 'string', 'size:6'],
         ]);
 
+        // 3. Cek Kecocokan & Kadaluarsa
         if ($user->otp_code !== $this->otp || now()->greaterThan($user->otp_expires_at)) {
             throw ValidationException::withMessages([
                 'otp' => __('The provided OTP is incorrect or has expired.'),
             ]);
         }
 
+        // 4. Update Status User
         $user->email_verified_at = now();
         $user->otp_code = null;
         $user->otp_expires_at = null;
@@ -42,7 +44,22 @@ new #[Layout('layouts.blank')] class extends Component {
 
         Session::flash('status', 'verification-successful');
 
-        $this->redirectIntended(default: route('dashboard', absolute: false), navigate: true);
+        // 5. Eksekusi Redirect Berdasarkan Role
+        $this->handleRedirect($user);
+    }
+
+    /**
+     * Helper function untuk menangani arah redirect
+     */
+    private function handleRedirect($user): void
+    {
+        if ($user->role === 'admin_umkm') {
+            // Gunakan redirect biasa, jangan redirectIntended
+            $this->redirect(route('umkm.setup', absolute: false), navigate: true);
+            return;
+        }
+
+        $this->redirect(route('dashboard', absolute: false), navigate: true);
     }
 
     /**
@@ -84,6 +101,7 @@ new #[Layout('layouts.blank')] class extends Component {
 
 
 <div class="flex min-h-screen w-full bg-white">
+    {{-- @dd('halooo') --}}
 
     <div class="hidden lg:flex w-1/2 bg-gray-600 flex-col justify-between p-12 text-white relative overflow-hidden"
         style="background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('{{ asset('storage/images/auth.jpg') }}'); background-size: cover; background-position: center;">
