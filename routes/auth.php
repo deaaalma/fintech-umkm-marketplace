@@ -8,9 +8,6 @@ Route::middleware('guest')->group(function () {
     Volt::route('register', 'pages.auth.register')
         ->name('register');
 
-    Volt::route('register/umkm', 'pages.auth.register-umkm')
-        ->name('register.umkm');
-
     Volt::route('login', 'pages.auth.login')
         ->name('login');
 
