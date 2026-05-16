@@ -5,55 +5,55 @@
     <!-- ========================================== -->
     
     <!-- Abstract Shapes & Orbs Left -->
-    <div class="absolute -left-32 top-10 transform -rotate-12 opacity-[0.05] w-[400px] h-[400px] pointer-events-none z-0 gsap-parallax-1">
+    <div class="absolute -left-32 top-10 transform -rotate-12 opacity-[0.3] w-[400px] h-[400px] pointer-events-none z-0 gsap-parallax-1">
         <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-            <path fill="#0078b7" d="M49.5,-59.4C64.6,-48.3,77.7,-32.8,83.5,-14.2C89.3,4.4,87.9,26.1,75.9,41.9C63.8,57.6,41.2,67.3,18.7,73.4C-3.8,79.5,-26.3,81.9,-44.6,73C-62.9,64.1,-77.2,43.9,-82.7,21.9C-88.1,-0.2,-84.8,-24,-72.6,-42.1C-60.5,-60.2,-39.5,-72.5,-21,-76.3C-2.5,-80.1,13.4,-75.4,49.5,-59.4Z" transform="translate(100 100)" />
+            <path fill="#C5EBF4" d="M49.5,-59.4C64.6,-48.3,77.7,-32.8,83.5,-14.2C89.3,4.4,87.9,26.1,75.9,41.9C63.8,57.6,41.2,67.3,18.7,73.4C-3.8,79.5,-26.3,81.9,-44.6,73C-62.9,64.1,-77.2,43.9,-82.7,21.9C-88.1,-0.2,-84.8,-24,-72.6,-42.1C-60.5,-60.2,-39.5,-72.5,-21,-76.3C-2.5,-80.1,13.4,-75.4,49.5,-59.4Z" transform="translate(100 100)" />
         </svg>
     </div>
     <!-- Glowing Orb Left -->
-    <div class="absolute -left-20 top-1/2 w-96 h-96 bg-[#0078b7] rounded-full mix-blend-multiply filter blur-[100px] opacity-[0.03] pointer-events-none z-0 gsap-parallax-2"></div>
+    <div class="absolute -left-20 top-1/2 w-96 h-96 bg-[#C5EBF4] rounded-full mix-blend-multiply filter blur-[100px] opacity-[0.4] pointer-events-none z-0 gsap-parallax-2"></div>
     
     <!-- Dotted Pattern Left -->
-    <div class="absolute left-0 top-60 opacity-20 pointer-events-none z-0 mix-blend-multiply" style="background-image: radial-gradient(#0078b7 2px, transparent 2px); background-size: 24px 24px; width: 200px; height: 400px; -webkit-mask-image: linear-gradient(to right, black, transparent);"></div>
+    <div class="absolute left-0 top-60 opacity-60 pointer-events-none z-0 mix-blend-multiply" style="background-image: radial-gradient(#C5EBF4 2px, transparent 2px); background-size: 24px 24px; width: 200px; height: 400px; -webkit-mask-image: linear-gradient(to right, black, transparent);"></div>
 
     <!-- Floating Rings Left -->
-    <div class="absolute left-10 bottom-32 w-32 h-32 border-[3px] border-[#0078b7]/10 rounded-full pointer-events-none z-0 gsap-parallax-3"></div>
-    <div class="absolute left-40 bottom-24 w-12 h-12 border-2 border-[#0078b7]/10 rounded-full pointer-events-none z-0 gsap-parallax-3"></div>
+    <div class="absolute left-10 bottom-32 w-32 h-32 border-[3px] border-[#C5EBF4]/40 rounded-full pointer-events-none z-0 gsap-parallax-3"></div>
+    <div class="absolute left-40 bottom-24 w-12 h-12 border-2 border-[#C5EBF4]/40 rounded-full pointer-events-none z-0 gsap-parallax-3"></div>
 
     <!-- Tech Plus Signs Left -->
-    <div class="absolute left-16 top-96 text-[#0078b7]/10 pointer-events-none z-0 transform rotate-12 gsap-parallax-rotate">
+    <div class="absolute left-16 top-96 text-[#C5EBF4]/80 pointer-events-none z-0 transform rotate-12 gsap-parallax-rotate">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
     </div>
 
 
     <!-- Abstract Shapes & Orbs Right -->
-    <div class="absolute -right-48 top-1/4 transform -translate-y-1/2 rotate-45 opacity-[0.04] w-[600px] h-[600px] pointer-events-none z-0 gsap-parallax-reverse-1">
+    <div class="absolute -right-48 top-1/4 transform -translate-y-1/2 rotate-45 opacity-[0.3] w-[600px] h-[600px] pointer-events-none z-0 gsap-parallax-reverse-1">
         <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-            <path fill="#0078b7" d="M44.7,-76.4C58,-69.2,69,-56.1,77.9,-41.6C86.8,-27.1,93.5,-11.2,91.8,3.9C90.2,19.1,80.1,33.4,68.9,45.4C57.7,57.5,45.3,67.4,30.9,73.4C16.4,79.4,0,81.5,-15.8,79.1C-31.5,76.6,-46.6,69.5,-59.5,59.2C-72.3,48.8,-83.1,35.2,-88.4,19.6C-93.7,4.1,-93.6,-13.4,-86.3,-27.9C-79,-42.5,-64.5,-54.1,-50,-61C-35.4,-67.9,-20.8,-70.2,-3.9,-65.4C13.1,-60.5,26.2,-48.5,44.7,-76.4Z" transform="translate(100 100)" />
+            <path fill="#C5EBF4" d="M44.7,-76.4C58,-69.2,69,-56.1,77.9,-41.6C86.8,-27.1,93.5,-11.2,91.8,3.9C90.2,19.1,80.1,33.4,68.9,45.4C57.7,57.5,45.3,67.4,30.9,73.4C16.4,79.4,0,81.5,-15.8,79.1C-31.5,76.6,-46.6,69.5,-59.5,59.2C-72.3,48.8,-83.1,35.2,-88.4,19.6C-93.7,4.1,-93.6,-13.4,-86.3,-27.9C-79,-42.5,-64.5,-54.1,-50,-61C-35.4,-67.9,-20.8,-70.2,-3.9,-65.4C13.1,-60.5,26.2,-48.5,44.7,-76.4Z" transform="translate(100 100)" />
         </svg>
     </div>
     
     <!-- Another Blob Right Bottom -->
-    <div class="absolute -right-20 bottom-10 transform rotate-[120deg] opacity-[0.03] w-[450px] h-[450px] pointer-events-none z-0 gsap-parallax-reverse-1">
+    <div class="absolute -right-20 bottom-10 transform rotate-[120deg] opacity-[0.3] w-[450px] h-[450px] pointer-events-none z-0 gsap-parallax-reverse-1">
         <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-            <path fill="#0078b7" d="M39.6,-66.2C52.6,-59.8,65.3,-50.2,74.7,-37.8C84.1,-25.4,90.2,-10.1,88.7,4.3C87.2,18.7,78.1,32.3,67.6,44.2C57.1,56.1,45.2,66.4,31.7,73.5C18.2,80.6,3.1,84.5,-11.4,81.9C-25.9,79.3,-39.8,70.3,-50.7,58.8C-61.6,47.3,-69.5,33.4,-75.3,18.4C-81.1,3.4,-84.8,-12.8,-80.6,-26.8C-76.4,-40.8,-64.3,-52.6,-50.8,-58.8C-37.3,-65,-22.4,-65.6,-7.8,-63.9C6.8,-62.2,26.6,-72.6,39.6,-66.2Z" transform="translate(100 100)" />
+            <path fill="#C5EBF4" d="M39.6,-66.2C52.6,-59.8,65.3,-50.2,74.7,-37.8C84.1,-25.4,90.2,-10.1,88.7,4.3C87.2,18.7,78.1,32.3,67.6,44.2C57.1,56.1,45.2,66.4,31.7,73.5C18.2,80.6,3.1,84.5,-11.4,81.9C-25.9,79.3,-39.8,70.3,-50.7,58.8C-61.6,47.3,-69.5,33.4,-75.3,18.4C-81.1,3.4,-84.8,-12.8,-80.6,-26.8C-76.4,-40.8,-64.3,-52.6,-50.8,-58.8C-37.3,-65,-22.4,-65.6,-7.8,-63.9C6.8,-62.2,26.6,-72.6,39.6,-66.2Z" transform="translate(100 100)" />
         </svg>
     </div>
 
     <!-- Glowing Orb Center-Right -->
-    <div class="absolute -right-20 top-0 w-[500px] h-[500px] bg-[#0078b7] rounded-full mix-blend-multiply filter blur-[120px] opacity-[0.03] pointer-events-none z-0 gsap-parallax-2"></div>
+    <div class="absolute -right-20 top-0 w-[500px] h-[500px] bg-[#C5EBF4] rounded-full mix-blend-multiply filter blur-[120px] opacity-[0.4] pointer-events-none z-0 gsap-parallax-2"></div>
 
     <!-- Dotted Pattern Right -->
-    <div class="absolute right-0 bottom-24 opacity-[0.14] pointer-events-none z-0 mix-blend-multiply" style="background-image: radial-gradient(#0078b7 1.5px, transparent 1.5px); background-size: 20px 20px; width: 250px; height: 350px; -webkit-mask-image: radial-gradient(ellipse at bottom right, black, transparent);"></div>
+    <div class="absolute right-0 bottom-24 opacity-[0.5] pointer-events-none z-0 mix-blend-multiply" style="background-image: radial-gradient(#C5EBF4 1.5px, transparent 1.5px); background-size: 20px 20px; width: 250px; height: 350px; -webkit-mask-image: radial-gradient(ellipse at bottom right, black, transparent);"></div>
 
     <!-- Floating Rings Right -->
-    <div class="absolute right-32 top-32 w-24 h-24 border-[4px] border-[#0078b7]/5 rounded-full pointer-events-none z-0 gsap-parallax-3"></div>
+    <div class="absolute right-32 top-32 w-24 h-24 border-[4px] border-[#C5EBF4]/30 rounded-full pointer-events-none z-0 gsap-parallax-3"></div>
     
     <!-- Tech Plus Signs Right -->
-    <div class="absolute right-20 bottom-[350px] text-[#0078b7]/10 pointer-events-none z-0 transform -rotate-6 gsap-parallax-rotate-reverse">
+    <div class="absolute right-20 bottom-[350px] text-[#C5EBF4]/80 pointer-events-none z-0 transform -rotate-6 gsap-parallax-rotate-reverse">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
     </div>
-    <div class="absolute right-10 bottom-[310px] text-[#0078b7]/10 pointer-events-none z-0 transform rotate-12 gsap-parallax-rotate">
+    <div class="absolute right-10 bottom-[310px] text-[#C5EBF4]/80 pointer-events-none z-0 transform rotate-12 gsap-parallax-rotate">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
     </div>
 
@@ -61,10 +61,10 @@
         
         <!-- Top Row: Header -->
         <div class="flex flex-col w-full gap-3 mb-6 lg:mb-8 gsap-stagger-up">
-            <span class="text-[#0078b7] font-circular-bold text-[18px] tracking-wide flex items-center gap-3">
+            <span class="text-[#0072BB] text-[18px] tracking-wide flex items-center gap-3" style="font-family: 'Figtree', sans-serif; font-weight: 600;">
                 How It Works?
             </span>
-            <h2 class="text-4xl lg:text-[44px] font-circular-bold text-[#111] tracking-tight leading-[1.1] max-w-xl">
+            <h2 class="text-4xl lg:text-[48px] font-bold text-[#000066] tracking-tight leading-[1.1] max-w-xl" style="font-family: 'Plus Jakarta Sans', sans-serif;">
                 Digitalisasi Mudah<br>Untuk Usaha Anda
             </h2>
         </div>
@@ -75,8 +75,8 @@
                 <!-- Sliding Background Pill -->
                 <div id="tab-slider" class="absolute left-1.5 top-1.5 bottom-1.5 w-[calc(50%-6px)] bg-white rounded-full shadow-[0_2px_12px_rgba(0,0,0,0.06)] border border-black/[0.02] transition-transform duration-500 ease-out z-0"></div>
                 
-                <button id="tab-umkm" class="relative px-8 py-2.5 rounded-full text-[15px] font-circular-bold text-[#0078b7] transition-colors duration-500 z-10 w-[120px]" onclick="switchWorkflowTab('umkm')">UMKM</button>
-                <button id="tab-customer" class="relative px-8 py-2.5 rounded-full text-[15px] font-circular-medium text-gray-500 transition-colors duration-500 z-10 w-[120px]" onclick="switchWorkflowTab('customer')">Customer</button>
+                <button id="tab-umkm" class="relative px-8 py-2.5 rounded-full text-[15px] font-bold text-[#0072BB] transition-colors duration-500 z-10 w-[120px]" style="font-family: 'Plus Jakarta Sans', sans-serif;" onclick="switchWorkflowTab('umkm')">UMKM</button>
+                <button id="tab-customer" class="relative px-8 py-2.5 rounded-full text-[15px] font-medium text-gray-500 transition-colors duration-500 z-10 w-[120px]" style="font-family: 'Plus Jakarta Sans', sans-serif;" onclick="switchWorkflowTab('customer')">Customer</button>
             </div>
         </div>
 
@@ -99,51 +99,51 @@
 
                 <div class="w-full lg:w-[55%] flex pt-6 lg:pt-0 gsap-parallax-content">
                     <div class="relative w-[2px] bg-gray-200/60 shrink-0 mr-8 lg:mr-10 my-6 rounded-full">
-                        <div id="workflow-indicator" class="absolute left-[-1px] w-[4px] rounded-full bg-[#0078b7] transition-all duration-500 ease-out" style="height: 25%; top: 0%;"></div>
+                        <div id="workflow-indicator" class="absolute left-[-1px] w-[4px] rounded-full bg-[#0072BB] transition-all duration-500 ease-out" style="height: 25%; top: 0%;"></div>
                     </div>
 
                     <div class="flex flex-col gap-8 lg:gap-10 w-full">
                         <div class="workflow-step-btn flex items-start gap-5 lg:gap-6 cursor-pointer group" onclick="switchWorkflowStep(0, 'umkm')">
-                            <div class="w-14 h-14 rounded-2xl bg-white border border-black/[0.04] shadow-sm shadow-black/5 flex items-center justify-center shrink-0 relative">
-                                <svg class="w-6 h-6 icon-outline text-[#0078b7] transition-opacity duration-300 absolute opacity-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
-                                <svg class="w-6 h-6 icon-solid text-[#0078b7] transition-opacity duration-300 absolute opacity-100" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" /></svg>
+                            <div class="w-14 h-14 rounded-2xl bg-white border border-[#000066]/5 shadow-sm shadow-[#000066]/5 flex items-center justify-center shrink-0 relative">
+                                <svg class="w-6 h-6 icon-outline text-[#0072BB] transition-opacity duration-300 absolute opacity-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                                <svg class="w-6 h-6 icon-solid text-[#0072BB] transition-opacity duration-300 absolute opacity-100" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" /></svg>
                             </div>
                             <div class="flex flex-col pt-1 transition-opacity duration-300 workflow-text self-start opacity-100">
-                                <h3 class="text-[19px] font-circular-bold text-[#18181b] tracking-tight mb-1 leading-tight">Pendaftaran Akun</h3>
-                                <p class="text-[#52525b] text-[15px] font-circular-book leading-relaxed workflow-desc max-w-[420px]">Mulai langkah pertama dengan membuat profil UMKM Anda. Lengkapi data administrasi dasar dan identitas brand Anda untuk diverifikasi dengan cepat.</p>
+                                <h3 class="text-[19px] font-bold text-[#000066] tracking-tight mb-1 leading-tight" style="font-family: 'Plus Jakarta Sans', sans-serif;">Pendaftaran Akun</h3>
+                                <p class="text-[#000066]/70 text-[15px] font-medium leading-relaxed workflow-desc max-w-[420px]" style="font-family: 'Figtree', sans-serif;">Mulai langkah pertama dengan membuat profil UMKM Anda. Lengkapi data administrasi dasar dan identitas brand Anda untuk diverifikasi dengan cepat.</p>
                             </div>
                         </div>
 
                         <div class="workflow-step-btn flex items-start gap-5 lg:gap-6 cursor-pointer group" onclick="switchWorkflowStep(1, 'umkm')">
-                            <div class="w-14 h-14 rounded-2xl bg-white border border-black/[0.04] shadow-sm shadow-black/5 flex items-center justify-center shrink-0 relative">
-                                <svg class="w-6 h-6 icon-outline text-[#a1a1aa] transition-opacity duration-300 absolute opacity-100" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                                <svg class="w-6 h-6 icon-solid text-[#0078b7] transition-opacity duration-300 absolute opacity-0" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286 .948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287 .947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd" /></svg>
+                            <div class="w-14 h-14 rounded-2xl bg-white border border-[#000066]/5 shadow-sm shadow-[#000066]/5 flex items-center justify-center shrink-0 relative">
+                                <svg class="w-6 h-6 icon-outline text-gray-400 transition-opacity duration-300 absolute opacity-100" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                                <svg class="w-6 h-6 icon-solid text-[#0072BB] transition-opacity duration-300 absolute opacity-0" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286 .948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287 .947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd" /></svg>
                             </div>
                             <div class="flex flex-col pt-1 transition-opacity duration-300 workflow-text self-start opacity-60">
-                                <h3 class="text-[19px] font-circular-bold text-[#18181b] tracking-tight mb-1 leading-tight">Konfigurasi Toko</h3>
-                                <p class="text-[#52525b] text-[15px] font-circular-book leading-relaxed workflow-desc max-w-[420px]">Atur tampilan landing page Anda secara mandiri. Unggah foto produk, tentukan harga jual, dan pilih metode pengiriman yang ingin digunakan.</p>
+                                <h3 class="text-[19px] font-bold text-[#000066] tracking-tight mb-1 leading-tight" style="font-family: 'Plus Jakarta Sans', sans-serif;">Konfigurasi Toko</h3>
+                                <p class="text-[#000066]/70 text-[15px] font-medium leading-relaxed workflow-desc max-w-[420px]" style="font-family: 'Figtree', sans-serif;">Atur tampilan landing page Anda secara mandiri. Unggah foto produk, tentukan harga jual, dan pilih metode pengiriman yang ingin digunakan.</p>
                             </div>
                         </div>
 
                         <div class="workflow-step-btn flex items-start gap-5 lg:gap-6 cursor-pointer group" onclick="switchWorkflowStep(2, 'umkm')">
-                            <div class="w-14 h-14 rounded-2xl bg-white border border-black/[0.04] shadow-sm shadow-black/5 flex items-center justify-center shrink-0 relative">
-                                <svg class="w-6 h-6 icon-outline text-[#a1a1aa] transition-opacity duration-300 absolute opacity-100" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
-                                <svg class="w-6 h-6 icon-solid text-[#0078b7] transition-opacity duration-300 absolute opacity-0" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z" clip-rule="evenodd" /></svg>
+                            <div class="w-14 h-14 rounded-2xl bg-white border border-[#000066]/5 shadow-sm shadow-[#000066]/5 flex items-center justify-center shrink-0 relative">
+                                <svg class="w-6 h-6 icon-outline text-gray-400 transition-opacity duration-300 absolute opacity-100" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
+                                <svg class="w-6 h-6 icon-solid text-[#0072BB] transition-opacity duration-300 absolute opacity-0" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z" clip-rule="evenodd" /></svg>
                             </div>
                             <div class="flex flex-col pt-1 transition-opacity duration-300 workflow-text self-start opacity-60">
-                                <h3 class="text-[19px] font-circular-bold text-[#18181b] tracking-tight mb-1 leading-tight">Manajemen Pesanan</h3>
-                                <p class="text-[#52525b] text-[15px] font-circular-book leading-relaxed workflow-desc max-w-[420px]">Kelola setiap order yang masuk secara terpusat dan real-time. Hubungi pelanggan dan proses pesanan tanpa harus berpindah aplikasi.</p>
+                                <h3 class="text-[19px] font-bold text-[#000066] tracking-tight mb-1 leading-tight" style="font-family: 'Plus Jakarta Sans', sans-serif;">Manajemen Pesanan</h3>
+                                <p class="text-[#000066]/70 text-[15px] font-medium leading-relaxed workflow-desc max-w-[420px]" style="font-family: 'Figtree', sans-serif;">Kelola setiap order yang masuk secara terpusat dan real-time. Hubungi pelanggan dan proses pesanan tanpa harus berpindah aplikasi.</p>
                             </div>
                         </div>
 
                         <div class="workflow-step-btn flex items-start gap-5 lg:gap-6 cursor-pointer group" onclick="switchWorkflowStep(3, 'umkm')">
-                            <div class="w-14 h-14 rounded-2xl bg-white border border-black/[0.04] shadow-sm shadow-black/5 flex items-center justify-center shrink-0 relative">
-                                <svg class="w-6 h-6 icon-outline text-[#a1a1aa] transition-opacity duration-300 absolute opacity-100" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"></path></svg>
-                                <svg class="w-6 h-6 icon-solid text-[#0078b7] transition-opacity duration-300 absolute opacity-0" viewBox="0 0 20 20" fill="currentColor"><path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z" /></svg>
+                            <div class="w-14 h-14 rounded-2xl bg-white border border-[#000066]/5 shadow-sm shadow-[#000066]/5 flex items-center justify-center shrink-0 relative">
+                                <svg class="w-6 h-6 icon-outline text-gray-400 transition-opacity duration-300 absolute opacity-100" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"></path></svg>
+                                <svg class="w-6 h-6 icon-solid text-[#0072BB] transition-opacity duration-300 absolute opacity-0" viewBox="0 0 20 20" fill="currentColor"><path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z" /></svg>
                             </div>
                             <div class="flex flex-col pt-1 transition-opacity duration-300 workflow-text self-start opacity-60">
-                                <h3 class="text-[19px] font-circular-bold text-[#18181b] tracking-tight mb-1 leading-tight">Analisis Pertumbuhan</h3>
-                                <p class="text-[#52525b] text-[15px] font-circular-book leading-relaxed workflow-desc max-w-[420px]">Evaluasi performa penjualan setiap harinya lewat dashboard statistik pintar. Gunakan insight untuk meraih pencapaian target bisnis yang lebih baik.</p>
+                                <h3 class="text-[19px] font-bold text-[#000066] tracking-tight mb-1 leading-tight" style="font-family: 'Plus Jakarta Sans', sans-serif;">Analisis Pertumbuhan</h3>
+                                <p class="text-[#000066]/70 text-[15px] font-medium leading-relaxed workflow-desc max-w-[420px]" style="font-family: 'Figtree', sans-serif;">Evaluasi performa penjualan setiap harinya lewat dashboard statistik pintar. Gunakan insight untuk meraih pencapaian target bisnis yang lebih baik.</p>
                             </div>
                         </div>
                     </div>
@@ -164,51 +164,51 @@
 
                 <div class="w-full lg:w-[55%] flex pt-6 lg:pt-0 gsap-parallax-content">
                     <div class="relative w-[2px] bg-gray-200/60 shrink-0 mr-8 lg:mr-10 my-6 rounded-full">
-                        <div id="workflow-customer-indicator" class="absolute left-[-1px] w-[4px] rounded-full bg-[#0078b7] transition-all duration-500 ease-out" style="height: 25%; top: 0%;"></div>
+                        <div id="workflow-customer-indicator" class="absolute left-[-1px] w-[4px] rounded-full bg-[#0072BB] transition-all duration-500 ease-out" style="height: 25%; top: 0%;"></div>
                     </div>
 
                     <div class="flex flex-col gap-8 lg:gap-10 w-full">
                         <div class="workflow-step-btn flex items-start gap-5 lg:gap-6 cursor-pointer group" onclick="switchWorkflowStep(0, 'customer')">
-                            <div class="w-14 h-14 rounded-2xl bg-white border border-black/[0.04] shadow-sm shadow-black/5 flex items-center justify-center shrink-0 relative">
-                                <svg class="w-6 h-6 icon-outline text-[#0078b7] transition-opacity duration-300 absolute opacity-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                                <svg class="w-6 h-6 icon-solid text-[#0078b7] transition-opacity duration-300 absolute opacity-100" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" /></svg>
+                            <div class="w-14 h-14 rounded-2xl bg-white border border-[#000066]/5 shadow-sm shadow-[#000066]/5 flex items-center justify-center shrink-0 relative">
+                                <svg class="w-6 h-6 icon-outline text-[#0072BB] transition-opacity duration-300 absolute opacity-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                                <svg class="w-6 h-6 icon-solid text-[#0072BB] transition-opacity duration-300 absolute opacity-100" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" /></svg>
                             </div>
                             <div class="flex flex-col pt-1 transition-opacity duration-300 workflow-text self-start opacity-100">
-                                <h3 class="text-[19px] font-circular-bold text-[#18181b] tracking-tight mb-1 leading-tight">Eksplorasi Layanan</h3>
-                                <p class="text-[#52525b] text-[15px] font-circular-book leading-relaxed workflow-desc max-w-[420px]">Temukan berbagai layanan profesional UMKM di sekitar Anda. Tentukan jasa yang paling sesuai dengan kebutuhan serta kecocokan anggaran Anda.</p>
+                                <h3 class="text-[19px] font-bold text-[#000066] tracking-tight mb-1 leading-tight" style="font-family: 'Plus Jakarta Sans', sans-serif;">Eksplorasi Layanan</h3>
+                                <p class="text-[#000066]/70 text-[15px] font-medium leading-relaxed workflow-desc max-w-[420px]" style="font-family: 'Figtree', sans-serif;">Temukan berbagai layanan profesional UMKM di sekitar Anda. Tentukan jasa yang paling sesuai dengan kebutuhan serta kecocokan anggaran Anda.</p>
                             </div>
                         </div>
 
                         <div class="workflow-step-btn flex items-start gap-5 lg:gap-6 cursor-pointer group" onclick="switchWorkflowStep(1, 'customer')">
-                            <div class="w-14 h-14 rounded-2xl bg-white border border-black/[0.04] shadow-sm shadow-black/5 flex items-center justify-center shrink-0 relative">
-                                <svg class="w-6 h-6 icon-outline text-[#a1a1aa] transition-opacity duration-300 absolute opacity-100" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"></path></svg>
-                                <svg class="w-6 h-6 icon-solid text-[#0078b7] transition-opacity duration-300 absolute opacity-0" viewBox="0 0 20 20" fill="currentColor"><path d="M2 5a2 2 0 012-2h7a2 2 0 012 2v4a2 2 0 01-2 2H9l-3 3v-3H4a2 2 0 01-2-2V5z" /><path d="M15 7v2a4 4 0 01-4 4H9.828l-1.766 1.767c.28.149.599.233.938.233h2l3 3v-3h2a2 2 0 002-2V9a2 2 0 00-2-2h-1z" /></svg>
+                            <div class="w-14 h-14 rounded-2xl bg-white border border-[#000066]/5 shadow-sm shadow-[#000066]/5 flex items-center justify-center shrink-0 relative">
+                                <svg class="w-6 h-6 icon-outline text-gray-400 transition-opacity duration-300 absolute opacity-100" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"></path></svg>
+                                <svg class="w-6 h-6 icon-solid text-[#0072BB] transition-opacity duration-300 absolute opacity-0" viewBox="0 0 20 20" fill="currentColor"><path d="M2 5a2 2 0 012-2h7a2 2 0 012 2v4a2 2 0 01-2 2H9l-3 3v-3H4a2 2 0 01-2-2V5z" /><path d="M15 7v2a4 4 0 01-4 4H9.828l-1.766 1.767c.28.149.599.233.938.233h2l3 3v-3h2a2 2 0 002-2V9a2 2 0 00-2-2h-1z" /></svg>
                             </div>
                             <div class="flex flex-col pt-1 transition-opacity duration-300 workflow-text self-start opacity-60">
-                                <h3 class="text-[19px] font-circular-bold text-[#18181b] tracking-tight mb-1 leading-tight">Konsultasi & Negosiasi</h3>
-                                <p class="text-[#52525b] text-[15px] font-circular-book leading-relaxed workflow-desc max-w-[420px]">Hubungi penyedia jasa UMKM secara langsung melalui ruang obrolan. Diskusikan spesifikasi pekerjaan secara detail sebelum komitmen pemesanan.</p>
+                                <h3 class="text-[19px] font-bold text-[#000066] tracking-tight mb-1 leading-tight" style="font-family: 'Plus Jakarta Sans', sans-serif;">Konsultasi & Negosiasi</h3>
+                                <p class="text-[#000066]/70 text-[15px] font-medium leading-relaxed workflow-desc max-w-[420px]" style="font-family: 'Figtree', sans-serif;">Hubungi penyedia jasa UMKM secara langsung melalui ruang obrolan. Diskusikan spesifikasi pekerjaan secara detail sebelum komitmen pemesanan.</p>
                             </div>
                         </div>
 
                         <div class="workflow-step-btn flex items-start gap-5 lg:gap-6 cursor-pointer group" onclick="switchWorkflowStep(2, 'customer')">
-                            <div class="w-14 h-14 rounded-2xl bg-white border border-black/[0.04] shadow-sm shadow-black/5 flex items-center justify-center shrink-0 relative">
-                                <svg class="w-6 h-6 icon-outline text-[#a1a1aa] transition-opacity duration-300 absolute opacity-100" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
-                                <svg class="w-6 h-6 icon-solid text-[#0078b7] transition-opacity duration-300 absolute opacity-0" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 1.944A11.954 11.954 0 012.166 5C2.056 5.649 2 6.319 2 7c0 5.225 3.34 9.67 8 11.317C14.66 16.67 18 12.225 18 7c0-.682-.057-1.35-.166-2.001A11.954 11.954 0 0110 1.944zM11.536 8.536a1 1 0 10-1.414-1.414A5.002 5.002 0 003.116 10h1.002A4.002 4.002 0 0111.536 8.536z" clip-rule="evenodd" /></svg>
+                            <div class="w-14 h-14 rounded-2xl bg-white border border-[#000066]/5 shadow-sm shadow-[#000066]/5 flex items-center justify-center shrink-0 relative">
+                                <svg class="w-6 h-6 icon-outline text-gray-400 transition-opacity duration-300 absolute opacity-100" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                                <svg class="w-6 h-6 icon-solid text-[#0072BB] transition-opacity duration-300 absolute opacity-0" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 1.944A11.954 11.954 0 012.166 5C2.056 5.649 2 6.319 2 7c0 5.225 3.34 9.67 8 11.317C14.66 16.67 18 12.225 18 7c0-.682-.057-1.35-.166-2.001A11.954 11.954 0 0110 1.944zM11.536 8.536a1 1 0 10-1.414-1.414A5.002 5.002 0 003.116 10h1.002A4.002 4.002 0 0111.536 8.536z" clip-rule="evenodd" /></svg>
                             </div>
                             <div class="flex flex-col pt-1 transition-opacity duration-300 workflow-text self-start opacity-60">
-                                <h3 class="text-[19px] font-circular-bold text-[#18181b] tracking-tight mb-1 leading-tight">Transaksi Aman</h3>
-                                <p class="text-[#52525b] text-[15px] font-circular-book leading-relaxed workflow-desc max-w-[420px]">Lakukan pembayaran dengan metode yang cepat dan aman. Transaksi pembayaran langsung dilakukan menggunakan QRIS masing-masing UMKM.</p>
+                                <h3 class="text-[19px] font-bold text-[#000066] tracking-tight mb-1 leading-tight" style="font-family: 'Plus Jakarta Sans', sans-serif;">Transaksi Aman</h3>
+                                <p class="text-[#000066]/70 text-[15px] font-medium leading-relaxed workflow-desc max-w-[420px]" style="font-family: 'Figtree', sans-serif;">Lakukan pembayaran dengan metode yang cepat dan aman. Transaksi pembayaran langsung dilakukan menggunakan QRIS masing-masing UMKM.</p>
                             </div>
                         </div>
 
                         <div class="workflow-step-btn flex items-start gap-5 lg:gap-6 cursor-pointer group" onclick="switchWorkflowStep(3, 'customer')">
-                            <div class="w-14 h-14 rounded-2xl bg-white border border-black/[0.04] shadow-sm shadow-black/5 flex items-center justify-center shrink-0 relative">
-                                <svg class="w-6 h-6 icon-outline text-[#a1a1aa] transition-opacity duration-300 absolute opacity-100" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                                <svg class="w-6 h-6 icon-solid text-[#0078b7] transition-opacity duration-300 absolute opacity-0" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>
+                            <div class="w-14 h-14 rounded-2xl bg-white border border-[#000066]/5 shadow-sm shadow-[#000066]/5 flex items-center justify-center shrink-0 relative">
+                                <svg class="w-6 h-6 icon-outline text-gray-400 transition-opacity duration-300 absolute opacity-100" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                <svg class="w-6 h-6 icon-solid text-[#0072BB] transition-opacity duration-300 absolute opacity-0" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>
                             </div>
                             <div class="flex flex-col pt-1 transition-opacity duration-300 workflow-text self-start opacity-60">
-                                <h3 class="text-[19px] font-circular-bold text-[#18181b] tracking-tight mb-1 leading-tight">Pantau Hasil</h3>
-                                <p class="text-[#52525b] text-[15px] font-circular-book leading-relaxed workflow-desc max-w-[420px]">Dapatkan pembaruan langsung terhadap pengerjaan Anda dan pantau progres pesanan secara real-time langsung melalui platform.</p>
+                                <h3 class="text-[19px] font-bold text-[#000066] tracking-tight mb-1 leading-tight" style="font-family: 'Plus Jakarta Sans', sans-serif;">Pantau Hasil</h3>
+                                <p class="text-[#000066]/70 text-[15px] font-medium leading-relaxed workflow-desc max-w-[420px]" style="font-family: 'Figtree', sans-serif;">Dapatkan pembaruan langsung terhadap pengerjaan Anda dan pantau progres pesanan secara real-time langsung melalui platform.</p>
                             </div>
                         </div>
                     </div>
@@ -260,10 +260,10 @@
             tabSlider.style.width = 'calc(50% - 6px)';
             
             // Text color logic
-            tabUmkmBtn.classList.replace('text-gray-500', 'text-[#0078b7]');
-            tabUmkmBtn.classList.replace('font-circular-medium', 'font-circular-bold');
-            tabCustomerBtn.classList.replace('text-[#0078b7]', 'text-gray-500');
-            tabCustomerBtn.classList.replace('font-circular-bold', 'font-circular-medium');
+            tabUmkmBtn.style.color = '#0072BB';
+            tabUmkmBtn.style.fontWeight = '700';
+            tabCustomerBtn.style.color = '#6b7280';
+            tabCustomerBtn.style.fontWeight = '500';
 
             // Slide Layouts: Customer exits to right (+110%), UMKM enters from left (0%)
             contentCustomer.style.transform = 'translateX(110%)';
@@ -284,10 +284,10 @@
             tabSlider.style.width = 'calc(50% - 6px)';
 
             // Text color logic
-            tabCustomerBtn.classList.replace('text-gray-500', 'text-[#0078b7]');
-            tabCustomerBtn.classList.replace('font-circular-medium', 'font-circular-bold');
-            tabUmkmBtn.classList.replace('text-[#0078b7]', 'text-gray-500');
-            tabUmkmBtn.classList.replace('font-circular-bold', 'font-circular-medium');
+            tabCustomerBtn.style.color = '#0072BB';
+            tabCustomerBtn.style.fontWeight = '700';
+            tabUmkmBtn.style.color = '#6b7280';
+            tabUmkmBtn.style.fontWeight = '500';
 
             // Slide Layouts: UMKM exits to left (-110%), Customer enters from right (0%)
             contentUmkm.style.transform = 'translateX(-110%)';

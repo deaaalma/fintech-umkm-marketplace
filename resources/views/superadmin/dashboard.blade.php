@@ -10,517 +10,711 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&family=Inter:wght@100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/geist-mono@1.0.1/dist/geist-mono.min.css" rel="stylesheet">
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     
-    <!-- Alpine.js -->
+    <!-- Alpine.js & GSAP -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
     <style>
         :root {
             --font-figtree: 'Figtree', sans-serif;
             --font-geist-mono: 'Geist Mono', monospace;
+            --font-accent: 'Plus Jakarta Sans', sans-serif;
+            --brand-dark: #000B44;
+            --brand-primary: #0077B6;
+            --brand-cyan: #00B4D8;
+            --brand-soft: #ADE8F4;
+            --premium-white: #ffffff;
+            --premium-gray: #f1f5f9;
         }
+
+        body {
+            font-family: var(--font-figtree);
+            background-color: var(--premium-gray);
+            color: var(--brand-dark);
+            letter-spacing: -0.01em;
+        }
+
+        /* Dashboard specific Layout */
+        .dashboard-layout {
+            display: flex;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+        
+        /* Sidebar Styling */
+        .sidebar {
+            width: 260px;
+            background: var(--premium-white);
+            border-right: 1px solid rgba(226, 232, 240, 0.8);
+            padding: 1.5rem 1rem;
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+            z-index: 40;
+            overflow-y: auto;
+        }
+
+        /* Main Content Styling */
+        .main-content {
+            flex-grow: 1;
+            padding: 1.5rem 2.5rem;
+            min-width: 0;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        /* Card System (from Customer Dashboard) */
+        .premium-card {
+            background: white;
+            border: 1px solid rgba(226, 232, 240, 0.6);
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 11, 68, 0.03);
+            transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        .premium-card:hover {
+            box-shadow: 0 20px 40px -10px rgba(0, 11, 68, 0.06);
+            transform: translateY(-2px);
+        }
+
+        /* Sidebar Navigation Items */
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            border-radius: 0.75rem;
+            color: #64748b;
+            font-weight: 500;
+            transition: all 0.2s ease-in-out;
+            margin-bottom: 0.25rem;
+            text-decoration: none;
+        }
+
+        .nav-item svg {
+            color: #94a3b8;
+            transition: all 0.2s ease;
+        }
+
+        .nav-item:hover {
+            background-color: var(--premium-gray);
+            color: var(--brand-dark);
+        }
+
+        .nav-item:hover svg {
+            color: var(--brand-dark);
+        }
+
+        .nav-item.active {
+            color: var(--brand-dark);
+            font-weight: 700;
+            background-color: var(--premium-gray);
+            position: relative;
+        }
+
+        .nav-item.active svg {
+            color: var(--brand-primary);
+        }
+
+        .nav-item.active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            height: 60%;
+            width: 4px;
+            background-color: var(--brand-primary);
+            border-radius: 0 4px 4px 0;
+        }
+
+        /* Typography Utilities */
+        .font-jakarta { font-family: var(--font-accent); }
+        .font-mono { font-family: var(--font-geist-mono); }
+        
+        /* Modern Scrollbar */
+        ::-webkit-scrollbar { width: 5px; height: 5px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { 
+            background: #cbd5e1; 
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover { background: var(--brand-primary); }
     </style>
 </head>
-<body class="font-sans antialiased bg-white text-foreground">
-    @php
-        $user = [
-            'name' => 'Admin',
-            'role' => 'Superadmin'
-        ];
+<body class="antialiased">
+    <div class="dashboard-layout">
+        
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <!-- Brand Logo -->
+            <div class="flex items-center gap-3 px-3 mb-8">
+                <div class="w-8 h-8 rounded-lg bg-[var(--brand-dark)] flex items-center justify-center shadow-lg shadow-[var(--brand-dark)]/20">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/>
+                        <line x1="4" y1="22" x2="4" y2="15"/>
+                    </svg>
+                </div>
+                <span class="font-bold text-lg text-[var(--brand-dark)] tracking-tight">UMKMConnect</span>
+            </div>
 
-        $navigationLinks = [
-            ['name' => 'Dashboard', 'href' => '#', 'active' => true],
-            ['name' => 'UMKM Management', 'href' => '#', 'badge' => 127],
-            ['name' => 'Pengguna', 'href' => route('superadmin.users.preview'), 'badge' => 2],
-            ['name' => 'Transaksi', 'href' => route('superadmin.transactions.preview')],
-            ['name' => 'Laporan', 'href' => route('superadmin.reports.preview')],
-            ['name' => 'Pengaturan', 'href' => route('superadmin.settings.preview')],
-        ];
-
-        $stats = [
-            [
-                'title' => 'TOTAL UMKM TERDAFTAR',
-                'value' => '3,247',
-                'details' => [
-                    ['label' => 'Aktif', 'value' => '2,891'],
-                    ['label' => 'Pending', 'value' => '127'],
-                    ['label' => 'Suspended', 'value' => '189'],
-                    ['label' => 'Ditolak', 'value' => '40'],
-                ],
-                'change' => '+12.5%',
-                'changeLabel' => '30 hari ini'
-            ],
-            [
-                'title' => 'APPROVAL PENDING',
-                'value' => '127',
-                'highlight' => true,
-                'details' => [
-                    ['label' => 'High risk auto-reject', 'value' => '12 hari'],
-                    ['label' => 'Avg approval (30 d)', 'value' => '2.4 hari'],
-                ],
-                'action' => 'Review Sekarang'
-            ],
-            [
-                'title' => 'TOTAL TRANSAKSI',
-                'value' => '2,891',
-                'details' => [
-                    ['label' => '% dari total', 'value' => '89.0%'],
-                    ['label' => 'Sukses transaksi', 'value' => '2,567'],
-                    ['label' => 'X-Sell', 'value' => '987'],
-                    ['label' => 'Refund', 'value' => '654'],
-                ],
-                'change' => '-0.2%',
-                'changeLabel' => '7 minggu ini'
-            ],
-            [
-                'title' => 'KEPUASAN PELANGGAN',
-                'value' => '189',
-                'details' => [
-                    ['label' => 'Resolusi tiketnya', 'value' => '78'],
-                    ['label' => 'Pengguna - policy', 'value' => '45'],
-                    ['label' => 'Masalah pembayaran', 'value' => '34'],
-                    ['label' => 'Lainnya', 'value' => '32'],
-                ]
-            ],
-            [
-                'title' => 'RATING RATA-RATA',
-                'value' => '4.7',
-                'rating' => true,
-                'ratingBars' => [
-                    ['stars' => 5, 'count' => 892],
-                    ['stars' => 4, 'count' => 456],
-                    ['stars' => 3, 'count' => 123],
-                    ['stars' => 2, 'count' => 45],
-                    ['stars' => 1, 'count' => 12],
-                ]
-            ]
-        ];
-
-        $pendingApplications = [
-            [
-                'id' => 'APP-2547',
-                'name' => 'Warung Sedap Malam',
-                'category' => 'Kuliner',
-                'date' => '2 jam lalu',
-                'completeness' => 95,
-                'priority' => 'TINGGI',
-                'status' => 'Review'
-            ],
-            [
-                'id' => 'APP-2546',
-                'name' => 'Konveksi Makmur',
-                'category' => 'Fashion',
-                'date' => '4 jam lalu',
-                'completeness' => 100,
-                'priority' => 'TINGGI',
-                'status' => 'Review'
-            ],
-            [
-                'id' => 'APP-2545',
-                'name' => 'Bengkel Motor Jaya',
-                'category' => 'Otomotif',
-                'date' => '5 jam lalu',
-                'completeness' => 88,
-                'priority' => 'NORMAL',
-                'status' => 'Pending'
-            ],
-            [
-                'id' => 'APP-2544',
-                'name' => 'Toko Kue Bunda',
-                'category' => 'Kuliner',
-                'date' => '1 hari lalu',
-                'completeness' => 92,
-                'priority' => 'NORMAL',
-                'status' => 'Tinggi'
-            ],
-            [
-                'id' => 'APP-2543',
-                'name' => 'Laundry Express 24',
-                'category' => 'Jasa',
-                'date' => '1 hari lalu',
-                'completeness' => 100,
-                'priority' => 'TINGGI',
-                'status' => 'Review'
-            ],
-            [
-                'id' => 'APP-2542',
-                'name' => 'Sablon Kilat',
-                'category' => 'Printing',
-                'date' => '2 hari lalu',
-                'completeness' => 78,
-                'priority' => 'RENDAH',
-                'status' => 'Review'
-            ],
-        ];
-
-        $recentUMKM = [
-            ['name' => 'Warung Pak Budi', 'category' => 'Kuliner - Catering', 'time' => '5 menit lalu'],
-            ['name' => 'Fashion Butik Elegan', 'category' => 'Fashion', 'time' => '15 menit lalu'],
-            ['name' => 'Bengkel Express', 'category' => 'Otomotif - Servis', 'time' => '1 jam lalu'],
-            ['name' => 'Catering Nusantara', 'category' => 'Kuliner', 'time' => '2 hari lalu'],
-            ['name' => 'Printing Pro', 'category' => 'Printing - Percetakan', 'time' => '3 hari lalu'],
-        ];
-    @endphp
-
-    <div class="min-h-screen">
-        <!-- Navbar - Superadmin Style -->
-        <nav
-            x-data="{
-                isMobileMenuOpen: false,
-                isScrolled: false,
-                init() { 
-                    window.addEventListener('scroll', () => { 
-                        this.isScrolled = window.scrollY > 20; 
-                    }); 
-                }
-            }"
-            :class="isScrolled ? 'bg-white/95 backdrop-blur-md shadow-sm text-gray-900' : 'bg-white text-gray-900'"
-            class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b border-[#e5e5e5]"
-        >
-            <div class="max-w-[1400px] mx-auto px-6 lg:px-8">
-                <div class="flex items-center justify-between h-20">
-                    <!-- Logo & Brand -->
-                    <div class="flex items-center gap-4">
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 bg-[#003d5c] rounded-xl flex items-center justify-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-                                    <line x1="3" y1="9" x2="21" y2="9"></line>
-                                    <line x1="9" y1="21" x2="9" y2="9"></line>
-                                </svg>
-                            </div>
-                            <div>
-                                <h1 class="text-lg font-bold text-gray-900" style="font-family: 'Figtree', sans-serif;">Superadmin Portal</h1>
-                                <p class="text-xs text-[#666666]" style="font-family: 'Figtree', sans-serif;">UMKM Management</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Search Bar (Desktop) -->
-                    <div class="hidden md:block flex-1 max-w-md mx-8">
+            <!-- User Profile Box -->
+            <div class="mb-8 px-2">
+                <div class="bg-gray-50/80 border border-gray-100 rounded-2xl p-3 flex items-center justify-between cursor-pointer hover:bg-gray-100 transition-colors">
+                    <div class="flex items-center gap-3">
                         <div class="relative">
-                            <input 
-                                type="text" 
-                                placeholder="Search UMKMs, users, orders..."
-                                class="w-full px-4 py-2.5 pl-10 rounded-lg border border-[#e5e5e5] focus:outline-none focus:ring-2 focus:ring-[#0078b7] focus:border-transparent text-sm"
-                                style="font-family: 'Figtree', sans-serif;">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="absolute left-3 top-1/2 -translate-y-1/2 text-[#999999]">
-                                <circle cx="11" cy="11" r="8"></circle>
-                                <path d="m21 21-4.35-4.35"></path>
-                            </svg>
+                            <img src="https://ui-avatars.com/api/?name=Admin&background=0077B6&color=fff&rounded=true&bold=true" alt="Admin" class="w-9 h-9 rounded-full">
+                            <div class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 border-2 border-white rounded-full"></div>
+                        </div>
+                        <div>
+                            <div class="text-xs font-bold text-[var(--brand-dark)] leading-tight">Admin System</div>
+                            <div class="text-[10px] text-gray-400 font-medium">Superadmin</div>
                         </div>
                     </div>
+                    <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </div>
+            </div>
 
-                    <!-- Right Actions -->
-                    <div class="hidden md:flex items-center gap-4">
-                        <button class="relative p-2 rounded-lg hover:bg-gray-100 transition-colors">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-900">
-                                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-                                <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
-                            </svg>
-                            <span class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+            <!-- Navigation Links -->
+            <div class="flex-1 overflow-y-auto">
+                <div class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-3 px-3">Main Menu</div>
+                <nav class="space-y-1 mb-8">
+                    <a href="#" class="nav-item active">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                        <span class="text-sm">Dashboard</span>
+                    </a>
+                    <a href="{{ route('superadmin.users.preview') }}" class="nav-item">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                        <span class="text-sm">Pengguna</span>
+                        <span class="ml-auto bg-[var(--brand-primary)] text-white text-[9px] font-bold px-1.5 py-0.5 rounded">2</span>
+                    </a>
+                    <a href="{{ route('superadmin.transactions.preview') }}" class="nav-item">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
+                        <span class="text-sm">Transaksi</span>
+                    </a>
+                    <a href="{{ route('superadmin.reports.preview') }}" class="nav-item">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                        <span class="text-sm">Laporan</span>
+                    </a>
+                </nav>
+
+                <div class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-3 px-3">Preference</div>
+                <nav class="space-y-1">
+                    <a href="{{ route('superadmin.settings.preview') }}" class="nav-item">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                        <span class="text-sm">Pengaturan</span>
+                    </a>
+                    <a href="#" class="nav-item">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <span class="text-sm">Help Center</span>
+                    </a>
+                </nav>
+            </div>
+            
+            <!-- Bottom Promotion Box -->
+            <div class="mt-8 bg-[var(--brand-dark)] rounded-2xl p-5 text-white text-center relative overflow-hidden group">
+                <div class="absolute inset-0 bg-gradient-to-tr from-transparent to-white/10"></div>
+                <!-- Box icon -->
+                <div class="relative z-10">
+                    <div class="w-10 h-10 bg-white/10 rounded-xl mx-auto flex items-center justify-center mb-3 backdrop-blur-sm border border-white/10">
+                        <svg class="w-5 h-5 text-[var(--brand-cyan)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
+                    </div>
+                    <h4 class="font-bold text-sm mb-1">Upgrade Plan</h4>
+                    <p class="text-[10px] text-white/70 mb-4 leading-tight">"Upgrade sistem hari ini untuk membuka insight pintar."</p>
+                    <button class="w-full py-2.5 bg-gradient-to-r from-[var(--brand-primary)] to-[var(--brand-cyan)] text-white text-xs font-bold rounded-xl hover:shadow-lg hover:shadow-[var(--brand-cyan)]/20 transition-all duration-300">Upgrade Plan ↗</button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- MAIN LAYOUT SECITON -->
+        <main class="main-content">
+            
+            <!-- Topbar Header -->
+            <header class="flex items-center justify-between mb-8">
+                <div>
+                    <h1 class="text-xl font-bold text-[var(--brand-dark)]">Home</h1>
+                    <p class="text-sm text-gray-500 italic mt-0.5">"Track UMKM performance easily with AI insights."</p>
+                </div>
+                
+                <div class="flex items-center gap-4">
+                    <!-- Search Bar -->
+                    <div class="relative hidden md:block">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                            <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                        </div>
+                        <input type="text" placeholder="Search anything" class="pl-10 pr-20 py-2.5 bg-white border border-gray-200 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-[var(--brand-primary)] focus:border-transparent shadow-sm w-[300px] transition-all">
+                        <div class="absolute inset-y-0 right-3 flex items-center gap-1">
+                            <span class="px-1.5 py-0.5 text-[10px] font-bold bg-gray-100 border border-gray-200 text-gray-500 rounded">⌘</span>
+                            <span class="px-1.5 py-0.5 text-[10px] font-bold bg-gray-100 border border-gray-200 text-gray-500 rounded">F</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Topbar Icons -->
+                    <button class="w-10 h-10 bg-white rounded-full flex items-center justify-center text-gray-500 shadow-sm border border-gray-200 hover:text-[var(--brand-primary)] transition">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                    </button>
+                    <button class="w-10 h-10 bg-white rounded-full flex items-center justify-center text-gray-500 shadow-sm border border-gray-200 hover:text-[var(--brand-primary)] transition">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </button>
+                    
+                    <!-- Tiny Avatar Profile Dropdown Replacement -->
+                    <div class="relative ml-2">
+                        <img src="https://ui-avatars.com/api/?name=Admin&background=000B44&color=fff&rounded=true" alt="Admin" class="w-9 h-9 rounded-full ring-2 ring-white shadow-sm cursor-pointer">
+                    </div>
+                </div>
+            </header>
+
+            <!-- Dashboard Grid Area -->
+            
+            <!-- ROW 1: High Level Stats -->
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-6 mb-6">
+                
+                <!-- Main Highlight Card (Total Balance equivalent) -->
+                <div class="col-span-1 md:col-span-4 lg:col-span-3">
+                    <div class="premium-card h-full p-5 relative overflow-hidden bg-gradient-to-br from-[var(--brand-dark)] to-[#00176b] text-white">
+                        <!-- Abstract Shapes matching image green gradients -->
+                        <div class="absolute -top-10 -right-10 w-40 h-40 bg-[var(--brand-cyan)] rounded-full mix-blend-screen filter blur-[50px] opacity-40"></div>
+                        <div class="absolute -bottom-10 -left-10 w-32 h-32 bg-[var(--brand-soft)] rounded-full mix-blend-screen filter blur-[40px] opacity-20"></div>
+                        
+                        <div class="relative z-10 flex flex-col h-full justify-between">
+                            <div>
+                                <div class="flex items-center justify-between xl:mb-2">
+                                    <span class="text-xs font-medium text-white/80">Total UMKM Aktif</span>
+                                    <button class="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center text-white hover:bg-white/30 transition">
+                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                                    </button>
+                                </div>
+                                
+                                <div class="font-jakarta text-3xl xl:text-4xl font-extrabold mt-1 xl:mt-2">
+                                    3,247
+                                    <span class="text-xs font-normal text-white/70 ml-1">Toko</span>
+                                </div>
+                            </div>
+
+                            <div class="flex gap-2 mt-6">
+                                <button class="flex-1 py-2 bg-white text-[var(--brand-dark)] rounded-xl text-[11px] font-bold flex items-center justify-center gap-1 hover:bg-gray-100 transition shadow-sm">
+                                    Approved <svg class="w-3 h-3 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                                </button>
+                                <button class="flex-1 py-2 bg-white/10 border border-white/20 text-white rounded-xl text-[11px] font-bold flex items-center justify-center gap-1 hover:bg-white/20 transition">
+                                    Pending ↗
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Three Stat Cards Group (AI Enhancements equivalent) -->
+                <div class="col-span-1 md:col-span-8 lg:col-span-6 flex flex-col">
+                    <div class="flex items-center justify-between mb-3 px-1">
+                        <h2 class="text-sm font-bold text-[var(--brand-dark)] border-l-3 border-[var(--brand-primary)] pl-2">Status Metrik</h2>
+                        <button class="text-[10px] text-gray-400 font-bold uppercase tracking-wider flex items-center gap-1 hover:text-[var(--brand-primary)] border border-gray-200 px-2 py-1 rounded-md">
+                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg> Tambah Filter
+                        </button>
+                    </div>
+                    
+                    <div class="grid grid-cols-3 gap-4 xl:gap-6 flex-1">
+                        <!-- Stat 1 -->
+                        <div class="premium-card p-4 flex flex-col justify-center">
+                            <div class="flex items-center gap-2 mb-3">
+                                <div class="w-6 h-6 rounded-md bg-green-50 border border-green-100 flex items-center justify-center text-green-600">
+                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                </div>
+                                <span class="text-xs font-semibold text-gray-500">Berhasil</span>
+                            </div>
+                            <div class="flex items-end justify-between">
+                                <span class="text-lg xl:text-xl font-extrabold text-[var(--brand-dark)] font-jakarta">2,891</span>
+                                <span class="text-[9px] font-bold text-green-600 bg-green-50 px-1.5 py-0.5 rounded-md flex items-center gap-0.5"><svg class="w-2 h-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 15l7-7 7 7"></path></svg> 12.5%</span>
+                            </div>
+                        </div>
+
+                        <!-- Stat 2 -->
+                        <div class="premium-card p-4 flex flex-col justify-center">
+                            <div class="flex items-center gap-2 mb-3">
+                                <div class="w-6 h-6 rounded-md bg-amber-50 border border-amber-100 flex items-center justify-center text-amber-500">
+                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                </div>
+                                <span class="text-xs font-semibold text-gray-500">Pending</span>
+                            </div>
+                            <div class="flex items-end justify-between">
+                                <span class="text-lg xl:text-xl font-extrabold text-[var(--brand-dark)] font-jakarta">127</span>
+                                <span class="text-[9px] font-bold text-amber-500 bg-amber-50 px-1.5 py-0.5 rounded-md flex items-center gap-0.5"><svg class="w-2 h-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 9l-7 7-7-7"></path></svg> 2.1%</span>
+                            </div>
+                        </div>
+
+                        <!-- Stat 3 -->
+                        <div class="premium-card p-4 flex flex-col justify-center">
+                            <div class="flex items-center gap-2 mb-3">
+                                <div class="w-6 h-6 rounded-md bg-red-50 border border-red-100 flex items-center justify-center text-red-500">
+                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                </div>
+                                <span class="text-xs font-semibold text-gray-500">Suspended</span>
+                            </div>
+                            <div class="flex items-end justify-between">
+                                <span class="text-lg xl:text-xl font-extrabold text-[var(--brand-dark)] font-jakarta">189</span>
+                                <span class="text-[9px] font-bold text-red-500 bg-red-50 px-1.5 py-0.5 rounded-md flex items-center gap-0.5"><svg class="w-2 h-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 15l7-7 7 7"></path></svg> 4.5%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- System Health Card (Finance Score equivalent) -->
+                <div class="col-span-1 md:col-span-12 lg:col-span-3">
+                    <div class="premium-card p-5 h-full relative flex flex-col">
+                        <button class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"></path></svg>
                         </button>
                         
-                        <div class="flex items-center gap-3 pl-4 border-l border-[#e5e5e5]">
-                            <div class="w-9 h-9 rounded-full bg-[#0078b7] flex items-center justify-center">
-                                <span class="text-white font-semibold text-sm" style="font-family: 'Figtree', sans-serif;">A</span>
+                        <h2 class="text-sm font-bold text-[var(--brand-dark)] mb-6">Skor Sistem</h2>
+                        
+                        <div class="flex-1 flex flex-col justify-end pb-2">
+                            <span class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mb-1">Kualitas Server</span>
+                            <div class="flex items-end justify-between mb-3">
+                                <span class="text-xl font-bold text-[var(--brand-dark)]">Excellent</span>
+                                <span class="text-2xl font-extrabold text-[var(--brand-primary)] font-jakarta">92%</span>
                             </div>
-                            <div class="text-left">
-                                <div class="text-sm font-semibold text-gray-900" style="font-family: 'Figtree', sans-serif;">{{ $user['name'] }}</div>
-                                <div class="text-xs text-[#666666]" style="font-family: 'Figtree', sans-serif;">{{ $user['role'] }}</div>
+                            <!-- Custom Progress Bar -->
+                            <div class="w-full bg-gray-100 rounded-full h-3 overflow-hidden border border-gray-200">
+                                <div class="bg-gradient-to-r from-[var(--brand-dark)] to-[var(--brand-primary)] h-full rounded-full w-[92%] relative">
+                                    <div class="absolute inset-0 bg-white/20 w-full animate-pulse"></div>
+                                </div>
                             </div>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[#999999]">
-                                <polyline points="6 9 12 15 18 9"></polyline>
-                            </svg>
                         </div>
                     </div>
-
-                    <div class="md:hidden">
-                        <button @click="isMobileMenuOpen = !isMobileMenuOpen" 
-                                class="text-gray-900 hover:text-[#0078b7] p-2 rounded-md transition-colors duration-200">
-                            <svg x-show="!isMobileMenuOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
-                            <svg x-show="isMobileMenuOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                        </button>
-                    </div>
                 </div>
 
-                <!-- Secondary Navigation -->
-                <div class="hidden md:flex items-center gap-6 pb-4 border-b border-[#e5e5e5]">
-                    @foreach($navigationLinks as $link)
-                    <a href="{{ $link['href'] }}" 
-                       class="flex items-center gap-2 px-3 py-2 text-sm font-medium transition-colors duration-200 relative group {{ isset($link['active']) && $link['active'] ? 'text-[#0078b7]' : 'text-gray-900 hover:text-[#0078b7]' }}" 
-                       style="font-family: 'Figtree', sans-serif; font-weight: 400;">
-                        <span>{{ $link['name'] }}</span>
-                        @if(isset($link['badge']))
-                        <span class="px-2 py-0.5 bg-[#003d5c] text-white text-xs font-semibold rounded-full">{{ $link['badge'] }}</span>
-                        @endif
-                        <div class="absolute bottom-0 left-0 {{ isset($link['active']) && $link['active'] ? 'w-full' : 'w-0' }} h-0.5 bg-current transition-all duration-300 group-hover:w-full"></div>
-                    </a>
-                    @endforeach
-                </div>
             </div>
-        </nav>
 
-        <!-- Main Content -->
-        <main class="pt-32">
-            <!-- Page Header -->
-            <div class="w-full bg-white border-b border-[#e5e5e5]">
-                <div class="max-w-[1400px] mx-auto px-6 lg:px-8 py-8">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <h1 class="text-[32px] leading-tight font-normal text-[#003d5c] tracking-tight mb-2" style="font-weight: 400; font-family: 'Figtree', sans-serif;">Dashboard UMKM Management</h1>
-                            <p class="text-sm text-[#666666]" style="font-family: 'Figtree', sans-serif;">Monitor dan kelola semua mitra bisnis Anda</p>
-                        </div>
-                        <div class="flex items-center gap-3">
-                            <button class="px-4 py-2 bg-white border border-[#e5e5e5] rounded-lg hover:bg-gray-50 transition-colors text-sm font-medium flex items-center gap-2" style="font-family: 'Figtree', sans-serif;">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <polyline points="23 4 23 10 17 10"></polyline>
-                                    <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
-                                </svg>
-                                Refresh
-                            </button>
-                            <select class="px-4 py-2 bg-white border border-[#e5e5e5] rounded-lg text-sm font-medium" style="font-family: 'Figtree', sans-serif;">
-                                <option>7 Hari Terakhir</option>
-                                <option>30 Hari Terakhir</option>
-                                <option>90 Hari Terakhir</option>
+            <!-- ROW 2: Charts and Assistants -->
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-6 mb-6">
+                
+                <!-- Main Activity Chart (Cashflow equivalent) -->
+                <div class="col-span-1 md:col-span-7 lg:col-span-8">
+                    <div class="premium-card p-6 h-full flex flex-col">
+                        <div class="flex items-center justify-between mb-6">
+                            <h2 class="text-[15px] font-bold text-[var(--brand-dark)]">Aktivitas Pendaftaran UMKM</h2>
+                            <select class="text-xs font-semibold bg-gray-50 border border-gray-100 text-[var(--brand-dark)] rounded-lg px-3 py-1.5 outline-none hover:border-[var(--brand-primary)] cursor-pointer transition">
+                                <option>Tahun Ini ▼</option>
+                                <option>Tahun Lalu ▼</option>
                             </select>
                         </div>
+
+                        <div class="flex items-end gap-12 mb-8">
+                            <div>
+                                <span class="text-xs text-gray-500 font-medium block mb-1">Total Pendaftaran</span>
+                                <div class="text-3xl font-extrabold text-[var(--brand-dark)] font-jakarta flex items-baseline gap-2">
+                                    5,620 <span class="text-sm font-semibold text-gray-400">Merchant</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Legend -->
+                            <div class="flex items-center gap-5 text-xs font-bold mb-1">
+                                <div class="flex items-center gap-2 text-[var(--brand-dark)]">
+                                    <span class="w-3 h-3 rounded bg-[var(--brand-dark)]"></span> Diterima
+                                </div>
+                                <div class="flex items-center gap-2 text-[var(--brand-cyan)]">
+                                    <span class="w-3 h-3 rounded bg-[var(--brand-cyan)]"></span> Ditolak
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Bar Chart Placeholder with CSS -->
+                        <div class="flex-1 flex items-end justify-between gap-1 xl:gap-2 h-48 relative pt-6 border-b border-gray-100 pb-2">
+                            <!-- Background Grid Lines -->
+                            <div class="absolute inset-x-0 top-0 border-t border-dashed border-gray-200"></div>
+                            <div class="absolute inset-x-0 top-1/4 border-t border-dashed border-gray-200"></div>
+                            <div class="absolute inset-x-0 top-2/4 border-t border-dashed border-gray-200"></div>
+                            <div class="absolute inset-x-0 top-3/4 border-t border-dashed border-gray-200"></div>
+                            
+                            <!-- Axis Labels Y -->
+                            <div class="absolute -left-6 top-0 text-[9px] font-bold text-gray-400 -translate-y-1/2">8K</div>
+                            <div class="absolute -left-6 top-1/4 text-[9px] font-bold text-gray-400 -translate-y-1/2">6K</div>
+                            <div class="absolute -left-6 top-2/4 text-[9px] font-bold text-gray-400 -translate-y-1/2">4K</div>
+                            <div class="absolute -left-6 top-3/4 text-[9px] font-bold text-gray-400 -translate-y-1/2">2K</div>
+                            <div class="absolute -left-6 bottom-0 text-[9px] font-bold text-gray-400 translate-y-1/2">0</div>
+
+                            @php
+                                $months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                                // Height data for Approved and Rejected (in percentage of total height)
+                                $chartData = [
+                                    [40, -20], [60, -30], [80, -40], [45, -15], [75, -25], [90, -30], 
+                                    [50, -20], [65, -35], [85, -45], [55, -25], [70, -30], [45, -15]
+                                ];
+                            @endphp
+
+                            @foreach($months as $i => $m)
+                            <div class="flex flex-col items-center gap-1 group relative z-10 w-full h-[150%] translate-y-[25%]">
+                                
+                                <div class="flex flex-col w-3 xl:w-4 justify-center items-center h-full">
+                                    <!-- Positive bar (Up) -->
+                                    <div class="w-full bg-[var(--brand-dark)] rounded-t-sm hover:opacity-80 transition-opacity mt-auto origin-bottom transform duration-300" style="height: {{ $chartData[$i][0]/2 }}%;"></div>
+                                    <!-- Negative bar (Down) -->
+                                    <div class="w-full bg-[var(--brand-cyan)] rounded-b-sm hover:opacity-80 transition-opacity mb-auto origin-top transform duration-300" style="height: {{ abs($chartData[$i][1])/2 }}%;"></div>
+                                </div>
+                                <span class="text-[9px] xl:text-[10px] text-gray-400 font-bold mt-2 pt-2">{{ $m }}</span>
+                                
+                                <!-- Hover Tooltip -->
+                                <div class="absolute top-[30%] opacity-0 group-hover:opacity-100 transition-opacity bg-[var(--brand-dark)] shadow-xl rounded-lg px-3 py-2 text-[10px] text-white font-bold text-center z-20 whitespace-nowrap pointer-events-none transform -translate-x-1/2 left-1/2 border border-white/10">
+                                    {{ $m }} 2026<br>
+                                    <div class="flex justify-between gap-3 mt-1 text-[9px]">
+                                        <span class="text-green-400">Diterima: {{ $chartData[$i][0] * 100 }}</span>
+                                        <span class="text-red-400">Ditolak: {{ abs($chartData[$i][1]) * 100 }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            @endforeach
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Stats Grid -->
-            <div class="w-full bg-gradient-to-br from-background via-background to-[#0078b7]/5 py-12">
-                <div class="max-w-[1400px] mx-auto px-6 lg:px-8">
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-12">
-                        @foreach($stats as $stat)
-                        <div class="bg-white rounded-3xl p-6 border border-[#e5e5e5] hover:shadow-md transition-all duration-300 {{ isset($stat['highlight']) && $stat['highlight'] ? 'bg-[#003d5c] text-white border-[#003d5c]' : '' }}">
-                            <p class="text-xs uppercase tracking-wide mb-3 {{ isset($stat['highlight']) && $stat['highlight'] ? 'text-white/80' : 'text-[#999999]' }}" style="font-family: 'Figtree', sans-serif;">{{ $stat['title'] }}</p>
-                            
-                            @if(isset($stat['rating']) && $stat['rating'])
-                            <div class="text-4xl font-bold mb-4 text-[#003d5c]" style="font-family: 'Figtree', sans-serif;">{{ $stat['value'] }}</div>
-                            <div class="space-y-2">
-                                @foreach($stat['ratingBars'] as $bar)
-                                <div class="flex items-center gap-2">
-                                    <span class="text-xs text-[#666666] w-3" style="font-family: 'Figtree', sans-serif;">{{ $bar['stars'] }}</span>
-                                    <div class="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
-                                        <div class="h-full bg-[#F59E0B] rounded-full" style="width: {{ ($bar['count'] / 1528) * 100 }}%"></div>
-                                    </div>
-                                    <span class="text-xs text-[#666666] w-8 text-right" style="font-family: 'Figtree', sans-serif;">{{ $bar['count'] }}</span>
+                <!-- AI Assistant Right Panel -->
+                <div class="col-span-1 md:col-span-5 lg:col-span-4">
+                    <div class="premium-card p-6 h-full flex flex-col relative bg-white">
+                        <button class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 z-10">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"></path></svg>
+                        </button>
+                        
+                        <h2 class="text-[15px] font-bold text-[var(--brand-dark)] mb-auto">AI Assistant</h2>
+                        
+                        <div class="flex flex-col items-center text-center mt-6 z-10">
+                            <!-- Orb shape -->
+                            <div class="w-20 h-20 rounded-full bg-gradient-to-tr from-[var(--brand-primary)] to-[var(--brand-soft)] p-0.5 mb-6 shadow-xl shadow-[var(--brand-primary)]/20 animate-pulse">
+                                <div class="w-full h-full bg-white rounded-full flex items-center justify-center relative overflow-hidden">
+                                     <div class="absolute inset-0 bg-gradient-to-tr from-[var(--brand-dark)]/10 to-transparent"></div>
+                                     <svg class="w-10 h-10 text-[var(--brand-primary)] relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                                 </div>
-                                @endforeach
                             </div>
-                            @else
-                            <div class="text-4xl font-bold mb-4 {{ isset($stat['highlight']) && $stat['highlight'] ? 'text-white' : 'text-[#003d5c]' }}" style="font-family: 'Figtree', sans-serif;">{{ $stat['value'] }}</div>
+
+                            <h3 class="font-extrabold text-[var(--brand-dark)] mb-3 text-lg tracking-tight">Apa yang bisa dibantu?</h3>
                             
-                            <div class="space-y-2 mb-4">
-                                @foreach($stat['details'] as $detail)
-                                <div class="flex items-center justify-between text-xs">
-                                    <span class="{{ isset($stat['highlight']) && $stat['highlight'] ? 'text-white/70' : 'text-[#666666]' }}" style="font-family: 'Figtree', sans-serif;">{{ $detail['label'] }}</span>
-                                    <span class="{{ isset($stat['highlight']) && $stat['highlight'] ? 'text-white font-semibold' : 'text-[#003d5c] font-semibold' }}" style="font-family: 'Figtree', sans-serif;">{{ $detail['value'] }}</span>
-                                </div>
-                                @endforeach
+                            <!-- Prompt Pill items -->
+                            <div class="flex flex-wrap gap-2 justify-center mb-6 w-[90%]">
+                                <span class="bg-gray-50 border border-gray-100 hover:border-gray-300 text-[9px] px-2.5 py-1.5 rounded-full text-gray-500 font-semibold cursor-pointer transition">Analisa UMKM</span>
+                                <span class="bg-gray-50 border border-gray-100 hover:border-gray-300 text-[9px] px-2.5 py-1.5 rounded-full text-gray-500 font-semibold cursor-pointer transition">Bantu saya susun report pendaftaran</span>
+                                <span class="bg-gray-50 border border-gray-100 hover:border-gray-300 text-[9px] px-2.5 py-1.5 rounded-full text-gray-500 font-semibold cursor-pointer transition">Deteksi UMKM fraud</span>
+                                <span class="bg-gray-50 border border-gray-100 hover:border-gray-300 text-[9px] px-2.5 py-1.5 rounded-full text-gray-500 font-semibold cursor-pointer transition">Lainnya</span>
                             </div>
-
-                            @if(isset($stat['action']))
-                            <button class="w-full bg-white text-[#003d5c] px-4 py-2.5 rounded-xl text-sm font-semibold hover:bg-gray-100 transition-all duration-200" style="font-family: 'Figtree', sans-serif;">
-                                {{ $stat['action'] }}
-                            </button>
-                            @endif
-
-                            @if(isset($stat['change']))
-                            <div class="pt-3 border-t {{ isset($stat['highlight']) && $stat['highlight'] ? 'border-white/20' : 'border-[#e5e5e5]' }}">
-                                <p class="text-xs {{ isset($stat['highlight']) && $stat['highlight'] ? 'text-white/70' : 'text-[#666666]' }}" style="font-family: 'Figtree', sans-serif;">
-                                    <span class="{{ strpos($stat['change'], '+') !== false ? 'text-green-600' : 'text-red-600' }} font-semibold">{{ $stat['change'] }}</span> {{ $stat['changeLabel'] }}
-                                </p>
-                            </div>
-                            @endif
-                            @endif
                         </div>
-                        @endforeach
-                    </div>
 
-                    <!-- Pending Applications Table -->
-                    <div class="bg-white rounded-3xl p-8 border border-[#e5e5e5] mb-8">
-                        <div class="flex items-center justify-between mb-6">
-                            <div>
-                                <h2 class="text-2xl font-semibold text-[#003d5c] mb-1" style="font-family: 'Figtree', sans-serif;">Pending UMKM Applications</h2>
-                                <p class="text-sm text-[#666666]" style="font-family: 'Figtree', sans-serif;">
-                                    <span class="font-semibold text-[#003d5c]">127</span> aplikasi menunggu review • 
-                                    <span class="text-[#F59E0B] font-semibold">15 PRIORITY TINGGI</span>
-                                </p>
-                            </div>
-                            <div class="flex items-center gap-3">
-                                <div class="relative">
-                                    <input 
-                                        type="text" 
-                                        placeholder="Cari nama atau kategori..."
-                                        class="px-4 py-2 pl-10 rounded-lg border border-[#e5e5e5] focus:outline-none focus:ring-2 focus:ring-[#0078b7] text-sm"
-                                        style="font-family: 'Figtree', sans-serif;">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="absolute left-3 top-1/2 -translate-y-1/2 text-[#999999]">
-                                        <circle cx="11" cy="11" r="8"></circle>
-                                        <path d="m21 21-4.35-4.35"></path>
-                                    </svg>
-                                </div>
-                                <button class="px-4 py-2 bg-white border border-[#e5e5e5] rounded-lg hover:bg-gray-50 transition-colors text-sm font-medium flex items-center gap-2" style="font-family: 'Figtree', sans-serif;">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <line x1="4" y1="21" x2="4" y2="14"></line>
-                                        <line x1="4" y1="10" x2="4" y2="3"></line>
-                                        <line x1="12" y1="21" x2="12" y2="12"></line>
-                                        <line x1="12" y1="8" x2="12" y2="3"></line>
-                                        <line x1="20" y1="21" x2="20" y2="16"></line>
-                                        <line x1="20" y1="12" x2="20" y2="3"></line>
-                                        <line x1="1" y1="14" x2="7" y2="14"></line>
-                                        <line x1="9" y1="8" x2="15" y2="8"></line>
-                                        <line x1="17" y1="16" x2="23" y2="16"></line>
-                                    </svg>
-                                    Filter
+                        <!-- Input field -->
+                        <div class="w-full mt-auto bg-white border border-gray-200 rounded-2xl p-1.5 pl-4 flex items-center shadow-sm focus-within:ring-2 focus-within:ring-[var(--brand-primary)] focus-within:border-transparent transition-all">
+                            <svg class="w-4 h-4 text-[var(--brand-primary)] mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+                            <input type="text" placeholder="Tanya apapun..." class="flex-1 bg-transparent border-none text-xs text-[var(--brand-dark)] focus:outline-none focus:ring-0 px-2 py-2">
+                            
+                            <div class="flex items-center gap-1 right-1 relative">
+                                <button class="w-8 h-8 rounded-full flex items-center justify-center text-gray-400 hover:bg-gray-100">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path></svg>
+                                </button>
+                                <button class="bg-[var(--brand-primary)] text-white text-[11px] font-bold px-4 py-2 rounded-xl flex items-center gap-1 hover:bg-[var(--brand-dark)] transition shadow-md shadow-[var(--brand-primary)]/30">
+                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg> Kirim
                                 </button>
                             </div>
                         </div>
 
-                        <!-- Table -->
-                        <div class="overflow-x-auto">
-                            <table class="w-full">
+                    </div>
+                </div>
+            </div>
+
+            <!-- ROW 3: Table and Bottom Stats -->
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-6 pb-10">
+                
+                <!-- Table (Recent Transactions) -->
+                <div class="col-span-1 md:col-span-7 lg:col-span-7">
+                    <div class="premium-card p-6 h-full flex flex-col">
+                        <div class="flex items-center justify-between mb-6">
+                            <h2 class="text-[15px] font-bold text-[var(--brand-dark)]">Aplikasi Terbaru</h2>
+                            <div class="flex items-center gap-2">
+                                <select class="text-[11px] font-semibold bg-gray-50 border border-gray-100 text-gray-600 rounded-lg px-3 py-1.5 outline-none hover:bg-gray-100 cursor-pointer">
+                                    <option>Bulan Ini ▼</option>
+                                    <option>Bulan Lalu ▼</option>
+                                </select>
+                                <button class="w-7 h-7 bg-gray-50 rounded border border-gray-100 flex items-center justify-center text-gray-500 hover:text-[var(--brand-primary)] hover:border-[var(--brand-primary)] transition">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path></svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="flex-1 overflow-x-auto">
+                            <table class="w-full text-left border-collapse">
                                 <thead>
-                                    <tr class="border-b border-[#e5e5e5]">
-                                        <th class="text-left py-3 px-4 text-xs font-semibold text-[#999999] uppercase tracking-wide" style="font-family: 'Figtree', sans-serif;">ID Aplikasi</th>
-                                        <th class="text-left py-3 px-4 text-xs font-semibold text-[#999999] uppercase tracking-wide" style="font-family: 'Figtree', sans-serif;">Nama Bisnis</th>
-                                        <th class="text-left py-3 px-4 text-xs font-semibold text-[#999999] uppercase tracking-wide" style="font-family: 'Figtree', sans-serif;">Kategori</th>
-                                        <th class="text-left py-3 px-4 text-xs font-semibold text-[#999999] uppercase tracking-wide" style="font-family: 'Figtree', sans-serif;">Tanggal Apply</th>
-                                        <th class="text-left py-3 px-4 text-xs font-semibold text-[#999999] uppercase tracking-wide" style="font-family: 'Figtree', sans-serif;">Kelengkapan</th>
-                                        <th class="text-left py-3 px-4 text-xs font-semibold text-[#999999] uppercase tracking-wide" style="font-family: 'Figtree', sans-serif;">Prioritas</th>
-                                        <th class="text-left py-3 px-4 text-xs font-semibold text-[#999999] uppercase tracking-wide" style="font-family: 'Figtree', sans-serif;">Aksi</th>
+                                    <tr class="text-[10px] text-gray-400 font-bold uppercase tracking-wider border-b border-gray-100">
+                                        <th class="pb-3 px-2 flex items-center gap-1 cursor-pointer hover:text-gray-600">Nama Bisnis <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l4-4 4 4m0 6l-4 4-4-4"></path></svg></th>
+                                        <th class="pb-3 px-2">Kategori</th>
+                                        <th class="pb-3 px-2">Waktu Apply</th>
+                                        <th class="pb-3 px-2 text-right">Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($pendingApplications as $app)
-                                    <tr class="border-b border-[#e5e5e5] hover:bg-gray-50 transition-colors">
-                                        <td class="py-4 px-4">
-                                            <span class="text-sm font-mono text-[#999999]" style="font-family: 'Geist Mono', monospace;">{{ $app['id'] }}</span>
-                                        </td>
-                                        <td class="py-4 px-4">
-                                            <span class="text-sm font-semibold text-[#003d5c]" style="font-family: 'Figtree', sans-serif;">{{ $app['name'] }}</span>
-                                        </td>
-                                        <td class="py-4 px-4">
-                                            <span class="text-sm text-[#666666]" style="font-family: 'Figtree', sans-serif;">{{ $app['category'] }}</span>
-                                        </td>
-                                        <td class="py-4 px-4">
-                                            <span class="text-sm text-[#666666]" style="font-family: 'Figtree', sans-serif;">{{ $app['date'] }}</span>
-                                        </td>
-                                        <td class="py-4 px-4">
+                                    @php
+                                        $apps = [
+                                            ['name' => 'Warung Sedap Malam', 'cat' => 'Kuliner', 'date' => '2026-09-25', 'time' => '10:00', 'status' => 'Diterima', 'color' => 'green'],
+                                            ['name' => 'Konveksi Makmur', 'cat' => 'Fashion', 'date' => '2026-09-24', 'time' => '14:30', 'status' => 'Review', 'color' => 'amber'],
+                                            ['name' => 'Bengkel Motor Jaya', 'cat' => 'Otomotif', 'date' => '2026-09-23', 'time' => '15:00', 'status' => 'Diterima', 'color' => 'green'],
+                                            ['name' => 'Toko Kue Bunda', 'cat' => 'Kuliner', 'date' => '2026-09-22', 'time' => '09:15', 'status' => 'Pending', 'color' => 'red'],
+                                        ];
+                                    @endphp
+                                    @foreach($apps as $app)
+                                    <tr class="group hover:bg-gray-50/50 transition-colors border-b border-gray-50 last:border-b-0">
+                                        <td class="py-3.5 px-2">
                                             <div class="flex items-center gap-2">
-                                                <div class="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden max-w-[100px]">
-                                                    <div class="h-full bg-[#0078b7] rounded-full" style="width: {{ $app['completeness'] }}%"></div>
-                                                </div>
-                                                <span class="text-xs font-semibold text-[#003d5c]" style="font-family: 'Figtree', sans-serif;">{{ $app['completeness'] }}%</span>
+                                                <div class="w-2 h-2 rounded-full bg-{{ $app['color'] }}-500"></div>
+                                                <span class="font-bold text-[var(--brand-dark)] text-xs group-hover:text-[var(--brand-primary)] transition">{{ $app['name'] }}</span>
                                             </div>
                                         </td>
-                                        <td class="py-4 px-4">
-                                            <span class="px-3 py-1 rounded-full text-xs font-semibold
-                                                {{ $app['priority'] === 'TINGGI' ? 'bg-red-100 text-red-700' : '' }}
-                                                {{ $app['priority'] === 'NORMAL' ? 'bg-gray-100 text-gray-700' : '' }}
-                                                {{ $app['priority'] === 'RENDAH' ? 'bg-blue-100 text-blue-700' : '' }}"
-                                                style="font-family: 'Figtree', sans-serif;">
-                                                {{ $app['priority'] }}
+                                        <td class="py-3.5 px-2">
+                                            <span class="text-xs text-gray-600 font-medium">{{ $app['cat'] }}</span>
+                                        </td>
+                                        <td class="py-3.5 px-2">
+                                            <div class="text-[11px] font-bold text-[var(--brand-dark)]">{{ $app['date'] }}</div>
+                                            <div class="text-[9px] font-semibold text-gray-400">{{ $app['time'] }}</div>
+                                        </td>
+                                        <td class="py-3.5 px-2 text-right">
+                                            <span class="inline-block px-2.5 py-1 text-[9px] font-bold rounded {{ $app['status'] == 'Diterima' ? 'bg-green-50 text-green-600' : ($app['status'] == 'Review' ? 'bg-amber-50 text-amber-600' : 'bg-red-50 text-red-500') }}">
+                                                {{ $app['status'] }}
                                             </span>
-                                        </td>
-                                        <td class="py-4 px-4">
-                                            <div class="flex items-center gap-2">
-                                                <button class="px-4 py-2 bg-[#003d5c] text-white rounded-lg text-xs font-semibold hover:bg-[#0078b7] transition-colors" style="font-family: 'Figtree', sans-serif;">
-                                                    {{ $app['status'] }}
-                                                </button>
-                                                <button class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-green-600">
-                                                        <polyline points="20 6 9 17 4 12"></polyline>
-                                                    </svg>
-                                                </button>
-                                                <button class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-red-600">
-                                                        <line x1="18" y1="6" x2="6" y2="18"></line>
-                                                        <line x1="6" y1="6" x2="18" y2="18"></line>
-                                                    </svg>
-                                                </button>
-                                                <button class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[#666666]">
-                                                        <circle cx="12" cy="12" r="1"></circle>
-                                                        <circle cx="12" cy="5" r="1"></circle>
-                                                        <circle cx="12" cy="19" r="1"></circle>
-                                                    </svg>
-                                                </button>
-                                            </div>
                                         </td>
                                     </tr>
                                     @endforeach
                                 </tbody>
                             </table>
                         </div>
-
-                        <!-- Pagination -->
-                        <div class="mt-6 flex items-center justify-between">
-                            <p class="text-sm text-[#666666]" style="font-family: 'Figtree', sans-serif;">Menampilkan 1-6 dari 127 +</p>
-                            <div class="flex items-center gap-2">
-                                <button class="px-3 py-1.5 bg-[#003d5c] text-white rounded-lg text-sm font-semibold">1</button>
-                                <button class="px-3 py-1.5 bg-white border border-[#e5e5e5] rounded-lg text-sm font-medium hover:bg-gray-50">2</button>
-                                <button class="px-3 py-1.5 bg-white border border-[#e5e5e5] rounded-lg text-sm font-medium hover:bg-gray-50">3</button>
-                                <span class="px-2 text-[#999999]">...</span>
-                                <button class="px-3 py-1.5 bg-white border border-[#e5e5e5] rounded-lg text-sm font-medium hover:bg-gray-50">Selanjutnya</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Bottom Grid: Recent UMKM & Charts -->
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                        <!-- UMKM Terbaru Onboard -->
-                        <div class="bg-white rounded-3xl p-6 border border-[#e5e5e5]">
-                            <div class="flex items-center justify-between mb-6">
-                                <h3 class="text-lg font-semibold text-[#003d5c]" style="font-family: 'Figtree', sans-serif;">UMKM Terbaru Onboard</h3>
-                            </div>
-                            <div class="space-y-4">
-                                @foreach($recentUMKM as $umkm)
-                                <div class="flex items-start justify-between py-3 border-b border-[#e5e5e5] last:border-b-0">
-                                    <div class="flex-1">
-                                        <h4 class="text-sm font-semibold text-[#003d5c] mb-1" style="font-family: 'Figtree', sans-serif;">{{ $umkm['name'] }}</h4>
-                                        <p class="text-xs text-[#666666]" style="font-family: 'Figtree', sans-serif;">{{ $umkm['category'] }}</p>
-                                        <p class="text-xs text-[#999999] mt-1" style="font-family: 'Figtree', sans-serif;">{{ $umkm['time'] }}</p>
-                                    </div>
-                                    <button class="text-xs text-[#0078b7] font-semibold hover:text-[#003d5c]" style="font-family: 'Figtree', sans-serif;">Lihat</button>
-                                </div>
-                                @endforeach
-                            </div>
-                            <button class="w-full mt-4 text-sm text-[#0078b7] hover:text-[#003d5c] font-medium transition-colors flex items-center justify-center gap-1" style="font-family: 'Figtree', sans-serif;">
-                                Lihat Semua Terbaru →
-                            </button>
-                        </div>
-
-                        <!-- Placeholder Charts -->
-                        <div class="lg:col-span-2 space-y-6">
-                            <div class="bg-white rounded-3xl p-6 border border-[#e5e5e5]">
-                                <h3 class="text-lg font-semibold text-[#003d5c] mb-4" style="font-family: 'Figtree', sans-serif;">Pertumbuhan UMKM</h3>
-                                <div class="h-64 bg-gradient-to-br from-[#0078b7]/5 to-[#003d5c]/5 rounded-xl flex items-center justify-center">
-                                    <p class="text-sm text-[#999999]" style="font-family: 'Figtree', sans-serif;">Chart: Pertumbuhan UMKM per Bulan</p>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
+
+                <!-- Splitted Cards Group -->
+                <div class="col-span-1 md:col-span-5 lg:col-span-5 flex gap-6">
+                    
+                    <!-- Statistic Donut Chart -->
+                    <div class="premium-card p-6 flex-1 flex flex-col">
+                        <div class="flex items-center justify-between mb-4">
+                            <h2 class="text-[15px] font-bold text-[var(--brand-dark)]">Kategori</h2>
+                            <select class="text-[10px] font-bold text-gray-500 bg-transparent outline-none cursor-pointer">
+                                <option>Top ▼</option>
+                            </select>
+                        </div>
+
+                        <!-- CSS Donut setup -->
+                        <div class="flex-1 flex flex-col items-center justify-center my-4">
+                            <div class="w-32 h-32 rounded-full border-[14px] border-[var(--brand-dark)] relative flex items-center justify-center shadow-lg shadow-[var(--brand-dark)]/10">
+                                <!-- Donut Segments using clip-path overlays -->
+                                <div class="absolute inset-[-14px] rounded-full border-[14px] border-[var(--brand-primary)] transition-all hover:scale-[1.02]" style="clip-path: polygon(0 0, 100% 0, 100% 65%, 0 65%); transform: rotate(20deg);"></div>
+                                <div class="absolute inset-[-14px] rounded-full border-[14px] border-[var(--brand-soft)] transition-all hover:scale-[1.02]" style="clip-path: polygon(60% 60%, 100% 0, 100% 100%, 60% 100%);"></div>
+                                
+                                <div class="bg-white rounded-full w-full h-full flex flex-col items-center justify-center z-10">
+                                    <span class="text-[9px] font-bold text-gray-400 uppercase tracking-widest leading-none mb-1">Total</span>
+                                    <span class="font-extrabold text-xl text-[var(--brand-dark)] font-jakarta leading-none">$3.5M</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="space-y-3 mt-auto w-full pt-2">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-3.5 h-3.5 rounded bg-[var(--brand-dark)] text-[8px] text-white flex items-center justify-center font-bold">60%</span>
+                                    <span class="text-[11px] text-gray-600 font-bold">Kuliner</span>
+                                </div>
+                                <span class="text-xs font-bold text-[var(--brand-dark)]">1.948</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-3.5 h-3.5 rounded bg-[var(--brand-primary)] text-[8px] text-white flex items-center justify-center font-bold">25%</span>
+                                    <span class="text-[11px] text-gray-600 font-bold">Fashion</span>
+                                </div>
+                                <span class="text-xs font-bold text-[var(--brand-dark)]">811</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-3.5 h-3.5 rounded bg-[var(--brand-soft)] text-[8px] text-[var(--brand-dark)] flex items-center justify-center font-bold">15%</span>
+                                    <span class="text-[11px] text-gray-600 font-bold">Jasa</span>
+                                </div>
+                                <span class="text-xs font-bold text-[var(--brand-dark)]">487</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Exchange/Currency (Replace with Quick Settings/Roles) -->
+                    <div class="premium-card p-6 flex-1 flex flex-col bg-white">
+                        <div class="flex items-center justify-between mb-4">
+                            <h2 class="text-[15px] font-bold text-[var(--brand-dark)]">Performa</h2>
+                            <div class="bg-gray-50 text-[10px] text-gray-500 font-bold px-2 py-1 rounded cursor-pointer border border-gray-100">Bulan Ini</div>
+                        </div>
+
+                        <div class="flex-1 flex flex-col justify-center">
+                            
+                            <!-- Conversion Visualizer -->
+                            <div class="flex items-center justify-between mb-4 px-2">
+                                <div class="flex items-center gap-1.5 font-bold text-[11px] text-gray-500 border border-gray-200 px-2 py-1 rounded-md">
+                                    Visitors
+                                </div>
+                                <button class="w-6 h-6 rounded-full bg-[var(--brand-soft)] text-[var(--brand-primary)] flex items-center justify-center hover:bg-[var(--brand-primary)] hover:text-white transition">
+                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
+                                </button>
+                                <div class="flex items-center gap-1.5 font-bold text-[11px] text-gray-500 border border-gray-200 px-2 py-1 rounded-md">
+                                    Join
+                                </div>
+                            </div>
+
+                            <div class="text-center mb-6">
+                                <div class="font-jakarta text-3xl font-black text-[var(--brand-dark)]">64%</div>
+                                <span class="text-[10px] font-bold text-green-500 bg-green-50 px-2 py-0.5 rounded-full">Conversion Rate Naik</span>
+                            </div>
+
+                            <div class="grid grid-cols-3 gap-2 border-t border-gray-100 pt-4">
+                                <div class="text-center">
+                                    <div class="text-[9px] font-bold text-gray-400 uppercase mb-1">Visit</div>
+                                    <div class="text-[11px] font-extrabold text-[var(--brand-dark)]">12.5K</div>
+                                </div>
+                                <div class="text-center border-l border-r border-gray-100">
+                                    <div class="text-[9px] font-bold text-gray-400 uppercase mb-1">Daftar</div>
+                                    <div class="text-[11px] font-extrabold text-[var(--brand-dark)]">8.0K</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="text-[9px] font-bold text-gray-400 uppercase mb-1">Aktif</div>
+                                    <div class="text-[11px] font-extrabold text-[var(--brand-dark)]">7.8K</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button class="w-full mt-auto py-2.5 bg-[var(--brand-primary)] text-white text-xs font-bold rounded-xl hover:bg-[var(--brand-dark)] transition shadow-md shadow-[var(--brand-primary)]/20">
+                            Download Report
+                        </button>
+                    </div>
+
+                </div>
+
             </div>
         </main>
-
-        <!-- Footer -->
-        <footer class="w-full bg-[#fafafa] border-t border-[#e5e5e5]">
-            <div class="max-w-[1400px] mx-auto px-8 py-8">
-                <div class="flex items-center justify-between">
-                    <p class="text-sm text-[#666666]" style="font-family: 'Figtree', sans-serif;">&copy; {{ date('Y') }} UMKM Connect. All rights reserved.</p>
-                    <p class="text-sm text-[#666666]" style="font-family: 'Figtree', sans-serif;">Superadmin Portal v1.0</p>
-                </div>
-            </div>
-        </footer>
     </div>
+
+    <!-- Initialization Scripts -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof gsap !== 'undefined') {
+                gsap.from('.premium-card', {
+                    opacity: 0,
+                    y: 20,
+                    duration: 0.8,
+                    stagger: 0.05,
+                    ease: 'power3.out',
+                    clearProps: 'all'
+                });
+                
+                // Sidebar items animation
+                gsap.from('.nav-item', {
+                    opacity: 0,
+                    x: -10,
+                    duration: 0.5,
+                    stagger: 0.05,
+                    ease: 'power2.out',
+                    delay: 0.2
+                });
+            }
+        });
+    </script>
 </body>
 </html>
