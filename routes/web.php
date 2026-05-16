@@ -75,9 +75,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         })->name('dashboard');
 
         // 3. Dashboard Super Admin
-        Route::get('/admin/dashboard', function () {
-            return view('livewire.superadmin.index');
-        })->name('admin.dashboard');
+        Route::get('/admin/dashboard', \App\Livewire\SuperAdmin\Index::class)->name('admin.dashboard');
 
         // 4. Dashboard UMKM (Owner)
         Route::get('/umkm/dashboard', function () {
