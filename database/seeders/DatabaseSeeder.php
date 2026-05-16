@@ -2,238 +2,226 @@
 
 namespace Database\Seeders;
 
+use App\Models\Bank_account;
+use App\Models\BankAccount;
+use App\Models\Order_assignment;
+use App\Models\Order_log;
+use App\Models\Order;
+use App\Models\OrderAssignment;
+use App\Models\OrderLog;
+use App\Models\Payment;
+use App\Models\Product;
+use App\Models\Umkm_schedule;
+use App\Models\Umkm_worker;
+use App\Models\Umkm;
+use App\Models\UmkmSchedule;
+use App\Models\UmkmWorker;
 use App\Models\User;
-use Carbon\Carbon;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Faker\Factory as Faker;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class DatabaseSeeder extends Seeder
 {
-    use WithoutModelEvents;
-
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
-        $now = Carbon::now();
-        $defaultPassword = Hash::make('password'); // Semua password adalah 'password'
+        $faker = Faker::create('id_ID'); // Gunakan format Indonesia
+        $password = Hash::make('password'); // Default password: password
+
+        $this->command->info('Memulai proses seeding database... Mohon tunggu sebentar.');
 
         // ==========================================
-        // 1. SEED USERS (Buat 4 Role Berbeda)
+        // 1. AKUN SUPER ADMIN
         // ==========================================
-        $superAdminId = DB::table('users')->insertGetId([
-            'name' => 'Super Admin',
-            'email' => 'superadmin@gmail.com',
-            'password' => $defaultPassword,
-            'phone' => '0811111111',
+        User::create([
+            'name' => 'Super Administrator',
+            'phone' => '081111111111',
             'role' => 'superadmin',
-            'created_at' => $now,
-            'updated_at' => $now,
+            'email' => 'admin@gmail.com',
+            'password' => $password,
+            'email_verified_at' => now(),
         ]);
-
-        $adminUmkmId = DB::table('users')->insertGetId([
-            'name' => 'Budi Pemilik UMKM',
-            'email' => 'budi.umkm@gmail.com',
-            'password' => $defaultPassword,
-            'phone' => '0822222222',
-            'role' => 'admin_umkm',
-            'created_at' => $now,
-            'updated_at' => $now,
-        ]);
-
-        $workerId = DB::table('users')->insertGetId([
-            'name' => 'Asep Teknisi',
-            'email' => 'asep.worker@gmail.com',
-            'password' => $defaultPassword,
-            'phone' => '0833333333',
-            'role' => 'worker',
-            'created_at' => $now,
-            'updated_at' => $now,
-        ]);
-
-        $customerId = DB::table('users')->insertGetId([
-            'name' => 'Siti Customer',
-            'email' => 'siti.customer@gmail.com',
-            'password' => $defaultPassword,
-            'phone' => '0844444444',
-            'role' => 'customer',
-            'created_at' => $now,
-            'updated_at' => $now,
-        ]);
+        $this->command->info('✅ Super Admin berhasil dibuat.');
 
         // ==========================================
-        // 2. SEED USER DEVICES (Device milik Customer)
+        // 2. WORKERS (50 Orang)
         // ==========================================
-        DB::table('user_devices')->insert([
-            'user_id' => $customerId,
-            'fcm_token' => 'dummy_token_abc123',
-            'device_type' => 'android',
-            'updated_at' => $now,
-        ]);
-
-        // ==========================================
-        // 3. SEED BANK ACCOUNTS
-        // ==========================================
-        $bankOwnerId = DB::table('bank_accounts')->insertGetId([
-            'user_id' => $adminUmkmId,
-            'bank_name' => 'BCA',
-            'account_number' => '1234567890',
-            'account_holder_name' => 'Budi Pemilik UMKM',
-            'is_primary' => true,
-        ]);
-
-        $bankWorkerId = DB::table('bank_accounts')->insertGetId([
-            'user_id' => $workerId,
-            'bank_name' => 'Mandiri',
-            'account_number' => '0987654321',
-            'account_holder_name' => 'Asep Teknisi',
-            'is_primary' => true,
-        ]);
-
-        // ==========================================
-        // 4. SEED UMKMS
-        // ==========================================
-        $umkmId = DB::table('umkms')->insertGetId([
-            'owner_id' => $adminUmkmId,
-            'name' => 'Budi Service AC',
-            'slug' => 'budi-service-ac',
-            'description' => 'Melayani perbaikan AC panggilan terpercaya.',
-            'address' => 'Jl. Merdeka No 10, Jakarta',
-            'is_verified' => true,
-            'status' => 'active',
-            'created_at' => $now,
-            'updated_at' => $now,
-        ]);
-
-        // ==========================================
-        // 5. SEED UMKM SCHEDULES (Senin - Jumat)
-        // ==========================================
-        for ($i = 1; $i <= 5; $i++) {
-            DB::table('umkm_schedules')->insert([
-                'umkm_id' => $umkmId,
-                'day_of_week' => $i,
-                'open_time' => '08:00:00',
-                'close_time' => '17:00:00',
-                'is_closed' => false,
+        $workers = [];
+        for ($i = 1; $i <= 30; $i++) {
+            $workers[] = User::create([
+                'name' => $faker->name,
+                'phone' => $faker->phoneNumber,
+                'role' => 'worker',
+                'email' => "worker{$i}@gmail.com",
+                'password' => $password,
+                'email_verified_at' => now(),
             ]);
         }
+        $this->command->info('✅ 30 Worker berhasil dibuat.');
 
         // ==========================================
-        // 6. SEED UMKM WORKERS
+        // 3. ADMIN UMKM & DATA UMKM (30 UMKM)
         // ==========================================
-        DB::table('umkm_workers')->insert([
-            'umkm_id' => $umkmId,
-            'user_id' => $workerId,
-            'specialization' => 'Teknisi AC Split',
-            'joined_at' => $now->toDateString(),
-            'is_active' => true,
-        ]);
+        $umkms = [];
+        $products = [];
+        $umkmStatuses = ['active', 'active', 'active', 'pending_verification', 'suspended']; // Rasio banyak yang active
+
+        for ($i = 1; $i <= 30; $i++) {
+            // Buat Owner
+            $owner = User::create([
+                'name' => $faker->name,
+                'phone' => $faker->phoneNumber,
+                'role' => 'admin_umkm',
+                'email' => "umkm{$i}@gmail.com",
+                'password' => $password,
+                'email_verified_at' => now(),
+            ]);
+
+            // Rekening Owner
+            BankAccount::create([
+                'user_id' => $owner->id,
+                'bank_name' => $faker->randomElement(['BCA', 'Mandiri', 'BNI', 'BRI', 'BSI']),
+                'account_number' => $faker->numerify('##########'),
+                'account_holder_name' => $owner->name,
+                'is_primary' => 1,
+            ]);
+
+            // Buat UMKM
+            $companyName = $faker->company . ' ' . $faker->randomElement(['Service', 'Laundry', 'Cleaning', 'Catering', 'Bengkel']);
+            $umkm = Umkm::create([
+                'owner_id' => $owner->id,
+                'name' => $companyName,
+                'slug' => Str::slug($companyName) . '-' . $i,
+                'description' => $faker->paragraph(3),
+                'address' => $faker->address,
+                'is_verified' => 1,
+                'status' => $faker->randomElement($umkmStatuses),
+            ]);
+            $umkms[] = $umkm;
+
+            // Jadwal Buka (Senin-Jumat buka, Sabtu-Minggu random)
+            for ($day = 1; $day <= 7; $day++) {
+                UmkmSchedule::create([
+                    'umkm_id' => $umkm->id,
+                    'day_of_week' => $day,
+                    'open_time' => '08:00:00',
+                    'close_time' => '17:00:00',
+                    'is_closed' => $day > 5 ? $faker->boolean(40) : 0, // Weekend kadang tutup
+                ]);
+            }
+
+            // Assign 2-4 worker random ke UMKM ini
+            $assignedWorkers = $faker->randomElements($workers, $faker->numberBetween(2, 4));
+            foreach ($assignedWorkers as $worker) {
+                UmkmWorker::create([
+                    'umkm_id' => $umkm->id,
+                    'user_id' => $worker->id,
+                    'specialization' => $faker->jobTitle,
+                    'joined_at' => $faker->dateTimeThisYear()->format('Y-m-d'),
+                ]);
+            }
+
+            // Buat 3-5 Produk per UMKM
+            for ($p = 1; $p <= $faker->numberBetween(3, 5); $p++) {
+                $products[] = Product::create([
+                    'umkm_id' => $umkm->id,
+                    'type' => $faker->randomElement(['jasa', 'barang']),
+                    'name' => 'Paket ' . $faker->words(2, true),
+                    'description' => $faker->sentence(),
+                    'estimated_price' => $faker->numberBetween(5, 50) * 10000, // 50rb - 500rb
+                    'duration_minutes' => $faker->randomElement([60, 90, 120, 180]),
+                    'is_active' => 1,
+                ]);
+            }
+        }
+        $this->command->info('✅ 30 UMKM beserta Produk & Jadwal berhasil dibuat.');
 
         // ==========================================
-        // 7. SEED PRODUCTS
+        // 4. CUSTOMERS (100 Orang)
         // ==========================================
-        $productId = DB::table('products')->insertGetId([
-            'umkm_id' => $umkmId,
-            'type' => 'jasa',
-            'name' => 'Cuci AC 1/2 - 1 PK',
-            'description' => 'Layanan cuci AC menyeluruh luar dan dalam.',
-            'estimated_price' => 75000.00,
-            'duration_minutes' => 60,
-            'is_active' => true,
-            'created_at' => $now,
-        ]);
+        $customers = [];
+        for ($i = 1; $i <= 100; $i++) {
+            $customers[] = User::create([
+                'name' => $faker->name,
+                'phone' => $faker->phoneNumber,
+                'role' => 'customer',
+                'email' => "customer{$i}@gmail.com",
+                'password' => $password,
+                'email_verified_at' => now(),
+            ]);
+        }
+        $this->command->info('✅ 100 Customer berhasil dibuat.');
 
         // ==========================================
-        // 8. SEED PRODUCT GALLERIES
+        // 5. ORDERS & TRANSACTIONS (200 Transaksi)
         // ==========================================
-        DB::table('product_galleries')->insert([
-            'product_id' => $productId,
-            'image_url' => 'products/cuci_ac.jpg',
-            'is_featured' => true,
-        ]);
+        $orderStatuses = ['pending_valuation', 'waiting_payment', 'paid', 'processing', 'completed', 'completed', 'completed', 'cancelled'];
+        
+        for ($i = 1; $i <= 200; $i++) {
+            $customer = $faker->randomElement($customers);
+            $product = $faker->randomElement($products);
+            $umkm = Umkm::find($product->umkm_id); // Ambil umkm dari produk terkait
+            
+            $price = $product->estimated_price;
+            $platformFee = $price * 0.10; // Komisi 10%
+            $netIncome = $price - $platformFee;
+            $status = $faker->randomElement($orderStatuses);
 
-        // ==========================================
-        // 9. SEED ORDERS
-        // ==========================================
-        $orderId = DB::table('orders')->insertGetId([
-            'invoice_number' => 'INV-20260311-0001',
-            'customer_id' => $customerId,
-            'umkm_id' => $umkmId,
-            'product_id' => $productId,
-            'booking_date' => $now->copy()->addDays(1)->toDateString(),
-            'booking_time' => '10:00:00',
-            'service_address' => 'Jl. Kenangan No 99, Jakarta',
-            'service_latitude' => -6.200000,
-            'service_longitude' => 106.816666,
-            'notes' => 'Tolong bawa tangga, rumah 2 lantai.',
-            'agreed_price' => 75000.00,
-            'platform_fee' => 5000.00,
-            'umkm_net_income' => 70000.00,
-            'status' => 'paid', // Status kita anggap sudah dibayar
-            'created_at' => $now,
-            'updated_at' => $now,
-        ]);
+            // Buat Order
+            $order = Order::create([
+                'invoice_number' => 'INV-' . date('Ymd') . '-' . str_pad($i, 4, '0', STR_PAD_LEFT),
+                'customer_id' => $customer->id,
+                'umkm_id' => $umkm->id,
+                'product_id' => $product->id,
+                'booking_date' => $faker->dateTimeBetween('-2 months', '+1 month')->format('Y-m-d'),
+                'booking_time' => $faker->time('H:i:00'),
+                'service_address' => $faker->address,
+                'service_latitude' => $faker->latitude(-8.8, -8.1), // Area Bali sbg contoh
+                'service_longitude' => $faker->longitude(114.9, 115.5),
+                'notes' => $faker->sentence(),
+                'agreed_price' => $price,
+                'platform_fee' => $platformFee,
+                'umkm_net_income' => $netIncome,
+                'status' => $status,
+            ]);
 
-        // ==========================================
-        // 10. SEED ORDER ASSIGNMENTS
-        // ==========================================
-        DB::table('order_assignments')->insert([
-            'order_id' => $orderId,
-            'worker_id' => $workerId,
-            'admin_instructions' => 'Pastikan freon dicek juga ya Sep.',
-            'worker_fee' => 40000.00, // Gaji Asep
-            'is_fee_disbursed' => false,
-            'assigned_at' => $now,
-            'status' => 'scheduled',
-        ]);
+            // Jika statusnya sudah bayar atau lebih jauh, buat Payment & Assignment
+            if (in_array($status, ['paid', 'processing', 'completed'])) {
+                Payment::create([
+                    'order_id' => $order->id,
+                    'payment_gateway_ref' => 'MIDTRANS-' . strtoupper(Str::random(10)),
+                    'payment_method' => $faker->randomElement(['qris', 'bank_transfer', 'ewallet']),
+                    'amount' => $price,
+                    'status' => 'success',
+                    'paid_at' => now()->subDays(rand(1, 30)),
+                ]);
 
-        // ==========================================
-        // 11. SEED INVOICES
-        // ==========================================
-        DB::table('invoices')->insert([
-            'order_id' => $orderId,
-            'invoice_code' => 'INV-20260311-0001',
-            'file_url' => 'invoices/INV-20260311-0001.pdf',
-            'generated_at' => $now,
-        ]);
+                // Assign worker secara random dari UMKM terkait
+                $umkmWorkers = UmkmWorker::where('umkm_id', $umkm->id)->get();
+                if ($umkmWorkers->count() > 0) {
+                    $assignedWorker = $umkmWorkers->random();
+                    OrderAssignment::create([
+                        'order_id' => $order->id,
+                        'worker_id' => $assignedWorker->user_id,
+                        'admin_instructions' => $faker->sentence(),
+                        'worker_fee' => $netIncome * 0.40, // Worker dapat 40% dari bersih UMKM
+                        'is_fee_disbursed' => $status === 'completed' ? 1 : 0,
+                        'assigned_at' => now()->subDays(rand(1, 30)),
+                        'status' => $status === 'completed' ? 'finished' : 'working',
+                    ]);
+                }
+            }
 
-        // ==========================================
-        // 12. SEED ORDER LOGS
-        // ==========================================
-        DB::table('order_logs')->insert([
-            'order_id' => $orderId,
-            'actor_id' => $customerId,
-            'action' => 'order_created',
-            'new_value' => 'Order dibuat oleh Customer',
-            'created_at' => $now,
-        ]);
-
-        // ==========================================
-        // 13. SEED PAYMENTS
-        // ==========================================
-        DB::table('payments')->insert([
-            'order_id' => $orderId,
-            'payment_gateway_ref' => 'MIDTRANS-998877',
-            'payment_method' => 'qris',
-            'amount' => 75000.00,
-            'status' => 'success',
-            'paid_at' => $now,
-        ]);
-
-        // ==========================================
-        // 14. SEED WITHDRAWALS
-        // ==========================================
-        DB::table('withdrawals')->insert([
-            'user_id' => $adminUmkmId,
-            'bank_account_id' => $bankOwnerId,
-            'amount' => 70000.00,
-            'status' => 'requested',
-            'admin_note' => null,
-            'created_at' => $now,
-            'updated_at' => $now,
-        ]);
+            // Order Log
+            OrderLog::create([
+                'order_id' => $order->id,
+                'actor_id' => $customer->id,
+                'action' => 'order_created',
+                'new_value' => 'Order dibuat oleh sistem',
+            ]);
+        }
+        $this->command->info('✅ 200 Order beserta log & payment berhasil dibuat.');
+        $this->command->info('🎉 SEEDING SELESAI! Selamat mencoba aplikasinya.');
     }
 }
