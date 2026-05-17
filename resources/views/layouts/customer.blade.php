@@ -89,7 +89,7 @@
 <body class="antialiased min-h-screen flex flex-col">
     @include('customer.partials.navbar')
 
-    <main class="flex-grow pt-40 pb-20">
+    <main class="flex-grow pt-40 pb-28 lg:pb-20">
         @yield('content')
     </main>
 

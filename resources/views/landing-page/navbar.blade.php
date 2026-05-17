@@ -42,17 +42,17 @@
         </div>
 
         <div class="hidden lg:flex items-center gap-6">
-            <a href="{{ route('customer.dashboard.preview') }}" 
+            <a href="{{ route('login') }}" 
                class="text-sm font-medium text-[#000066]/70 hover:text-[#000066] transition-colors" 
                style="font-family: 'Plus Jakarta Sans', sans-serif;">Masuk</a>
-            <button class="bg-[#000066] text-white px-6 py-2.5 rounded-full text-sm font-semibold transition-all duration-500 group flex items-center gap-0 hover:gap-4 border border-[#000066]/20 hover:bg-[#000066]/90 backdrop-blur-sm">
+            <a href="{{ route('register') }}" class="bg-[#000066] text-white px-6 py-2.5 rounded-full text-sm font-semibold transition-all duration-500 group flex items-center gap-0 hover:gap-4 border border-[#000066]/20 hover:bg-[#000066]/90 backdrop-blur-sm shadow-md" wire:navigate>
                 <span style="font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 600;">Daftar</span>
                 <div class="w-0 opacity-0 group-hover:w-8 group-hover:opacity-100 transition-all duration-500 overflow-hidden">
                     <div class="w-8 h-8 bg-[#00ADEF] rounded-full flex items-center justify-center shrink-0">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-white"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
                     </div>
                 </div>
-            </button>
+            </a>
         </div>
 
         <div class="lg:hidden">
@@ -80,11 +80,11 @@
                 </button>
             @endforeach
             <div class="pt-6 border-t border-[#000066]/10 flex flex-col gap-4">
-                 <a href="{{ route('customer.dashboard.preview') }}" class="block w-full text-center text-[#000066]/70 font-medium hover:text-[#000066] transition-colors py-2 text-lg" style="font-family: 'Plus Jakarta Sans', sans-serif;">Masuk</a>
-                <button class="w-full bg-[#000066] text-white px-6 py-5 rounded-2xl text-lg font-semibold hover:bg-[#000066]/90 transition-all duration-200 flex items-center justify-center gap-3">
+                 <a href="{{ route('login') }}" class="block w-full text-center text-[#000066]/70 font-medium hover:text-[#000066] transition-colors py-2 text-lg" style="font-family: 'Plus Jakarta Sans', sans-serif;">Masuk</a>
+                <a href="{{ route('register') }}" class="w-full bg-[#000066] text-white px-6 py-4 rounded-2xl text-lg font-semibold hover:bg-[#000066]/90 transition-all duration-200 flex items-center justify-center gap-3 shadow-md" style="font-family: 'Plus Jakarta Sans', sans-serif;" wire:navigate>
                     <span>Daftar</span>
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
-                </button>
+                </a>
             </div>
         </div>
     </div>

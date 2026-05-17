@@ -21,11 +21,11 @@
     $user = ['name' => 'Ahmad'];
 @endphp
 
-<div class="max-w-6xl mx-auto">
+<div class="max-w-6xl mx-auto px-6 lg:px-8">
     @include('customer.dashboard.header', ['user' => $user])
     @include('customer.dashboard.stats')
 
-    <div class="grid lg:grid-cols-3 gap-12">
+    <div class="grid lg:grid-cols-3 gap-8 lg:gap-12">
         <div class="lg:col-span-2 space-y-8 animate-on-scroll">
             @include('customer.dashboard.recent-activities')
         </div>
@@ -36,7 +36,7 @@
     </div>
 </div>
 
-<div id="floating-notification" class="fixed bottom-8 left-1/2 -translate-x-1/2 z-[100] w-[90%] max-w-md pointer-events-none opacity-0 translate-y-20">
+<div id="floating-notification" class="fixed bottom-24 lg:bottom-8 left-1/2 -translate-x-1/2 z-[100] w-[90%] max-w-md pointer-events-none opacity-0 translate-y-20">
     <div class="bg-brand-dark/95 backdrop-blur-xl border border-white/10 p-5 rounded-[2rem] shadow-2xl flex items-center gap-5 pointer-events-auto">
         <div class="w-12 h-12 rounded-2xl bg-brand-primary flex items-center justify-center text-white flex-shrink-0">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>

@@ -261,7 +261,7 @@
     ];
 @endphp
 
-<div class="max-w-6xl mx-auto px-6" x-data="{ 
+<div class="max-w-6xl mx-auto px-6 lg:px-8" x-data="{ 
     activeTab: 'semua', 
     search: '', 
     startDate: null,
