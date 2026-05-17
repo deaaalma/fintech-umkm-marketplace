@@ -48,7 +48,8 @@
     <x-customer.navbar />
 
     <main class="flex-grow pt-32 pb-20">
-         {{ $slot }}
+         @yield('content')
+         {{ $slot ?? '' }}
     </main>
 
     <x-customer.footer />

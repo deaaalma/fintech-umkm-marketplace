@@ -1,5 +1,13 @@
 @php
-    $user = auth()->user();
+    // Gunakan dummy data khusus untuk halaman template
+    if (request()->is('templates/*')) {
+        $user = (object)[
+            'name' => 'Ahmad',
+            'role' => 'Customer'
+        ];
+    } else {
+        $user = auth()->user() ?? (object)['name' => 'Guest', 'role' => 'Visitor'];
+    }
 @endphp
 
 <nav x-data="{ isScrolled: false, openProfile: false }" 

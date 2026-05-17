@@ -9,38 +9,34 @@ use Livewire\Volt\Volt;
 
 /*
 |--------------------------------------------------------------------------
+| Template Preview Routes (Hanya untuk keperluan Design/Development)
+|--------------------------------------------------------------------------
+*/
+Route::prefix('templates')->group(function () {
+    // 1. Customer Previews
+    Route::view('customer/dashboard', 'templates.customer.dashboard')->name('customer.dashboard.preview');
+    Route::view('customer/orders', 'templates.customer.orders')->name('customer.orders.preview');
+    Route::view('customer/order-details', 'templates.customer.order-details')->name('customer.order-details.preview');
+    Route::view('customer/partners', 'templates.customer.partners')->name('customer.partners.preview');
+    Route::view('customer/notifications', 'templates.customer.notifications')->name('customer.notifications.preview');
+    Route::view('customer/chat', 'templates.customer.chat')->name('customer.chat.preview');
+
+    // 2. Superadmin Previews
+    Route::view('superadmin/dashboard', 'templates.superadmin.dashboard')->name('superadmin.dashboard.preview');
+    Route::view('superadmin/users', 'templates.superadmin.users')->name('superadmin.users.preview');
+    Route::view('superadmin/transactions', 'templates.superadmin.transactions')->name('superadmin.transactions.preview');
+    Route::view('superadmin/reports', 'templates.superadmin.reports')->name('superadmin.reports.preview');
+    Route::view('superadmin/settings', 'templates.superadmin.settings')->name('superadmin.settings.preview');
+
+    Route::view('/welcome', 'templates.welcome')->name('welcome');
+});
+
+/*
+|--------------------------------------------------------------------------
 | Guest Routes
 |--------------------------------------------------------------------------
 */
 Route::get('/', \App\Livewire\Landing::class)->name('home');
-
-/*
-|--------------------------------------------------------------------------
-| Template Preview Routes (Hanya untuk keperluan Design/Development)
-|--------------------------------------------------------------------------
-*/
-Route::prefix('templates')->name('templates.')->group(function () {
-    // Customer Previews
-    Route::prefix('customer')->name('customer.')->group(function () {
-        Route::view('/dashboard', 'templates.customer.dashboard')->name('dashboard');
-        Route::view('/orders', 'templates.customer.orders')->name('orders');
-        Route::view('/order-details', 'templates.customer.order-details')->name('order-details');
-        Route::view('/partners', 'templates.customer.partners')->name('partners');
-        Route::view('/notifications', 'templates.customer.notifications')->name('notifications');
-        Route::view('/chat', 'templates.customer.chat')->name('chat');
-    });
-
-    // Superadmin Previews
-    Route::prefix('superadmin')->name('superadmin.')->group(function () {
-        Route::view('/dashboard', 'templates.superadmin.dashboard')->name('dashboard.preview');
-        Route::view('/users', 'templates.superadmin.users')->name('users.preview');
-        Route::view('/transactions', 'templates.superadmin.transactions')->name('transactions.preview');
-        Route::view('/reports', 'templates.superadmin.reports')->name('reports.preview');
-        Route::view('/settings', 'templates.superadmin.settings')->name('settings.preview');
-    });
-
-    Route::view('/welcome', 'templates.welcome')->name('welcome');
-});
 
 /*
 |--------------------------------------------------------------------------
