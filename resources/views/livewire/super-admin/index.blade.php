@@ -1,7 +1,7 @@
 <div>
 
     {{-- SEO & Layout Title --}}
-    <x-slot:title>Dashboard Superadmin</x-slot>
+    <x-slot:title>Dashboard Superadmin 2</x-slot>
 
     {{-- Header Section --}}
     <x-slot:header>
