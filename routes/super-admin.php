@@ -14,6 +14,7 @@ Route::middleware(['auth', 'verified', 'role:superadmin'])->group(function () {
         Route::get('/dashboard', \App\Livewire\SuperAdmin\Index::class)->name('dashboard');
         Route::get('/dashboard/users', \App\Livewire\SuperAdmin\User\Index::class)->name('dashboard.users');
         Route::get('/dashboard/transactions', \App\Livewire\SuperAdmin\Transaction\Index::class)->name('dashboard.transactions');
+        Route::get('/dashboard/reports', \App\Livewire\SuperAdmin\Report\Index::class)->name('dashboard.reports');
 
         
 
