@@ -49,7 +49,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', function () {
         $role = auth()->user()->role;
         return match($role) {
-            'super_admin' => redirect()->route('admin.dashboard'),
+            'superadmin' => redirect()->route('admin.dashboard'),
             'admin_umkm'  => redirect()->route('umkm.dashboard'),
             'worker'      => redirect()->route('worker.dashboard'),
             'customer'    => redirect()->route('customer.dashboard'),
