@@ -103,7 +103,7 @@ new
         </div>
 
         <div class="flex flex-col items-start space-y-8 relative z-10">
-            <div class="bg-[#0077B6] rounded-full" style="height: 6px; width: 64px;"></div>
+
             <h1 class="font-black" style="font-size: 80px; line-height: 0.9; font-family: 'Plus Jakarta Sans', sans-serif; letter-spacing: -0.04em;">Welcome!</h1>
             <p style="font-size: 20px; line-height: 1.6; font-family: 'Inter', sans-serif; font-weight: 300; color: rgba(219,234,254,0.7); letter-spacing: 0.01em; max-width: 520px;">
                 Create your account and start connecting with trusted UMKM partners across Indonesia.

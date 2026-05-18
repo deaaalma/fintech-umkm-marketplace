@@ -61,7 +61,7 @@
             Masuk
             </a>
             
-            <a href="/register" 
+            <button @click.prevent="$dispatch('open-register-choice')" 
             class="bg-[#000066] text-white px-6 py-2.5 rounded-full text-sm font-semibold transition-all duration-500 group flex items-center gap-0 hover:gap-4 border border-[#000066]/20 hover:bg-[#000066]/90 backdrop-blur-sm">
                 <span style="font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 600;">Daftar</span>
                 <div class="w-0 opacity-0 group-hover:w-8 group-hover:opacity-100 transition-all duration-500 overflow-hidden">
@@ -71,7 +71,7 @@
                         </svg>
                     </div>
                 </div>
-            </a>
+            </button>
         </div>
 
         <div class="lg:hidden">
@@ -113,13 +113,13 @@
                     Masuk
                 </a>
                 
-                <a href="/register" 
+                <button @click.prevent="$dispatch('open-register-choice')" 
                 class="w-full bg-[#000066] text-white px-6 py-5 rounded-2xl text-lg font-semibold hover:bg-[#000066]/90 transition-all duration-200 flex items-center justify-center gap-3">
                     <span style="font-family: 'Plus Jakarta Sans', sans-serif;">Daftar</span>
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M5 12h14"/><path d="M12 5l7 7-7 7"/>
                     </svg>
-                </a>
+                </button>
             </div>
         </div>
     </div>

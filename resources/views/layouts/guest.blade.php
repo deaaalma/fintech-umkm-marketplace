@@ -55,6 +55,7 @@
         {{ $slot }}
     </div>
 
+    <x-auth.register-choice-modal />
     @includeIf('landing-page.scripts')
 
 </body>

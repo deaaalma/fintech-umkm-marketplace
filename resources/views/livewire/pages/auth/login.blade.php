@@ -91,7 +91,7 @@ new
         </div>
 
         <div class="flex flex-col items-start space-y-8 relative z-10">
-            <div class="bg-[#0077B6] rounded-full" style="height: 6px; width: 64px;"></div>
+
             <h1 class="font-black" style="font-size: 80px; line-height: 0.9; font-family: 'Plus Jakarta Sans', sans-serif; letter-spacing: -0.04em;">Welcome Back!</h1>
             <p style="font-size: 20px; line-height: 1.6; font-family: 'Inter', sans-serif; font-weight: 300; color: rgba(219,234,254,0.7); letter-spacing: 0.01em; max-width: 520px;">
                 Login to continue accessing your account and enjoy our services from trusted UMKM partners.
@@ -218,8 +218,8 @@ new
 
             <div class="mt-[52px] text-center">
                 <p class="text-sm font-semibold text-slate-500">
-                    Don’t have an account? <a href="{{ route('register') }}"
-                        class="text-[#0077B6] hover:text-[#000B44] transition-colors font-black border-b-2 border-[#0077B6]/20 hover:border-[#000B44] pb-1" wire:navigate>Sign Up</a>
+                    Belum punya akun? <button @click.prevent="$dispatch('open-register-choice')"
+                        class="text-[#0077B6] hover:text-[#000B44] transition-colors font-black border-b-2 border-[#0077B6]/20 hover:border-[#000B44] pb-1">Daftar Sekarang</button>
                 </p>
             </div>
         </div>
