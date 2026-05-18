@@ -13,7 +13,6 @@
 >
     <div class="max-w-[1400px] mx-auto px-6 lg:px-8">
         <div class="flex items-center justify-between h-20">
-            <!-- Logo & Brand -->
             <div class="flex items-center gap-4">
                 <div class="flex items-center gap-3">
                     <div class="w-10 h-10 bg-[#003d5c] rounded-xl flex items-center justify-center">
@@ -30,7 +29,6 @@
                 </div>
             </div>
 
-            <!-- Search Bar (Desktop) -->
             <div class="hidden md:block flex-1 max-w-md mx-8">
                 <div class="relative">
                     <input 
@@ -45,7 +43,6 @@
                 </div>
             </div>
 
-            <!-- Right Actions -->
             <div class="hidden md:flex items-center gap-4">
                 <button class="relative p-2 rounded-lg hover:bg-gray-100 transition-colors">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-900">
@@ -117,8 +114,7 @@
             </div>
         </div>
 
-        <!-- Secondary Navigation -->
-       <div class="hidden md:flex items-center gap-6 pb-4 border-b border-[#e5e5e5]">
+        <div class="hidden md:flex items-center gap-6 pb-4 border-b border-[#e5e5e5]">
             
             <a href="{{ route('admin.dashboard') }}" 
                 class="flex items-center gap-2 px-3 py-2 text-sm font-medium transition-colors duration-200 relative group {{ request()->routeIs('admin.dashboard') ? 'text-[#0078b7]' : 'text-gray-900 hover:text-[#0078b7]' }}" 
@@ -128,40 +124,40 @@
             </a>
 
             <a href="#" 
-                class="flex items-center gap-2 px-3 py-2 text-sm font-medium transition-colors duration-200 relative group {{ request()->routeIs('superadmin.umkm.*') ? 'text-[#0078b7]' : 'text-gray-900 hover:text-[#0078b7]' }}" 
+                class="flex items-center gap-2 px-3 py-2 text-sm font-medium transition-colors duration-200 relative group {{ request()->routeIs('admin.dashboard.umkm*') ? 'text-[#0078b7]' : 'text-gray-900 hover:text-[#0078b7]' }}" 
                 style="font-family: 'Figtree', sans-serif; font-weight: 400;">
                 <span>UMKM Management</span>
                 <span class="px-2 py-0.5 bg-[#003d5c] text-white text-xs font-semibold rounded-full">127</span>
-                <div class="absolute bottom-0 left-0 {{ request()->routeIs('superadmin.umkm.*') ? 'w-full' : 'w-0' }} h-0.5 bg-current transition-all duration-300 group-hover:w-full"></div>
+                <div class="absolute bottom-0 left-0 {{ request()->routeIs('admin.dashboard.umkm*') ? 'w-full' : 'w-0' }} h-0.5 bg-current transition-all duration-300 group-hover:w-full"></div>
             </a>
 
-            <a href="#" 
-                class="flex items-center gap-2 px-3 py-2 text-sm font-medium transition-colors duration-200 relative group {{ request()->routeIs('superadmin.users.*') ? 'text-[#0078b7]' : 'text-gray-900 hover:text-[#0078b7]' }}" 
+            <a href="{{ route('admin.dashboard.users') }}" 
+                class="flex items-center gap-2 px-3 py-2 text-sm font-medium transition-colors duration-200 relative group {{ request()->routeIs('admin.dashboard.users*') ? 'text-[#0078b7]' : 'text-gray-900 hover:text-[#0078b7]' }}" 
                 style="font-family: 'Figtree', sans-serif; font-weight: 400;">
                 <span>Pengguna</span>
                 <span class="px-2 py-0.5 bg-[#003d5c] text-white text-xs font-semibold rounded-full">2</span>
-                <div class="absolute bottom-0 left-0 {{ request()->routeIs('superadmin.users.*') ? 'w-full' : 'w-0' }} h-0.5 bg-current transition-all duration-300 group-hover:w-full"></div>
+                <div class="absolute bottom-0 left-0 {{ request()->routeIs('admin.dashboard.users*') ? 'w-full' : 'w-0' }} h-0.5 bg-current transition-all duration-300 group-hover:w-full"></div>
             </a>
 
-            <a href="#" 
-                class="flex items-center gap-2 px-3 py-2 text-sm font-medium transition-colors duration-200 relative group {{ request()->routeIs('superadmin.transactions.*') ? 'text-[#0078b7]' : 'text-gray-900 hover:text-[#0078b7]' }}" 
+            <a href="{{ route('admin.dashboard.transactions') }}" 
+                class="flex items-center gap-2 px-3 py-2 text-sm font-medium transition-colors duration-200 relative group {{ request()->routeIs('admin.dashboard.transactions*') ? 'text-[#0078b7]' : 'text-gray-900 hover:text-[#0078b7]' }}" 
                 style="font-family: 'Figtree', sans-serif; font-weight: 400;">
                 <span>Transaksi</span>
-                <div class="absolute bottom-0 left-0 {{ request()->routeIs('superadmin.transactions.*') ? 'w-full' : 'w-0' }} h-0.5 bg-current transition-all duration-300 group-hover:w-full"></div>
+                <div class="absolute bottom-0 left-0 {{ request()->routeIs('admin.dashboard.transactions*') ? 'w-full' : 'w-0' }} h-0.5 bg-current transition-all duration-300 group-hover:w-full"></div>
             </a>
 
-            <a href="#" 
-                class="flex items-center gap-2 px-3 py-2 text-sm font-medium transition-colors duration-200 relative group {{ request()->routeIs('superadmin.reports.*') ? 'text-[#0078b7]' : 'text-gray-900 hover:text-[#0078b7]' }}" 
+            <a href="{{ route('admin.dashboard.reports') }}" 
+                class="flex items-center gap-2 px-3 py-2 text-sm font-medium transition-colors duration-200 relative group {{ request()->routeIs('admin.dashboard.reports*') ? 'text-[#0078b7]' : 'text-gray-900 hover:text-[#0078b7]' }}" 
                 style="font-family: 'Figtree', sans-serif; font-weight: 400;">
                 <span>Laporan</span>
-                <div class="absolute bottom-0 left-0 {{ request()->routeIs('superadmin.reports.*') ? 'w-full' : 'w-0' }} h-0.5 bg-current transition-all duration-300 group-hover:w-full"></div>
+                <div class="absolute bottom-0 left-0 {{ request()->routeIs('admin.dashboard.reports*') ? 'w-full' : 'w-0' }} h-0.5 bg-current transition-all duration-300 group-hover:w-full"></div>
             </a>
 
-            <a href="#" 
-                class="flex items-center gap-2 px-3 py-2 text-sm font-medium transition-colors duration-200 relative group {{ request()->routeIs('superadmin.settings.*') ? 'text-[#0078b7]' : 'text-gray-900 hover:text-[#0078b7]' }}" 
+            <a href="{{ route('admin.dashboard.settings') }}" 
+                class="flex items-center gap-2 px-3 py-2 text-sm font-medium transition-colors duration-200 relative group {{ request()->routeIs('admin.dashboard.settings*') ? 'text-[#0078b7]' : 'text-gray-900 hover:text-[#0078b7]' }}" 
                 style="font-family: 'Figtree', sans-serif; font-weight: 400;">
                 <span>Pengaturan</span>
-                <div class="absolute bottom-0 left-0 {{ request()->routeIs('superadmin.settings.*') ? 'w-full' : 'w-0' }} h-0.5 bg-current transition-all duration-300 group-hover:w-full"></div>
+                <div class="absolute bottom-0 left-0 {{ request()->routeIs('admin.dashboard.settings*') ? 'w-full' : 'w-0' }} h-0.5 bg-current transition-all duration-300 group-hover:w-full"></div>
             </a>
 
         </div>
