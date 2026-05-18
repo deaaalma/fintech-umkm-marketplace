@@ -25,7 +25,7 @@
         </div>
 
         <div class="flex flex-col gap-4 mb-12 max-w-3xl solution-header">
-            <h2 class="text-4xl lg:text-5xl font-medium text-[#000066] tracking-tight" style="font-family: 'Plus Jakarta Sans', sans-serif;">
+            <h2 class="text-3xl sm:text-4xl lg:text-5xl font-medium text-[#000066] tracking-tight" style="font-family: 'Plus Jakarta Sans', sans-serif;">
                 Built for Serious <span class="font-georgia-italic italic text-[#0072BB]">Growth</span>
             </h2>
             <p class="text-[#000066]/70 text-lg leading-relaxed font-circular-book">

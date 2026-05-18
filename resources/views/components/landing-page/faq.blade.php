@@ -2,7 +2,7 @@
     <div class="max-w-7xl mx-auto">
         <div class="grid lg:grid-cols-12 gap-16">
             <div class="lg:col-span-4">
-                <h2 class="text-4xl lg:text-[48px] leading-[1.1] font-bold text-[#000066] tracking-tight sticky top-24" style="font-family: 'Plus Jakarta Sans', sans-serif;">
+                <h2 class="text-3xl md:text-4xl lg:text-[48px] leading-[1.1] font-bold text-[#000066] tracking-tight sticky top-24" style="font-family: 'Plus Jakarta Sans', sans-serif;">
                     Frequently Asked Questions
                 </h2>
             </div>
@@ -30,7 +30,7 @@
                         <button @click="openIndex = openIndex === {{ $index }} ? null : {{ $index }}" 
                                 class="w-full flex items-center justify-between py-8 text-left group hover:opacity-70 transition-all duration-300" 
                                 :aria-expanded="openIndex === {{ $index }}">
-                            <span class="text-xl leading-relaxed text-[#000066] pr-8 font-bold transition-colors duration-300"
+                            <span class="text-lg md:text-xl leading-relaxed text-[#000066] pr-4 md:pr-8 font-bold transition-colors duration-300"
                                   :class="openIndex === {{ $index }} ? 'text-[#0072BB]' : ''"
                                   style="font-family: 'Plus Jakarta Sans', sans-serif;">
                                 {{ $faq['q'] }}
@@ -42,8 +42,8 @@
                         </button>
                         <div class="faq-grid-transition" :class="openIndex === {{ $index }} ? 'open' : ''">
                             <div class="faq-grid-content">
-                                <div class="pb-8 pr-12">
-                                    <p class="text-lg leading-relaxed text-[#000066]/70 font-medium" style="font-family: 'Figtree', sans-serif;">
+                                <div class="pb-6 md:pb-8 pr-6 md:pr-12">
+                                    <p class="text-base md:text-lg leading-relaxed text-[#000066]/70 font-medium" style="font-family: 'Figtree', sans-serif;">
                                         {{ $faq['a'] }}
                                     </p>
                                 </div>

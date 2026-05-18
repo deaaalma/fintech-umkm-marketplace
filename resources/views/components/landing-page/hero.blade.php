@@ -10,7 +10,7 @@
 
     <div class="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-8">
         <div class="max-w-4xl">
-            <h1 class="text-[48px] lg:text-[84px] leading-[1.1] tracking-tight text-[#000066] mb-10 hero-text-anim" style="font-weight: 700; font-family: 'Plus Jakarta Sans', sans-serif; text-shadow: 0 2px 40px rgba(197, 235, 244, 0.8);">
+            <h1 class="text-[40px] sm:text-[48px] lg:text-[72px] xl:text-[84px] leading-[1.1] tracking-tight text-[#000066] mb-8 md:mb-10 hero-text-anim" style="font-weight: 700; font-family: 'Plus Jakarta Sans', sans-serif; text-shadow: 0 2px 40px rgba(197, 235, 244, 0.8);">
                 Ubah Tantangan<br>
                 Jadi <span class="relative inline-block text-[#0072BB]" 
                     x-data="{
@@ -35,13 +35,13 @@
                 </span>
             </h1>
 
-            <p class="text-xl leading-relaxed text-[#000066] max-w-[650px] mb-12 hero-text-anim" style="font-family: 'Figtree', sans-serif; font-weight: 500;">
+            <p class="text-lg md:text-xl lg:text-2xl leading-relaxed text-[#000066] max-w-[650px] mb-10 md:mb-12 hero-text-anim" style="font-family: 'Figtree', sans-serif; font-weight: 500;">
                 Membantu UMKM Indonesia berkembang di dunia digital.<br class="hidden lg:block">
                 Jual produk Anda, kelola toko dengan mudah, dan jangkau lebih banyak pelanggan melalui satu platform marketplace.
             </p>
 
             <div class="flex flex-wrap items-center gap-6 hero-text-anim">
-                <a href="{{ route('register') }}" class="bg-[#000066] text-white px-8 py-3 rounded-2xl text-lg font-semibold transition-all duration-500 flex items-center gap-0 hover:gap-8 border border-[#000066]/20 hover:bg-[#000066]/90 group shadow-2xl backdrop-blur-sm">
+                <a href="{{ route('register') }}" class="bg-[#000066] text-white px-6 py-3 md:px-8 rounded-2xl text-base md:text-lg font-semibold transition-all duration-500 flex items-center gap-0 hover:gap-8 border border-[#000066]/20 hover:bg-[#000066]/90 group shadow-2xl backdrop-blur-sm">
                     <span style="font-family: 'Figtree', sans-serif;">Mulai Sekarang</span>
                     <div class="w-0 opacity-0 group-hover:w-12 group-hover:opacity-100 transition-all duration-500 overflow-hidden">
                         <div class="w-12 h-12 bg-[#00ADEF] rounded-xl flex items-center justify-center transition-all duration-500 group-hover:scale-110 group-hover:rounded-full shadow-lg shrink-0">

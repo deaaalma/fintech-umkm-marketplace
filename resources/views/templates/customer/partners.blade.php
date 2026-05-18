@@ -70,13 +70,14 @@
     search: '',
     allPartners: @js($partners)
 }">
-    @include('customer.partners.header')
-    @include('customer.partners.filters', ['categories' => $categories])
-    @include('customer.partners.grid')
+    @include('templates.customer.partners.header')
+    @include('templates.customer.partners.filters', ['categories' => $categories])
+    @include('templates.customer.partners.grid')
 </div>
 @endsection
 
 @push('scripts')
+<script>
     gsap.from('.animate-on-load', {
         y: 20,
         opacity: 0,
@@ -84,4 +85,5 @@
         stagger: 0.1,
         ease: 'power3.out'
     });
+</script>
 @endpush

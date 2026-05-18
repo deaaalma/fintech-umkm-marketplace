@@ -261,7 +261,7 @@
     ];
 @endphp
 
-<div class="max-w-6xl mx-auto px-6" x-data="{ 
+<div class="max-w-6xl mx-auto px-6 lg:px-8" x-data="{ 
     activeTab: 'semua', 
     search: '', 
     startDate: null,
@@ -359,15 +359,118 @@
         this.$nextTick(() => animateTabs());
     }
 }">
-    @include('customer.orders.header')
-    @include('customer.orders.filters')
-    @include('customer.orders.tabs', ['tabs' => $tabs])
-    @include('customer.orders.grid')
-    @include('customer.orders.pagination')
+    @php
+        // Move the includes resolution here to be cleaner
+    @endphp
+
+    <div class="max-w-6xl mx-auto px-6 lg:px-8" x-data="{ 
+        activeTab: 'semua', 
+        search: '', 
+        startDate: null,
+        endDate: null,
+        statusFilter: '',
+        showFilterMenu: false,
+        currentPage: 1, 
+        itemsPerPage: 6,
+        allOrders: @js($orders),
+        init() {
+            flatpickr($refs.dateInput, {
+                mode: 'range',
+                dateFormat: 'Y-m-d',
+                altInput: true,
+                altFormat: 'j M Y',
+                onChange: (selectedDates) => {
+                    if (selectedDates.length === 2) {
+                        this.startDate = selectedDates[0];
+                        this.endDate = selectedDates[1];
+                        this.currentPage = 1;
+                        this.$nextTick(() => animateTabs());
+                    } else if (selectedDates.length === 0) {
+                        this.startDate = null;
+                        this.endDate = null;
+                        this.currentPage = 1;
+                        this.$nextTick(() => animateTabs());
+                    }
+                }
+            });
+        },
+        get filteredOrders() {
+            if (!Array.isArray(this.allOrders)) return [];
+            
+            return this.allOrders.filter(o => {
+                // Filter Tab
+                const matchesTab = this.activeTab === 'semua' || o.tab === this.activeTab;
+                
+                // Filter Search (Lebih aman dengan check null)
+                const searchTerms = this.search.toLowerCase().trim();
+                const serviceName = (o.service || '').toLowerCase();
+                const orderId = (o.id || '').toLowerCase();
+                const matchesSearch = searchTerms === '' || 
+                                     serviceName.includes(searchTerms) || 
+                                     orderId.includes(searchTerms);
+                
+                // Filter Status
+                const statusTerms = this.statusFilter.toLowerCase().trim();
+                const orderStatus = (o.status || '').toLowerCase();
+                const matchesStatus = statusTerms === '' || orderStatus.includes(statusTerms);
+                
+                // Filter Tanggal
+                let matchesDate = true;
+                if (this.startDate && this.endDate) {
+                    try {
+                        const orderTime = new Date(o.timestamp).getTime();
+                        matchesDate = orderTime >= this.startDate.getTime() && orderTime <= this.endDate.getTime();
+                    } catch (e) {
+                        matchesDate = true;
+                    }
+                }
+                
+                return matchesTab && matchesSearch && matchesStatus && matchesDate;
+            });
+        },
+        get paginatedOrders() {
+            const filtered = this.filteredOrders;
+            const start = (this.currentPage - 1) * this.itemsPerPage;
+            return filtered.slice(start, start + this.itemsPerPage);
+        },
+        get totalPages() {
+            return Math.ceil(this.filteredOrders.length / this.itemsPerPage);
+        },
+        get activeFilters() {
+            let filters = [];
+            if (this.startDate && this.endDate) {
+                const fmt = (d) => d.toLocaleDateString('id-ID', { day: 'numeric', month: 'short' });
+                filters.push({ id: 'date', label: 'Rentang: ' + fmt(this.startDate) + ' - ' + fmt(this.endDate) });
+            }
+            if (this.statusFilter) filters.push({ id: 'status', label: 'Status: ' + this.statusFilter });
+            return filters;
+        },
+        clearFilter(id) {
+            if (id === 'date') {
+                this.startDate = null;
+                this.endDate = null;
+                this.$refs.dateInput._flatpickr.clear();
+            }
+            if (id === 'status') this.statusFilter = '';
+            this.currentPage = 1;
+            this.$nextTick(() => animateTabs());
+        },
+        changeTab(id) {
+            this.activeTab = id;
+            this.currentPage = 1;
+            this.$nextTick(() => animateTabs());
+        }
+    }">
+    @include('templates.customer.orders.header')
+    @include('templates.customer.orders.filters')
+    @include('templates.customer.orders.tabs', ['tabs' => $tabs])
+    @include('templates.customer.orders.grid')
+    @include('templates.customer.orders.pagination')
 </div>
 @endsection
 
 @push('scripts')
+<script>
     function animateTabs() {
         gsap.killTweensOf('.order-item');
         gsap.fromTo('.order-item', 
@@ -381,4 +484,5 @@
             }
         );
     }
+</script>
 @endpush

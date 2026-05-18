@@ -91,7 +91,6 @@ new
         </div>
 
         <div class="flex flex-col items-start space-y-8 relative z-10">
-
             <h1 class="font-black" style="font-size: 80px; line-height: 0.9; font-family: 'Plus Jakarta Sans', sans-serif; letter-spacing: -0.04em;">Welcome Back!</h1>
             <p style="font-size: 20px; line-height: 1.6; font-family: 'Inter', sans-serif; font-weight: 300; color: rgba(219,234,254,0.7); letter-spacing: 0.01em; max-width: 520px;">
                 Login to continue accessing your account and enjoy our services from trusted UMKM partners.
@@ -190,7 +189,6 @@ new
                 </div>
 
                 <div class="flex justify-center gap-4 mt-2">
-                    {{-- Google: tetap warna asli --}}
                     <a href="#" class="flex justify-center items-center w-14 h-14 bg-white border border-slate-100 rounded-2xl hover:bg-slate-50 transition-all duration-200 aspect-square">
                         <svg class="w-5 h-5" viewBox="0 0 24 24">
                             <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />
@@ -200,14 +198,12 @@ new
                         </svg>
                     </a>
 
-                    {{-- Apple: hover background gelap, icon putih --}}
                     <a href="#" class="social-btn-apple flex justify-center items-center w-14 h-14 bg-white border border-slate-100 rounded-2xl transition-all duration-200 aspect-square">
                         <svg class="w-5 h-5 text-[#000B44] transition-colors duration-200" fill="currentColor" viewBox="0 0 24 24">
                             <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.74 1.18 0 2.45-1.02 4.12-.55 2.1.56 3.2 2.68 3.73 3.44-3.32 1.6-2.74 5.95.6 7.28-.48 1.4-1.2 2.8-2.23 3.86l-.15.2zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z" />
                         </svg>
                     </a>
 
-                    {{-- Facebook: hover background biru, icon putih --}}
                     <a href="#" class="social-btn-facebook flex justify-center items-center w-14 h-14 bg-white border border-slate-100 rounded-2xl transition-all duration-200 aspect-square">
                         <svg class="w-5 h-5 text-[#1877F2] transition-colors duration-200" fill="currentColor" viewBox="0 0 24 24">
                             <path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" />
