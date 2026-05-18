@@ -75,7 +75,7 @@
     @include('customer.order-details.stepper', ['steps' => $steps])
     @include('customer.order-details.banner', ['current' => $current])
 
-    <div class="grid lg:grid-cols-3 gap-8 lg:gap-12">
+    <div class="grid lg:grid-cols-3 gap-12">
         <div class="lg:col-span-2 space-y-12">
             @include('customer.order-details.service-info', ['current' => $current])
             @include('customer.order-details.timeline', ['current' => $current])

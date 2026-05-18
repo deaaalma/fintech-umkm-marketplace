@@ -93,7 +93,7 @@
     }
 }">
     <!-- Header -->
-    <div class="mb-8 lg:mb-12 flex flex-col sm:flex-row items-start sm:items-end justify-between gap-6 sm:gap-0 animate-on-load">
+    <div class="mb-12 flex items-end justify-between animate-on-load">
         <div>
             <div class="inline-flex items-center gap-2.5 px-4 py-1.5 bg-brand-primary/5 rounded-full border border-brand-primary/10 mb-6 group cursor-default">
                 <div class="w-1.5 h-1.5 rounded-full bg-brand-primary group-hover:scale-125 transition-transform duration-500"></div>
@@ -135,15 +135,15 @@
     <!-- Notification List -->
     <div class="space-y-6 min-h-[400px]">
         <template x-for="notif in filteredNotifications" :key="notif.id">
-            <div class="notification-item group p-6 lg:p-8 rounded-3xl lg:rounded-[2.5rem] border border-slate-100/60"
+            <div class="notification-item group p-8 rounded-[2.5rem] border border-slate-100/60"
                  :class="notif.is_unread ? 'bg-[#F0FAFC]' : 'bg-slate-50/30'">
-                <div class="flex flex-col sm:flex-row items-start gap-4 sm:gap-8">
-                    <div class="detail-icon-box w-12 h-12 lg:w-14 lg:h-14 rounded-2xl bg-white flex items-center justify-center shadow-sm flex-shrink-0 group-hover:scale-110 transition-transform"
+                <div class="flex items-start gap-8">
+                    <div class="detail-icon-box w-14 h-14 rounded-2xl bg-white flex items-center justify-center shadow-sm flex-shrink-0 group-hover:scale-110 transition-transform"
                          :class="'text-' + notif.color"
                          x-html="notif.icon">
                     </div>
                     <div class="flex-1 space-y-2">
-                        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-0">
+                        <div class="flex items-center justify-between">
                             <div class="flex items-center gap-3">
                                 <h3 class="text-xl font-bold text-brand-dark tracking-tight" x-text="notif.title"></h3>
                                 <template x-if="notif.is_unread">

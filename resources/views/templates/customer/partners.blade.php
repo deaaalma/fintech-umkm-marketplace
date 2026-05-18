@@ -77,7 +77,6 @@
 @endsection
 
 @push('scripts')
-<script>
     gsap.from('.animate-on-load', {
         y: 20,
         opacity: 0,
@@ -85,5 +84,4 @@
         stagger: 0.1,
         ease: 'power3.out'
     });
-</script>
 @endpush

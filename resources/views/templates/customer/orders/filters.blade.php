@@ -1,23 +1,23 @@
 <div class="mb-12 animate-on-load relative z-30">
-    <div class="flex flex-row gap-2 lg:gap-4 mb-6 items-stretch">
+    <div class="flex flex-col lg:flex-row gap-4 mb-6 items-start lg:items-stretch">
         <div class="relative w-full transition-all duration-700 ease-in-out group order-1"
              :class="(showFilterMenu || search.length > 0) ? 'lg:w-full' : 'lg:w-[480px] hover:lg:w-[520px]'">
-            <div class="absolute inset-y-0 left-3 lg:left-5 flex items-center pointer-events-none text-slate-300 group-focus-within:text-brand-primary transition-colors">
+            <div class="absolute inset-y-0 left-5 flex items-center pointer-events-none text-slate-300 group-focus-within:text-brand-primary transition-colors">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
             </div>
             <input type="text" 
                    x-model="search"
                    @focus="currentPage = 1"
                    @input="currentPage = 1; $nextTick(() => animateTabs())"
-                   placeholder="Cari pesanan atau layanan..." 
-                   class="w-full pl-10 lg:pl-14 pr-3 lg:pr-6 py-3.5 lg:py-4 bg-white border border-slate-100 rounded-xl lg:rounded-2xl text-[11px] lg:text-[13px] font-bold text-brand-dark placeholder:text-slate-300 focus:outline-none focus:border-brand-primary/30 focus:ring-4 focus:ring-brand-primary/5 transition-all group-hover:shadow-xl group-hover:shadow-brand-primary/5">
+                   placeholder="Cari berdasarkan nomor pesanan atau nama layanan..." 
+                   class="w-full pl-14 pr-6 py-4 bg-white border border-slate-100 rounded-2xl text-[13px] font-bold text-brand-dark placeholder:text-slate-300 focus:outline-none focus:border-brand-primary/30 focus:ring-4 focus:ring-brand-primary/5 transition-all group-hover:shadow-xl group-hover:shadow-brand-primary/5">
         </div>
 
         <div class="relative order-2 flex-shrink-0" @click.away="showFilterMenu = false">
             <button @click="showFilterMenu = !showFilterMenu"
-                    class="h-full px-4 lg:px-8 py-3.5 lg:py-4 bg-white border border-slate-100 rounded-xl lg:rounded-2xl text-[11px] lg:text-[13px] font-black text-brand-dark hover:bg-slate-50 transition-all flex items-center gap-2 lg:gap-3">
+                    class="h-full px-8 py-4 bg-white border border-slate-100 rounded-2xl text-[13px] font-black text-brand-dark hover:bg-slate-50 transition-all flex items-center gap-3">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
-                <span class="hidden sm:inline">Filter</span>
+                <span>Filter</span>
             </button>
 
             <div x-show="showFilterMenu" 

@@ -3,11 +3,9 @@
 @section('title', 'Messages')
 
 @section('extra-styles')
-    @media (min-width: 1024px) {
-        .chat-layout {
-            height: calc(100vh - 240px);
-            min-height: 600px;
-        }
+    .chat-layout {
+        height: calc(100vh - 240px);
+        min-height: 600px;
     }
     .contact-card {
         transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
@@ -81,7 +79,7 @@
     ];
 @endphp
 
-<div class="max-w-6xl mx-auto px-6 lg:px-8 h-full" x-data="{ 
+<div class="max-w-6xl mx-auto px-6 h-full" x-data="{ 
     activeId: 1,
     newMessage: '',
     contacts: @js($contacts),
@@ -106,9 +104,9 @@
         });
     }
 }">
-    <div class="flex flex-col lg:flex-row gap-6 lg:gap-8 chat-layout">
+    <div class="flex gap-8 chat-layout">
         <!-- Sidebar Contacts -->
-        <div class="w-full lg:w-1/3 flex flex-col gap-4 lg:gap-6 min-h-[300px] lg:h-full">
+        <div class="w-1/3 flex flex-col gap-6 h-full">
             <div class="space-y-2 animate-on-load">
                 <h1 class="text-4xl font-bold text-brand-dark tracking-tighter">Messages</h1>
                 <p class="text-slate-400 text-xs font-black uppercase tracking-widest">Connect with our support team</p>
@@ -144,7 +142,7 @@
         </div>
 
         <!-- Chat Window -->
-        <div class="w-full lg:flex-1 flex flex-col min-h-[500px] lg:h-full animate-on-load">
+        <div class="flex-1 flex flex-col h-full animate-on-load">
             <div class="premium-card flex-grow flex flex-col overflow-hidden">
                 <!-- Chat Header -->
                 <div class="p-8 border-b border-slate-50 flex items-center justify-between bg-white/50 backdrop-blur-sm relative z-10 transition-all duration-500">

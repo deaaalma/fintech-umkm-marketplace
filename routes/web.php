@@ -1,125 +1,87 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
+use App\Livewire\Landing;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Livewire\Volt\Volt;
 
-Route::view('/', 'welcome');
+/*
+|--------------------------------------------------------------------------
+| Template Preview Routes (Hanya untuk keperluan Design/Development)
+|--------------------------------------------------------------------------
+*/
+Route::prefix('templates')->group(function () {
+    // 1. Customer Previews
+    Route::view('customer/dashboard', 'templates.customer.dashboard')->name('customer.dashboard.preview');
+    Route::view('customer/orders', 'templates.customer.orders')->name('customer.orders.preview');
+    Route::view('customer/order-details', 'templates.customer.order-details')->name('customer.order-details.preview');
+    Route::view('customer/partners', 'templates.customer.partners')->name('customer.partners.preview');
+    Route::view('customer/notifications', 'templates.customer.notifications')->name('customer.notifications.preview');
+    Route::view('customer/chat', 'templates.customer.chat')->name('customer.chat.preview');
 
-Route::get('/customer/dashboard/preview', function () {
-    return view('customer.dashboard');
-})->name('customer.dashboard.preview');
+    // 2. Superadmin Previews
+    Route::view('superadmin/dashboard', 'templates.superadmin.dashboard')->name('superadmin.dashboard.preview');
+    Route::view('superadmin/users', 'templates.superadmin.users')->name('superadmin.users.preview');
+    Route::view('superadmin/transactions', 'templates.superadmin.transactions')->name('superadmin.transactions.preview');
+    Route::view('superadmin/reports', 'templates.superadmin.reports')->name('superadmin.reports.preview');
+    Route::view('superadmin/settings', 'templates.superadmin.settings')->name('superadmin.settings.preview');
 
-Route::get('/customer/orders/preview', function () {
-    return view('customer.orders');
-})->name('customer.orders.preview');
-
-Route::get('/customer/partners/preview', function () {
-    return view('customer.partners');
-})->name('customer.partners.preview');
-
-Route::get('/customer/order-details/preview', function () {
-    return view('customer.order-details');
-})->name('customer.order-details.preview');
-
-Route::get('/customer/notifications/preview', function () {
-    return view('customer.notifications');
-})->name('customer.notifications.preview');
-
-Route::get('/customer/chat/preview', function () {
-    return view('customer.chat');
-})->name('customer.chat.preview');
-
-// Template Routes for Restored UI Design
-Route::prefix('templates/customer')->name('templates.customer.')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('templates.customer.dashboard');
-    })->name('dashboard');
-
-    Route::get('/orders', function () {
-        return view('templates.customer.orders');
-    })->name('orders');
-
-    Route::get('/partners', function () {
-        return view('templates.customer.partners');
-    })->name('partners');
-
-    Route::get('/order-details', function () {
-        return view('templates.customer.order-details');
-    })->name('order-details');
-
-    Route::get('/notifications', function () {
-        return view('templates.customer.notifications');
-    })->name('notifications');
-
-    Route::get('/chat', function () {
-        return view('templates.customer.chat');
-    })->name('chat');
+    Route::view('/welcome', 'templates.welcome')->name('welcome');
 });
 
-Route::get('/superadmin/dashboard/preview', function () {
-    return view('superadmin.dashboard');
-})->name('superadmin.dashboard.preview');
+/*
+|--------------------------------------------------------------------------
+| Guest Routes
+|--------------------------------------------------------------------------
+*/
+Route::get('/', \App\Livewire\Landing::class)->name('home');
 
-Route::get('/superadmin/users/preview', function () {
-    return view('superadmin.users');
-})->name('superadmin.users.preview');
-
-Route::get('/superadmin/transactions/preview', function () {
-    return view('superadmin.transactions');
-})->name('superadmin.transactions.preview');
-
-Route::get('/superadmin/reports/preview', function () {
-    return view('superadmin.reports');
-})->name('superadmin.reports.preview');
-
-Route::get('/superadmin/settings/preview', function () {
-    return view('superadmin.settings');
-})->name('superadmin.settings.preview');
-
-Route::view('dashboard', 'dashboard')
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
-
-Route::view('profile', 'profile')
-    ->middleware(['auth'])
-    ->name('profile');
-
+/*
+|--------------------------------------------------------------------------
+| Authenticated Routes
+|--------------------------------------------------------------------------
+*/
 Route::middleware(['auth', 'verified'])->group(function () {
-    
-    // 1. Dashboard untuk Customer (Default)
+
+    // --- 1. Global Dashboard Redirector ---
     Route::get('/dashboard', function () {
-        return view('dashboard'); 
+        $role = auth()->user()->role;
+        return match($role) {
+            'super_admin' => redirect()->route('admin.dashboard'),
+            'admin_umkm'  => redirect()->route('umkm.dashboard'),
+            'worker'      => redirect()->route('worker.dashboard'),
+            'customer'    => redirect()->route('customer.dashboard'),
+            default       => redirect('/'),
+        };
     })->name('dashboard');
 
-    // 2. Dashboard Super Admin
-    Route::get('/admin/dashboard', function () {
-        return view('livewire.admin.index'); // Pastikan view ini ada
-    })->name('admin.dashboard');
+    // --- 2. UMKM Setup Wizard (Owner Only) ---
+    Volt::route('umkm/setup', 'pages.auth.umkm-setup')->name('umkm.setup');
 
-    // 3. Dashboard UMKM
-    Route::get('/umkm/dashboard', function () {
-        return view('livewire.umkm.index'); // Pastikan view ini ada
-    })->name('umkm.dashboard');
+    // --- 6. Customer Space ---
+    Route::prefix('customer')->name('customer.')->group(function () {
+         Route::get('/dashboard', \App\Livewire\Customer\Index::class)->name('dashboard');
+    });
 
-    // 4. Dashboard Worker
-    Route::get('/worker/dashboard', function () {
-        return view('livewire.worker.index'); // Pastikan view ini ada
-    })->name('worker.dashboard');
-
-    // 5. Dashboard Customer
-    Route::get('/customer/dashboard', function () {
-        return view('customer.dashboard');
-    })->name('customer.dashboard');
+    // --- 7. Common Auth Routes ---
+    Route::view('/profile', 'profile')->name('profile');
 });
 
+/*
+|--------------------------------------------------------------------------
+| Authentication Actions
+|--------------------------------------------------------------------------
+*/
 Route::post('/logout', function (Request $request) {
     Auth::guard('web')->logout();
-
     $request->session()->invalidate();
     $request->session()->regenerateToken();
-
     return redirect('/login');
 })->name('logout');
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
+require __DIR__ . '/admin.php';
+require __DIR__ . '/umkm.php';
+require __DIR__ . '/worker.php';
