@@ -157,15 +157,7 @@
                 </div>
 
                 <div class="mt-6 flex items-center justify-between">
-                    <p class="text-sm text-[#666666]" style="font-family: 'Figtree', sans-serif;">
-                        Showing {{ isset($users) ? count($users) : 0 }} records
-                    </p>
-                    <div class="flex items-center gap-2">
-                        <button class="px-3 py-1.5 bg-white border border-[#e5e5e5] rounded-lg text-sm font-medium hover:bg-gray-50">Previous</button>
-                        <button class="px-3 py-1.5 bg-[#003d5c] text-white rounded-lg text-sm font-semibold">1</button>
-                        <button class="px-3 py-1.5 bg-white border border-[#e5e5e5] rounded-lg text-sm font-medium hover:bg-gray-50">2</button>
-                        <button class="px-3 py-1.5 bg-white border border-[#e5e5e5] rounded-lg text-sm font-medium hover:bg-gray-50">Next</button>
-                    </div>
+                    {{ $users->links('components.custom-pagination') }}
                 </div>
             </div>
         </div>
