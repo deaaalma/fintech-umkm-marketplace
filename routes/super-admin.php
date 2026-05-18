@@ -13,6 +13,8 @@ Route::middleware(['auth', 'verified', 'role:superadmin'])->group(function () {
         // Dashboard Utama
         Route::get('/dashboard', \App\Livewire\SuperAdmin\Index::class)->name('dashboard');
         Route::get('/dashboard/users', \App\Livewire\SuperAdmin\User\Index::class)->name('dashboard.users');
+        Route::get('/dashboard/transactions', \App\Livewire\SuperAdmin\Transaction\Index::class)->name('dashboard.transactions');
+
         
 
         
