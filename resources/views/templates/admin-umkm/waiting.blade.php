@@ -1,3 +1,4 @@
+@component('layouts.blank')
 <div class="min-h-screen bg-[#F8FAFC] flex font-['Figtree'] selection:bg-[#0077B6]/10 selection:text-[#0077B6] overflow-hidden">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Figtree:wght@300..900&family=Plus+Jakarta+Sans:wght@200..800&display=swap');
@@ -68,3 +69,4 @@
         </div>
     </main>
 </div>
+@endcomponent
