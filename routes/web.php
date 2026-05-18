@@ -31,6 +31,7 @@ Route::prefix('templates')->group(function () {
     // 3. UMKM Previews
     Route::get('umkm/dashboard', \App\Livewire\AdminUmkm\Index::class)->name('umkm.dashboard.preview');
     Route::get('umkm/orders', \App\Livewire\AdminUmkm\Orders::class)->name('umkm.orders.preview');
+    Route::get('umkm/waiting', \App\Livewire\AdminUmkm\VerificationPending::class)->name('umkm.waiting.preview');
 
     Route::view('/welcome', 'templates.welcome')->name('welcome');
 });
