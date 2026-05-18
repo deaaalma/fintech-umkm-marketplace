@@ -28,6 +28,10 @@ Route::prefix('templates')->group(function () {
     Route::view('superadmin/reports', 'templates.superadmin.reports')->name('superadmin.reports.preview');
     Route::view('superadmin/settings', 'templates.superadmin.settings')->name('superadmin.settings.preview');
 
+    // 3. UMKM Previews
+    Route::get('umkm/dashboard', \App\Livewire\AdminUmkm\Index::class)->name('umkm.dashboard.preview');
+    Route::get('umkm/orders', \App\Livewire\AdminUmkm\Orders::class)->name('umkm.orders.preview');
+
     Route::view('/welcome', 'templates.welcome')->name('welcome');
 });
 
