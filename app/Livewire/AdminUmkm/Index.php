@@ -4,6 +4,7 @@ namespace App\Livewire\AdminUmkm;
 
 use App\Models\Order;
 use App\Models\Payment;
+use App\Models\Umkm;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -17,7 +18,7 @@ class Index extends Component
     public function render()
     {
         // Pastikan user punya umkm_id, jika tidak ada set 0 agar tidak error
-        $umkmId = auth()->user()->umkm_id ?? 0;
+        $umkmId = Umkm::where('owner_id', auth()->id())->value('id') ?? 0;
 
         // 1. Query Orders Terbaru (Sesuaikan invoice_number & status enum)
         $ordersQuery = Order::where('umkm_id', $umkmId)
