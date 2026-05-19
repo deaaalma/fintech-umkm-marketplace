@@ -32,10 +32,10 @@
             <span class="bg-[#0077B6] text-white text-[10px] font-black px-2 py-0.5 rounded-lg shadow-lg shadow-[#0077B6]/20">7</span>
         </a>
 
-        <a href="{{ route('admin-umkm.waiting.preview') }}" 
-           class="flex items-center justify-between px-6 py-4 rounded-2xl transition-all duration-300 group {{ request()->routeIs('admin-umkm.waiting.preview') ? 'bg-white/5 text-white active-nav' : 'text-white/50 hover:bg-white/5 hover:text-white' }}">
+        <a href="{{ route('umkm.verification') }}" 
+           class="flex items-center justify-between px-6 py-4 rounded-2xl transition-all duration-300 group {{ request()->routeIs('umkm.verification') ? 'bg-white/5 text-white active-nav' : 'text-white/50 hover:bg-white/5 hover:text-white' }}">
             <div class="flex items-center gap-4">
-                <svg class="w-6 h-6 {{ request()->routeIs('admin-umkm.waiting.preview') ? 'text-[#0077B6]' : 'text-slate-500 group-hover:text-blue-200' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                <svg class="w-6 h-6 {{ request()->routeIs('umkm.verification') ? 'text-[#0077B6]' : 'text-slate-500 group-hover:text-blue-200' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
                     <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" stroke-linecap="round" stroke-linejoin="round"></path>
                 </svg>
                 <span class="text-xs font-bold tracking-wider uppercase">Verification</span>
