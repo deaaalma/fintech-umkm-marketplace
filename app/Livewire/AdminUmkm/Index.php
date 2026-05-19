@@ -3,11 +3,8 @@
 namespace App\Livewire\AdminUmkm;
 
 use App\Models\Order;
-use App\Models\Payment;
 use App\Models\Umkm;
-use Illuminate\Support\Facades\DB;
 use Livewire\Component;
-use Livewire\WithPagination;
 use Livewire\Attributes\Layout;
 
 #[Layout('layouts.admin-umkm')]

@@ -90,3 +90,4 @@ require __DIR__ . '/auth.php';
 require __DIR__ . '/super-admin.php';
 require __DIR__ . '/admin-umkm.php';
 require __DIR__ . '/worker.php';
+require __DIR__ . '/customer.php';
