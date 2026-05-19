@@ -11,7 +11,7 @@ Route::middleware(['auth', 'verified', 'role:customer'])->group(function () {
         
         // Dashboard Utama
         Route::get('/dashboard', \App\Livewire\Customer\Index::class)->name('dashboard');
-
+        Route::get('/orders', \App\Livewire\Customer\Order\Index::class)->name('orders');
        
     });
 
