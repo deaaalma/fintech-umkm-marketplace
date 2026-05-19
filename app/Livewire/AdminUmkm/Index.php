@@ -5,7 +5,7 @@ namespace App\Livewire\AdminUmkm;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
-#[Layout('layouts.blank')]
+#[Layout('layouts.admin-umkm')]
 class Index extends Component
 {
     public $search = '';
