@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Livewire\AdminUmkm;
+namespace App\Livewire\AdminUmkm\Order;
 
 use App\Models\Order;
 use App\Models\Umkm;
+use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithPagination;
-use Livewire\Attributes\Layout;
 
 #[Layout('layouts.admin-umkm')]
-class Orders extends Component
+class Index extends Component
 {
-    use WithPagination;
+   use WithPagination;
 
     public $search = '';
     public $category = 'All';
@@ -80,7 +80,7 @@ class Orders extends Component
             ];
         });
 
-        return view('livewire.admin-umkm.orders', [
+        return view('livewire.admin-umkm.order.index', [
             'orders' => $orders,
             'orders_pagination' => $ordersRaw
         ]);

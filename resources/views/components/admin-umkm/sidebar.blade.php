@@ -21,10 +21,10 @@
             </div>
         </a>
         
-        <a href="{{ route('admin-umkm.orders.preview') }}" 
-           class="flex items-center justify-between px-6 py-4 rounded-2xl transition-all duration-300 group {{ request()->routeIs('admin-umkm.orders.preview') ? 'bg-white/5 text-white active-nav' : 'text-white/50 hover:bg-white/5 hover:text-white' }}">
+        <a href="{{ route('umkm.orders') }}" 
+           class="flex items-center justify-between px-6 py-4 rounded-2xl transition-all duration-300 group {{ request()->routeIs('umkm.orders') ? 'bg-white/5 text-white active-nav' : 'text-white/50 hover:bg-white/5 hover:text-white' }}">
             <div class="flex items-center gap-4">
-                <svg class="w-6 h-6 {{ request()->routeIs('admin-umkm.orders.preview') ? 'text-[#0077B6]' : 'text-slate-500 group-hover:text-blue-200' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                <svg class="w-6 h-6 {{ request()->routeIs('umkm.orders') ? 'text-[#0077B6]' : 'text-slate-500 group-hover:text-blue-200' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
                     <path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" stroke-linecap="round" stroke-linejoin="round"></path>
                 </svg>
                 <span class="text-xs font-bold tracking-wider uppercase">Orders</span>
