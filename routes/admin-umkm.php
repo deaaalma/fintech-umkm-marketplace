@@ -15,6 +15,7 @@ Route::middleware(['auth', 'verified', 'role:admin_umkm'])->group(function () {
 
         Route::get('/orders', \App\Livewire\AdminUmkm\Order\Index::class)->name('orders');
 
+       
     });
 
 });
