@@ -17,7 +17,7 @@ Route::prefix('templates')->group(function () {
     Route::view('customer/dashboard', 'templates.customer.dashboard')->name('customer.dashboard.preview');
     Route::view('customer/orders', 'templates.customer.orders')->name('customer.orders.preview');
     Route::view('customer/order-details', 'templates.customer.order-details')->name('customer.order-details.preview');
-    Route::view('customer/  ', 'templates.customer.partners')->name('customer.partners.preview');
+    Route::view('customer/partners', 'templates.customer.partners')->name('customer.partners.preview');
     Route::view('customer/notifications', 'templates.customer.notifications')->name('customer.notifications.preview');
     Route::view('customer/chat', 'templates.customer.chat')->name('customer.chat.preview');
 
