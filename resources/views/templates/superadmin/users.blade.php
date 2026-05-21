@@ -1,408 +1,173 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="scroll-smooth">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-
-    <title>Manajemen Pengguna - {{ config('app.name', 'Laravel') }}</title>
-
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&family=Inter:wght@100..900&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/geist-mono@1.0.1/dist/geist-mono.min.css" rel="stylesheet">
-
-    <!-- Scripts -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-    
-    <!-- Alpine.js -->
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    
+@component('layouts.blank')
+<div class="min-h-screen bg-[#F8FAFC] flex font-['Figtree'] selection:bg-[#0077B6]/10 selection:text-[#0077B6]">
     <style>
-        :root {
-            --font-figtree: 'Figtree', sans-serif;
-            --font-geist-mono: 'Geist Mono', monospace;
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Figtree:wght@300..900&family=Inter:wght@100..900&family=Plus+Jakarta+Sans:wght@200..800&display=swap');
+        .font-plus { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        .active-nav { background: rgba(255, 255, 255, 0.05); position: relative; }
+        .active-nav::after { content: ''; position: absolute; left: 0; top: 25%; height: 50%; width: 4px; background: #0077B6; border-radius: 0 4px 4px 0; }
+        
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-fade-in-up { animation: fadeInUp 0.8s ease-out forwards; opacity: 0; }
     </style>
-</head>
-<body class="font-sans antialiased bg-white text-foreground">
-    @php
-        $user = [
-            'name' => 'Admin',
-            'role' => 'Superadmin'
-        ];
 
-        $navigationLinks = [
-            ['name' => 'Dashboard', 'href' => route('superadmin.dashboard.preview')],
-            ['name' => 'UMKM Management', 'href' => '#', 'badge' => 127],
-            ['name' => 'Pengguna', 'href' => '#', 'active' => true],
-            ['name' => 'Transaksi', 'href' => route('superadmin.transactions.preview')],
-            ['name' => 'Laporan', 'href' => route('superadmin.reports.preview')],
-            ['name' => 'Pengaturan', 'href' => route('superadmin.settings.preview')],
-        ];
+    <!-- Sidebar -->
+    @include('components.super-admin.sidebar')
 
-        $stats = [
-            ['title' => 'TOTAL PENGGUNA', 'value' => '1,247 users'],
-            ['title' => 'CUSTOMER', 'value' => '1,150'],
-            ['title' => 'UMKM ADMIN', 'value' => '85'],
-            ['title' => 'STAFF', 'value' => '12'],
-        ];
-
-        $users = [
-            [
-                'name' => 'Ahmad Fauzi',
-                'email' => 'ahmad.fauzi@email.com',
-                'phone' => '08123456789',
-                'role' => 'Customer',
-                'status' => 'ACTIVE',
-                'date' => '15 Jan 2026'
-            ],
-            [
-                'name' => 'Siti Nurhaliza',
-                'email' => 'siti.nur@email.com',
-                'phone' => '08234567890',
-                'role' => 'Customer',
-                'status' => 'ACTIVE',
-                'date' => '20 Jan 2026'
-            ],
-            [
-                'name' => 'Budi Santoso',
-                'email' => 'budi@bwpcleaning.com',
-                'phone' => '08111222333',
-                'role' => 'UMKM Admin',
-                'status' => 'ACTIVE',
-                'date' => '05 Jan 2026'
-            ],
-            [
-                'name' => 'Rina Wijaya',
-                'email' => 'rina.wj@email.com',
-                'phone' => '08345678901',
-                'role' => 'Customer',
-                'status' => 'SUSPENDED',
-                'date' => '12 Jan 2026'
-            ],
-            [
-                'name' => 'Dedi Kurniawan',
-                'email' => 'dedi@expresslaundry.com',
-                'phone' => '08222333444',
-                'role' => 'UMKM Admin',
-                'status' => 'ACTIVE',
-                'date' => '18 Jan 2026'
-            ],
-            [
-                'name' => 'Linda Kusuma',
-                'email' => 'linda.k@email.com',
-                'phone' => '08456789012',
-                'role' => 'Staff',
-                'status' => 'ACTIVE',
-                'date' => '01 Jan 2026'
-            ],
-            [
-                'name' => 'Agus Pratama',
-                'email' => 'agus.p@email.com',
-                'phone' => '08567890123',
-                'role' => 'Customer',
-                'status' => 'ACTIVE',
-                'date' => '25 Dec 2025'
-            ],
-            [
-                'name' => 'Maya Sari',
-                'email' => 'maya@bwpcleaning.com',
-                'phone' => '08333444555',
-                'role' => 'Staff',
-                'status' => 'ACTIVE',
-                'date' => '22 Dec 2025'
-            ],
-        ];
-    @endphp
-
-    <div class="min-h-screen">
-        <!-- Navbar - Same as Superadmin Dashboard -->
-        <nav
-            x-data="{
-                isMobileMenuOpen: false,
-                isScrolled: false,
-                init() { 
-                    window.addEventListener('scroll', () => { 
-                        this.isScrolled = window.scrollY > 20; 
-                    }); 
-                }
-            }"
-            :class="isScrolled ? 'bg-white/95 backdrop-blur-md shadow-sm text-gray-900' : 'bg-white text-gray-900'"
-            class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b border-[#e5e5e5]"
-        >
-            <div class="max-w-[1400px] mx-auto px-6 lg:px-8">
-                <div class="flex items-center justify-between h-20">
-                    <!-- Logo & Brand -->
-                    <div class="flex items-center gap-4">
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 bg-[#003d5c] rounded-xl flex items-center justify-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-                                    <line x1="3" y1="9" x2="21" y2="9"></line>
-                                    <line x1="9" y1="21" x2="9" y2="9"></line>
-                                </svg>
-                            </div>
-                            <div>
-                                <h1 class="text-lg font-bold text-gray-900" style="font-family: 'Figtree', sans-serif;">Superadmin Portal</h1>
-                                <p class="text-xs text-[#666666]" style="font-family: 'Figtree', sans-serif;">UMKM Management</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Search Bar (Desktop) -->
-                    <div class="hidden md:block flex-1 max-w-md mx-8">
-                        <div class="relative">
-                            <input 
-                                type="text" 
-                                placeholder="Search UMKMs, users, orders..."
-                                class="w-full px-4 py-2.5 pl-10 rounded-lg border border-[#e5e5e5] focus:outline-none focus:ring-2 focus:ring-[#0078b7] focus:border-transparent text-sm"
-                                style="font-family: 'Figtree', sans-serif;">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="absolute left-3 top-1/2 -translate-y-1/2 text-[#999999]">
-                                <circle cx="11" cy="11" r="8"></circle>
-                                <path d="m21 21-4.35-4.35"></path>
-                            </svg>
-                        </div>
-                    </div>
-
-                    <!-- Right Actions -->
-                    <div class="hidden md:flex items-center gap-4">
-                        <button class="relative p-2 rounded-lg hover:bg-gray-100 transition-colors">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-900">
-                                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-                                <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
-                            </svg>
-                            <span class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-                        </button>
-                        
-                        <div class="flex items-center gap-3 pl-4 border-l border-[#e5e5e5]">
-                            <div class="w-9 h-9 rounded-full bg-[#0078b7] flex items-center justify-center">
-                                <span class="text-white font-semibold text-sm" style="font-family: 'Figtree', sans-serif;">A</span>
-                            </div>
-                            <div class="text-left">
-                                <div class="text-sm font-semibold text-gray-900" style="font-family: 'Figtree', sans-serif;">{{ $user['name'] }}</div>
-                                <div class="text-xs text-[#666666]" style="font-family: 'Figtree', sans-serif;">{{ $user['role'] }}</div>
-                            </div>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[#999999]">
-                                <polyline points="6 9 12 15 18 9"></polyline>
-                            </svg>
-                        </div>
-                    </div>
-
-                    <div class="md:hidden">
-                        <button @click="isMobileMenuOpen = !isMobileMenuOpen" 
-                                class="text-gray-900 hover:text-[#0078b7] p-2 rounded-md transition-colors duration-200">
-                            <svg x-show="!isMobileMenuOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
-                            <svg x-show="isMobileMenuOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Secondary Navigation -->
-                <div class="hidden md:flex items-center gap-6 pb-4 border-b border-[#e5e5e5]">
-                    @foreach($navigationLinks as $link)
-                    <a href="{{ $link['href'] }}" 
-                       class="flex items-center gap-2 px-3 py-2 text-sm font-medium transition-colors duration-200 relative group {{ isset($link['active']) && $link['active'] ? 'text-[#0078b7]' : 'text-gray-900 hover:text-[#0078b7]' }}" 
-                       style="font-family: 'Figtree', sans-serif; font-weight: 400;">
-                        <span>{{ $link['name'] }}</span>
-                        @if(isset($link['badge']))
-                        <span class="px-2 py-0.5 bg-[#003d5c] text-white text-xs font-semibold rounded-full">{{ $link['badge'] }}</span>
-                        @endif
-                        <div class="absolute bottom-0 left-0 {{ isset($link['active']) && $link['active'] ? 'w-full' : 'w-0' }} h-0.5 bg-current transition-all duration-300 group-hover:w-full"></div>
-                    </a>
-                    @endforeach
+    <!-- Main Content -->
+    <main class="flex-1 lg:ml-72 flex flex-col min-h-screen relative">
+        <!-- Top Header (Matches Image) -->
+        <header class="h-24 bg-white border-b border-slate-100 flex items-center justify-between px-10 sticky top-0 z-40 backdrop-blur-md bg-white/80">
+            <div class="flex items-center gap-4">
+                <div>
+                    <h1 class="text-xl font-black font-plus text-[#000B44] leading-tight flex items-center gap-2">
+                        Superadmin Portal
+                    </h1>
                 </div>
             </div>
-        </nav>
 
-        <!-- Main Content -->
-        <main class="pt-32">
-            <!-- Breadcrumb -->
-            <div class="w-full bg-white border-b border-[#e5e5e5]">
-                <div class="max-w-[1400px] mx-auto px-6 lg:px-8 py-4">
-                    <div class="flex items-center gap-2 text-sm">
-                        <a href="{{ route('superadmin.dashboard.preview') }}" class="text-[#666666] hover:text-[#0078b7] transition-colors" style="font-family: 'Figtree', sans-serif;">Dashboard</a>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[#999999]">
-                            <polyline points="9 18 15 12 9 6"></polyline>
-                        </svg>
-                        <span class="text-[#003d5c] font-medium" style="font-family: 'Figtree', sans-serif;">Manajemen Pengguna</span>
+            <!-- User Actions -->
+            <div class="flex items-center gap-6">
+                <button class="relative w-12 h-12 rounded-2xl border border-slate-100 flex items-center justify-center text-slate-400 hover:bg-slate-50 transition-all">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
+                    <span class="absolute top-3 right-3 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white"></span>
+                </button>
+                <div class="flex items-center gap-4 pl-6 border-l border-slate-100">
+                    <div class="w-12 h-12 bg-slate-100 rounded-full overflow-hidden border-2 border-white shadow-sm ring-1 ring-slate-100">
+                        <img src="https://ui-avatars.com/api/?name=Admin&background=000B44&color=fff" class="w-full h-full object-cover">
+                    </div>
+                    <div class="hidden sm:block">
+                        <p class="text-sm font-black text-[#000B44] font-plus leading-none">Admin</p>
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">Superadmin</p>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Content Area -->
+        <div class="p-10 lg:p-12 space-y-12">
+            <!-- Page Title Area -->
+            <div class="flex items-end justify-between">
+                <div>
+                    <h2 class="text-4xl font-black text-[#000B44] font-plus tracking-tighter leading-none mb-3">Manajemen Pengguna</h2>
+                    <p class="text-slate-500 font-medium">Kelola seluruh pengguna platform umkmconnect.</p>
+                </div>
+                <div class="flex items-center gap-4">
+                    <button class="bg-[#000B44] px-6 py-4 text-white text-[11px] font-black uppercase tracking-[0.2em] rounded-2xl transform hover:scale-[1.02] active:scale-[0.98] transition-all shadow-xl shadow-black/20 flex items-center gap-3">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 4v16m8-8H4"></path></svg>
+                        Tambah Pengguna
+                    </button>
+                </div>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                @foreach([['Total Pengguna', '1,247', 'bg-white'], ['Customer', '1,150', 'bg-white'], ['UMKM Admin', '85', 'bg-[#000B44] text-white'], ['Staff', '12', 'bg-white']] as $stat)
+                <div class="{{ $stat[2] }} p-8 rounded-[2rem] border border-slate-50 shadow-xl shadow-slate-200/50 animate-fade-in-up">
+                    <p class="text-[10px] font-bold uppercase tracking-widest mb-4 {{ str_contains($stat[2], 'text-white') ? 'text-white/50' : 'text-slate-400' }}">{{ $stat[0] }}</p>
+                    <h3 class="text-4xl font-black font-plus tracking-tighter leading-none">{{ $stat[1] }}</h3>
+                </div>
+                @endforeach
+            </div>
+
+            <!-- Search & Filters -->
+            <div class="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-xl shadow-slate-200/30">
+                <div class="grid grid-cols-12 gap-6">
+                    <div class="col-span-12 md:col-span-4 relative">
+                        <input type="text" placeholder="Cari nama, email, phone..." class="w-full bg-slate-50 border-none rounded-2xl py-4 pl-14 text-sm font-medium font-plus focus:ring-2 focus:ring-[#0077B6]/20 transition-all">
+                        <svg class="w-5 h-5 text-slate-300 absolute left-5 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    </div>
+                    <div class="col-span-12 md:col-span-3">
+                        <select class="w-full bg-slate-50 border-none rounded-2xl py-4 px-6 text-sm font-black uppercase tracking-widest text-slate-400 focus:ring-2 focus:ring-[#0077B6]/20 transition-all font-plus">
+                            <option>Role: SEMUA</option>
+                            <option>Role: CUSTOMER</option>
+                            <option>Role: UMKM ADMIN</option>
+                            <option>Role: STAFF</option>
+                        </select>
+                    </div>
+                    <div class="col-span-12 md:col-span-3">
+                        <select class="w-full bg-slate-50 border-none rounded-2xl py-4 px-6 text-sm font-black uppercase tracking-widest text-slate-400 focus:ring-2 focus:ring-[#0077B6]/20 transition-all font-plus">
+                            <option>Status: AKTIF</option>
+                            <option>Status: SUSPENDED</option>
+                            <option>Status: NON-AKTIF</option>
+                        </select>
+                    </div>
+                    <div class="col-span-12 md:col-span-2">
+                        <button class="w-full py-4 bg-slate-100 text-slate-400 text-[10px] font-black uppercase tracking-[0.2em] rounded-2xl hover:bg-[#000B44] hover:text-white transition-all">Clear Filters</button>
                     </div>
                 </div>
             </div>
 
-            <!-- Page Header -->
-            <div class="w-full bg-white border-b border-[#e5e5e5]">
-                <div class="max-w-[1400px] mx-auto px-6 lg:px-8 py-8">
-                    <h1 class="text-[32px] leading-tight font-normal text-[#003d5c] tracking-tight mb-2" style="font-weight: 400; font-family: 'Figtree', sans-serif;">Manajemen Pengguna</h1>
-                    <p class="text-sm text-[#666666]" style="font-family: 'Figtree', sans-serif;">Kelola seluruh pengguna platform</p>
+            <!-- Table -->
+            <div class="bg-white rounded-[3rem] border border-slate-100 shadow-2xl shadow-slate-200/30 overflow-hidden animate-fade-in-up">
+                <div class="overflow-x-auto no-scrollbar">
+                    <table class="w-full text-left">
+                        <thead>
+                            <tr class="bg-slate-50/50 border-b border-slate-100">
+                                <th class="p-8 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] px-10">Nama & Kontak</th>
+                                <th class="p-8 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Role</th>
+                                <th class="p-8 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Status</th>
+                                <th class="p-8 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Tanggal Daftar</th>
+                                <th class="p-8 text-center text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-50">
+                            @php
+                                $users = [
+                                    ['Ahmad Fauzi', 'ahmad.fauzi@email.com', 'Customer', 'ACTIVE', '15 Jan 2026'],
+                                    ['Siti Nurhaliza', 'siti.nur@email.com', 'Customer', 'ACTIVE', '20 Jan 2026'],
+                                    ['Budi Santoso', 'budi@bwpcleaning.com', 'UMKM Admin', 'ACTIVE', '05 Jan 2026'],
+                                    ['Rina Wijaya', 'rina.wj@email.com', 'Customer', 'SUSPENDED', '12 Jan 2026'],
+                                    ['Dedi Kurniawan', 'dedi@expresslaundry.com', 'UMKM Admin', 'ACTIVE', '18 Jan 2026'],
+                                    ['Linda Kusuma', 'linda.k@email.com', 'Staff', 'ACTIVE', '01 Jan 2026'],
+                                ]
+                            @endphp
+                            @foreach($users as $user)
+                            <tr class="hover:bg-slate-50/70 transition-all cursor-pointer group">
+                                <td class="p-8 px-10">
+                                    <div class="flex flex-col">
+                                        <span class="text-sm font-black text-[#000B44] font-plus tracking-tight">{{ $user[0] }}</span>
+                                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">{{ $user[1] }}</span>
+                                    </div>
+                                </td>
+                                <td class="p-8">
+                                    <span @class([
+                                        'px-3 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest border',
+                                        'bg-blue-50 text-blue-600 border-blue-100' => $user[2] === 'Customer',
+                                        'bg-indigo-50 text-indigo-600 border-indigo-100' => $user[2] === 'UMKM Admin',
+                                        'bg-teal-50 text-teal-600 border-teal-100' => $user[2] === 'Staff'
+                                    ])>{{ $user[2] }}</span>
+                                </td>
+                                <td class="p-8">
+                                    <span @class([
+                                        'px-3 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest border',
+                                        'bg-teal-50 text-teal-600 border-teal-100' => $user[3] === 'ACTIVE',
+                                        'bg-red-50 text-red-600 border-red-100' => $user[3] === 'SUSPENDED'
+                                    ])>{{ $user[3] }}</span>
+                                </td>
+                                <td class="p-8"><span class="text-xs font-bold text-slate-500 tracking-tight">{{ $user[4] }}</span></td>
+                                <td class="p-8">
+                                    <div class="flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition-all">
+                                        <button class="bg-[#2D333D] px-4 py-2 text-white text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-black transition-all">Edit</button>
+                                        <button class="w-10 h-10 border border-slate-100 rounded-xl flex items-center justify-center text-slate-300 hover:text-red-600 hover:bg-red-50 transition-all"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
                 </div>
-            </div>
-
-            <!-- Stats & Content -->
-            <div class="w-full bg-gradient-to-br from-background via-background to-[#0078b7]/5 py-12">
-                <div class="max-w-[1400px] mx-auto px-6 lg:px-8">
-                    <!-- Stats Cards -->
-                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-                        @foreach($stats as $stat)
-                        <div class="bg-white rounded-3xl p-6 border border-[#e5e5e5] hover:shadow-md transition-all duration-300">
-                            <p class="text-xs uppercase tracking-wide mb-2 text-[#999999]" style="font-family: 'Figtree', sans-serif;">{{ $stat['title'] }}</p>
-                            <div class="text-3xl font-bold text-[#003d5c]" style="font-family: 'Figtree', sans-serif;">{{ $stat['value'] }}</div>
-                        </div>
-                        @endforeach
-                    </div>
-
-                    <!-- Filters & Search -->
-                    <div class="bg-white rounded-3xl p-6 border border-[#e5e5e5] mb-6">
-                        <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
-                            <!-- Search -->
-                            <div class="md:col-span-4">
-                                <div class="relative">
-                                    <input 
-                                        type="text" 
-                                        placeholder="Cari nama, email, phone..."
-                                        class="w-full px-4 py-3 pl-10 rounded-lg border border-[#e5e5e5] focus:outline-none focus:ring-2 focus:ring-[#0078b7] focus:border-transparent text-sm"
-                                        style="font-family: 'Figtree', sans-serif;">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="absolute left-3 top-1/2 -translate-y-1/2 text-[#999999]">
-                                        <circle cx="11" cy="11" r="8"></circle>
-                                        <path d="m21 21-4.35-4.35"></path>
-                                    </svg>
-                                </div>
-                            </div>
-
-                            <!-- Role Filter -->
-                            <div class="md:col-span-2">
-                                <select class="w-full px-4 py-3 rounded-lg border border-[#e5e5e5] focus:outline-none focus:ring-2 focus:ring-[#0078b7] text-sm" style="font-family: 'Figtree', sans-serif;">
-                                    <option value="">ROLE</option>
-                                    <option>Customer</option>
-                                    <option>UMKM Admin</option>
-                                    <option>Staff</option>
-                                </select>
-                            </div>
-
-                            <!-- Status Filter -->
-                            <div class="md:col-span-2">
-                                <select class="w-full px-4 py-3 rounded-lg border border-[#e5e5e5] focus:outline-none focus:ring-2 focus:ring-[#0078b7] text-sm" style="font-family: 'Figtree', sans-serif;">
-                                    <option value="">STATUS</option>
-                                    <option>Active</option>
-                                    <option>Suspended</option>
-                                    <option>Inactive</option>
-                                </select>
-                            </div>
-
-                            <!-- Date Filter -->
-                            <div class="md:col-span-3">
-                                <select class="w-full px-4 py-3 rounded-lg border border-[#e5e5e5] focus:outline-none focus:ring-2 focus:ring-[#0078b7] text-sm" style="font-family: 'Figtree', sans-serif;">
-                                    <option value="">TANGGAL DAFTAR</option>
-                                    <option>Hari Ini</option>
-                                    <option>7 Hari Terakhir</option>
-                                    <option>30 Hari Terakhir</option>
-                                    <option>Custom Range</option>
-                                </select>
-                            </div>
-
-                            <!-- Clear Filter -->
-                            <div class="md:col-span-1">
-                                <button class="w-full px-4 py-3 bg-white border border-[#e5e5e5] rounded-lg hover:bg-gray-50 transition-colors text-sm font-medium" style="font-family: 'Figtree', sans-serif;">
-                                    Clear Filter
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Users Table -->
-                    <div class="bg-white rounded-3xl p-8 border border-[#e5e5e5]">
-                        <div class="overflow-x-auto">
-                            <table class="w-full">
-                                <thead>
-                                    <tr class="border-b border-[#e5e5e5]">
-                                        <th class="text-left py-4 px-4 text-xs font-semibold text-[#999999] uppercase tracking-wide" style="font-family: 'Figtree', sans-serif;">NAMA</th>
-                                        <th class="text-left py-4 px-4 text-xs font-semibold text-[#999999] uppercase tracking-wide" style="font-family: 'Figtree', sans-serif;">EMAIL</th>
-                                        <th class="text-left py-4 px-4 text-xs font-semibold text-[#999999] uppercase tracking-wide" style="font-family: 'Figtree', sans-serif;">PHONE</th>
-                                        <th class="text-left py-4 px-4 text-xs font-semibold text-[#999999] uppercase tracking-wide" style="font-family: 'Figtree', sans-serif;">ROLE</th>
-                                        <th class="text-left py-4 px-4 text-xs font-semibold text-[#999999] uppercase tracking-wide" style="font-family: 'Figtree', sans-serif;">STATUS</th>
-                                        <th class="text-left py-4 px-4 text-xs font-semibold text-[#999999] uppercase tracking-wide" style="font-family: 'Figtree', sans-serif;">TANGGAL DAFTAR</th>
-                                        <th class="text-left py-4 px-4 text-xs font-semibold text-[#999999] uppercase tracking-wide" style="font-family: 'Figtree', sans-serif;">ACTIONS</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach($users as $userData)
-                                    <tr class="border-b border-[#e5e5e5] hover:bg-gray-50 transition-colors">
-                                        <td class="py-4 px-4">
-                                            <span class="text-sm font-semibold text-[#003d5c]" style="font-family: 'Figtree', sans-serif;">{{ $userData['name'] }}</span>
-                                        </td>
-                                        <td class="py-4 px-4">
-                                            <span class="text-sm text-[#666666]" style="font-family: 'Figtree', sans-serif;">{{ $userData['email'] }}</span>
-                                        </td>
-                                        <td class="py-4 px-4">
-                                            <span class="text-sm text-[#666666]" style="font-family: 'Figtree', sans-serif;">{{ $userData['phone'] }}</span>
-                                        </td>
-                                        <td class="py-4 px-4">
-                                            <span class="px-3 py-1 rounded-full text-xs font-semibold
-                                                {{ $userData['role'] === 'Customer' ? 'bg-blue-100 text-blue-700' : '' }}
-                                                {{ $userData['role'] === 'UMKM Admin' ? 'bg-purple-100 text-purple-700' : '' }}
-                                                {{ $userData['role'] === 'Staff' ? 'bg-green-100 text-green-700' : '' }}"
-                                                style="font-family: 'Figtree', sans-serif;">
-                                                {{ $userData['role'] }}
-                                            </span>
-                                        </td>
-                                        <td class="py-4 px-4">
-                                            <span class="px-3 py-1 rounded-full text-xs font-semibold
-                                                {{ $userData['status'] === 'ACTIVE' ? 'bg-green-100 text-green-700' : '' }}
-                                                {{ $userData['status'] === 'SUSPENDED' ? 'bg-red-100 text-red-700' : '' }}"
-                                                style="font-family: 'Figtree', sans-serif;">
-                                                {{ $userData['status'] }}
-                                            </span>
-                                        </td>
-                                        <td class="py-4 px-4">
-                                            <span class="text-sm text-[#666666]" style="font-family: 'Figtree', sans-serif;">{{ $userData['date'] }}</span>
-                                        </td>
-                                        <td class="py-4 px-4">
-                                            <div class="flex items-center gap-2">
-                                                <button class="px-3 py-1.5 bg-white border border-[#e5e5e5] rounded-lg text-xs font-medium hover:bg-gray-50 transition-colors" style="font-family: 'Figtree', sans-serif;">
-                                                    View Details
-                                                </button>
-                                                <button class="px-3 py-1.5 bg-white border border-[#e5e5e5] rounded-lg text-xs font-medium hover:bg-gray-50 transition-colors" style="font-family: 'Figtree', sans-serif;">
-                                                    {{ $userData['status'] === 'ACTIVE' ? 'Suspend' : 'Activate' }}
-                                                </button>
-                                                <button class="px-3 py-1.5 bg-white border border-[#e5e5e5] rounded-lg text-xs font-medium hover:bg-gray-50 transition-colors" style="font-family: 'Figtree', sans-serif;">
-                                                    Reset Password
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <!-- Pagination -->
-                        <div class="mt-6 flex items-center justify-between">
-                            <p class="text-sm text-[#666666]" style="font-family: 'Figtree', sans-serif;">Showing 1-25 of 1,247 • Page size:</p>
-                            <div class="flex items-center gap-2">
-                                <button class="px-3 py-1.5 bg-white border border-[#e5e5e5] rounded-lg text-sm font-medium hover:bg-gray-50">Previous</button>
-                                <button class="px-3 py-1.5 bg-[#003d5c] text-white rounded-lg text-sm font-semibold">1</button>
-                                <button class="px-3 py-1.5 bg-white border border-[#e5e5e5] rounded-lg text-sm font-medium hover:bg-gray-50">2</button>
-                                <button class="px-3 py-1.5 bg-white border border-[#e5e5e5] rounded-lg text-sm font-medium hover:bg-gray-50">3</button>
-                                <span class="px-2 text-[#999999]">...</span>
-                                <button class="px-3 py-1.5 bg-white border border-[#e5e5e5] rounded-lg text-sm font-medium hover:bg-gray-50">50</button>
-                                <button class="px-3 py-1.5 bg-white border border-[#e5e5e5] rounded-lg text-sm font-medium hover:bg-gray-50">Next</button>
-                            </div>
-                        </div>
+                <div class="p-10 border-t border-slate-50 flex items-center justify-between">
+                    <p class="text-[11px] font-bold text-slate-400 uppercase tracking-widest italic">Halaman 1 dari 12</p>
+                    <div class="flex items-center gap-2">
+                         <button class="px-6 py-3 border border-slate-100 rounded-xl text-[10px] font-black uppercase tracking-widest text-slate-300 hover:text-[#000B44] transition-all">Sebelumnya</button>
+                         <button class="px-6 py-3 bg-[#2D333D] rounded-xl text-[10px] font-black uppercase tracking-widest text-white hover:bg-black transition-all shadow-lg">Selanjutnya</button>
                     </div>
                 </div>
             </div>
-        </main>
-
-        <!-- Footer -->
-        <footer class="w-full bg-[#fafafa] border-t border-[#e5e5e5]">
-            <div class="max-w-[1400px] mx-auto px-8 py-8">
-                <div class="flex items-center justify-between">
-                    <p class="text-sm text-[#666666]" style="font-family: 'Figtree', sans-serif;">&copy; {{ date('Y') }} UMKM Connect. All rights reserved.</p>
-                    <p class="text-sm text-[#666666]" style="font-family: 'Figtree', sans-serif;">Superadmin Portal v1.0</p>
-                </div>
-            </div>
-        </footer>
-    </div>
-</body>
-</html>
+        </div>
+    </main>
+</div>
+@endcomponent

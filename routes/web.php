@@ -54,8 +54,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', function () {
         $role = auth()->user()->role;
         return match($role) {
-            'superadmin' => redirect()->route('superadmin.dashboard'),
-            'admin_umkm'  => redirect()->route('admin-umkm.dashboard'),
+            'superadmin' => redirect()->route('admin.dashboard'),
+            'admin_umkm'  => redirect()->route('umkm.dashboard'),
             'worker'      => redirect()->route('worker.dashboard'),
             'customer'    => redirect()->route('customer.dashboard'),
             default       => redirect('/'),
@@ -88,6 +88,5 @@ Route::post('/logout', function (Request $request) {
 
 require __DIR__ . '/auth.php';
 require __DIR__ . '/super-admin.php';
-require __DIR__ . '/admin-umkm.php';
+require __DIR__ . '/umkm.php';
 require __DIR__ . '/worker.php';
-require __DIR__ . '/customer.php';

@@ -1,4 +1,4 @@
-@extends('layouts.customer')
+@extends('layouts.customer-layout')
 
 @section('title', 'Order Information')
 
@@ -71,18 +71,18 @@
         </a>
     </div>
 
-    @include('templates.customer.order-details.header', ['current' => $current, 'steps' => $steps])
-    @include('templates.customer.order-details.stepper', ['steps' => $steps])
-    @include('templates.customer.order-details.banner', ['current' => $current])
+    @include('customer.order-details.header', ['current' => $current, 'steps' => $steps])
+    @include('customer.order-details.stepper', ['steps' => $steps])
+    @include('customer.order-details.banner', ['current' => $current])
 
     <div class="grid lg:grid-cols-3 gap-8 lg:gap-12">
         <div class="lg:col-span-2 space-y-12">
-            @include('templates.customer.order-details.service-info', ['current' => $current])
-            @include('templates.customer.order-details.timeline', ['current' => $current])
-            @include('templates.customer.order-details.actions')
+            @include('customer.order-details.service-info', ['current' => $current])
+            @include('customer.order-details.timeline', ['current' => $current])
+            @include('customer.order-details.actions')
         </div>
         <div class="lg:col-span-1">
-            @include('templates.customer.order-details.sidebar', ['current' => $current])
+            @include('customer.order-details.sidebar', ['current' => $current])
         </div>
     </div>
 </div>

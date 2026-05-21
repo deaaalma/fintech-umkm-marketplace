@@ -28,7 +28,7 @@
                     Overview
                 </a>
 
-                <a href="{{ route('customer.orders') }}" {{-- Ganti ke route orders asli nanti --}}
+                <a href="{{ route('customer.dashboard') }}" {{-- Ganti ke route orders asli nanti --}}
                    class="text-sm font-semibold tracking-tight transition-all duration-300 {{ (request()->routeIs('customer.orders.*') || request()->routeIs('customer.order-details.*')) ? 'text-brand-primary' : 'text-gray-400 hover:text-brand-dark' }}"
                    :class="isScrolled ? '{{ (request()->routeIs('customer.orders.*') || request()->routeIs('customer.order-details.*')) ? 'text-brand-cyan' : 'text-gray-400 hover:text-white' }}' : ''">
                     My Orders

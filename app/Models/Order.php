@@ -8,12 +8,6 @@ class Order extends Model
 {
     protected $guarded = ['id'];
 
-    protected $casts = [
-        'booking_date' => 'date',
-        // kalau ada kolom waktu juga:
-        // 'booking_time' => 'datetime', 
-    ];
-
     public function umkm()
     {
         return $this->belongsTo(Umkm::class);
@@ -22,10 +16,5 @@ class Order extends Model
     public function product()
     {
         return $this->belongsTo(Product::class);
-    }
-
-    public function customer()
-    {
-        return $this->belongsTo(User::class, 'customer_id');
     }
 }
