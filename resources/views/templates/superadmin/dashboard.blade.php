@@ -5,7 +5,7 @@
         .font-plus { font-family: 'Plus Jakarta Sans', sans-serif; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        
+
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         .animate-fade-in-up { animation: fadeInUp 0.8s ease-out forwards; opacity: 0; }
     </style>
@@ -50,216 +50,228 @@
         <!-- Content Area -->
         <div class="p-10 lg:p-12 space-y-10">
             <!-- Top Section: Key Metrics -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <!-- Total Pengguna -->
-                <div class="bg-white p-8 rounded-[2rem] border border-slate-100 shadow-xl shadow-slate-200/40 animate-fade-in-up flex flex-col justify-between h-full" style="animation-delay: 0.1s">
-                    <div class="flex-1">
-                        <div class="flex items-center gap-3 mb-6">
-                            <div class="w-8 h-8 rounded-xl bg-slate-50 flex items-center justify-center text-[#000B44] border border-slate-100">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-                            </div>
-                            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Total Pengguna (Semua Role)</p>
-                        </div>
-                        <h3 class="text-4xl font-black text-[#000B44] font-plus tracking-tighter leading-none mb-6">5,124</h3>
-                    </div>
-                    
-                    <div class="mt-auto">
-                        <!-- Role Breakdown -->
-                        <div class="space-y-3 mb-5">
-                            <div class="flex items-center justify-between">
-                                <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2"><div class="w-2 h-2 rounded-full bg-blue-500"></div> Customer</span>
-                                <span class="text-xs font-black text-[#000B44]">3,820</span>
-                            </div>
-                            <div class="flex items-center justify-between">
-                                <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2"><div class="w-2 h-2 rounded-full bg-indigo-500"></div> Admin UMKM</span>
-                                <span class="text-xs font-black text-[#000B44]">1,280</span>
-                            </div>
-                            <div class="flex items-center justify-between">
-                                <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2"><div class="w-2 h-2 rounded-full bg-teal-500"></div> Staff Internal</span>
-                                <span class="text-xs font-black text-[#000B44]">24</span>
-                            </div>
-                        </div>
-                        <div class="flex justify-between items-center pt-4 border-t border-slate-50">
-                            <span class="text-teal-500 font-black text-[10px]">+12.5% vs bulan lalu</span>
-                        </div>
-                    </div>
-                </div>
+            <style>
+                @keyframes sparkPulse { 0%,100%{opacity:.5} 50%{opacity:.9} }
+                .spark-line { animation: sparkPulse 2.5s ease-in-out infinite; }
+                .metric-card { transition: box-shadow 0.2s ease; }
+                .metric-card:hover { box-shadow: 0 8px 24px -4px rgba(0,11,68,0.10); }
+            </style>
 
-                <!-- UMKM Terdaftar -->
-                <div class="bg-white p-8 rounded-[2rem] border border-slate-100 shadow-xl shadow-slate-200/40 animate-fade-in-up flex flex-col justify-between h-full" style="animation-delay: 0.2s">
-                    <div class="flex-1">
-                        <div class="flex items-center gap-3 mb-6">
-                            <div class="w-8 h-8 rounded-xl bg-indigo-50 flex items-center justify-center text-indigo-600 border border-indigo-100">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
-                            </div>
-                            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">UMKM Terdaftar</p>
-                        </div>
-                        <h3 class="text-4xl font-black text-[#000B44] font-plus tracking-tighter leading-none mb-6">1,284</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+
+                {{-- ── Card 1: Total Pengguna ── --}}
+                <div class="metric-card bg-white rounded-2xl border border-slate-300 animate-fade-in-up" style="animation-delay: 0.08s">
+                    {{-- Top row: label + dots --}}
+                    <div class="flex items-center px-6 pt-6 pb-4 border-b border-slate-200">
+                        <span class="text-base font-bold text-slate-700 flex-1">Total Pengguna</span>
+                        <button class="text-slate-400 hover:text-slate-600 transition-colors">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg>
+                        </button>
                     </div>
 
-                    <div class="mt-auto">
-                        <!-- Target Progress -->
-                        <div class="mb-5">
-                            <div class="flex justify-between items-end mb-3">
-                                <span class="text-[10px] font-bold text-slate-400">Aktif vs Pending</span>
-                                <span class="text-[10px] font-black text-[#000B44]">85% Aktif</span>
-                            </div>
-                            <div class="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden flex">
-                                <div class="h-full bg-indigo-500" style="width: 85%"></div>
-                                <div class="h-full bg-amber-400" style="width: 15%"></div>
-                            </div>
-                        </div>
-                        <div class="flex justify-between items-center pt-4 border-t border-slate-50 mt-[34px]">
-                            <span class="text-indigo-500 font-black text-[10px]">+24 UMKM Baru Bulan Ini</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Total Transaksi -->
-                <div class="bg-[#000B44] p-8 rounded-[2rem] text-white shadow-2xl shadow-indigo-900/40 animate-fade-in-up flex flex-col justify-between h-full relative overflow-hidden group" style="animation-delay: 0.3s">
-                    <div class="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -mr-16 -mt-16 transition-transform group-hover:scale-110 duration-700"></div>
-                    <div class="relative z-10 flex-1">
-                        <div class="flex items-center gap-3 mb-6">
-                            <div class="w-8 h-8 rounded-xl bg-white/10 flex items-center justify-center text-white border border-white/20">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
-                            </div>
-                            <p class="text-[10px] font-black text-white/60 uppercase tracking-widest">Total Transaksi</p>
-                        </div>
-                        <h3 class="text-4xl font-black text-white font-plus tracking-tighter leading-none mb-6">84,592</h3>
+                    {{-- Main number --}}
+                    <div class="px-6 pt-5 pb-4">
+                        <h3 class="text-5xl font-black text-[#000B44] font-plus tracking-tighter leading-none">142</h3>
                     </div>
 
-                    <div class="relative z-10 mt-auto">
-                        <!-- Bar Chart Mockup (White) -->
-                        <div class="flex items-end gap-1.5 h-12 mb-5">
-                            @foreach([40, 60, 45, 80, 55, 90, 75, 100] as $h)
-                            <div class="w-full bg-white/30 rounded-t-sm group-hover:bg-white/50 transition-colors" style="height: {{ $h }}%"></div>
-                            @endforeach
+                    {{-- Role breakdown --}}
+                    <div class="px-6 pb-6 space-y-3 border-t border-slate-200 pt-4">
+                        <div class="flex h-2.5 rounded-full overflow-hidden bg-slate-100">
+                            <div class="bg-[#0077B6]" style="width:63.4%"></div>
+                            <div class="bg-indigo-400" style="width:28.9%"></div>
+                            <div class="bg-teal-400" style="width:7.7%"></div>
                         </div>
-                        <div class="flex justify-between items-center pt-4 border-t border-white/10 mt-[20px]">
-                            <span class="text-white font-black text-[10px]">+18.4% Pertumbuhan</span>
-                            <span class="text-white/40 font-bold text-[9px] uppercase">Rata-rata: 2.8k/Hari</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Middle Section: Activity & Quick Task Split -->
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                <!-- Activity Logs -->
-                <div class="lg:col-span-8 bg-white p-10 rounded-[2.5rem] border border-slate-100 shadow-xl shadow-slate-200/30 animate-fade-in-up" style="animation-delay: 0.5s">
-                    <div class="flex items-center justify-between mb-8">
-                        <h3 class="text-xl font-black text-[#000B44] font-plus tracking-tight">System Alerts & Logs</h3>
-                        <button class="text-[10px] font-black text-slate-400 uppercase tracking-widest hover:text-[#0077B6] transition-colors border-b border-transparent hover:border-[#0077B6]">Lihat Lengkap</button>
-                    </div>
-                    <div class="space-y-3">
-                        @foreach([
-                            ['08:32 AM', 'Peringatan: API Payment Gateway timeout pada route /payouts', 'error'],
-                            ['08:15 AM', 'UMKM Baru "Warung Sederhana" mendaftar (Pending Approval)', 'info'],
-                            ['07:00 AM', 'Backup database sistem harian berhasil dieksekusi (342MB)', 'success'],
-                            ['Kemarin', 'User (Admin UMKM) ID: 1984 dibanned sementara', 'admin']
-                        ] as $log)
-                        <div class="flex items-center gap-4 p-4 rounded-2xl hover:bg-slate-50 transition-colors border border-transparent hover:border-slate-100 group">
-                            <div @class([
-                                'w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0',
-                                'bg-red-50 text-red-500 border border-red-100' => $log[2] === 'error',
-                                'bg-blue-50 text-blue-500 border border-blue-100' => $log[2] === 'info',
-                                'bg-teal-50 text-teal-500 border border-teal-100' => $log[2] === 'success',
-                                'bg-slate-100 text-[#000B44] border border-slate-200' => $log[2] === 'admin',
-                            ])>
-                                @if($log[2] === 'error') <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                                @elseif($log[2] === 'success') <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                                @elseif($log[2] === 'info') <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                                @else <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4"></path></svg>
-                                @endif
-                            </div>
-                            <div class="flex-1">
-                                <p class="text-[10px] font-black text-slate-400 font-mono tracking-tighter mb-1">{{ $log[0] }}</p>
-                                <p class="text-sm font-bold text-[#000B44] leading-snug">{{ $log[1] }}</p>
-                            </div>
-                            <button class="w-8 h-8 rounded-lg flex items-center justify-center text-slate-300 opacity-0 group-hover:opacity-100 hover:text-[#000B44] hover:bg-white border border-transparent hover:border-slate-200 transition-all shadow-sm"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></button>
-                        </div>
-                        @endforeach
-                    </div>
-                </div>
-
-                <!-- Quick Actions -->
-                <div class="lg:col-span-4 bg-[#000B44] text-white p-10 rounded-[2.5rem] shadow-2xl shadow-slate-300/30 animate-fade-in-up flex flex-col relative overflow-hidden" style="animation-delay: 0.6s">
-                    <div class="absolute top-0 right-0 w-48 h-48 bg-white/5 rounded-full blur-3xl -mr-20 -mt-20"></div>
-                    <h3 class="text-xl font-black font-plus tracking-tight mb-8 relative z-10">Aksi Superadmin</h3>
-                    <div class="flex-1 space-y-4 relative z-10">
-                        @foreach([
-                            ['Ekspor Laporan PDF', 'superadmin.reports.preview', 'M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z'],
-                            ['Review UMKM Tertunda', 'superadmin.dashboard.preview', 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4'],
-                            ['Manajemen Pengguna', 'superadmin.users.preview', 'M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z']
-                        ] as $action)
-                        <a href="{{ route($action[1]) }}" class="flex items-center justify-between p-4 bg-white/5 border border-white/10 rounded-2xl hover:bg-white hover:text-[#000B44] transition-all group">
-                            <div class="flex items-center gap-4">
-                                <div class="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center group-hover:bg-[#000B44]/5 transition-colors">
-                                    <svg class="w-4 h-4 text-white group-hover:text-[#0077B6]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ $action[2] }}"></path></svg>
+                        <div class="grid grid-cols-3 gap-2">
+                            <div>
+                                <div class="flex items-center gap-1.5 mb-1">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-[#0077B6] flex-shrink-0"></span>
+                                    <span class="text-xs text-slate-500 font-semibold">Customer</span>
                                 </div>
-                                <span class="text-[10px] font-black uppercase tracking-widest">{{ $action[0] }}</span>
+                                <span class="text-base font-black text-[#000B44] pl-4">90</span>
                             </div>
-                        </a>
+                            <div>
+                                <div class="flex items-center gap-1.5 mb-1">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-indigo-400 flex-shrink-0"></span>
+                                    <span class="text-xs text-slate-500 font-semibold">Admin</span>
+                                </div>
+                                <span class="text-base font-black text-[#000B44] pl-4">41</span>
+                            </div>
+                            <div>
+                                <div class="flex items-center gap-1.5 mb-1">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-teal-400 flex-shrink-0"></span>
+                                    <span class="text-xs text-slate-500 font-semibold">Staff</span>
+                                </div>
+                                <span class="text-base font-black text-[#000B44] pl-4">11</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- ── Card 2: UMKM Terdaftar ── --}}
+                <div class="metric-card bg-white rounded-2xl border border-slate-300 animate-fade-in-up" style="animation-delay: 0.16s">
+                    {{-- Top row --}}
+                    <div class="flex items-center px-6 pt-6 pb-4 border-b border-slate-200">
+                        <span class="text-base font-bold text-slate-700 flex-1">UMKM Terdaftar</span>
+                        <button class="text-slate-400 hover:text-slate-600 transition-colors">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg>
+                        </button>
+                    </div>
+
+                    {{-- Main number --}}
+                    <div class="px-6 pt-5 pb-4">
+                        <h3 class="text-5xl font-black text-[#000B44] font-plus tracking-tighter leading-none">38</h3>
+                    </div>
+
+                    {{-- Aktif vs Pending --}}
+                    <div class="px-6 pb-6 space-y-3 border-t border-slate-200 pt-4">
+                        <div>
+                            <div class="flex justify-between mb-1.5">
+                                <span class="text-xs font-semibold text-slate-600 flex items-center gap-2">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-indigo-500 inline-block"></span> Aktif
+                                </span>
+                                <span class="text-xs font-bold text-slate-700">32 · 84%</span>
+                            </div>
+                            <div class="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden">
+                                <div class="h-full bg-indigo-500 rounded-full" style="width:84%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-1.5">
+                                <span class="text-xs font-semibold text-slate-600 flex items-center gap-2">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-amber-400 inline-block"></span> Pending
+                                </span>
+                                <span class="text-xs font-bold text-slate-700">6 · 16%</span>
+                            </div>
+                            <div class="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden">
+                                <div class="h-full bg-amber-400 rounded-full" style="width:16%"></div>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between pt-2 border-t border-slate-100">
+                            <span class="text-xs text-slate-500 font-medium">6 menunggu persetujuan</span>
+                            <span class="bg-red-100 text-red-500 text-xs font-semibold px-4 py-1.5 rounded-full">Perlu Review</span>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- ── Card 3: Total Transaksi ── --}}
+                <div class="metric-card bg-[#000B44] rounded-2xl border border-[#1a3a7a] animate-fade-in-up flex flex-col group" style="animation-delay: 0.24s">
+                    {{-- Top row --}}
+                    <div class="flex items-center px-6 pt-6 pb-4 border-b border-white/15">
+                        <span class="text-base font-bold text-white/80 flex-1">Total Transaksi</span>
+                        <button class="text-white/30 hover:text-white/60 transition-colors">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg>
+                        </button>
+                    </div>
+
+                    {{-- Main number --}}
+                    <div class="px-6 pt-5 pb-4">
+                        <h3 class="text-5xl font-black text-white font-plus tracking-tighter leading-none">312</h3>
+                    </div>
+
+                    {{-- Mini bar sparkline --}}
+                    <div class="px-6 pb-3 flex items-end gap-1 h-14 flex-1">
+                        @foreach([35, 52, 41, 68, 50, 78, 62, 85, 71, 100] as $h)
+                        <div class="flex-1 rounded-t bg-white/20 group-hover:bg-white/35 transition-colors spark-line" style="height:{{ $h }}%; animation-delay: {{ $loop->index * 0.07 }}s"></div>
                         @endforeach
                     </div>
-                </div>
-            </div>
 
-            <!-- Bottom Section: Detailed Management Modules -->
-            <div class="bg-white rounded-[3rem] border border-slate-100 shadow-2xl shadow-slate-200/30 overflow-hidden animate-fade-in-up" style="animation-delay: 0.7s">
-                <div class="p-10 flex items-center justify-between border-b border-slate-50">
-                    <div class="flex items-center gap-6">
-                        <h3 class="text-xl font-black text-[#000B44] font-plus tracking-tight leading-none">Antrean Persetujuan UMKM</h3>
-                        <span class="bg-red-50 text-red-600 text-[9px] font-black px-3 py-1.5 rounded-lg uppercase tracking-widest border border-red-100">12 Pending</span>
+                    {{-- Footer --}}
+                    <div class="px-6 pb-6 pt-3 border-t border-white/15 flex items-center justify-between">
+                        <span class="text-white/60 text-xs font-medium">Rata-rata harian</span>
+                        <span class="text-white text-xs font-bold">~10 transaksi/hari</span>
                     </div>
                 </div>
 
-                <div class="overflow-x-auto no-scrollbar">
+            </div>
+
+            <!-- Pending UMKM Applications Table -->
+            <div class="bg-white rounded-2xl border border-slate-300 overflow-hidden animate-fade-in-up" style="animation-delay: 0.4s">
+
+                {{-- Header --}}
+                <div class="px-8 py-5 flex items-center justify-between border-b border-slate-200">
+                    <div class="flex items-center gap-3">
+                        <h3 class="text-base font-bold text-slate-800">Pending UMKM Applications</h3>
+                        <span class="bg-slate-800 text-white text-xs font-bold px-2.5 py-0.5 rounded-full">6</span>
+                        <span class="bg-red-100 text-red-500 text-xs font-semibold px-3 py-1 rounded-full">6 PRIORITY TINGGI</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        {{-- Search --}}
+                        <div class="relative">
+                            <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <circle cx="11" cy="11" r="8"/><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35"/>
+                            </svg>
+                            <input type="text" placeholder="Cari nama atau kategori..." class="pl-9 pr-4 py-2 text-sm text-slate-600 bg-slate-50 border border-slate-200 rounded-xl w-60 focus:outline-none focus:border-[#0077B6] focus:bg-white transition-all placeholder:text-slate-400">
+                        </div>
+                        {{-- Filter --}}
+                        <button class="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-slate-600 bg-white border border-slate-200 rounded-xl hover:border-slate-300 hover:bg-slate-50 transition-all">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-.293.707L13 13.414V19a1 1 0 01-.553.894l-4 2A1 1 0 017 21v-7.586L3.293 6.707A1 1 0 013 6V4z"/>
+                            </svg>
+                            Filter
+                        </button>
+                    </div>
+                </div>
+
+                {{-- Table --}}
+                <div class="overflow-x-auto">
                     <table class="w-full text-left">
                         <thead>
-                            <tr class="bg-slate-50/50 border-b border-slate-100">
-                                <th class="p-8 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] px-10">Kredensial UMKM</th>
-                                <th class="p-8 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Kategori Bisnis</th>
-                                <th class="p-8 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Dokumen Profil</th>
-                                <th class="p-8 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Label Prioritas</th>
-                                <th class="p-8 text-center text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Tindakan</th>
+                            <tr class="border-b border-slate-100">
+                                <th class="px-8 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">ID Aplikasi</th>
+                                <th class="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Nama Bisnis</th>
+                                <th class="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Kategori</th>
+                                <th class="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Tanggal Apply</th>
+                                <th class="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Kelengkapan</th>
+                                <th class="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Prioritas</th>
+                                <th class="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Aksi</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-slate-50">
+                        <tbody class="divide-y divide-slate-100">
                             @foreach([
-                                ['APP-2547', 'Warung Sedap Malam', 'Kuliner', '2 jam lalu', 100, 'HIGH', 'red'],
-                                ['APP-2546', 'Konveksi Makmur', 'Fashion', '4 jam lalu', 100, 'HIGH', 'red'],
-                                ['APP-2545', 'Bengkel Motor Jaya', 'Otomotif', '5 jam lalu', 85, 'NORMAL', 'amber'],
-                                ['APP-2544', 'Toko Kue Bunda', 'Kuliner', '1 hari lalu', 90, 'NORMAL', 'amber'],
+                                ['APP-2847', 'Warung Sedap Malam',  'Kuliner',  '2 jam lalu',  95,  'TINGGI'],
+                                ['APP-2846', 'Konveksi Makmur',     'Fashion',  '4 jam lalu',  100, 'TINGGI'],
+                                ['APP-2845', 'Bengkel Motor Jaya',  'Otomotif', '5 jam lalu',  85,  'NORMAL'],
+                                ['APP-2844', 'Toko Kue Bunda',      'Kuliner',  '1 hari lalu', 90,  'NORMAL'],
+                                ['APP-2843', 'Laundry Express 24',  'Jasa',     '1 hari lalu', 100, 'TINGGI'],
+                                ['APP-2842', 'Sablon Kilat',        'Printing', '2 hari lalu', 75,  'RENDAH'],
                             ] as $app)
-                            <tr class="hover:bg-slate-50/70 transition-all cursor-pointer group">
-                                <td class="p-8 px-10">
-                                    <div class="flex flex-col">
-                                        <span class="text-sm font-black text-[#000B44] font-plus tracking-tight">{{ $app[1] }}</span>
-                                        <span class="text-[10px] font-black text-slate-400 font-mono tracking-tighter mt-1">{{ $app[0] }} • {{ $app[3] }}</span>
-                                    </div>
+                            <tr class="hover:bg-slate-50 transition-colors group">
+                                <td class="px-8 py-4 text-xs text-slate-400 font-mono">{{ $app[0] }}</td>
+                                <td class="px-6 py-4">
+                                    <span class="text-sm font-bold text-slate-800">{{ $app[1] }}</span>
                                 </td>
-                                <td class="p-8">
-                                    <span class="inline-block px-3 py-1 bg-slate-100/50 text-slate-500 text-[9px] font-black uppercase tracking-widest rounded-lg border border-slate-100">{{ $app[2] }}</span>
+                                <td class="px-6 py-4">
+                                    <span class="inline-block px-3 py-1 bg-slate-100 text-slate-500 text-xs font-medium rounded-lg">{{ $app[2] }}</span>
                                 </td>
-                                <td class="p-8">
-                                    <div class="flex items-center gap-3">
-                                        <div class="w-20 h-2 bg-slate-100 rounded-full overflow-hidden border border-slate-200">
-                                            <div class="h-full bg-teal-500 rounded-full" style="width: {{ $app[4] }}%"></div>
+                                <td class="px-6 py-4 text-sm text-slate-500">{{ $app[3] }}</td>
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center gap-2.5">
+                                        <div class="w-24 h-2 bg-slate-100 rounded-full overflow-hidden">
+                                            <div class="h-full bg-slate-700 rounded-full" style="width: {{ $app[4] }}%"></div>
                                         </div>
-                                        <span class="text-[10px] font-black text-teal-600">{{ $app[4] }}%</span>
+                                        <span class="text-xs font-semibold text-slate-600">{{ $app[4] }}%</span>
                                     </div>
                                 </td>
-                                <td class="p-8">
+                                <td class="px-6 py-4">
                                     <span @class([
-                                        'px-3 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-widest border',
-                                        'bg-red-50 text-red-600 border-red-100' => $app[5] === 'HIGH',
-                                        'bg-amber-50 text-amber-600 border-amber-100' => $app[5] === 'NORMAL'
+                                        'inline-block px-3 py-1 text-xs font-bold rounded-lg',
+                                        'bg-slate-800 text-white'     => $app[5] === 'TINGGI',
+                                        'bg-slate-200 text-slate-600' => $app[5] === 'NORMAL',
+                                        'bg-slate-100 text-slate-400' => $app[5] === 'RENDAH',
                                     ])>{{ $app[5] }}</span>
                                 </td>
-                                <td class="p-8">
-                                    <div class="flex items-center justify-center">
-                                        <button class="bg-[#2D333D] px-6 py-2.5 text-white text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-black transition-all shadow-md active:scale-95">Review Cepat</button>
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center gap-2">
+                                        <button class="bg-slate-800 hover:bg-slate-900 text-white text-xs font-semibold px-4 py-1.5 rounded-lg transition-colors">Review</button>
+                                        <button class="w-8 h-8 flex items-center justify-center rounded-lg border border-slate-200 text-slate-400 hover:text-teal-600 hover:border-teal-200 hover:bg-teal-50 transition-colors">
+                                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                                        </button>
+                                        <button class="w-8 h-8 flex items-center justify-center rounded-lg border border-slate-200 text-slate-400 hover:text-red-500 hover:border-red-200 hover:bg-red-50 transition-colors">
+                                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+                                        </button>
+                                        <button class="w-8 h-8 flex items-center justify-center rounded-lg border border-slate-200 text-slate-400 hover:text-slate-600 hover:border-slate-300 hover:bg-slate-50 transition-colors">
+                                            <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg>
+                                        </button>
                                     </div>
                                 </td>
                             </tr>
@@ -267,8 +279,23 @@
                         </tbody>
                     </table>
                 </div>
+
+                {{-- Pagination --}}
+                <div class="px-8 py-4 border-t border-slate-100 flex items-center justify-between">
+                    <div class="flex items-center gap-2 text-sm text-slate-500">
+                        Menampilkan 1-6 dari
+                        <span class="font-semibold text-slate-700">6</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button class="px-3 py-1.5 text-sm text-slate-500 hover:text-slate-700 transition-colors disabled:opacity-40" disabled>Sebelumnya</button>
+                        <button class="w-8 h-8 flex items-center justify-center text-sm font-bold bg-slate-800 text-white rounded-lg">1</button>
+                        <button class="w-8 h-8 flex items-center justify-center text-sm text-slate-500 hover:bg-slate-100 rounded-lg transition-colors">2</button>
+                        <button class="w-8 h-8 flex items-center justify-center text-sm text-slate-500 hover:bg-slate-100 rounded-lg transition-colors">3</button>
+                        <button class="px-3 py-1.5 text-sm font-semibold text-slate-700 border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors">Selanjutnya</button>
+                    </div>
+                </div>
             </div>
-            
+
         </div>
     </main>
 </div>

@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
-#[Layout('layouts.admin-layout')]
+#[Layout('layouts.superadmin')]
 class Index extends Component
 {
     public function render(DashboardService $dashboardService)
