@@ -42,11 +42,10 @@
                     </div>
                 </div>
 
-                <!-- Search Bar -->
-                <div class="hidden xl:flex flex-1 max-w-2xl mx-12">
-                    <div class="relative w-full">
-                        <input type="text" placeholder="Quick search UID, TRX, or Email..." class="w-full bg-slate-50 border-none rounded-2xl py-4 pl-14 pr-6 text-sm font-medium focus:ring-2 focus:ring-[#0077B6]/20 transition-all font-plus">
-                        <svg class="w-5 h-5 text-slate-300 absolute left-5 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                <!-- Global Search -->
+                <div class="hidden xl:flex flex-1 items-center justify-center mx-8">
+                    <div class="w-full max-w-xl">
+                        <livewire:super-admin.global-search />
                     </div>
                 </div>
 

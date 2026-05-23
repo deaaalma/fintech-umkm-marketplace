@@ -22,73 +22,76 @@ class DashboardService
         $completedOrders = \App\Models\Order::where('status', 'completed')->count();
         $totalRevenue = \App\Models\Payment::where('status', 'success')->sum('amount');
 
-        // 3. Data Review & Rating
+        // 4. Data Review & Rating
         $avgRating = \App\Models\OrderReview::avg('rating') ?? 0;
         $totalReviews = \App\Models\OrderReview::count();
         $resolvedIssues = \App\Models\OrderReview::where('is_resolved', true)->count();
 
+        // 5. Data Pengguna (Untuk Dashboard Metrics)
+        $totalUsers = \App\Models\User::count();
+        $customers = \App\Models\User::where('role', 'customer')->count();
+        $adminUmkm = \App\Models\User::where('role', 'admin_umkm')->count();
+        $staffCount = $totalUsers - $customers - $adminUmkm;
+
         return [
-            // 1. TOTAL UMKM TERDAFTAR
-            [
-                'title' => 'TOTAL UMKM TERDAFTAR',
-                'value' => number_format($totalUmkm),
-                'details' => [
-                    ['label' => 'Aktif', 'value' => number_format($activeUmkm)],
-                    ['label' => 'Suspended', 'value' => number_format($suspendedUmkm)],
-                ],
-                'highlight' => false
+            'user_stats' => [
+                'total_users' => $totalUsers,
+                'customer' => $customers,
+                'admin_umkm' => $adminUmkm,
+                'staff' => $staffCount
             ],
-
-            // 2. PENDING APPROVAL (Fokus ke verifikasi)
-            [
-                'title' => 'PENDING APPROVAL',
-                'value' => number_format($pendingUmkm),
-                'details' => [
-                    ['label' => 'Butuh Review', 'value' => number_format($pendingUmkm)],
-                ],
-                'highlight' => $pendingUmkm > 0 ? true : false, // Highlight jika ada kerjaan pending
+            'umkm_stats' => [
+                'total_umkm' => $totalUmkm,
+                'active' => $activeUmkm,
+                'suspended' => $suspendedUmkm,
+                'pending' => $pendingUmkm
             ],
-
-            // 3. TOTAL TRANSAKSI
-            [
-                'title' => 'TOTAL TRANSAKSI',
-                'value' => number_format($totalOrders),
-                'details' => [
-                    ['label' => 'Selesai', 'value' => number_format($completedOrders)],
-                    ['label' => 'Revenue', 'value' => 'Rp ' . number_format($totalRevenue, 0, ',', '.')],
+            // ── EXISTING LIST FORMAT FOR OTHER CARDS ──
+            'cards' => [
+                [
+                    'title' => 'PENDING APPROVAL',
+                    'value' => number_format($pendingUmkm),
+                    'details' => [['label' => 'Butuh Review', 'value' => number_format($pendingUmkm)]],
+                    'highlight' => $pendingUmkm > 0,
                 ],
-                'highlight' => false
-            ],
-
-            // 4. KEPUASAN PELANGGAN (Berdasarkan Isu)
-            [
-                'title' => 'KEPUASAN PELANGGAN',
-                'value' => number_format($totalReviews),
-                'details' => [
-                    ['label' => 'Isu Selesai', 'value' => number_format($resolvedIssues)],
-                    ['label' => 'Isu Pending', 'value' => number_format($totalReviews - $resolvedIssues)],
+                [
+                    'title' => 'TOTAL TRANSAKSI',
+                    'value' => number_format($totalOrders),
+                    'details' => [
+                        ['label' => 'Selesai', 'value' => number_format($completedOrders)],
+                        ['label' => 'Revenue', 'value' => 'Rp ' . number_format($totalRevenue, 0, ',', '.')],
+                    ],
+                    'highlight' => false
                 ],
-                'highlight' => false
-            ],
-
-            // 5. RATING RATA-RATA
-            [
-                'title' => 'RATING RATA-RATA',
-                'value' => number_format($avgRating, 1) . ' / 5.0',
-                'details' => [
-                    ['label' => 'Dari', 'value' => number_format($totalReviews) . ' Review'],
-                ],
-                'highlight' => false
-            ],
+                [
+                    'title' => 'KEPUASAN PELANGGAN',
+                    'value' => number_format($totalReviews),
+                    'details' => [
+                        ['label' => 'Isu Selesai', 'value' => number_format($resolvedIssues)],
+                        ['label' => 'Isu Pending', 'value' => number_format($totalReviews - $resolvedIssues)],
+                    ],
+                    'highlight' => false
+                ]
+            ]
         ];
     }
 
-    public function getPendingApplications()
+    public function getPendingApplications($search = null)
     {
         // Mengambil UMKM yang butuh verifikasi beserta detailnya
-        return Umkm::with(['detail', 'category', 'owner'])
-            ->where('status', 'pending_verification')
-            ->orderBy('created_at', 'desc')
+        $query = Umkm::with(['detail', 'category', 'owner'])
+            ->where('status', 'pending_verification');
+
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', '%' . $search . '%')
+                  ->orWhereHas('category', function ($cq) use ($search) {
+                      $cq->where('name', 'like', '%' . $search . '%');
+                  });
+            });
+        }
+
+        return $query->orderBy('created_at', 'desc')
             ->limit(5)
             ->get();
     }

@@ -60,22 +60,22 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
 
                 {{-- ── Card 1: Total Pengguna ── --}}
-                <div class="metric-card bg-white rounded-2xl border border-slate-300 animate-fade-in-up" style="animation-delay: 0.08s">
+                <a href="{{ route('admin.dashboard.users') }}" class="metric-card group bg-white rounded-2xl border border-slate-300 animate-fade-in-up hover:border-[#0077B6] hover:scale-[1.01] transition-all duration-300 overflow-hidden shadow-sm flex flex-col" style="animation-delay: 0.08s">
                     {{-- Top row: label + dots --}}
-                    <div class="flex items-center px-6 pt-6 pb-4 border-b border-slate-200">
-                        <span class="text-base font-bold text-slate-700 flex-1">Total Pengguna</span>
-                        <button class="text-slate-400 hover:text-slate-600 transition-colors">
-                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg>
-                        </button>
+                    <div class="flex items-center px-6 pt-6 pb-4 border-b border-slate-200 group-hover:bg-blue-50/50 transition-colors">
+                        <span class="text-base font-bold text-slate-700 flex-1 group-hover:text-[#0077B6] transition-colors">Total Pengguna</span>
+                        <div class="text-slate-400 group-hover:text-[#0077B6] transition-colors">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                        </div>
                     </div>
 
                     {{-- Main number --}}
-                    <div class="px-6 pt-5 pb-4">
-                        <h3 class="text-5xl font-black text-[#000B44] font-plus tracking-tighter leading-none">142</h3>
+                    <div class="px-6 pt-5 pb-4 group-hover:bg-blue-50/30 transition-colors">
+                        <h3 class="text-5xl font-black text-[#000B44] font-plus tracking-tighter leading-none group-hover:scale-105 transition-transform duration-500 origin-left">142</h3>
                     </div>
 
                     {{-- Role breakdown --}}
-                    <div class="px-6 pb-6 space-y-3 border-t border-slate-200 pt-4">
+                    <div class="px-6 pb-6 space-y-3 border-t border-slate-200 pt-4 bg-slate-50/30 group-hover:bg-white transition-colors flex-1">
                         <div class="flex h-2.5 rounded-full overflow-hidden bg-slate-100">
                             <div class="bg-[#0077B6]" style="width:63.4%"></div>
                             <div class="bg-indigo-400" style="width:28.9%"></div>
@@ -105,7 +105,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </a>
 
                 {{-- ── Card 2: UMKM Terdaftar ── --}}
                 <div class="metric-card bg-white rounded-2xl border border-slate-300 animate-fade-in-up" style="animation-delay: 0.16s">
