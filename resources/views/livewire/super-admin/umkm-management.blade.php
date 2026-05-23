@@ -56,59 +56,131 @@
             </button>
         </div>
 
-        {{-- ── Search & Filter Panel ── --}}
-        <div class="mt-8 flex flex-wrap items-center gap-4 animate-fade-in-up relative z-40">
-            <div class="flex-1 min-w-[300px] relative group">
-                <svg class="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 group-focus-within:text-[#0077B6] transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        {{-- ── Compact Search & Filter Launcher ── --}}
+        <div class="mt-10 flex flex-wrap items-center gap-4 animate-fade-in-up relative z-40" style="animation-delay: 0.3s">
+            {{-- Search input --}}
+            <div class="flex-1 min-w-[300px] relative group overflow-hidden">
+                <svg class="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 group-focus-within:text-[#0077B6] transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <circle cx="11" cy="11" r="8"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35"/>
                 </svg>
                 <input type="text" wire:model.live.debounce.300ms="search" placeholder="Cari UMKM, Pemilik, atau Kota..." 
-                    class="w-full pl-14 pr-6 py-4 bg-white border border-slate-200 rounded-[24px] text-slate-700 font-medium focus:outline-none focus:ring-4 focus:ring-blue-100 transition-all shadow-sm shadow-slate-100">
+                    class="w-full pl-14 pr-6 py-4 bg-white border border-slate-200 rounded-[24px] text-slate-700 font-medium focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-[#0077B6] shadow-sm transition-all placeholder:text-slate-400">
             </div>
 
+            {{-- Filter Launcher --}}
             <div class="relative" x-data="{ showFilters: false }">
                 <button @click="showFilters = !showFilters" 
-                    class="px-8 py-4 bg-white border border-slate-200 rounded-[24px] text-sm font-bold text-slate-700 hover:bg-slate-50 transition-all flex items-center gap-3 shadow-sm shadow-slate-100">
+                    class="px-8 py-4 bg-white border border-slate-200 rounded-[24px] text-sm font-bold text-slate-700 hover:bg-slate-50 shadow-sm transition-all flex items-center gap-3 active:scale-95">
                     <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/></svg>
                     Filters
                     @if($statusFilter || $categoryFilter)
-                        <span class="w-5 h-5 flex items-center justify-center rounded-full bg-[#0077B6] text-white text-[10px] font-black">!</span>
+                        <span class="w-5 h-5 flex items-center justify-center rounded-full bg-[#0077B6] text-white text-[10px] font-black">
+                            {{ ($statusFilter ? 1 : 0) + ($categoryFilter ? 1 : 0) }}
+                        </span>
                     @endif
                 </button>
 
-                <div x-show="showFilters" x-cloak wire:ignore.self @click.away="showFilters = false" x-transition class="absolute right-0 mt-4 w-[580px] bg-white rounded-[32px] border border-slate-200 shadow-2xl z-[90] overflow-hidden">
-                    <div class="flex h-[400px]" x-data="{ activeFilterTab: 'status' }">
-                        <div class="w-44 bg-slate-50 border-r border-slate-100 p-6 flex flex-col gap-2">
-                             <button @click="activeFilterTab = 'status'" :class="activeFilterTab === 'status' ? 'bg-[#000B44] text-white' : 'text-slate-500'" class="px-4 py-3 rounded-xl text-sm font-bold text-left transition-all">Status</button>
-                             <button @click="activeFilterTab = 'category'" :class="activeFilterTab === 'category' ? 'bg-[#000B44] text-white' : 'text-slate-500'" class="px-4 py-3 rounded-xl text-sm font-bold text-left transition-all">Bidang</button>
+                {{-- ── ACTUAL PREMIUM FILTER PANEL ── --}}
+                <div x-show="showFilters" x-cloak wire:ignore.self
+                    @click.away="showFilters = false"
+                    x-transition:enter="transition ease-out duration-200"
+                    x-transition:enter-start="opacity-0 translate-y-4 scale-95"
+                    x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+                    class="absolute right-0 mt-4 w-[550px] bg-white rounded-[32px] border border-slate-200 shadow-2xl z-[90] overflow-hidden"
+                    x-data="{ activeFilterTab: 'status' }">
+                    
+                    <div class="flex" style="min-height: 380px;">
+                        {{-- Left Sidebar --}}
+                        <div class="w-44 bg-slate-50/80 border-r border-slate-100 p-6 flex flex-col gap-2">
+                            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">Kategori</p>
+                            <button @click="activeFilterTab = 'status'" 
+                                :class="activeFilterTab === 'status' ? 'bg-[#000B44] text-white shadow-lg' : 'text-slate-400 hover:bg-slate-100'"
+                                class="flex items-center gap-3 px-4 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all text-left">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                                Status
+                            </button>
+                            <button @click="activeFilterTab = 'category'" 
+                                :class="activeFilterTab === 'category' ? 'bg-[#000B44] text-white shadow-lg' : 'text-slate-400 hover:bg-slate-100'"
+                                class="flex items-center gap-3 px-4 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all text-left">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+                                Bidang
+                            </button>
                         </div>
-                        <div class="flex-1 p-8 space-y-4">
-                            @if($activeTab === 'directory')
-                                <div x-show="activeFilterTab === 'status'" class="space-y-3">
-                                    @foreach(['' => 'Semua', 'active' => 'Aktif', 'suspended' => 'Suspended', 'rejected' => 'Rejected'] as $key => $val)
-                                    <label class="flex items-center gap-3 cursor-pointer group hover:bg-slate-50 p-2 rounded-xl transition-all"><input type="radio" wire:model.live="statusFilter" value="{{ $key }}" class="w-5 h-5 text-blue-600 focus:ring-blue-100"><span class="font-bold text-slate-600 group-hover:text-[#000B44]">{{ $val }}</span></label>
+
+                        {{-- Main Options Content --}}
+                        <div class="flex-1 flex flex-col bg-white p-8">
+                            {{-- Tab Status --}}
+                            <div x-show="activeFilterTab === 'status'" class="space-y-6">
+                                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Pilih Status UMKM</p>
+                                <div class="space-y-3">
+                                    @foreach(['' => 'Semua Status', 'active' => 'Aktif / Terverifikasi', 'suspended' => 'Dibatasi (Suspended)', 'rejected' => 'Ditolak'] as $key => $val)
+                                    <label class="flex items-center gap-4 cursor-pointer group">
+                                        <div class="relative w-5 h-5 rounded-full border-2 border-slate-200 flex items-center justify-center group-hover:border-blue-500 transition-all">
+                                            <input type="radio" wire:model.live="statusFilter" value="{{ $key }}" class="hidden peer">
+                                            <div class="w-2.5 h-2.5 rounded-full bg-[#000B44] scale-0 peer-checked:scale-100 transition-transform duration-200"></div>
+                                        </div>
+                                        <span class="text-sm font-bold text-slate-600 group-hover:text-[#000B44] transition-colors">{{ $val }}</span>
+                                    </label>
                                     @endforeach
                                 </div>
-                            @else
-                                <div x-show="activeFilterTab === 'status'" class="flex flex-col items-center justify-center h-full text-center p-8">
-                                    <div class="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center text-blue-400 mb-4 animate-bounce"><svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg></div>
-                                    <p class="text-sm font-bold text-slate-400">Di Tab ini hanya menampilkan UMKM yang sedang menunggu persetujuan (PENDING).</p>
-                                </div>
-                            @endif
-                            <div x-show="activeFilterTab === 'category'" class="space-y-3 overflow-y-auto h-[250px] no-scrollbar pb-10 pr-2">
-                                @foreach($categories as $cat)
-                                <label class="flex items-center gap-3 cursor-pointer group hover:bg-slate-50 p-2 rounded-xl transition-all"><input type="radio" wire:model.live="categoryFilter" value="{{ $cat->id }}" class="w-5 h-5 text-blue-600 focus:ring-blue-100"><span class="font-bold text-slate-600 group-hover:text-[#000B44]">{{ $cat->name }}</span></label>
-                                @endforeach
                             </div>
-                            <div class="absolute bottom-6 right-8 flex gap-3 bg-white w-full justify-end pr-8">
-                                <button wire:click="resetFilters" @click="showFilters = false" class="px-6 py-2.5 bg-slate-100 text-slate-500 font-bold rounded-xl hover:bg-slate-200 transition-all">RESET</button>
-                                <button @click="showFilters = false" class="px-8 py-2.5 bg-[#0077B6] text-white font-bold rounded-xl shadow-lg hover:scale-105 transition-all">APPLY</button>
+
+                            {{-- Tab Bidang --}}
+                            <div x-show="activeFilterTab === 'category'" class="space-y-6">
+                                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Pilih Bidang Usaha</p>
+                                <div class="space-y-3 overflow-y-auto max-h-[200px] pr-2 no-scrollbar">
+                                    @foreach($categories as $cat)
+                                    <label class="flex items-center gap-4 cursor-pointer group">
+                                        <div class="relative w-5 h-5 rounded-full border-2 border-slate-200 flex items-center justify-center group-hover:border-blue-500 transition-all">
+                                            <input type="radio" wire:model.live="categoryFilter" value="{{ $cat->id }}" class="hidden peer">
+                                            <div class="w-2.5 h-2.5 rounded-full bg-[#000B44] scale-0 peer-checked:scale-100 transition-transform duration-200"></div>
+                                        </div>
+                                        <span class="text-sm font-bold text-slate-600 group-hover:text-[#000B44] transition-colors">{{ $cat->name }}</span>
+                                    </label>
+                                    @endforeach
+                                </div>
+                            </div>
+
+                            {{-- Footer Action --}}
+                            <div class="mt-auto pt-6 border-t border-slate-50 flex gap-3">
+                                <button wire:click="resetFilters" @click="showFilters = false" class="flex-1 px-6 py-3 bg-slate-100 text-slate-500 font-black text-[10px] uppercase tracking-widest rounded-xl hover:bg-slate-200 transition-all">Reset All</button>
+                                <button @click="showFilters = false" class="flex-[2] px-8 py-3 bg-[#000B44] text-white font-black text-[10px] uppercase tracking-widest rounded-xl shadow-lg shadow-blue-500/10 hover:scale-[1.02] transition-all">Terapkan Filter</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
+        {{-- ── Active Chips Summary ── --}}
+        @if($statusFilter || $categoryFilter || $search)
+        <div class="mt-8 flex flex-wrap items-center gap-3 animate-fade-in-up">
+            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mr-2">Filter Aktif:</p>
+            
+            @if($search)
+            <div class="flex items-center gap-2 pl-4 pr-3 py-2 bg-blue-50/50 border border-blue-100 rounded-full">
+                <span class="text-[10px] font-black text-blue-600 uppercase tracking-widest">Cari: "{{ $search }}"</span>
+                <button wire:click="$set('search', '')" class="text-blue-400 hover:text-blue-600 transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg></button>
+            </div>
+            @endif
+
+            @if($statusFilter)
+            <div class="flex items-center gap-2 pl-4 pr-3 py-2 bg-indigo-50/50 border border-indigo-100 rounded-full">
+                <span class="text-[10px] font-black text-indigo-600 uppercase tracking-widest">Status: {{ $statusFilter }}</span>
+                <button wire:click="$set('statusFilter', '')" class="text-indigo-400 hover:text-indigo-600 transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg></button>
+            </div>
+            @endif
+
+            @if($categoryFilter)
+            <div class="flex items-center gap-2 pl-4 pr-3 py-2 bg-teal-50/50 border border-teal-100 rounded-full">
+                <span class="text-[10px] font-black text-teal-600 uppercase tracking-widest">Bidang: {{ $categories->find($categoryFilter)->name ?? 'Selected' }}</span>
+                <button wire:click="$set('categoryFilter', '')" class="text-teal-400 hover:text-teal-600 transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg></button>
+            </div>
+            @endif
+
+            <button wire:click="resetFilters" class="text-[10px] font-black text-rose-500 hover:bg-rose-50 px-4 py-2 rounded-full transition-colors ml-2 uppercase tracking-widest">Hapus Semua</button>
+        </div>
+        @endif
 
         {{-- ── DYNAMIC BULK ACTIONS ── --}}
         <div x-show="$wire.selectedUmkms.length > 0" 
@@ -153,17 +225,17 @@
             <div class="overflow-x-auto no-scrollbar">
                 <table class="w-full text-left border-collapse">
                     <thead>
-                        <tr class="bg-slate-50/50 border-b border-slate-100">
+                        <tr class="bg-slate-50/50 border-b border-slate-100 uppercase tracking-widest text-[#000B44]">
                             <th class="px-8 py-6 w-12 text-center">
                                 <input type="checkbox" 
                                     @click="if ($el.checked) { $wire.set('selectedUmkms', @js($umkms->pluck('id')->toArray())) } else { $wire.set('selectedUmkms', []) }"
                                     :checked="$wire.selectedUmkms.length === @js($umkms->count()) && $wire.selectedUmkms.length > 0"
                                     class="custom-checkbox">
                             </th>
-                            <th class="px-6 py-6 text-xs font-black text-slate-400 uppercase tracking-widest">Informasi UMKM</th>
-                            <th class="px-6 py-6 text-xs font-black text-slate-400 uppercase tracking-widest">Pemilik</th>
-                            <th class="px-6 py-6 text-xs font-black text-slate-400 uppercase tracking-widest text-center">Status</th>
-                            <th class="px-8 py-6 text-xs font-black text-slate-400 uppercase tracking-widest text-right">Review</th>
+                            <th class="px-6 py-6 text-xs font-black text-slate-400">Informasi UMKM</th>
+                            <th class="px-6 py-6 text-xs font-black text-slate-400">Pemilik & Lokasi</th>
+                            <th class="px-6 py-6 text-xs font-black text-slate-400 text-center">Status</th>
+                            <th class="px-8 py-6 text-xs font-black text-slate-400 text-right">Aksi</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-100">
@@ -202,13 +274,14 @@
                             </td>
                             <td class="px-6 py-6"><p class="text-sm font-bold text-slate-700">{{ $umkm->owner->name ?? 'Guest' }}</p><p class="text-xs text-slate-400 mt-0.5 leading-tight">{{ $umkm->owner->phone ?? '-' }}</p></td>
                             <td class="px-6 py-6 text-center">
-                                @php $cfg = [
+                                @php $cfg = match($umkm->status) {
                                     'active' => 'text-teal-600 bg-teal-50', 
                                     'pending_verification' => 'text-blue-600 bg-blue-50',
                                     'suspended' => 'text-red-400 bg-red-50', 
-                                    'rejected' => 'text-slate-400 bg-slate-50'
-                                ][$umkm->status] ?? 'text-slate-500 bg-slate-50'; @endphp
-                                <span class="px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest {{ $cfg }} border border-current/10 text-center inline-block min-w-[100px]">
+                                    'rejected' => 'text-slate-400 bg-slate-50',
+                                    default => 'text-slate-500 bg-slate-50'
+                                }; @endphp
+                                <span class="px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest {{ $cfg }} border border-current/10 text-center inline-block min-w-[120px] shadow-sm">
                                     {{ str_replace(['active', 'pending_verification'], ['TERVERIFIKASI', 'PENDING'], strtoupper($umkm->status)) }}
                                 </span>
                             </td>

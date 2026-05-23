@@ -42,4 +42,17 @@ class Umkm extends Model
     {
         return $this->hasOne(UmkmDetail::class);
     }
+
+    public function creditLogs()
+    {
+        return $this->hasMany(CreditLog::class)->latest();
+    }
+
+    /**
+     * Remaining credit = total topped-up - already used
+     */
+    public function getCreditRemainingAttribute(): int
+    {
+        return max(0, $this->transaction_credit - $this->credit_used);
+    }
 }

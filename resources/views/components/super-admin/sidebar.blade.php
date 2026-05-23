@@ -44,26 +44,25 @@
         </a>
 
         <!-- Transactions -->
-        <a href="{{ route('superadmin.transactions.preview') }}" @class([
+        <a href="{{ route('admin.dashboard.transactions') }}" @class([
             'flex items-center justify-between px-6 py-4 rounded-2xl transition-all duration-300 group',
-            'bg-white/5 text-white active-nav' => request()->routeIs('superadmin.transactions.preview'),
-            'text-white/50 hover:bg-white/5 hover:text-white' => !request()->routeIs('superadmin.transactions.preview')
+            'bg-white/5 text-white active-nav' => request()->routeIs('admin.dashboard.transactions'),
+            'text-white/50 hover:bg-white/5 hover:text-white' => !request()->routeIs('admin.dashboard.transactions')
         ])>
             <div class="flex items-center gap-4">
-                <svg class="w-6 h-6 {{ request()->routeIs('superadmin.transactions.preview') ? 'text-[#0077B6]' : 'text-slate-500 group-hover:text-blue-200' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
+                <svg class="w-6 h-6 {{ request()->routeIs('admin.dashboard.transactions') ? 'text-[#0077B6]' : 'text-slate-500 group-hover:text-blue-200' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
                 <span class="text-xs font-bold tracking-wider uppercase">Transaksi</span>
             </div>
-            <span class="bg-white/10 text-white/50 text-[10px] font-black px-2 py-0.5 rounded-lg">3</span>
         </a>
 
         <!-- Laporan -->
-        <a href="{{ route('superadmin.reports.preview') }}" @class([
+        <a href="{{ route('admin.dashboard.reports') }}" @class([
             'flex items-center justify-between px-6 py-4 rounded-2xl transition-all duration-300 group',
-            'bg-white/5 text-white active-nav' => request()->routeIs('superadmin.reports.preview'),
-            'text-white/50 hover:bg-white/5 hover:text-white' => !request()->routeIs('superadmin.reports.preview')
+            'bg-white/5 text-white active-nav' => request()->routeIs('admin.dashboard.reports'),
+            'text-white/50 hover:bg-white/5 hover:text-white' => !request()->routeIs('admin.dashboard.reports')
         ])>
             <div class="flex items-center gap-4">
-                <svg class="w-6 h-6 {{ request()->routeIs('superadmin.reports.preview') ? 'text-[#0077B6]' : 'text-slate-500 group-hover:text-blue-200' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                <svg class="w-6 h-6 {{ request()->routeIs('admin.dashboard.reports') ? 'text-[#0077B6]' : 'text-slate-500 group-hover:text-blue-200' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                 <span class="text-xs font-bold tracking-wider uppercase">Laporan</span>
             </div>
         </a>

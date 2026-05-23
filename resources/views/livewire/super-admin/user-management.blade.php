@@ -182,90 +182,81 @@
     @endif
 
     {{-- ── User Table ── --}}
-    <div class="mt-8 bg-white rounded-[32px] border border-slate-200 overflow-hidden shadow-sm animate-fade-in-up" style="animation-delay: 0.4s">
-        <div class="overflow-x-auto">
+    <div class="mt-4 bg-white rounded-[32px] border border-slate-200 overflow-hidden shadow-sm animate-fade-in-up" style="animation-delay: 0.4s">
+        <div class="overflow-x-auto no-scrollbar">
             <table class="w-full text-left">
                 <thead>
-                    <tr class="bg-slate-50/50 border-b border-slate-100">
-                        <th class="px-8 py-6 text-xs font-black text-slate-400 uppercase tracking-widest">User Profile</th>
-                        <th class="px-6 py-6 text-xs font-black text-slate-400 uppercase tracking-widest">Role</th>
-                        <th class="px-6 py-6 text-xs font-black text-slate-400 uppercase tracking-widest">Status</th>
-                        <th class="px-6 py-6 text-xs font-black text-slate-400 uppercase tracking-widest">Tanggal Daftar</th>
-                        <th class="px-8 py-6 text-xs font-black text-slate-400 uppercase tracking-widest text-right">Aksi</th>
+                    <tr class="bg-slate-50/50 border-b border-slate-100 uppercase tracking-widest text-[#000B44]">
+                        <th class="px-8 py-6 text-xs font-black text-slate-400">User Profile</th>
+                        <th class="px-6 py-6 text-xs font-black text-slate-400 text-center">Role</th>
+                        <th class="px-6 py-6 text-xs font-black text-slate-400 text-center">Status</th>
+                        <th class="px-6 py-6 text-xs font-black text-slate-400">Tanggal Daftar</th>
+                        <th class="px-8 py-6 text-xs font-black text-slate-400 text-right">Aksi</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-100">
                     @forelse($users as $user)
-                    <tr class="hover:bg-slate-50/80 transition-colors group">
-                        <td class="px-8 py-5">
+                    <tr class="hover:bg-slate-50/80 transition-all group">
+                        <td class="px-8 py-6">
                             <div class="flex items-center gap-4">
                                 <div class="w-12 h-12 rounded-2xl overflow-hidden bg-slate-100 border border-slate-200 group-hover:scale-105 transition-transform duration-300">
                                     <img src="https://ui-avatars.com/api/?name={{ urlencode($user->name) }}&background=000B44&color=fff" class="w-full h-full object-cover">
                                 </div>
                                 <div>
                                     <p class="font-bold text-[#000B44] text-base">{{ $user->name }}</p>
-                                    <p class="text-xs text-slate-500 font-medium mt-0.5">{{ $user->email }} • {{ $user->phone }}</p>
+                                    <p class="text-[10px] text-slate-400 font-black uppercase tracking-widest mt-1">{{ $user->email }} • {{ $user->phone }}</p>
                                 </div>
                             </div>
                         </td>
-                        <td class="px-6 py-5">
-                            <span @class([
-                                'px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-wider',
-                                'bg-blue-50 text-blue-600' => $user->role === 'customer',
-                                'bg-indigo-50 text-indigo-600' => $user->role === 'admin_umkm',
-                                'bg-teal-50 text-teal-600' => $user->role === 'worker',
-                                'bg-slate-800 text-white' => $user->role === 'superadmin',
-                            ])>
+                        <td class="px-6 py-6 text-center">
+                            @php $rColor = match($user->role) {
+                                'customer' => 'bg-blue-50 text-blue-600',
+                                'admin_umkm' => 'bg-indigo-50 text-indigo-600',
+                                'worker' => 'bg-teal-50 text-teal-600',
+                                'superadmin' => 'bg-slate-800 text-white',
+                                default => 'bg-slate-50 text-slate-600',
+                            }; @endphp
+                            <span class="px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest {{ $rColor }} border border-current/10 inline-block min-w-[100px]">
                                 {{ str_replace('_', ' ', $user->role) }}
                             </span>
                         </td>
-                        <td class="px-6 py-5">
-                            <div class="flex items-center gap-2">
-                                <span @class([
-                                    'w-2 h-2 rounded-full',
-                                    'bg-teal-500 shadow-[0_0_8px_rgba(20,184,166,0.5)]' => $user->status === 'ACTIVE',
-                                    'bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.5)]' => $user->status === 'SUSPENDED',
-                                    'bg-slate-400' => $user->status === 'INACTIVE',
-                                ])></span>
-                                <span class="text-sm font-bold text-slate-700 capitalize">{{ strtolower($user->status) }}</span>
-                            </div>
+                        <td class="px-6 py-6 text-center">
+                            @php $sCfg = match($user->status) {
+                                'ACTIVE' => ['color' => 'text-teal-600 bg-teal-50', 'label' => 'AKTIF'],
+                                'SUSPENDED' => ['color' => 'text-rose-500 bg-rose-50', 'label' => 'SUSPENDED'],
+                                default => ['color' => 'text-slate-500 bg-slate-50', 'label' => 'INACTIVE'],
+                            }; @endphp
+                            <span class="px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest {{ $sCfg['color'] }} border border-current/10 text-center inline-block min-w-[100px]">
+                                {{ $sCfg['label'] }}
+                            </span>
                         </td>
-                        <td class="px-6 py-5">
-                            <p class="text-sm font-medium text-slate-600">{{ $user->created_at->format('d M Y') }}</p>
-                            <p class="text-[10px] text-slate-400 font-medium uppercase mt-0.5">{{ $user->created_at->diffForHumans() }}</p>
+                        <td class="px-6 py-6">
+                            <p class="text-sm font-bold text-slate-700">{{ $user->created_at->format('d M Y') }}</p>
+                            <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-0.5">{{ $user->created_at->diffForHumans() }}</p>
                         </td>
-                        <td class="px-8 py-5 text-right">
+                        <td class="px-8 py-6 text-right">
                             <div class="flex items-center justify-end gap-2">
-                                <button class="w-10 h-10 flex items-center justify-center rounded-xl bg-slate-50 text-slate-400 hover:text-blue-600 hover:bg-blue-50 transition-all" title="View Details">
+                                <button class="w-10 h-10 flex items-center justify-center rounded-xl bg-slate-50 text-slate-400 hover:text-blue-600 hover:bg-blue-50 transition-all shadow-sm" title="View Details">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
                                 </button>
                                 <button wire:click="toggleStatus({{ $user->id }})" @class([
-                                    'w-10 h-10 flex items-center justify-center rounded-xl transition-all',
+                                    'w-10 h-10 flex items-center justify-center rounded-xl transition-all shadow-sm',
                                     'bg-red-50 text-red-500 hover:bg-red-100' => $user->status === 'ACTIVE',
                                     'bg-teal-50 text-teal-600 hover:bg-teal-100' => $user->status !== 'ACTIVE',
                                 ]) title="{{ $user->status === 'ACTIVE' ? 'Suspend' : 'Activate' }}">
                                     @if($user->status === 'ACTIVE')
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/></svg>
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/></svg>
                                     @else
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                                     @endif
-                                </button>
-                                <button class="w-10 h-10 flex items-center justify-center rounded-xl bg-slate-50 text-slate-400 hover:bg-slate-100 transition-all">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"/></svg>
                                 </button>
                             </div>
                         </td>
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="5" class="px-8 py-20 text-center">
-                            <div class="flex flex-col items-center">
-                                <div class="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center text-slate-200 mb-4">
-                                    <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
-                                </div>
-                                <h4 class="text-lg font-bold text-slate-400">Tidak ada pengguna ditemukan</h4>
-                                <p class="text-sm text-slate-400 mt-1">Coba sesuaikan filter atau kata kunci pencarian Anda.</p>
-                            </div>
+                        <td colspan="5" class="px-8 py-24 text-center">
+                            <h4 class="text-sm font-black text-slate-300 uppercase tracking-widest italic">Tidak ada pengguna ditemukan.</h4>
                         </td>
                     </tr>
                     @endforelse

@@ -24,7 +24,7 @@
                     </h5>
                     <p class="text-[10px] text-gray-400 group-hover:text-white/60 font-jakarta font-bold uppercase tracking-widest transition-colors">
                         {{-- Mengambil kategori (jika ada) atau fallback ke deskripsi singkat --}}
-                        {{ $partner->category->name ?? 'Partner UMKM' }}
+                        {{ $partner->category ?? 'Partner UMKM' }}
                     </p>
                 </div>
 

@@ -1,4 +1,4 @@
-@extends('layouts.customer')
+@extends('layouts.customer-layout')
 
 @section('title', 'Messages')
 

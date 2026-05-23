@@ -8,12 +8,6 @@ class Order extends Model
 {
     protected $guarded = ['id'];
 
-    protected $casts = [
-        'booking_date' => 'date',
-        // kalau ada kolom waktu juga:
-        // 'booking_time' => 'datetime', 
-    ];
-
     public function umkm()
     {
         return $this->belongsTo(Umkm::class);

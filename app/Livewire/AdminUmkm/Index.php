@@ -2,78 +2,32 @@
 
 namespace App\Livewire\AdminUmkm;
 
-use App\Models\Order;
-use App\Models\Umkm;
-use Livewire\Component;
 use Livewire\Attributes\Layout;
+use Livewire\Component;
 
-#[Layout('layouts.admin-umkm')]
+#[Layout('layouts.blank')]
 class Index extends Component
 {
     public $search = '';
 
     public function render()
     {
-        // Pastikan user punya umkm_id, jika tidak ada set 0 agar tidak error
-        $umkmId = Umkm::where('owner_id', auth()->id())->value('id') ?? 0;
+        $allOrders = [
+            ['id' => 'ORD-12345', 'client' => 'Ahmad S.', 'item' => 'Deep Cleaning', 'status' => 'Pending', 'color' => 'amber', 'time' => '10:30'],
+            ['id' => 'ORD-12344', 'client' => 'Budi T.', 'item' => 'Office Clean', 'status' => 'Active', 'color' => 'blue', 'time' => '10:15'],
+            ['id' => 'ORD-12343', 'client' => 'Siti N.', 'item' => 'Regular Clean', 'status' => 'Pending', 'color' => 'amber', 'time' => '09:45'],
+            ['id' => 'ORD-12342', 'client' => 'Joko W.', 'item' => 'Deep Cleaning', 'status' => 'Paid', 'color' => 'teal', 'time' => '09:20'],
+            ['id' => 'ORD-12341', 'client' => 'Ani P.', 'item' => 'Office Clean', 'status' => 'Active', 'color' => 'blue', 'time' => '08:50'],
+        ];
 
-        // 1. Query Orders Terbaru (Sesuaikan invoice_number & status enum)
-        $ordersQuery = Order::where('umkm_id', $umkmId)
-            ->with(['customer']) // Pastikan di model Order ada method customer()
-            ->latest();
-
-        if ($this->search) {
-            $ordersQuery->where(function($q) {
-                $q->where('invoice_number', 'like', '%' . $this->search . '%')
-                  ->orWhereHas('customer', function($query) {
-                      $query->where('name', 'like', '%' . $this->search . '%');
-                  });
-            });
-        }
-
-        $recentOrdersRaw = $ordersQuery->limit(5)->get();
-
-        // 2. Mapping Data ke UI (Sesuaikan dengan enum tabel kamu)
-        $recentOrders = $recentOrdersRaw->map(function($order) {
-            $statusMap = [
-                'pending_valuation' => ['color' => 'amber', 'label' => 'Pending'],
-                'waiting_payment'   => ['color' => 'orange', 'label' => 'Waiting'],
-                'paid'              => ['color' => 'teal',   'label' => 'Paid'],
-                'processing'        => ['color' => 'blue',   'label' => 'Active'],
-                'completed'         => ['color' => 'green',  'label' => 'Done'],
-                'cancelled'         => ['color' => 'red',    'label' => 'Canceled'],
-            ];
-
-            $statusInfo = $statusMap[$order->status] ?? ['color' => 'slate', 'label' => $order->status];
-
-            return [
-                'id'     => $order->invoice_number ?? 'INV-'.$order->id,
-                'client' => $order->customer->name ?? 'Guest',
-                'status' => $statusInfo['label'],
-                'color'  => $statusInfo['color'],
-                'time'   => $order->created_at->format('H:i'),
-            ];
+        $recentOrders = collect($allOrders)->filter(function($order) {
+            if (empty($this->search)) return true;
+            return str_contains(strtolower($order['id']), strtolower($this->search)) || 
+                   str_contains(strtolower($order['client']), strtolower($this->search));
         });
 
-        // 3. Statistik Riil (Gunakan umkm_net_income untuk balance)
-        $stats = [
-            'new_orders'     => Order::where('umkm_id', $umkmId)->where('status', 'waiting_payment')->count(),
-            'total_balance'  => Order::where('umkm_id', $umkmId)->where('status', 'paid')->sum('umkm_net_income'),
-            'active_orders'  => Order::where('umkm_id', $umkmId)->where('status', 'processing')->count(),
-        ];
-
-        // 4. Live Pipeline (Berdasarkan enum aslimu)
-        $pipeline = [
-            'Waiting'    => Order::where('umkm_id', $umkmId)->where('status', 'waiting_payment')->count(),
-            'Paid'       => Order::where('umkm_id', $umkmId)->where('status', 'paid')->count(),
-            'Processing' => Order::where('umkm_id', $umkmId)->where('status', 'processing')->count(),
-            'Completed'  => Order::where('umkm_id', $umkmId)->where('status', 'completed')->count(),
-        ];
-
         return view('livewire.admin-umkm.index', [
-            'recentOrders' => $recentOrders,
-            'stats'        => $stats,
-            'pipeline'     => $pipeline
+            'recentOrders' => $recentOrders
         ]);
     }
 }
