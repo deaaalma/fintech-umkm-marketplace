@@ -10,7 +10,7 @@
             @click.away="focused = false"
             @keydown.escape="focused = false; @this.clear()"
             placeholder="Search users, UMKM, or orders..." 
-            class="w-full bg-slate-50/80 backdrop-blur-sm border border-slate-200 rounded-2xl py-4 pl-14 pr-12 text-sm font-medium focus:ring-4 focus:ring-[#0077B6]/10 transition-all font-plus focus:bg-white focus:shadow-2xl focus:shadow-[#0077B6]/10 focus:border-[#0077B6]/30 shadow-sm overflow-hidden"
+            class="w-full bg-slate-50/80 backdrop-blur-sm border border-slate-200 rounded-2xl py-4 pl-14 pr-12 text-sm font-medium text-slate-400 focus:text-slate-600 focus:ring-4 focus:ring-[#0077B6]/10 transition-all font-plus focus:bg-white focus:shadow-2xl focus:shadow-[#0077B6]/10 focus:border-[#0077B6]/30 shadow-sm overflow-hidden"
         >
         
         <!-- Search Icon -->

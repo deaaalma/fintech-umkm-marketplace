@@ -18,6 +18,7 @@ Route::middleware(['auth', 'verified', 'role:superadmin'])->group(function () {
         Route::get('/dashboard/transactions', \App\Livewire\SuperAdmin\TransactionManagement::class)->name('dashboard.transactions');
         Route::get('/dashboard/reports', \App\Livewire\SuperAdmin\ReportManagement::class)->name('dashboard.reports');
         Route::get('/dashboard/settings', \App\Livewire\SuperAdmin\Setting\Index::class)->name('dashboard.settings');
+        Route::get('/profile', \App\Livewire\SuperAdmin\Profile::class)->name('profile');
 
         
 
