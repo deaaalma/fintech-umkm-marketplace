@@ -15,9 +15,9 @@ class UmkmManagement extends Component
     public $statusFilter = '';
     public $categoryFilter = '';
     public $ratingFilter = 0;
-    public $activeTab = 'directory'; // 'directory' or 'queue'
-    public $viewingUmkm = null; // Store UMKM object for detail modal
-    public $selectedUmkms = []; // Store selected IDs for bulk actions
+    public $activeTab = 'directory';
+    public $viewingUmkm = null;
+    public $selectedUmkms = [];
     
     protected $queryString = [
         'search' => ['except' => ''],
@@ -38,7 +38,6 @@ class UmkmManagement extends Component
 
     public function render()
     {
-        // Filter Dasar berdasarkan Tab
         if ($this->activeTab === 'queue') {
             $query = Umkm::where('status', 'pending_verification')->with(['owner', 'category', 'detail']);
         } else {
@@ -61,7 +60,6 @@ class UmkmManagement extends Component
             $query->where('category_id', $this->categoryFilter);
         }
 
-        // Stats calculation for the header cards
         $stats = [
             'total' => Umkm::count(),
             'active' => Umkm::where('status', 'active')->count(),

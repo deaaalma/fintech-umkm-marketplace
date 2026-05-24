@@ -26,7 +26,6 @@ class ReportManagement extends Component
 
     public function generateReport()
     {
-        // 1. Process Date Range
         $start = Carbon::now()->subDays(30);
         $end = Carbon::now();
 
@@ -39,7 +38,6 @@ class ReportManagement extends Component
             $end = Carbon::parse($this->dateTo)->endOfDay();
         }
 
-        // 2. Query Data
         $query = Order::with(['umkm.category'])
             ->whereBetween('created_at', [$start, $end]);
 
@@ -57,7 +55,6 @@ class ReportManagement extends Component
 
         $orders = $query->get();
 
-        // 3. Export Logic (CSV)
         if ($this->exportFormat == 'csv') {
             $csvHeader = ['ID', 'Date', 'UMKM', 'Category', 'Status', 'Total (Rp)'];
             $callback = function () use ($orders, $csvHeader) {
@@ -82,9 +79,7 @@ class ReportManagement extends Component
             ]);
         }
 
-        // 4. Export Logic (PDF)
         if ($this->exportFormat == 'pdf') {
-            // Kita generate simple view HTML untuk PDF
             $html = '<h2>' . strtoupper($this->reportType) . ' REPORT</h2>';
             $html .= '<p>Date: ' . $start->format('Y-m-d') . ' to ' . $end->format('Y-m-d') . '</p>';
             $html .= '<table border="1" cellpadding="5" cellspacing="0" width="100%"><tr><th>ID</th><th>Date</th><th>UMKM</th><th>Category</th><th>Status</th><th>Total (Rp)</th></tr>';
@@ -109,17 +104,14 @@ class ReportManagement extends Component
 
     public function render()
     {
-        // 1. Core Stats
         $totalRevenue = Order::whereNotIn('status', ['cancelled'])->sum('agreed_price');
         $totalOrders = Order::count();
         $totalUmkms = Umkm::count();
 
-        // 2. Chart Data: Orders by Status
         $ordersByStatus = Order::select('status', DB::raw('count(*) as count'))
             ->groupBy('status')
             ->get();
 
-        // 3. Chart Data: Monthly Revenue Trend (Last 6 Months)
         $revenueTrend = Order::where('created_at', '>=', Carbon::now()->subMonths(6))
             ->whereNotIn('status', ['cancelled'])
             ->select(
@@ -138,7 +130,6 @@ class ReportManagement extends Component
                 ];
             });
 
-        // 4. Top UMKM by Volume (Order count)
         $topUmkms = Umkm::join('orders', 'umkms.id', '=', 'orders.umkm_id')
             ->select('umkms.*', DB::raw('SUM(orders.agreed_price) as total_revenue'), DB::raw('COUNT(orders.id) as valid_orders_count'))
             ->whereNotIn('orders.status', ['cancelled'])
