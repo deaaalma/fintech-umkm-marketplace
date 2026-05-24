@@ -8,7 +8,7 @@ Route::middleware(['auth', 'verified', 'role:superadmin'])->group(function () {
 
     // --- 3. Super Admin Space ---
     // Tambahkan middleware 'role:super_admin' (pastikan nama role sesuai database)
-    Route::prefix('admin')->name('admin.')->group(function () {
+    Route::prefix('admin')->name('superadmin.')->group(function () {
         
         // Dashboard Utama
         Route::get('/dashboard', \App\Livewire\SuperAdmin\Index::class)->name('dashboard');

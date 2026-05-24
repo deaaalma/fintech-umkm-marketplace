@@ -243,7 +243,7 @@
                         <tr 
                             {{-- INTERACTIVE ROW LOGIC --}}
                             @if($activeTab === 'directory')
-                                onclick="if(!event.target.closest('input') && !event.target.closest('button')) { window.Livewire.navigate('{{ route('admin.dashboard.umkm.detail', $umkm->slug) }}') }"
+                                onclick="if(!event.target.closest('input') && !event.target.closest('button')) { window.Livewire.navigate('{{ route('superadmin.dashboard.umkm.detail', $umkm->slug) }}') }"
                                 class="hover:bg-slate-50/80 transition-all cursor-pointer group"
                             @else
                                 class="hover:bg-slate-50/80 transition-all group"

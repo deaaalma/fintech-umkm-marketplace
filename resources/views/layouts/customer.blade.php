@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>@yield('title', 'Welcome') - {{ config('app.name') }}</title>
+    <title>@yield('title') - Customer Dashboard</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,7 +16,6 @@
     
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     
     @yield('extra-head')
 
@@ -30,7 +29,7 @@
             --brand-cyan: #00B4D8;
             --brand-soft: #ADE8F4;
             --premium-white: #ffffff;
-            --premium-gray: #f8fafc;
+            --premium-gray: #f1f5f9;
         }
 
         body {
@@ -51,6 +50,12 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.4);
         }
 
+        .nav-scrolled {
+            background: rgba(24, 24, 27, 0.95) !important;
+            backdrop-filter: blur(20px);
+            border-color: rgba(255, 255, 255, 0.1) !important;
+        }
+
         .premium-card {
             background: white;
             border: 1px solid rgba(226, 232, 240, 0.6);
@@ -58,34 +63,52 @@
             box-shadow: 0 15px 35px -10px rgba(0, 11, 68, 0.05);
         }
 
-        [x-cloak] { display: none !important; }
+        .premium-card:hover {
+            box-shadow: 0 30px 60px -20px rgba(0, 11, 68, 0.08);
+            transform: translateY(-4px);
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        .premium-banner {
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 11, 68, 0.05);
+        }
+
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: var(--premium-gray); }
+        ::-webkit-scrollbar-thumb { 
+            background: #cbd5e1; 
+            border-radius: 20px;
+        }
+        ::-webkit-scrollbar-thumb:hover { background: var(--brand-primary); }
+
         @yield('extra-styles')
     </style>
 </head>
 <body class="antialiased min-h-screen flex flex-col">
-    
-    <x-customer.navbar />
+    @include('customer.partials.navbar')
 
-    <main class="flex-grow pt-32 pb-20">
-         @yield('content')
-         {{ $slot ?? '' }}
+    <main class="flex-grow pt-40 pb-28 lg:pb-20">
+        @yield('content')
     </main>
 
-    <x-customer.footer />
+    @include('customer.partials.footer')
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             if (typeof gsap !== 'undefined') {
                 gsap.from('.animate-on-load', {
                     opacity: 0,
-                    y: 30,
-                    duration: 0.8,
-                    stagger: 0.1,
-                    ease: 'power2.out'
+                    y: 40,
+                    duration: 1,
+                    stagger: 0.15,
+                    ease: 'expo.out',
+                    clearProps: 'all'
                 });
             }
         });
+        @stack('scripts')
     </script>
-    @stack('scripts')
 </body>
 </html>

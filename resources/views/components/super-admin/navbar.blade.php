@@ -111,48 +111,48 @@
 
         <div class="hidden md:flex items-center gap-8 pb-4 border-b border-slate-100/50">
             
-            <a href="{{ route('admin.dashboard') }}" 
-                class="flex items-center gap-2 px-1 py-2 text-sm font-black transition-all duration-200 relative group {{ request()->routeIs('admin.dashboard') ? 'text-[#000B44]' : 'text-slate-400 hover:text-[#000B44]' }}" 
+            <a href="{{ route('superadmin.dashboard') }}" 
+                class="flex items-center gap-2 px-1 py-2 text-sm font-black transition-all duration-200 relative group {{ request()->routeIs('superadmin.dashboard') ? 'text-[#000B44]' : 'text-slate-400 hover:text-[#000B44]' }}" 
                 style="font-family: 'Plus Jakarta Sans', sans-serif;">
                 <span class="uppercase tracking-widest text-[11px]">Dashboard</span>
-                <div class="absolute -bottom-4 left-0 {{ request()->routeIs('admin.dashboard') ? 'w-full' : 'w-0' }} h-1 bg-[#000B44] rounded-full transition-all duration-300 group-hover:w-full"></div>
+                <div class="absolute -bottom-4 left-0 {{ request()->routeIs('superadmin.dashboard') ? 'w-full' : 'w-0' }} h-1 bg-[#000B44] rounded-full transition-all duration-300 group-hover:w-full"></div>
             </a>
 
-            <a href="{{ route('admin.dashboard.umkm') }}" 
-                class="flex items-center gap-2 px-1 py-2 text-sm font-black transition-all duration-200 relative group {{ request()->routeIs('admin.dashboard.umkm*') ? 'text-[#000B44]' : 'text-slate-400 hover:text-[#000B44]' }}" 
+            <a href="{{ route('superadmin.dashboard.umkm') }}" 
+                class="flex items-center gap-2 px-1 py-2 text-sm font-black transition-all duration-200 relative group {{ request()->routeIs('superadmin.dashboard.umkm*') ? 'text-[#000B44]' : 'text-slate-400 hover:text-[#000B44]' }}" 
                 style="font-family: 'Plus Jakarta Sans', sans-serif;">
                 <span class="uppercase tracking-widest text-[11px]">UMKM Management</span>
                 <span class="px-2 py-0.5 bg-[#000B44] text-white text-[9px] font-black rounded-lg">127</span>
-                <div class="absolute -bottom-4 left-0 {{ request()->routeIs('admin.dashboard.umkm*') ? 'w-full' : 'w-0' }} h-1 bg-[#000B44] rounded-full transition-all duration-300 group-hover:w-full"></div>
+                <div class="absolute -bottom-4 left-0 {{ request()->routeIs('superadmin.dashboard.umkm*') ? 'w-full' : 'w-0' }} h-1 bg-[#000B44] rounded-full transition-all duration-300 group-hover:w-full"></div>
             </a>
 
-            <a href="{{ route('admin.dashboard.users') }}" 
-                class="flex items-center gap-2 px-1 py-2 text-sm font-black transition-all duration-200 relative group {{ request()->routeIs('admin.dashboard.users*') ? 'text-[#000B44]' : 'text-slate-400 hover:text-[#000B44]' }}" 
+            <a href="{{ route('superadmin.dashboard.users') }}" 
+                class="flex items-center gap-2 px-1 py-2 text-sm font-black transition-all duration-200 relative group {{ request()->routeIs('superadmin.dashboard.users*') ? 'text-[#000B44]' : 'text-slate-400 hover:text-[#000B44]' }}" 
                 style="font-family: 'Plus Jakarta Sans', sans-serif;">
                 <span class="uppercase tracking-widest text-[11px]">Pengguna</span>
                 <span class="px-2 py-0.5 bg-[#000B44] text-white text-[9px] font-black rounded-lg">2</span>
-                <div class="absolute -bottom-4 left-0 {{ request()->routeIs('admin.dashboard.users*') ? 'w-full' : 'w-0' }} h-1 bg-[#000B44] rounded-full transition-all duration-300 group-hover:w-full"></div>
+                <div class="absolute -bottom-4 left-0 {{ request()->routeIs('superadmin.dashboard.users*') ? 'w-full' : 'w-0' }} h-1 bg-[#000B44] rounded-full transition-all duration-300 group-hover:w-full"></div>
             </a>
 
-            <a href="{{ route('admin.dashboard.transactions') }}" 
-                class="flex items-center gap-2 px-1 py-2 text-sm font-black transition-all duration-200 relative group {{ request()->routeIs('admin.dashboard.transactions*') ? 'text-[#000B44]' : 'text-slate-400 hover:text-[#000B44]' }}" 
+            <a href="{{ route('superadmin.dashboard.transactions') }}" 
+                class="flex items-center gap-2 px-1 py-2 text-sm font-black transition-all duration-200 relative group {{ request()->routeIs('superadmin.dashboard.transactions*') ? 'text-[#000B44]' : 'text-slate-400 hover:text-[#000B44]' }}" 
                 style="font-family: 'Plus Jakarta Sans', sans-serif;">
                 <span class="uppercase tracking-widest text-[11px]">Transaksi</span>
-                <div class="absolute -bottom-4 left-0 {{ request()->routeIs('admin.dashboard.transactions*') ? 'w-full' : 'w-0' }} h-1 bg-[#000B44] rounded-full transition-all duration-300 group-hover:w-full"></div>
+                <div class="absolute -bottom-4 left-0 {{ request()->routeIs('superadmin.dashboard.transactions*') ? 'w-full' : 'w-0' }} h-1 bg-[#000B44] rounded-full transition-all duration-300 group-hover:w-full"></div>
             </a>
 
-            <a href="{{ route('admin.dashboard.reports') }}" 
-                class="flex items-center gap-2 px-1 py-2 text-sm font-black transition-all duration-200 relative group {{ request()->routeIs('admin.dashboard.reports*') ? 'text-[#000B44]' : 'text-slate-400 hover:text-[#000B44]' }}" 
+            <a href="{{ route('superadmin.dashboard.reports') }}" 
+                class="flex items-center gap-2 px-1 py-2 text-sm font-black transition-all duration-200 relative group {{ request()->routeIs('superadmin.dashboard.reports*') ? 'text-[#000B44]' : 'text-slate-400 hover:text-[#000B44]' }}" 
                 style="font-family: 'Plus Jakarta Sans', sans-serif;">
                 <span class="uppercase tracking-widest text-[11px]">Laporan</span>
-                <div class="absolute -bottom-4 left-0 {{ request()->routeIs('admin.dashboard.reports*') ? 'w-full' : 'w-0' }} h-1 bg-[#000B44] rounded-full transition-all duration-300 group-hover:w-full"></div>
+                <div class="absolute -bottom-4 left-0 {{ request()->routeIs('superadmin.dashboard.reports*') ? 'w-full' : 'w-0' }} h-1 bg-[#000B44] rounded-full transition-all duration-300 group-hover:w-full"></div>
             </a>
 
-            <a href="{{ route('admin.dashboard.settings') }}" 
-                class="flex items-center gap-2 px-1 py-2 text-sm font-black transition-all duration-200 relative group {{ request()->routeIs('admin.dashboard.settings*') ? 'text-[#000B44]' : 'text-slate-400 hover:text-[#000B44]' }}" 
+            <a href="{{ route('superadmin.dashboard.settings') }}" 
+                class="flex items-center gap-2 px-1 py-2 text-sm font-black transition-all duration-200 relative group {{ request()->routeIs('superadmin.dashboard.settings*') ? 'text-[#000B44]' : 'text-slate-400 hover:text-[#000B44]' }}" 
                 style="font-family: 'Plus Jakarta Sans', sans-serif;">
                 <span class="uppercase tracking-widest text-[11px]">Pengaturan</span>
-                <div class="absolute -bottom-4 left-0 {{ request()->routeIs('admin.dashboard.settings*') ? 'w-full' : 'w-0' }} h-1 bg-[#000B44] rounded-full transition-all duration-300 group-hover:w-full"></div>
+                <div class="absolute -bottom-4 left-0 {{ request()->routeIs('superadmin.dashboard.settings*') ? 'w-full' : 'w-0' }} h-1 bg-[#000B44] rounded-full transition-all duration-300 group-hover:w-full"></div>
             </a>
 
         </div>
