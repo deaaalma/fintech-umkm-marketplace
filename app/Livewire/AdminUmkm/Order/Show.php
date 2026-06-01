@@ -48,6 +48,23 @@ class Show extends Component
         return redirect()->route('umkm.orders');
     }
 
+    public function completeOrder()
+    {
+        $this->order->update([
+            'status' => 'pending_valuation',
+            'current_step' => 2 // Move to Payment step
+        ]);
+
+        OrderLog::create([
+            'order_id' => $this->order->id,
+            'actor_id' => auth()->id(),
+            'action' => 'Service Completed',
+            'reason' => 'Admin marked the service as completed. Waiting for customer payment.',
+        ]);
+
+        session()->flash('message', 'Layanan telah selesai. Menunggu pembayaran dari pelanggan.');
+    }
+
     public function rejectOrder()
     {
         $this->order->update(['status' => 'cancelled']);
