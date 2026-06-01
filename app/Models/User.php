@@ -60,4 +60,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(UserNotification::class)->latest();
     }
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class, 'customer_id');
+    }
 }

@@ -1,40 +1,35 @@
 @if ($paginator->hasPages())
-    {{-- Container Utama: justify-between hanya bekerja jika w-full --}}
-    <div class="flex flex-col sm:flex-row items-center justify-between gap-4 w-full" style="font-family: 'Figtree', sans-serif;">
+    <div class="flex flex-col sm:flex-row items-center justify-between gap-4 w-full pt-4">
         
-        {{-- Sisi Kiri: Info Records --}}
-        <div class="text-sm text-[#666666]">
-            Showing <span class="font-semibold text-[#003d5c]">{{ $paginator->firstItem() }}</span> to <span class="font-semibold text-[#003d5c]">{{ $paginator->lastItem() }}</span> of <span class="font-semibold text-[#003d5c]">{{ $paginator->total() }}</span> records
+        <div class="text-xs text-gray-400 font-medium">
+            Showing <span class="text-gray-900">{{ $paginator->firstItem() }}</span> to <span class="text-gray-900">{{ $paginator->lastItem() }}</span> of <span class="text-gray-900">{{ $paginator->total() }}</span> orders
         </div>
 
-        {{-- Sisi Kanan: Tombol Navigasi --}}
         <div class="flex items-center gap-2">
-            {{-- Tombol Previous --}}
             @if ($paginator->onFirstPage())
-                <button disabled class="px-3 py-1.5 bg-gray-50 border border-[#e5e5e5] rounded-lg text-sm font-medium text-[#999999] cursor-not-allowed">
-                    Previous
+                <button disabled class="px-4 py-2 border border-gray-100 rounded-lg text-xs font-bold text-gray-300 cursor-not-allowed">
+                    &lt; Previous
                 </button>
             @else
-                <button wire:click="previousPage" wire:loading.attr="disabled" class="px-3 py-1.5 bg-white border border-[#e5e5e5] rounded-lg text-sm font-medium text-[#666666] hover:bg-gray-50 hover:text-[#003d5c] transition-colors">
-                    Previous
+                <button wire:click="previousPage" class="px-4 py-2 border border-gray-200 rounded-lg text-xs font-bold text-gray-700 hover:bg-gray-50 transition-all">
+                    &lt; Previous
                 </button>
             @endif
 
-            {{-- Angka-angka --}}
             <div class="hidden md:flex items-center gap-2">
                 @foreach ($elements as $element)
                     @if (is_string($element))
-                        <span class="px-2 py-1.5 text-sm text-[#999999]">{{ $element }}</span>
+                        <span class="text-gray-400 text-xs px-1">{{ $element }}</span>
                     @endif
 
                     @if (is_array($element))
                         @foreach ($element as $page => $url)
                             @if ($page == $paginator->currentPage())
-                                <button class="px-3 py-1.5 bg-[#003d5c] text-white rounded-lg text-sm font-semibold shadow-sm">
+                                <button class="w-8 h-8 flex items-center justify-center bg-black text-white rounded-lg text-xs font-bold">
                                     {{ $page }}
                                 </button>
                             @else
-                                <button wire:click="gotoPage({{ $page }})" class="px-3 py-1.5 bg-white border border-[#e5e5e5] rounded-lg text-sm font-medium text-[#666666] hover:bg-gray-50 hover:text-[#003d5c] transition-colors">
+                                <button wire:click="gotoPage({{ $page }})" class="w-8 h-8 flex items-center justify-center border border-gray-200 text-gray-500 rounded-lg text-xs font-bold hover:bg-gray-50 transition-all">
                                     {{ $page }}
                                 </button>
                             @endif
@@ -43,24 +38,21 @@
                 @endforeach
             </div>
 
-            {{-- Tombol Next --}}
             @if ($paginator->hasMorePages())
-                <button wire:click="nextPage" wire:loading.attr="disabled" class="px-3 py-1.5 bg-white border border-[#e5e5e5] rounded-lg text-sm font-medium text-[#666666] hover:bg-gray-50 hover:text-[#003d5c] transition-colors">
-                    Next
+                <button wire:click="nextPage" class="px-4 py-2 border border-gray-200 rounded-lg text-xs font-bold text-gray-700 hover:bg-gray-50 transition-all">
+                    Next &gt;
                 </button>
             @else
-                <button disabled class="px-3 py-1.5 bg-gray-50 border border-[#e5e5e5] rounded-lg text-sm font-medium text-[#999999] cursor-not-allowed">
-                    Next
+                <button disabled class="px-4 py-2 border border-gray-100 rounded-lg text-xs font-bold text-gray-300 cursor-not-allowed">
+                    Next &gt;
                 </button>
             @endif
         </div>
     </div>
 @else
-    {{-- Versi Single Page: Tetap justify-between agar konsisten --}}
-    <div class="flex items-center justify-between w-full" style="font-family: 'Figtree', sans-serif;">
-        <p class="text-sm text-[#666666]">
-            Showing all <span class="font-semibold text-[#003d5c]">{{ $paginator->total() }}</span> records
+    <div class="flex items-center justify-between w-full pt-4">
+        <p class="text-xs text-gray-400 font-medium">
+            Showing all <span class="text-gray-900">{{ $paginator->total() }}</span> orders
         </p>
-        <div class="text-xs text-[#999999] italic">End of list</div>
     </div>
-@endif
+@endif
