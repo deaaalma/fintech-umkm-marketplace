@@ -23,6 +23,7 @@ Route::middleware(['auth', 'verified', 'role:admin_umkm'])->group(function () {
         Route::get('/staff', \App\Livewire\AdminUmkm\Staff\Index::class)->name('staff');
         Route::get('/staff/create', \App\Livewire\AdminUmkm\Staff\Create::class)->name('staff.create');
         Route::get('/staff/{id}/edit', \App\Livewire\AdminUmkm\Staff\Edit::class)->name('staff.edit');
+        Route::get('/reports', \App\Livewire\AdminUmkm\Reports\Index::class)->name('reports');
         Route::get('/settings', \App\Livewire\AdminUmkm\Settings\Index::class)->name('settings');
 
        
