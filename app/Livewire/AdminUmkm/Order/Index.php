@@ -198,6 +198,7 @@ class Index extends Component
             }
 
             return [
+                'id_raw' => $order->id,
                 'id'     => $order->invoice_number ?? 'INV-'.$order->id,
                 'client' => $order->customer->name ?? 'Guest',
                 'service'=> $order->product->name ?? 'Unknown',

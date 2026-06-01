@@ -14,6 +14,7 @@ Route::middleware(['auth', 'verified', 'role:admin_umkm'])->group(function () {
         Route::get('/dashboard', \App\Livewire\AdminUmkm\Index::class)->name('dashboard');
 
         Route::get('/orders', \App\Livewire\AdminUmkm\Order\Index::class)->name('orders');
+        Route::get('/orders/{order}', \App\Livewire\AdminUmkm\Order\Show::class)->name('orders.show');
 
         Route::get('/services/create', \App\Livewire\AdminUmkm\Product\Create::class)->name('services.create');
         Route::get('/services/{id}/edit', \App\Livewire\AdminUmkm\Product\Edit::class)->name('services.edit');

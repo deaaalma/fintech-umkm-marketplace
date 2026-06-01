@@ -297,9 +297,9 @@
                             <span class="text-sm text-gray-400">{{ $o['staff'] }}</span>
                         </td>
                         <td class="px-4 py-4">
-                            <button class="bg-[#2D2D2D] text-white px-4 py-1.5 rounded-lg text-xs font-bold hover:bg-black transition-all">
+                            <a href="{{ route('umkm.orders.show', $o['id_raw']) }}" class="bg-[#2D2D2D] text-white px-4 py-1.5 rounded-lg text-xs font-bold hover:bg-black transition-all inline-block">
                                 Review & Chat
-                            </button>
+                            </a>
                         </td>
                     </tr>
                     @empty

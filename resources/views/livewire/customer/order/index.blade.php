@@ -77,7 +77,7 @@
                 <select wire:model.live="statusFilter" class="px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-xs font-medium cursor-pointer">
                     <option value="">Status Layanan</option>
                     <option value="pending_valuation">Menunggu Review</option>
-                    <option value="negotiation">Negosiasi</option>
+                    {{-- Negotiation is a sub-state of pending_valuation now --}}
                     <option value="waiting_payment">Payment</option>
                     <option value="paid">Sudah Dibayar</option>
                     <option value="processing">Diproses</option>
@@ -284,7 +284,7 @@
                             
                             @if($order['status'] === 'pending_valuation')
                                 <span class="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-bold bg-gray-100 text-gray-600">Menunggu Review Admin</span>
-                            @elseif($order['status'] === 'negotiation')
+                            @elseif($order['status'] === 'pending_valuation' && $order['agreed_price'] !== null)
                                 <span class="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-black bg-[#2D2D2D] text-white tracking-widest uppercase shadow-sm">Perlu Tindakan Anda</span>
                             @else
                                 <span class="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-bold bg-blue-100 text-blue-700">Dalam Proses</span>
@@ -296,7 +296,7 @@
                         </div>
                     </div>
 
-                    @if($order['status'] === 'negotiation')
+                    @if($order['status'] === 'pending_valuation' && $order['agreed_price'] !== null)
                         <div class="bg-gray-50 border border-gray-200 rounded-xl p-4 mb-6 flex items-start gap-3">
                             <svg class="w-5 h-5 text-gray-600 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                             <p class="text-[13px] text-gray-700 font-medium leading-relaxed">Admin telah merespon pesanan Anda. Silakan review dan setujui untuk lanjut.</p>
@@ -326,7 +326,7 @@
                     </div>
 
                     <div class="flex flex-col sm:flex-row items-center gap-4">
-                        @if($order['status'] === 'negotiation')
+                        @if($order['status'] === 'pending_valuation' && $order['agreed_price'] !== null)
                             <button class="w-full sm:w-1/2 py-3.5 bg-[#2D2D2D] text-white rounded-xl text-xs font-bold hover:bg-black transition-colors shadow-sm">
                                 Review Pesanan
                             </button>

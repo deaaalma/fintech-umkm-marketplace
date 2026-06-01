@@ -49,7 +49,8 @@
             <span class="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bold border uppercase tracking-widest {{ $statusBadge['class'] }}">
                 {{ $statusBadge['label'] }}
             </span>
-            @if($order->status === 'negotiation')
+            {{-- State: Negotiation / Price Agreement --}}
+            @if($order->status === 'negotiation' || ($order->status === 'pending_valuation' && $order->agreed_price !== null))
             <span class="text-[11px] text-gray-500 font-medium">Tindakan Anda Diperlukan</span>
             @endif
         </div>
@@ -154,7 +155,7 @@
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                     Estimated review time: 1-2 working hours
                 </div>
-            @elseif($order->status === 'negotiation')
+            @elseif($order->status === 'pending_valuation' && $order->agreed_price !== null)
                 <p class="text-xs text-gray-600 font-medium leading-relaxed">Admin has reviewed your order and proposed a price. Please review the service details and the proposed price. You can accept or continue negotiating via chat.</p>
             @elseif($order->status === 'waiting_payment')
                 <p class="text-xs text-gray-600 font-medium leading-relaxed">Price has been agreed upon. Please proceed to payment to confirm your booking and schedule the service.</p>
@@ -167,148 +168,321 @@
     </div>
     @endif
 
-    {{-- Main Content Section --}}
-    <div class="mb-10">
-        <div class="flex items-center justify-between mb-4">
-            <h2 class="text-xl font-black text-gray-900 font-plus">Service Details</h2>
-            @if($order->umkm)
-                <div class="px-3 py-1.5 bg-[#2D2D2D] text-white rounded-lg text-xs font-bold flex items-center gap-2 cursor-pointer hover:bg-black transition-colors">
-                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
-                    Chat with {{ $order->umkm->name }}
+    @if($order->status === 'pending_valuation' && $order->agreed_price !== null)
+        {{-- NEGOTIATION VIEW --}}
+        <div class="bg-white border border-gray-200 rounded-3xl p-6 md:p-8 shadow-sm mb-10">
+            <div class="flex items-center justify-between mb-8 pb-6 border-b border-gray-100">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 bg-gray-50 rounded-xl flex items-center justify-center border border-gray-100 shrink-0">
+                        <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                    </div>
+                    <div>
+                        <h2 class="text-xl font-black text-gray-900 font-plus">Pre-Invoice from Admin</h2>
+                        <p class="text-xs text-gray-500 font-medium mt-1">Issued on {{ now()->subHours(2)->translatedFormat('d M Y') }} | Expiring on {{ now()->addDays(3)->translatedFormat('d M Y') }}</p>
+                    </div>
                 </div>
-            @endif
-        </div>
-
-        <div class="bg-white border border-gray-200 rounded-3xl p-6 md:p-8 space-y-6 shadow-sm">
-            {{-- Service Name --}}
-            <div class="flex items-start gap-4 pb-6 border-b border-gray-100">
-                <div class="w-12 h-12 bg-gray-50 rounded-xl flex items-center justify-center border border-gray-100 shrink-0">
-                    <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-                </div>
-                <div class="flex-1">
-                    <div class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Service</div>
-                    <div class="text-base font-bold text-gray-900">{{ $order->product->name ?? 'Layanan tidak diketahui' }}</div>
-                </div>
-                <div class="text-xs font-bold text-gray-400 bg-gray-50 px-3 py-1 rounded-lg">Code: {{ $order->product_id ?? 'N/A' }}</div>
+                <button class="px-4 py-2 border border-gray-200 rounded-xl text-xs font-bold text-gray-700 hover:bg-gray-50 transition-colors hidden sm:block">
+                    Download Pre-Invoice
+                </button>
             </div>
 
-            {{-- Date & Time --}}
-            <div class="flex items-start gap-4 pb-6 border-b border-gray-100">
-                <div class="w-12 h-12 bg-gray-50 rounded-xl flex items-center justify-center border border-gray-100 shrink-0">
-                    <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                </div>
-                <div>
-                    <div class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Service Date</div>
-                    <div class="text-base font-bold text-gray-900">
-                        {{ $order->booking_date ? \Carbon\Carbon::parse($order->booking_date)->translatedFormat('l, d F Y') : 'Belum ditentukan' }}
+            <div class="mb-8">
+                <h3 class="text-sm font-bold text-gray-900 mb-4">Cost Breakdown</h3>
+                <div class="space-y-4 text-sm font-medium">
+                    <div class="flex justify-between items-start pb-4 border-b border-gray-50">
+                        <div>
+                            <div class="text-gray-900 font-bold">Deep Cleaning 50M</div>
+                            <div class="text-[11px] text-gray-400">Estimated Base Service Price</div>
+                        </div>
+                        <div class="text-gray-900 font-bold">Rp 2.200.000</div>
+                    </div>
+                    <div class="flex justify-between items-start pb-4 border-b border-gray-50">
+                        <div>
+                            <div class="text-gray-900 font-bold">Extra 2 Bathrooms</div>
+                            <div class="text-[11px] text-gray-400">Deep Cleaning For Extra Toilets</div>
+                        </div>
+                        <div class="text-gray-900 font-bold">Rp 200.000</div>
+                    </div>
+                    <div class="flex justify-between items-start pb-4 border-b border-gray-50">
+                        <div>
+                            <div class="text-gray-900 font-bold">Balcony 10m²</div>
+                            <div class="text-[11px] text-gray-400">Standard Cleaning Service</div>
+                        </div>
+                        <div class="text-gray-900 font-bold">Rp 100.000</div>
+                    </div>
+                    
+                    <div class="flex justify-between items-center pt-4">
+                        <div class="text-gray-500 font-bold uppercase text-[10px] tracking-widest">Subtotal</div>
+                        <div class="text-gray-900 font-black font-plus">Rp 2.500.000</div>
+                    </div>
+                    <div class="flex justify-between items-center pb-4 border-b border-gray-200">
+                        <div class="text-gray-500 font-bold uppercase text-[10px] tracking-widest">Discount</div>
+                        <div class="text-gray-900 font-black font-plus">Rp 0</div>
                     </div>
                 </div>
             </div>
 
-            <div class="flex items-start gap-4 pb-6 border-b border-gray-100">
-                <div class="w-12 h-12 bg-gray-50 rounded-xl flex items-center justify-center border border-gray-100 shrink-0">
-                    <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            <div class="bg-gray-50 border border-gray-200 rounded-2xl p-6 mb-8 relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-gray-100 to-transparent rounded-bl-full opacity-50"></div>
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 relative z-10">
+                    <div>
+                        <div class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Estimated Range</div>
+                        <p class="text-[11px] text-gray-500 font-medium">Final price depends on actual service process</p>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-3xl font-black text-gray-900 font-plus tracking-tight">Rp {{ number_format($order->agreed_price ?? 2500000, 0, ',', '.') }}</div>
+                        <div class="text-[11px] font-bold text-gray-400 mt-1">± 10% tolerance</div>
+                    </div>
                 </div>
-                <div>
-                    <div class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Time</div>
-                    <div class="text-base font-bold text-gray-900">{{ $order->booking_time ? \Carbon\Carbon::parse($order->booking_time)->format('H:i') : 'Menunggu' }} WIB</div>
-                    @if($order->status === 'pending_valuation')
-                    <div class="text-[10px] font-medium text-gray-400 mt-1">* Time may adjust after negotiation.</div>
-                    @endif
+                <div class="grid grid-cols-2 gap-4 mt-6 pt-6 border-t border-gray-200 relative z-10">
+                    <div>
+                        <div class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Service</div>
+                        <div class="text-sm font-bold text-gray-900">Rp {{ number_format($order->agreed_price ?? 2500000, 0, ',', '.') }}</div>
+                    </div>
+                    <div>
+                        <div class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Materials</div>
+                        <div class="text-sm font-bold text-gray-900">Rp 0</div>
+                    </div>
                 </div>
             </div>
 
-            {{-- Optional Info (Total Size mock) --}}
-            <div class="flex items-start gap-4">
-                <div class="w-12 h-12 bg-gray-50 rounded-xl flex items-center justify-center border border-gray-100 shrink-0">
-                    <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/></svg>
+            <div class="bg-blue-50/50 border border-blue-100 rounded-xl p-5 mb-8">
+                <div class="flex items-center gap-2 mb-2">
+                    <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    <h4 class="text-xs font-bold text-blue-900">Notes from Admin</h4>
                 </div>
-                <div>
-                    <div class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Total Size / Variant</div>
-                    <div class="text-base font-bold text-gray-900">Standard Package</div>
+                <p class="text-[11px] text-blue-800 font-medium leading-relaxed">
+                    Price may vary after on-site inspection. Final invoice will include: (1) actual area measured, (2) extra services requested, (3) work complexity adjustments. Work be authorized before any additional charges are applied. Final invoice will be sent after service completion for your approval.
+                </p>
+                <ul class="mt-3 space-y-1 text-[10px] text-blue-700 font-medium list-disc list-inside">
+                    <li>Prices quoted are for standard work conditions</li>
+                    <li>Payment due after service completion (COD/Transfer)</li>
+                    <li>You can negotiate via chat if needed</li>
+                </ul>
+            </div>
+
+            <div class="border-t border-gray-100 pt-8">
+                <h3 class="text-sm font-bold text-gray-900 mb-4">Do you agree with this price?</h3>
+                <div class="flex flex-col sm:flex-row gap-3">
+                    <button wire:click="acceptPrice" wire:confirm="Are you sure you want to accept this price and proceed?" class="flex-1 py-3.5 bg-[#2D2D2D] text-white rounded-xl text-xs font-bold hover:bg-black transition-colors flex items-center justify-center gap-2 shadow-sm">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                        Accept & Continue to Schedule
+                    </button>
+                    <button class="sm:w-1/3 py-3.5 bg-white border border-gray-200 text-gray-700 rounded-xl text-xs font-bold hover:bg-gray-50 transition-colors flex items-center justify-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+                        Negotiate via Chat
+                    </button>
+                    <button wire:click="rejectPrice" wire:confirm="Are you sure you want to reject and cancel this order?" class="sm:w-1/4 py-3.5 bg-white border border-red-200 text-red-600 rounded-xl text-xs font-bold hover:bg-red-50 transition-colors flex items-center justify-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                        Reject
+                    </button>
+                </div>
+                <p class="text-[10px] text-gray-400 font-medium mt-3 text-center">After accepting, you will schedule your service time. No payment required yet - you pay after service completion.</p>
+            </div>
+        </div>
+
+        {{-- Order Details Accordion --}}
+        <div class="bg-white border border-gray-200 rounded-2xl mb-6 shadow-sm overflow-hidden" x-data="{ expanded: false }">
+            <button @click="expanded = !expanded" class="w-full p-6 flex items-center justify-between bg-white hover:bg-gray-50 transition-colors">
+                <h3 class="text-sm font-bold text-gray-900">Order Details</h3>
+                <div class="flex items-center gap-2 text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+                    <span x-text="expanded ? 'Show Less' : 'Show More'"></span>
+                    <svg class="w-4 h-4 transition-transform duration-200" :class="expanded ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </div>
+            </button>
+            <div x-show="expanded" x-cloak>
+                <div class="p-6 pt-0 border-t border-gray-100 bg-gray-50/50">
+                    <ul class="space-y-3 text-xs text-gray-600 font-medium">
+                        <li><strong class="text-gray-900">Service Type:</strong> {{ $order->product->name ?? 'N/A' }}</li>
+                        <li><strong class="text-gray-900">Location:</strong> {{ $order->service_address ?? 'N/A' }}</li>
+                        <li><strong class="text-gray-900">Requested Date:</strong> {{ $order->booking_date ? \Carbon\Carbon::parse($order->booking_date)->translatedFormat('d M Y') : 'TBD' }}</li>
+                        <li><strong class="text-gray-900">Time Preference:</strong> Morning (09:00 - 12:00)</li>
+                    </ul>
                 </div>
             </div>
         </div>
-    </div>
 
-    {{-- Price Block --}}
-    <div class="bg-gray-50 border border-gray-200 rounded-3xl p-6 md:p-8 mb-6">
-        <div class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Agreed Price</div>
-        <div class="text-2xl font-black text-gray-900 font-plus">
-            @if($order->agreed_price)
-                Rp {{ number_format($order->agreed_price, 0, ',', '.') }}
-            @elseif($order->product && $order->product->estimated_price)
-                <span class="text-lg text-gray-500 font-medium line-through mr-2">Est.</span>
-                Rp {{ number_format($order->product->estimated_price, 0, ',', '.') }}
-            @else
-                Menunggu Penilaian
+        {{-- Chat History Accordion --}}
+        <div class="bg-white border border-gray-200 rounded-2xl mb-10 shadow-sm overflow-hidden" x-data="{ expanded: true }">
+            <button @click="expanded = !expanded" class="w-full p-6 flex items-center justify-between bg-white hover:bg-gray-50 transition-colors border-b border-gray-100">
+                <h3 class="text-sm font-bold text-gray-900">Chat History with Admin</h3>
+                <div class="flex items-center gap-2 text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+                    <span x-text="expanded ? 'Hide Chat' : 'Show Chat'"></span>
+                    <svg class="w-4 h-4 transition-transform duration-200" :class="expanded ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </div>
+            </button>
+            <div x-show="expanded" x-cloak>
+                <div class="p-6 bg-gray-50/30 space-y-4">
+                    {{-- Chat Bubble Admin --}}
+                    <div class="flex items-start gap-3">
+                        <div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center shrink-0">
+                            <span class="text-[10px] font-bold text-gray-500">AD</span>
+                        </div>
+                        <div class="flex-1 bg-white border border-gray-200 rounded-2xl rounded-tl-none p-4 shadow-sm">
+                            <div class="flex justify-between items-start mb-1">
+                                <span class="text-xs font-bold text-gray-900">Admin</span>
+                                <span class="text-[10px] text-gray-400">{{ now()->subHours(2)->format('d M, H:i') }}</span>
+                            </div>
+                            <p class="text-xs text-gray-600 font-medium leading-relaxed">Hello! I've received your order and prepared a price estimate based on the standard 50m² requirement plus your extra 2 bathrooms note. Please review the details above. Let me know if you have any questions.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-4 bg-white border-t border-gray-100">
+                    <div class="relative">
+                        <input type="text" placeholder="Type a message..." class="w-full pl-4 pr-12 py-3 bg-gray-50 border border-gray-200 rounded-xl text-xs font-medium focus:ring-2 focus:ring-black/5 transition-all outline-none">
+                        <button class="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center text-gray-400 hover:text-black transition-colors">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    @else
+        {{-- STANDARD VIEW --}}
+        {{-- Main Content Section --}}
+        <div class="mb-10">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-xl font-black text-gray-900 font-plus">Service Details</h2>
+                @if($order->umkm)
+                    <div class="px-3 py-1.5 bg-[#2D2D2D] text-white rounded-lg text-xs font-bold flex items-center gap-2 cursor-pointer hover:bg-black transition-colors">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+                        Chat with {{ $order->umkm->name }}
+                    </div>
+                @endif
+            </div>
+
+            <div class="bg-white border border-gray-200 rounded-3xl p-6 md:p-8 space-y-6 shadow-sm">
+                {{-- Service Name --}}
+                <div class="flex items-start gap-4 pb-6 border-b border-gray-100">
+                    <div class="w-12 h-12 bg-gray-50 rounded-xl flex items-center justify-center border border-gray-100 shrink-0">
+                        <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                    </div>
+                    <div class="flex-1">
+                        <div class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Service</div>
+                        <div class="text-base font-bold text-gray-900">{{ $order->product->name ?? 'Layanan tidak diketahui' }}</div>
+                    </div>
+                    <div class="text-xs font-bold text-gray-400 bg-gray-50 px-3 py-1 rounded-lg">Code: {{ $order->product_id ?? 'N/A' }}</div>
+                </div>
+
+                {{-- Date & Time --}}
+                <div class="flex items-start gap-4 pb-6 border-b border-gray-100">
+                    <div class="w-12 h-12 bg-gray-50 rounded-xl flex items-center justify-center border border-gray-100 shrink-0">
+                        <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                    </div>
+                    <div>
+                        <div class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Service Date</div>
+                        <div class="text-base font-bold text-gray-900">
+                            {{ $order->booking_date ? \Carbon\Carbon::parse($order->booking_date)->translatedFormat('l, d F Y') : 'Belum ditentukan' }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex items-start gap-4 pb-6 border-b border-gray-100">
+                    <div class="w-12 h-12 bg-gray-50 rounded-xl flex items-center justify-center border border-gray-100 shrink-0">
+                        <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    </div>
+                    <div>
+                        <div class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Time</div>
+                        <div class="text-base font-bold text-gray-900">{{ $order->booking_time ? \Carbon\Carbon::parse($order->booking_time)->format('H:i') : 'Menunggu' }} WIB</div>
+                        @if($order->status === 'pending_valuation')
+                        <div class="text-[10px] font-medium text-gray-400 mt-1">* Time may adjust after negotiation.</div>
+                        @endif
+                    </div>
+                </div>
+
+                {{-- Optional Info (Total Size mock) --}}
+                <div class="flex items-start gap-4">
+                    <div class="w-12 h-12 bg-gray-50 rounded-xl flex items-center justify-center border border-gray-100 shrink-0">
+                        <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/></svg>
+                    </div>
+                    <div>
+                        <div class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Total Size / Variant</div>
+                        <div class="text-base font-bold text-gray-900">Standard Package</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{-- Price Block --}}
+        <div class="bg-gray-50 border border-gray-200 rounded-3xl p-6 md:p-8 mb-6">
+            <div class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Agreed Price</div>
+            <div class="text-2xl font-black text-gray-900 font-plus">
+                @if($order->agreed_price)
+                    Rp {{ number_format($order->agreed_price, 0, ',', '.') }}
+                @elseif($order->product && $order->product->estimated_price)
+                    <span class="text-lg text-gray-500 font-medium line-through mr-2">Est.</span>
+                    Rp {{ number_format($order->product->estimated_price, 0, ',', '.') }}
+                @else
+                    Menunggu Penilaian
+                @endif
+            </div>
+            @if($order->status === 'pending_valuation')
+            <div class="text-[11px] font-medium text-gray-500 mt-2">* Final price will be updated by Admin.</div>
             @endif
         </div>
-        @if($order->status === 'pending_valuation')
-        <div class="text-[11px] font-medium text-gray-500 mt-2">* Final price will be updated by Admin.</div>
+
+        {{-- Location Block --}}
+        <div class="bg-white border border-gray-200 rounded-3xl p-6 md:p-8 mb-6 shadow-sm flex items-start gap-4">
+            <div class="w-12 h-12 bg-gray-50 rounded-xl flex items-center justify-center border border-gray-100 shrink-0">
+                <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+            </div>
+            <div>
+                <div class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Service Address</div>
+                <p class="text-sm font-bold text-gray-900 leading-relaxed mb-3">{{ $order->service_address ?? 'Alamat tidak diisi.' }}</p>
+                @if($order->service_latitude && $order->service_longitude)
+                <a href="https://maps.google.com/?q={{ $order->service_latitude }},{{ $order->service_longitude }}" target="_blank" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-lg text-[11px] font-bold text-gray-700 hover:bg-gray-100 transition-colors">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
+                    View on Maps
+                </a>
+                @endif
+            </div>
+        </div>
+
+        {{-- Customer Notes --}}
+        @if($order->notes)
+        <div class="bg-white border border-gray-200 rounded-3xl p-6 md:p-8 mb-10 shadow-sm flex items-start gap-4">
+            <div class="w-12 h-12 bg-gray-50 rounded-xl flex items-center justify-center border border-gray-100 shrink-0">
+                <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+            </div>
+            <div class="flex-1">
+                <div class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Customer Notes</div>
+                <div class="bg-gray-50 rounded-xl p-4 border border-gray-100 text-sm font-medium text-gray-700 leading-relaxed">
+                    {{ $order->notes }}
+                </div>
+            </div>
+        </div>
         @endif
-    </div>
 
-    {{-- Location Block --}}
-    <div class="bg-white border border-gray-200 rounded-3xl p-6 md:p-8 mb-6 shadow-sm flex items-start gap-4">
-        <div class="w-12 h-12 bg-gray-50 rounded-xl flex items-center justify-center border border-gray-100 shrink-0">
-            <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-        </div>
-        <div>
-            <div class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Service Address</div>
-            <p class="text-sm font-bold text-gray-900 leading-relaxed mb-3">{{ $order->service_address ?? 'Alamat tidak diisi.' }}</p>
-            @if($order->service_latitude && $order->service_longitude)
-            <a href="https://maps.google.com/?q={{ $order->service_latitude }},{{ $order->service_longitude }}" target="_blank" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-lg text-[11px] font-bold text-gray-700 hover:bg-gray-100 transition-colors">
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
-                View on Maps
-            </a>
-            @endif
-        </div>
-    </div>
-
-    {{-- Customer Notes --}}
-    @if($order->notes)
-    <div class="bg-white border border-gray-200 rounded-3xl p-6 md:p-8 mb-10 shadow-sm flex items-start gap-4">
-        <div class="w-12 h-12 bg-gray-50 rounded-xl flex items-center justify-center border border-gray-100 shrink-0">
-            <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-        </div>
-        <div class="flex-1">
-            <div class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Customer Notes</div>
-            <div class="bg-gray-50 rounded-xl p-4 border border-gray-100 text-sm font-medium text-gray-700 leading-relaxed">
-                {{ $order->notes }}
+        {{-- Site Photos (Mockup placeholder as requested) --}}
+        <div class="mb-12">
+            <h2 class="text-xl font-black text-gray-900 font-plus mb-4">Site Photos (3 photos)</h2>
+            <div class="flex gap-4 overflow-x-auto hide-scrollbar pb-2">
+                <div class="w-32 h-32 md:w-40 md:h-40 bg-gray-100 rounded-2xl flex items-center justify-center border border-gray-200 shrink-0">
+                    <div class="text-center">
+                        <div class="w-8 h-8 bg-gray-200 rounded-lg mx-auto mb-2"></div>
+                        <span class="text-[10px] font-bold text-gray-400">Photo 1</span>
+                    </div>
+                </div>
+                <div class="w-32 h-32 md:w-40 md:h-40 bg-gray-100 rounded-2xl flex items-center justify-center border border-gray-200 shrink-0">
+                    <div class="text-center">
+                        <div class="w-8 h-8 bg-gray-200 rounded-lg mx-auto mb-2"></div>
+                        <span class="text-[10px] font-bold text-gray-400">Photo 2</span>
+                    </div>
+                </div>
+                <div class="w-32 h-32 md:w-40 md:h-40 bg-gray-100 rounded-2xl flex items-center justify-center border border-gray-200 shrink-0">
+                    <div class="text-center">
+                        <div class="w-8 h-8 bg-gray-200 rounded-lg mx-auto mb-2"></div>
+                        <span class="text-[10px] font-bold text-gray-400">Photo 3</span>
+                    </div>
+                </div>
             </div>
+            <button class="mt-4 px-4 py-2 border border-gray-200 rounded-xl text-xs font-bold text-gray-700 hover:bg-gray-50 transition-colors">
+                View All Photos
+            </button>
+            <p class="text-[10px] text-gray-400 font-medium mt-2">*Photos are mockups and cannot be expanded in this version.</p>
         </div>
-    </div>
     @endif
-
-    {{-- Site Photos (Mockup placeholder as requested) --}}
-    <div class="mb-12">
-        <h2 class="text-xl font-black text-gray-900 font-plus mb-4">Site Photos (3 photos)</h2>
-        <div class="flex gap-4 overflow-x-auto hide-scrollbar pb-2">
-            <div class="w-32 h-32 md:w-40 md:h-40 bg-gray-100 rounded-2xl flex items-center justify-center border border-gray-200 shrink-0">
-                <div class="text-center">
-                    <div class="w-8 h-8 bg-gray-200 rounded-lg mx-auto mb-2"></div>
-                    <span class="text-[10px] font-bold text-gray-400">Photo 1</span>
-                </div>
-            </div>
-            <div class="w-32 h-32 md:w-40 md:h-40 bg-gray-100 rounded-2xl flex items-center justify-center border border-gray-200 shrink-0">
-                <div class="text-center">
-                    <div class="w-8 h-8 bg-gray-200 rounded-lg mx-auto mb-2"></div>
-                    <span class="text-[10px] font-bold text-gray-400">Photo 2</span>
-                </div>
-            </div>
-            <div class="w-32 h-32 md:w-40 md:h-40 bg-gray-100 rounded-2xl flex items-center justify-center border border-gray-200 shrink-0">
-                <div class="text-center">
-                    <div class="w-8 h-8 bg-gray-200 rounded-lg mx-auto mb-2"></div>
-                    <span class="text-[10px] font-bold text-gray-400">Photo 3</span>
-                </div>
-            </div>
-        </div>
-        <button class="mt-4 px-4 py-2 border border-gray-200 rounded-xl text-xs font-bold text-gray-700 hover:bg-gray-50 transition-colors">
-            View All Photos
-        </button>
-        <p class="text-[10px] text-gray-400 font-medium mt-2">*Photos are mockups and cannot be expanded in this version.</p>
-    </div>
 
     {{-- Order Activity Timeline --}}
     <div class="mb-12">

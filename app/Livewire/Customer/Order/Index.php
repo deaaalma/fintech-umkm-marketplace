@@ -40,9 +40,9 @@ class Index extends Component
 
         // Tab Logic (Mockup categories)
         if ($this->activeTab === 'menunggu_review') {
-            $query->where('status', 'pending_valuation');
+            $query->where('status', 'pending_valuation')->whereNull('agreed_price');
         } elseif ($this->activeTab === 'negosiasi') {
-            $query->where('status', 'negotiation');
+            $query->where('status', 'pending_valuation')->whereNotNull('agreed_price');
         } elseif ($this->activeTab === 'payment') {
             $query->where('status', 'waiting_payment');
         } elseif ($this->activeTab === 'in_progress') {
@@ -72,7 +72,8 @@ class Index extends Component
                 'invoice' => $o->invoice_number ?? 'INV-'.$o->id,
                 'service_name' => $o->product->name ?? 'Layanan Tidak Diketahui',
                 'status' => $o->status,
-                'price' => $o->agreed_price ?? $o->total_price ?? 0,
+                'price' => $o->agreed_price ?? 0,
+                'agreed_price' => $o->agreed_price,
                 'date' => $o->created_at->translatedFormat('d F Y'),
                 'time' => $o->created_at->format('H:i'),
                 'booking_date' => $o->booking_date ? \Carbon\Carbon::parse($o->booking_date)->translatedFormat('d F Y') : '-',
@@ -88,8 +89,8 @@ class Index extends Component
         
         $tabs = [
             ['id' => 'semua', 'label' => 'All', 'count' => (clone $baseQuery)->count()],
-            ['id' => 'menunggu_review', 'label' => 'Menunggu Review', 'count' => (clone $baseQuery)->where('status', 'pending_valuation')->count()],
-            ['id' => 'negosiasi', 'label' => 'Negosiasi', 'count' => (clone $baseQuery)->where('status', 'negotiation')->count()],
+            ['id' => 'menunggu_review', 'label' => 'Menunggu Review', 'count' => (clone $baseQuery)->where('status', 'pending_valuation')->whereNull('agreed_price')->count()],
+            ['id' => 'negosiasi', 'label' => 'Negosiasi', 'count' => (clone $baseQuery)->where('status', 'pending_valuation')->whereNotNull('agreed_price')->count()],
             ['id' => 'payment', 'label' => 'Payment', 'count' => (clone $baseQuery)->where('status', 'waiting_payment')->count()],
             ['id' => 'in_progress', 'label' => 'In Progress', 'count' => (clone $baseQuery)->whereIn('status', ['paid', 'processing'])->count()],
             ['id' => 'completed', 'label' => 'Completed', 'count' => (clone $baseQuery)->where('status', 'completed')->count()],
