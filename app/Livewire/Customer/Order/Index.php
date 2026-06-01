@@ -21,27 +21,36 @@ class Index extends Component
 
     public function updatedSearch() { $this->resetPage(); }
     public function updatedActiveTab() { $this->resetPage(); }
+    public function updatedStatusFilter() { $this->resetPage(); }
+    public function updatedDateRange() { $this->resetPage(); }
 
     public function render()
     {
         $userId = auth()->id();
-        $query = Order::where('customer_id', $userId)->with('umkm')->latest();
+        $query = Order::where('customer_id', $userId)->with(['umkm', 'product'])->latest();
 
         // Search Logic
         if ($this->search) {
             $query->where(function($q) {
                 $q->where('invoice_number', 'like', '%'.$this->search.'%')
-                  ->orWhereHas('umkm', fn($u) => $u->where('name', 'like', '%'.$this->search.'%'));
+                  ->orWhereHas('umkm', fn($u) => $u->where('name', 'like', '%'.$this->search.'%'))
+                  ->orWhereHas('product', fn($p) => $p->where('name', 'like', '%'.$this->search.'%'));
             });
         }
 
-        // Tab Logic
-        if ($this->activeTab === 'menunggu') {
-            $query->whereIn('status', ['pending_valuation', 'waiting_payment']);
-        } elseif ($this->activeTab === 'proses') {
+        // Tab Logic (Mockup categories)
+        if ($this->activeTab === 'menunggu_review') {
+            $query->where('status', 'pending_valuation');
+        } elseif ($this->activeTab === 'negosiasi') {
+            $query->where('status', 'negotiation');
+        } elseif ($this->activeTab === 'payment') {
+            $query->where('status', 'waiting_payment');
+        } elseif ($this->activeTab === 'in_progress') {
             $query->whereIn('status', ['paid', 'processing']);
-        } elseif ($this->activeTab === 'selesai') {
+        } elseif ($this->activeTab === 'completed') {
             $query->where('status', 'completed');
+        } elseif ($this->activeTab === 'cancelled') {
+            $query->where('status', 'cancelled');
         }
 
         // Dropdown Status Filter
@@ -51,7 +60,7 @@ class Index extends Component
 
         // Date Range Filter
         if (count($this->dateRange) === 2) {
-            $query->whereBetween('created_at', [$this->dateRange[0], $this->dateRange[1]]);
+            $query->whereBetween('created_at', [$this->dateRange[0] . ' 00:00:00', $this->dateRange[1] . ' 23:59:59']);
         }
 
         $ordersRaw = $query->paginate(6);
@@ -61,21 +70,30 @@ class Index extends Component
             return [
                 'id' => $o->id,
                 'invoice' => $o->invoice_number ?? 'INV-'.$o->id,
-                'service_name' => 'Layanan JOS', // Bisa ganti dengan product name jika ada relasi
+                'service_name' => $o->product->name ?? 'Layanan Tidak Diketahui',
                 'status' => $o->status,
-                'date' => $o->created_at->format('d M Y'),
-                'booking_date' => $o->booking_date ? $o->booking_date->format('d M Y') : '-',
+                'price' => $o->agreed_price ?? $o->total_price ?? 0,
+                'date' => $o->created_at->translatedFormat('d F Y'),
+                'time' => $o->created_at->format('H:i'),
+                'booking_date' => $o->booking_date ? \Carbon\Carbon::parse($o->booking_date)->translatedFormat('d F Y') : '-',
                 'booking_time' => $o->booking_time ?? '-',
-                'location' => $o->service_address ?? 'Denpasar, Bali',
+                'location' => $o->service_address ?? 'Alamat tidak tersedia',
                 'provider' => $o->umkm->name ?? 'Partner JOS',
+                'cancel_reason' => $o->cancellation_reason ?? 'Dibatalkan oleh sistem atau pengguna.',
             ];
         });
 
+        // Generate Counts for Tabs
+        $baseQuery = Order::where('customer_id', $userId);
+        
         $tabs = [
-            ['id' => 'semua', 'label' => 'Semua', 'count' => Order::where('customer_id', $userId)->count()],
-            ['id' => 'menunggu', 'label' => 'Menunggu', 'count' => Order::where('customer_id', $userId)->whereIn('status', ['pending_valuation', 'waiting_payment'])->count()],
-            ['id' => 'proses', 'label' => 'Proses', 'count' => Order::where('customer_id', $userId)->whereIn('status', ['paid', 'processing'])->count()],
-            ['id' => 'selesai', 'label' => 'Selesai', 'count' => Order::where('customer_id', $userId)->where('status', 'completed')->count()],
+            ['id' => 'semua', 'label' => 'All', 'count' => (clone $baseQuery)->count()],
+            ['id' => 'menunggu_review', 'label' => 'Menunggu Review', 'count' => (clone $baseQuery)->where('status', 'pending_valuation')->count()],
+            ['id' => 'negosiasi', 'label' => 'Negosiasi', 'count' => (clone $baseQuery)->where('status', 'negotiation')->count()],
+            ['id' => 'payment', 'label' => 'Payment', 'count' => (clone $baseQuery)->where('status', 'waiting_payment')->count()],
+            ['id' => 'in_progress', 'label' => 'In Progress', 'count' => (clone $baseQuery)->whereIn('status', ['paid', 'processing'])->count()],
+            ['id' => 'completed', 'label' => 'Completed', 'count' => (clone $baseQuery)->where('status', 'completed')->count()],
+            ['id' => 'cancelled', 'label' => 'Cancelled', 'count' => (clone $baseQuery)->where('status', 'cancelled')->count()],
         ];
 
         return view('livewire.customer.order.index', [
