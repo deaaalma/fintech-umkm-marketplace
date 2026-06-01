@@ -1,5 +1,4 @@
 @php
-    // Gunakan dummy data khusus untuk halaman template
     if (request()->is('templates/*')) {
         $user = (object)[
             'name' => 'Ahmad',
@@ -10,92 +9,61 @@
     }
 @endphp
 
-<nav x-data="{ isScrolled: false, openProfile: false }" 
-     x-init="window.addEventListener('scroll', () => isScrolled = window.scrollY > 20)"
-     class="fixed left-1/2 -translate-x-1/2 z-50 w-[92%] max-w-6xl transition-all duration-500"
-     :class="isScrolled ? 'top-4' : 'top-8'">
-     
-    <div :class="isScrolled ? 'nav-scrolled rounded-full py-3 shadow-2xl text-white' : 'glass-nav rounded-[2.5rem] py-4 shadow-lg shadow-brand-dark/[0.015] text-brand-dark'"
-         class="px-8 flex items-center justify-between transition-all duration-500">
-        
-        <div class="flex items-center gap-12">
-            <a href="/" class="text-2xl font-black tracking-tighter transition-colors" :class="isScrolled ? 'text-white' : 'text-brand-dark'">JOS</a>
+<nav class="bg-white border-b border-gray-100 sticky top-0 z-50">
+    <div class="max-w-[1400px] mx-auto px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
             
-            <div class="hidden lg:flex items-center gap-8">
-                <a href="{{ route('customer.dashboard') }}" 
-                   class="text-sm font-semibold tracking-tight transition-all duration-300 {{ request()->routeIs('customer.dashboard') ? 'text-brand-primary' : 'text-gray-400 hover:text-brand-dark' }}"
-                   :class="isScrolled ? '{{ request()->routeIs('customer.dashboard') ? 'text-brand-cyan' : 'text-gray-400 hover:text-white' }}' : ''">
-                    Overview
-                </a>
-
-                <a href="{{ route('customer.orders') }}" {{-- Ganti ke route orders asli nanti --}}
-                   class="text-sm font-semibold tracking-tight transition-all duration-300 {{ (request()->routeIs('customer.orders.*') || request()->routeIs('customer.order-details.*')) ? 'text-brand-primary' : 'text-gray-400 hover:text-brand-dark' }}"
-                   :class="isScrolled ? '{{ (request()->routeIs('customer.orders.*') || request()->routeIs('customer.order-details.*')) ? 'text-brand-cyan' : 'text-gray-400 hover:text-white' }}' : ''">
-                    My Orders
-                </a>
-
-                <a href="{{ route('customer.dashboard') }}" {{-- Ganti ke route partners asli nanti --}}
-                   class="text-sm font-semibold tracking-tight transition-all duration-300 {{ request()->routeIs('customer.partners.*') ? 'text-brand-primary' : 'text-gray-400 hover:text-brand-dark' }}"
-                   :class="isScrolled ? '{{ request()->routeIs('customer.partners.*') ? 'text-brand-cyan' : 'text-gray-400 hover:text-white' }}' : ''">
-                    Explore Partners
-                </a>
+            {{-- Left: Logo --}}
+            <div class="flex-shrink-0 flex items-center gap-3">
+                <div class="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center text-gray-500">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+                </div>
+                <span class="font-black text-gray-900 font-plus text-lg tracking-tight">JOS</span>
             </div>
-        </div>
 
-        <div class="flex items-center gap-6">
-            <a href="#" class="relative w-10 h-10 flex items-center justify-center rounded-xl transition-all hover:bg-white/10 {{ request()->routeIs('customer.chat.*') ? 'text-brand-primary' : '' }}" 
-               :class="isScrolled ? '{{ request()->routeIs('customer.chat.*') ? 'text-brand-cyan' : 'text-gray-400 hover:text-white' }}' : ''">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 1 1-7.6-12.7 8.19 8.19 0 0 1 4.9 1.5L22 3l-1.5 5.5a8.19 8.19 0 0 1 1.5 4.9z"/></svg>
-            </a>
+            {{-- Center: Menu --}}
+            <div class="hidden md:flex items-center gap-8">
+                <a href="{{ route('customer.dashboard') }}" class="flex items-center gap-2 text-sm font-bold {{ request()->routeIs('customer.dashboard') ? 'text-gray-900' : 'text-gray-500 hover:text-gray-900' }} transition-colors">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                    Dashboard
+                </a>
+                <a href="#" class="text-sm font-bold text-gray-500 hover:text-gray-900 transition-colors">Pesanan Saya</a>
+                <a href="#" class="text-sm font-bold text-gray-500 hover:text-gray-900 transition-colors">UMKM Partner</a>
+                <a href="#" class="text-sm font-bold text-gray-500 hover:text-gray-900 transition-colors">Bantuan</a>
+            </div>
 
-            <a href="#" class="relative w-10 h-10 flex items-center justify-center rounded-xl transition-all hover:bg-white/10 {{ request()->routeIs('customer.notifications.*') ? 'text-brand-primary' : '' }}" 
-               :class="isScrolled ? '{{ request()->routeIs('customer.notifications.*') ? 'text-brand-cyan' : 'text-gray-400 hover:text-white' }}' : ''">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-                <span class="absolute top-2.5 right-2.5 w-2 h-2 bg-brand-primary rounded-full border-2 border-white shadow-sm"></span>
-            </a>
+            {{-- Right: Actions --}}
+            <div class="flex items-center gap-4">
+                <button class="relative p-2 text-gray-400 hover:text-gray-600 transition-colors rounded-full hover:bg-gray-50">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+                    <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-orange-500 rounded-full border border-white"></span>
+                </button>
 
-            <div class="relative flex items-center gap-3 pl-6 border-l transition-colors" 
-                 :class="isScrolled ? 'border-white/10' : 'border-gray-100'">
-                
-                <div @click="openProfile = !openProfile" @click.outside="openProfile = false" 
-                     class="flex items-center gap-3 cursor-pointer group">
-                    <div class="text-right hidden sm:block">
-                        <div class="text-xs font-bold uppercase tracking-widest transition-colors" :class="isScrolled ? 'text-white' : 'text-brand-dark'">{{ $user->name }}</div>
-                        <div class="text-[10px] font-bold text-gray-400 uppercase">{{ $user->role }}</div>
-                    </div>
-                    
-                    <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-brand-primary to-brand-dark flex items-center justify-center text-white font-bold shadow-lg shadow-brand-primary/20 text-xs transition-transform group-hover:scale-105">
-                        {{ substr($user->name, 0, 1) }}
+                <div x-data="{ openProfile: false }" class="relative">
+                    <button @click="openProfile = !openProfile" @click.outside="openProfile = false" class="flex items-center justify-center w-8 h-8 rounded-lg bg-gray-200 text-gray-600 hover:bg-gray-300 transition-colors">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                    </button>
+
+                    {{-- Dropdown --}}
+                    <div x-show="openProfile" 
+                         x-cloak
+                         x-transition:enter="transition ease-out duration-100"
+                         x-transition:enter-start="transform opacity-0 scale-95"
+                         x-transition:enter-end="transform opacity-100 scale-100"
+                         class="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-gray-100 py-1 z-50">
+                        <div class="px-4 py-2 border-b border-gray-50">
+                            <p class="text-sm font-bold text-gray-900">{{ $user->name }}</p>
+                            <p class="text-[10px] font-bold text-gray-400 uppercase">{{ $user->role }}</p>
+                        </div>
+                        <a href="{{ route('profile') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 font-medium">Profile Settings</a>
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button type="submit" class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 font-medium">Logout</button>
+                        </form>
                     </div>
                 </div>
-
-                <div x-show="openProfile" 
-                     x-cloak
-                     x-transition:enter="transition ease-out duration-200"
-                     x-transition:enter-start="opacity-0 translate-y-4 scale-95"
-                     x-transition:enter-end="opacity-100 translate-y-0 scale-100"
-                     class="absolute right-0 top-14 w-56 bg-white rounded-3xl shadow-2xl border border-gray-50 py-3 z-[60] text-brand-dark">
-                    
-                    <div class="px-6 py-2 mb-2">
-                        <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Account</p>
-                    </div>
-                    
-                    <a href="{{ route('profile') }}" class="flex items-center gap-3 px-6 py-3 hover:bg-gray-50 transition-colors text-sm font-semibold">
-                        <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" stroke-width="2"/></svg>
-                        Edit Profile
-                    </a>
-
-                    <div class="h-px bg-gray-50 my-2 mx-4"></div>
-
-                    <form method="POST" action="{{ route('logout') }}">
-                        @csrf
-                        <button type="submit" class="w-full flex items-center gap-3 px-6 py-3 hover:bg-red-50 transition-colors text-sm font-bold text-red-500">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" stroke-width="2"/></svg>
-                            Log Out
-                        </button>
-                    </form>
-                </div>
             </div>
+
         </div>
     </div>
 </nav>

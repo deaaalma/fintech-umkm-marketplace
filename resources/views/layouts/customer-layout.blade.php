@@ -38,7 +38,7 @@
     <div class="min-h-screen flex flex-col">
         <x-customer.navbar />
 
-        <main class="flex-1 pt-28 pb-12">
+        <main class="flex-1 pt-8 pb-12">
             <div class="max-w-[1400px] mx-auto px-6 lg:px-8">
                 {{ $slot }}
             </div>
