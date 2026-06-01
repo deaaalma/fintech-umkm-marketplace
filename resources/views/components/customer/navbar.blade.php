@@ -28,7 +28,7 @@
                     Dashboard
                 </a>
                 <a href="{{ route('customer.orders') }}" class="text-sm font-bold {{ request()->routeIs('customer.orders') ? 'text-gray-900' : 'text-gray-500 hover:text-gray-900' }} transition-colors">Pesanan Saya</a>
-                <a href="#" class="text-sm font-bold text-gray-500 hover:text-gray-900 transition-colors">UMKM Partner</a>
+                <a href="{{ route('customer.partners') }}" class="text-sm font-bold {{ request()->routeIs('customer.partners') ? 'text-gray-900' : 'text-gray-500 hover:text-gray-900' }} transition-colors">UMKM Partner</a>
                 <a href="#" class="text-sm font-bold text-gray-500 hover:text-gray-900 transition-colors">Bantuan</a>
             </div>
 

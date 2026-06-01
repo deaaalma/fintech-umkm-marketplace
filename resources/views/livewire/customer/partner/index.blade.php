@@ -1,118 +1,106 @@
-<x-slot:title>Explore Partners</x-slot:title>
+<x-slot:title>UMKM Partner</x-slot:title>
 
-@section('extra-styles')
-    .partner-card {
-        transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
-    }
-    .partner-card:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 30px 60px -15px rgba(0, 11, 68, 0.1);
-    }
-    .partner-img-overlay {
-        background: linear-gradient(to top, rgba(0, 11, 68, 0.6) 0%, transparent 100%);
-    }
-    .scrollbar-hide::-webkit-scrollbar { display: none; }
-    .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
-@endsection
-
-<div x-data="{ 
-    activeCategory: @entangle('activeCategory'),
-    search: @entangle('search'),
-    allPartners: @js($partners)
-}">
-    <div class="mb-16">
-        <div class="inline-flex items-center gap-2.5 px-4 py-1.5 bg-brand-primary/5 rounded-full border border-brand-primary/10 mb-6 group cursor-default animate-on-load">
-            <div class="w-1.5 h-1.5 rounded-full bg-brand-primary animate-pulse group-hover:scale-125 transition-transform duration-500"></div>
-            <span class="text-[10px] font-black text-brand-primary uppercase tracking-[0.2em]">Verified Partners</span>
-        </div>
-        <h1 class="text-6xl font-bold text-brand-dark tracking-tighter mb-4 animate-on-load font-plus">
-            Explore <span class="italic font-normal text-brand-primary" style="font-family: Georgia, serif;">Our Partners</span>
-        </h1>
-        <p class="text-slate-400 text-lg max-w-2xl animate-on-load font-medium">Temukan penyedia jasa terverifikasi yang siap membantu kebutuhan UMKM Anda.</p>
+<div class="max-w-[1200px] mx-auto animate-fade-in-up pb-20">
+    {{-- Header Section --}}
+    <div class="mb-10">
+        <h1 class="text-4xl font-black text-gray-900 font-plus tracking-tight mb-2">UMKM Partner</h1>
+        <p class="text-gray-500 font-medium">Temukan mitra UMKM terbaik untuk kebutuhan Anda</p>
     </div>
 
-    <div class="mb-12 animate-on-load">
-        <div class="flex flex-col-reverse lg:flex-row gap-6 lg:gap-8 items-stretch lg:items-center justify-between">
-            <div class="flex flex-row overflow-x-auto gap-3 lg:gap-4 pb-2 lg:pb-0 scrollbar-hide snap-x">
-                @foreach($categories as $cat)
-                <button wire:click="$set('activeCategory', '{{ $cat['id'] }}')"
-                        :class="activeCategory === '{{ $cat['id'] }}' ? 'bg-brand-dark text-white shadow-xl shadow-brand-dark/10' : 'bg-white text-slate-400 border border-slate-100 hover:border-brand-primary/20'"
-                        class="px-6 lg:px-8 py-3 rounded-xl lg:rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all whitespace-nowrap snap-start flex-shrink-0">
-                    {{ $cat['label'] }}
-                </button>
-                @endforeach
-            </div>
-
-            <div class="relative w-full lg:w-96 group flex-shrink-0">
-                <div class="absolute inset-y-0 left-4 lg:left-5 flex items-center pointer-events-none text-slate-300 group-focus-within:text-brand-primary transition-colors">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+    {{-- Search & Filter Bar --}}
+    <div class="space-y-6 mb-12">
+        <div class="flex flex-col md:flex-row gap-4">
+            <div class="relative flex-1 group">
+                <div class="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
+                    <svg class="w-5 h-5 text-gray-400 group-focus-within:text-gray-900 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                 </div>
                 <input type="text" 
                        wire:model.live.debounce.300ms="search"
-                       placeholder="Cari partner atau layanan..." 
-                       class="w-full pl-10 lg:pl-14 pr-4 lg:pr-6 py-3.5 lg:py-4 bg-white border border-slate-100 rounded-xl lg:rounded-2xl text-[11px] lg:text-[13px] font-bold text-brand-dark placeholder:text-slate-300 focus:outline-none focus:border-brand-primary/30 focus:ring-4 focus:ring-brand-primary/5 transition-all shadow-sm group-hover:shadow-xl group-hover:shadow-brand-primary/5">
+                       placeholder="Cari UMKM atau layanan..." 
+                       class="w-full pl-14 pr-6 py-5 bg-white border border-gray-100 rounded-[28px] text-sm font-bold shadow-sm focus:ring-0 focus:border-gray-900 transition-all outline-none">
             </div>
+            <button class="px-10 py-5 bg-[#2D2D2D] hover:bg-black text-white rounded-[24px] font-black text-sm uppercase tracking-widest transition-all shadow-xl flex items-center justify-center gap-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                Cari
+            </button>
+        </div>
+
+        {{-- Category Pills --}}
+        <div class="flex flex-wrap gap-2 overflow-x-auto pb-2 hide-scrollbar">
+            @foreach($categories as $cat)
+            <button wire:click="$set('activeCategory', '{{ $cat['id'] }}')" 
+                    class="px-6 py-3 rounded-full text-xs font-black uppercase tracking-widest transition-all {{ $activeCategory === $cat['id'] ? 'bg-[#2D2D2D] text-white shadow-lg' : 'bg-gray-100 text-gray-400 hover:bg-gray-200' }}">
+                {{ $cat['label'] }}
+            </button>
+            @endforeach
         </div>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
+    <div class="mb-8 flex items-center justify-between">
+        <p class="text-xs font-bold text-gray-400 uppercase tracking-widest">Menampilkan <span class="text-gray-900">{{ count($partners) }} UMKM</span></p>
+    </div>
+
+    {{-- Partners Grid --}}
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
         @forelse($partners as $partner)
-            <div class="partner-card bg-white rounded-[2.5rem] border border-slate-100 overflow-hidden group animate-on-load">
-                <div class="relative h-64 overflow-hidden">
-                    <img src="{{ $partner['img'] }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
-                    <div class="absolute inset-0 partner-img-overlay opacity-60"></div>
-                    
-                    @if($partner['verified'])
-                    <div class="absolute top-5 right-5">
-                        <div class="bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-xl border border-white/20 flex items-center gap-2 shadow-xl">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" class="text-brand-primary"><polyline points="20 6 9 17 4 12"/></svg>
-                            <span class="text-[9px] font-black text-brand-dark uppercase tracking-widest">Verified</span>
-                        </div>
+        <div class="bg-white border border-gray-100 rounded-[40px] overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 group">
+            {{-- Image Header --}}
+            <div class="relative h-64 bg-gray-900 overflow-hidden">
+                <img src="{{ $partner['img'] }}" class="w-full h-full object-cover opacity-60 group-hover:scale-110 transition-transform duration-700">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                <div class="absolute bottom-6 left-8 flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/30">
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
                     </div>
-                    @endif
-
-                    <div class="absolute bottom-5 left-5 right-5 flex items-center justify-between">
-                        <div class="flex items-center gap-2 bg-brand-dark/30 backdrop-blur-md px-3 py-1.5 rounded-xl border border-white/10 text-white">
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" class="text-yellow-400"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                            <span class="text-[10px] font-black">{{ $partner['rating'] }}</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="p-8 space-y-4">
-                    <div class="space-y-1">
-                        <div class="text-[9px] font-black text-brand-primary uppercase tracking-[0.2em]">{{ $partner['category'] }}</div>
-                        <h4 class="text-xl font-bold text-brand-dark tracking-tight">{{ $partner['name'] }}</h4>
-                    </div>
-                    <p class="text-xs text-slate-500 leading-relaxed font-medium line-clamp-2">{{ $partner['desc'] }}</p>
-                    <div class="pt-4 border-t border-slate-50 flex items-center justify-between">
-                        <span class="text-[10px] font-bold text-slate-400">{{ $partner['reviews'] }} Reviews</span>
-                        <a href="#" class="px-6 py-2.5 bg-brand-primary/5 text-brand-primary rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-brand-primary hover:text-white transition-all shadow-sm">
-                            Pilih Partner
-                        </a>
-                    </div>
+                    <span class="text-[10px] font-black text-white uppercase tracking-widest">{{ $partner['category'] }}</span>
                 </div>
             </div>
+
+            {{-- Card Body --}}
+            <div class="p-8">
+                <div class="flex justify-between items-start mb-4">
+                    <div>
+                        <h3 class="text-xl font-black text-gray-900 font-plus mb-1">{{ $partner['name'] }}</h3>
+                        <div class="flex items-center gap-2">
+                            <svg class="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                            <span class="text-xs font-bold text-gray-400">{{ $partner['location'] }}</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-1.5 bg-yellow-50 px-3 py-1.5 rounded-xl border border-yellow-100">
+                        <svg class="w-3.5 h-3.5 text-yellow-500 fill-yellow-500" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                        <span class="text-[11px] font-black text-yellow-700">{{ $partner['rating'] }} <span class="text-yellow-400 font-medium">({{ $partner['reviews_count'] }})</span></span>
+                    </div>
+                </div>
+
+                <div class="flex flex-wrap gap-2 mb-6">
+                    @foreach($partner['tags'] as $tag)
+                    <span class="px-3 py-1 bg-gray-50 border border-gray-100 rounded-lg text-[9px] font-bold text-gray-500 uppercase tracking-tighter">{{ $tag }}</span>
+                    @endforeach
+                </div>
+
+                <div class="mb-8">
+                    <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Range Harga</p>
+                    <p class="text-sm font-black text-gray-900">{{ $partner['price_range'] }}</p>
+                </div>
+
+                <div class="flex gap-3">
+                    <a href="{{ route('customer.order-details', $partner['id']) }}" class="flex-1 py-4 bg-[#2D2D2D] hover:bg-black text-white rounded-2xl font-black text-xs uppercase tracking-widest transition-all text-center shadow-lg">
+                        Lihat Detail
+                    </a>
+                    <button class="w-14 h-14 rounded-2xl bg-white border border-gray-200 flex items-center justify-center text-gray-400 hover:text-gray-900 hover:border-gray-900 transition-all shadow-sm">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
         @empty
-            <div class="col-span-full py-20 text-center">
-                <div class="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-6 text-slate-200">
-                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-                </div>
-                <h3 class="text-lg font-bold text-brand-dark mb-2">Partner tidak ditemukan</h3>
-                <p class="text-slate-400 text-sm">Coba gunakan kata kunci atau kategori lain.</p>
-            </div>
+        <div class="col-span-full py-20 text-center">
+            <h3 class="text-lg font-bold text-gray-400">Tidak ada UMKM ditemukan.</h3>
+        </div>
         @endforelse
     </div>
+    <style>
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
 </div>
-
-@push('scripts')
-<script>
-    gsap.from('.animate-on-load', {
-        y: 20,
-        opacity: 0,
-        duration: 0.8,
-        stagger: 0.1,
-        ease: 'power3.out'
-    });
-</script>
-@endpush

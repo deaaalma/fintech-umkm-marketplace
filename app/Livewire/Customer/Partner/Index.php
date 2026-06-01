@@ -16,38 +16,44 @@ class Index extends Component
 
     public function render()
     {
-        $query = Umkm::where('status', 'approved')->latest();
+        $query = Umkm::where('status', 'approved')->latest()->with('category');
 
         // Filter Search
         if ($this->search) {
-            $query->where('name', 'like', '%' . $this->search . '%')
+            $query->where(function($q) {
+                $q->where('name', 'like', '%' . $this->search . '%')
                   ->orWhere('description', 'like', '%' . $this->search . '%');
+            });
         }
 
-        // Filter Category (Jika tabel UMKM punya kolom category)
+        // Filter Category
         if ($this->activeCategory !== 'semua') {
-            $query->where('category', $this->activeCategory);
+            $query->where('category_id', $this->activeCategory);
         }
 
         $partners = $query->get()->map(function($p) {
             return [
+                'id' => $p->id,
                 'name' => $p->name,
-                'category' => $p->category ?? 'General',
-                'desc' => $p->description ?? 'Layanan profesional untuk kebutuhan Anda.',
-                'rating' => 5.0, // Placeholder jika belum ada sistem review
-                'reviews' => 0,
-                'img' => $p->logo_url ?? 'https://images.unsplash.com/photo-1521791136064-7986c2923216?w=500&q=80',
-                'verified' => $p->status === 'approved'
+                'category' => $p->category->name ?? 'Cleaning Service',
+                'location' => $p->city ?? 'Jakarta Pusat',
+                'rating' => 4.8,
+                'reviews_count' => rand(50, 200),
+                'tags' => ['Deep Cleaning', 'Office Cleaning', 'Home Cleaning'],
+                'price_range' => 'Rp 150.000 - Rp 2.500.000',
+                'img' => $p->logo_url ?? 'https://images.unsplash.com/photo-1581578731548-c64695cc6958?w=800&q=80',
             ];
         });
 
-        $categories = [
-            ['id' => 'semua', 'label' => 'Semua'],
-            ['id' => 'digital', 'label' => 'Digital'],
-            ['id' => 'cleaning', 'label' => 'Cleaning'],
-            ['id' => 'catering', 'label' => 'Catering'],
-            ['id' => 'laundry', 'label' => 'Laundry'],
-        ];
+        // Fetch real categories from DB
+        $dbCategories = \App\Models\Category::all();
+        $categories = collect([
+            ['id' => 'semua', 'label' => 'Semua']
+        ]);
+
+        foreach ($dbCategories as $cat) {
+            $categories->push(['id' => $cat->id, 'label' => $cat->name]);
+        }
 
         return view('livewire.customer.partner.index', [
             'partners' => $partners,
