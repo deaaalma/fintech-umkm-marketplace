@@ -42,10 +42,10 @@
             </div>
         </a>
 
-        <a href="#" 
-           class="flex items-center justify-between px-6 py-4 rounded-2xl transition-all duration-300 group text-white/50 hover:bg-white/5 hover:text-white">
+        <a href="{{ route('umkm.services') }}" 
+           class="flex items-center justify-between px-6 py-4 rounded-2xl transition-all duration-300 group {{ request()->routeIs('umkm.services') ? 'bg-white/5 text-white active-nav' : 'text-white/50 hover:bg-white/5 hover:text-white' }}">
             <div class="flex items-center gap-4">
-                <svg class="w-6 h-6 text-slate-500 group-hover:text-blue-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                <svg class="w-6 h-6 {{ request()->routeIs('umkm.services') ? 'text-[#0077B6]' : 'text-slate-500 group-hover:text-blue-200' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
                     <path d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round"></path>
                 </svg>
                 <span class="text-xs font-bold tracking-wider uppercase">Services</span>
