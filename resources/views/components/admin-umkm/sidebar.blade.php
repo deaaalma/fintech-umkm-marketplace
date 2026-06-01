@@ -62,10 +62,10 @@
             </div>
         </a>
 
-        <a href="#" 
-           class="flex items-center justify-between px-6 py-4 rounded-2xl transition-all duration-300 group text-white/50 hover:bg-white/5 hover:text-white">
+        <a href="{{ route('umkm.settings') }}" 
+           class="flex items-center justify-between px-6 py-4 rounded-2xl transition-all duration-300 group {{ request()->routeIs('umkm.settings') ? 'bg-white/5 text-white active-nav' : 'text-white/50 hover:bg-white/5 hover:text-white' }}">
             <div class="flex items-center gap-4">
-                <svg class="w-6 h-6 text-slate-500 group-hover:text-blue-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                <svg class="w-6 h-6 {{ request()->routeIs('umkm.settings') ? 'text-[#0077B6]' : 'text-slate-500 group-hover:text-blue-200' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
                     <path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" stroke-linecap="round" stroke-linejoin="round"></path>
                 </svg>
                 <span class="text-xs font-bold tracking-wider uppercase">Settings</span>
