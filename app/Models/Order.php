@@ -28,4 +28,9 @@ class Order extends Model
     {
         return $this->belongsTo(User::class, 'customer_id');
     }
+
+    public function orderAssignment()
+    {
+        return $this->hasOne(OrderAssignment::class, 'order_id');
+    }
 }

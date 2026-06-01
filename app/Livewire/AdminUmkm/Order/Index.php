@@ -91,7 +91,7 @@ class Index extends Component
         }
 
         $query = Order::where('umkm_id', $umkmId)
-                      ->with(['customer', 'product']);
+                      ->with(['customer', 'product', 'orderAssignment.worker']);
 
         // Filter Search (Invoice, Customer Name, Phone, Product Name, Product Type)
         if ($this->search) {
@@ -192,10 +192,9 @@ class Index extends Component
 
             // Try to get staff name
             $staffName = '-';
-            $assignment = \App\Models\OrderAssignment::where('order_id', $order->id)->first();
-            if ($assignment) {
-                 $worker = User::find($assignment->worker_id);
-                 if ($worker) $staffName = $worker->name;
+            $assignment = $order->orderAssignment;
+            if ($assignment && $assignment->worker) {
+                 $staffName = $assignment->worker->name;
             }
 
             return [
