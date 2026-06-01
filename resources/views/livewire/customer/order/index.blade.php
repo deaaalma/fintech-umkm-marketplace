@@ -150,9 +150,9 @@
                             <button class="w-full sm:w-1/2 py-3.5 bg-white text-black rounded-xl text-xs font-bold hover:bg-gray-100 transition-colors shadow-sm">
                                 Bayar Sekarang
                             </button>
-                            <button class="w-full sm:w-1/2 py-3.5 bg-transparent border border-white/20 text-white rounded-xl text-xs font-bold hover:bg-white/10 transition-colors">
+                            <a href="{{ route('customer.order-details', $order['id']) }}" class="w-full sm:w-1/2 py-3.5 bg-transparent border border-white/20 text-white rounded-xl text-xs font-bold hover:bg-white/10 transition-colors text-center flex items-center justify-center">
                                 Lihat Detail
-                            </button>
+                            </a>
                         </div>
 
                         <div class="mt-2 flex items-center justify-between text-[11px] font-medium text-gray-400 pt-6 border-t border-white/10">
@@ -210,9 +210,9 @@
                         <button class="w-full sm:w-1/3 py-3.5 bg-white border border-gray-200 text-gray-900 rounded-xl text-xs font-bold hover:bg-gray-50 transition-colors shadow-sm">
                             Pesan Lagi
                         </button>
-                        <button class="w-full sm:w-1/3 py-3.5 bg-white text-gray-500 hover:text-gray-900 rounded-xl text-xs font-bold transition-colors">
+                        <a href="{{ route('customer.order-details', $order['id']) }}" class="w-full sm:w-1/3 py-3.5 bg-white text-gray-500 hover:text-gray-900 rounded-xl text-xs font-bold transition-colors text-center flex items-center justify-center">
                             Lihat Detail
-                        </button>
+                        </a>
                     </div>
 
                     <div class="mt-2 flex items-center justify-between text-[11px] font-medium text-gray-500 pt-6 border-t border-gray-100">
@@ -264,9 +264,9 @@
                         <button class="w-full sm:w-1/2 py-3.5 bg-white border border-gray-200 text-gray-900 rounded-xl text-xs font-bold hover:bg-gray-50 transition-colors shadow-sm">
                             Pesan Lagi
                         </button>
-                        <button class="w-full sm:w-1/2 py-3.5 bg-white text-gray-500 hover:text-gray-900 rounded-xl text-xs font-bold transition-colors">
+                        <a href="{{ route('customer.order-details', $order['id']) }}" class="w-full sm:w-1/2 py-3.5 bg-white text-gray-500 hover:text-gray-900 rounded-xl text-xs font-bold transition-colors text-center flex items-center justify-center">
                             Lihat Detail
-                        </button>
+                        </a>
                     </div>
 
                     <div class="mt-2 flex items-center justify-between text-[11px] font-medium text-gray-500 pt-6 border-t border-gray-100">
@@ -330,13 +330,13 @@
                             <button class="w-full sm:w-1/2 py-3.5 bg-[#2D2D2D] text-white rounded-xl text-xs font-bold hover:bg-black transition-colors shadow-sm">
                                 Review Pesanan
                             </button>
-                            <button class="w-full sm:w-1/2 py-3.5 bg-white border border-gray-200 text-gray-700 rounded-xl text-xs font-bold hover:bg-gray-50 transition-colors">
+                            <a href="{{ route('customer.order-details', $order['id']) }}" class="w-full sm:w-1/2 py-3.5 bg-white border border-gray-200 text-gray-700 rounded-xl text-xs font-bold hover:bg-gray-50 transition-colors text-center flex items-center justify-center">
                                 Lihat Detail
-                            </button>
+                            </a>
                         @else
-                            <button class="w-full sm:w-1/2 py-3.5 bg-white border border-gray-200 text-gray-700 rounded-xl text-xs font-bold hover:bg-gray-50 transition-colors text-center">
+                            <a href="{{ route('customer.order-details', $order['id']) }}" class="w-full sm:w-1/2 py-3.5 bg-white border border-gray-200 text-gray-700 rounded-xl text-xs font-bold hover:bg-gray-50 transition-colors text-center flex items-center justify-center">
                                 Lihat Detail
-                            </button>
+                            </a>
                             <button class="w-full sm:w-1/2 py-3.5 bg-white border border-red-200 text-red-600 rounded-xl text-xs font-bold hover:bg-red-50 transition-colors text-center">
                                 Batalkan
                             </button>

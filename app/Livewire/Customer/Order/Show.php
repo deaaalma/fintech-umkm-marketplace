@@ -1,0 +1,51 @@
+<?php
+
+namespace App\Livewire\Customer\Order;
+
+use App\Models\Order;
+use App\Models\OrderLog;
+use Livewire\Component;
+use Livewire\Attributes\Layout;
+
+#[Layout('layouts.customer-layout')]
+class Show extends Component
+{
+    public Order $order;
+
+    public function mount(Order $order)
+    {
+        if ($order->customer_id !== auth()->id()) {
+            abort(403, 'Unauthorized action.');
+        }
+        
+        $this->order = $order->load(['umkm', 'product']);
+    }
+
+    public function cancelOrder()
+    {
+        if (in_array($this->order->status, ['pending_valuation', 'negotiation', 'waiting_payment'])) {
+            $this->order->update(['status' => 'cancelled']);
+            
+            OrderLog::create([
+                'order_id' => $this->order->id,
+                'actor_id' => auth()->id(),
+                'action' => 'Order Cancelled',
+                'reason' => 'Customer cancelled the order via detail page.',
+            ]);
+
+            session()->flash('message', 'Pesanan berhasil dibatalkan.');
+            return redirect()->route('customer.order-details', $this->order->id);
+        }
+    }
+
+    public function render()
+    {
+        $logs = OrderLog::where('order_id', $this->order->id)
+            ->latest()
+            ->get();
+            
+        return view('livewire.customer.order.show', [
+            'logs' => $logs
+        ]);
+    }
+}
