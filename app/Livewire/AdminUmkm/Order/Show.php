@@ -34,8 +34,7 @@ class Show extends Component
 
         $this->order->update([
             'agreed_price' => $this->agreed_price,
-            // We keep it as pending_valuation but the customer view will detect agreed_price
-            // This acts as the "Negotiation" state without adding a new DB status
+            'current_step' => 3, // Move to Negotiation step
         ]);
 
         OrderLog::create([

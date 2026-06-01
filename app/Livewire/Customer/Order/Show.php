@@ -41,7 +41,10 @@ class Show extends Component
     public function acceptPrice()
     {
         if ($this->order->status === 'pending_valuation' && $this->order->agreed_price !== null) {
-            $this->order->update(['status' => 'waiting_payment']);
+            $this->order->update([
+                'status' => 'processing', // Move to processing after price agreement
+                'current_step' => 4 // Move to Service Process step
+            ]);
             
             OrderLog::create([
                 'order_id' => $this->order->id,

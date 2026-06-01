@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('umkms', function (Blueprint $table) {
-            $table->string('tagline')->nullable()->after('name');
+            // $table->string('tagline')->nullable()->after('name');
             $table->string('instagram_url')->nullable()->after('email');
             $table->string('whatsapp_number')->nullable()->after('instagram_url');
             $table->string('facebook_url')->nullable()->after('whatsapp_number');

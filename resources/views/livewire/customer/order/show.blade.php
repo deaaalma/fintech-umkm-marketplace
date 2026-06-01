@@ -36,8 +36,9 @@
         <div class="flex items-center gap-3 mb-2">
             @php
                 $statusBadge = match($order->status) {
-                    'pending_valuation' => ['label' => 'PENDING_REVIEW', 'class' => 'bg-gray-100 text-gray-600 border-gray-200'],
-                    'negotiation' => ['label' => 'NEGOTIATION', 'class' => 'bg-[#2D2D2D] text-white border-[#2D2D2D]'],
+                    'pending_valuation' => $order->agreed_price ? 
+                        ['label' => 'WAITING_CUSTOMER_ACTION', 'class' => 'bg-white border-gray-200 text-gray-900'] : 
+                        ['label' => 'ADMIN_REVIEW', 'class' => 'bg-gray-100 text-gray-600 border-gray-200'],
                     'waiting_payment' => ['label' => 'WAITING_PAYMENT', 'class' => 'bg-yellow-100 text-yellow-800 border-yellow-200'],
                     'paid' => ['label' => 'PAID', 'class' => 'bg-green-100 text-green-700 border-green-200'],
                     'processing' => ['label' => 'PROCESSING', 'class' => 'bg-blue-100 text-blue-700 border-blue-200'],
@@ -63,78 +64,76 @@
 
     {{-- Stepper Progress --}}
     @php
-        $statuses = ['pending_valuation', 'negotiation', 'waiting_payment', 'processing', 'completed'];
-        $currentIndex = array_search($order->status, $statuses);
-        if ($currentIndex === false && $order->status === 'paid') $currentIndex = 3; // map paid to processing step visually
+        $currentIndex = $order->current_step;
     @endphp
 
     @if($order->status !== 'cancelled')
     <div class="mb-10 overflow-x-auto hide-scrollbar pb-4">
         <div class="flex items-center min-w-[600px] px-2">
-            {{-- Step 1: Created/Review --}}
-            <div class="step-item flex-1 relative {{ $currentIndex >= 0 ? 'completed' : '' }}">
+            {{-- Step 1: Created --}}
+            <div class="step-item flex-1 relative {{ $currentIndex > 1 ? 'completed' : ($currentIndex == 1 ? 'active' : '') }}">
                 <div class="flex flex-col items-center">
                     <div class="step-icon w-6 h-6 rounded-full border-2 border-gray-200 bg-white flex items-center justify-center z-10 transition-colors">
-                        @if($currentIndex >= 0)<svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>@endif
+                        @if($currentIndex >= 1)<svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>@endif
                     </div>
-                    <div class="text-[10px] font-bold uppercase mt-3 {{ $currentIndex >= 0 ? 'text-gray-900' : 'text-gray-400' }}">Order Created</div>
+                    <div class="text-[10px] font-bold uppercase mt-3 {{ $currentIndex >= 1 ? 'text-gray-900' : 'text-gray-400' }}">Order Created</div>
                     <div class="text-[9px] text-gray-400 font-medium mt-0.5">{{ $order->created_at->format('d M, H:i') }}</div>
                 </div>
                 <div class="step-line absolute top-3 left-1/2 w-full h-[2px] bg-gray-100 transition-colors"></div>
             </div>
 
-            {{-- Step 2: Admin Review (pending_valuation is ongoing here until negotiation/payment) --}}
-            <div class="step-item flex-1 relative {{ $currentIndex >= 0 ? ($currentIndex > 0 ? 'completed' : 'active') : '' }}">
+            {{-- Step 2: Admin Review --}}
+            <div class="step-item flex-1 relative {{ $currentIndex > 2 ? 'completed' : ($currentIndex == 2 ? 'active' : '') }}">
                 <div class="flex flex-col items-center">
                     <div class="step-icon w-6 h-6 rounded-full border-2 border-gray-200 bg-white flex items-center justify-center z-10 transition-colors">
-                        @if($currentIndex > 0)<svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>@endif
+                        @if($currentIndex > 1)<svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>@endif
                     </div>
-                    <div class="text-[10px] font-bold uppercase mt-3 {{ $currentIndex >= 0 ? 'text-gray-900' : 'text-gray-400' }}">Admin Review</div>
+                    <div class="text-[10px] font-bold uppercase mt-3 {{ $currentIndex >= 2 ? 'text-gray-900' : 'text-gray-400' }}">Admin Review</div>
                     <div class="text-[9px] text-gray-400 font-medium mt-0.5">In Progress</div>
                 </div>
                 <div class="step-line absolute top-3 left-1/2 w-full h-[2px] bg-gray-100 transition-colors"></div>
             </div>
 
-            {{-- Step 3: Price Negotiation (if applicable or skipped to payment) --}}
-            <div class="step-item flex-1 relative {{ $currentIndex >= 1 ? ($currentIndex > 1 ? 'completed' : 'active') : '' }}">
-                <div class="flex flex-col items-center">
-                    <div class="step-icon w-6 h-6 rounded-full border-2 border-gray-200 bg-white flex items-center justify-center z-10 transition-colors">
-                        @if($currentIndex > 1)<svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>@endif
-                    </div>
-                    <div class="text-[10px] font-bold uppercase mt-3 {{ $currentIndex >= 1 ? 'text-gray-900' : 'text-gray-400' }}">Price Negotiation</div>
-                </div>
-                <div class="step-line absolute top-3 left-1/2 w-full h-[2px] bg-gray-100 transition-colors"></div>
-            </div>
-
-            {{-- Step 4: Payment --}}
-            <div class="step-item flex-1 relative {{ $currentIndex >= 2 ? ($currentIndex > 2 ? 'completed' : 'active') : '' }}">
+            {{-- Step 3: Price Negotiation --}}
+            <div class="step-item flex-1 relative {{ $currentIndex > 3 ? 'completed' : ($currentIndex == 3 ? 'active' : '') }}">
                 <div class="flex flex-col items-center">
                     <div class="step-icon w-6 h-6 rounded-full border-2 border-gray-200 bg-white flex items-center justify-center z-10 transition-colors">
                         @if($currentIndex > 2)<svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>@endif
                     </div>
-                    <div class="text-[10px] font-bold uppercase mt-3 {{ $currentIndex >= 2 ? 'text-gray-900' : 'text-gray-400' }}">Payment</div>
+                    <div class="text-[10px] font-bold uppercase mt-3 {{ $currentIndex >= 3 ? 'text-gray-900' : 'text-gray-400' }}">Price Negotiation</div>
                 </div>
                 <div class="step-line absolute top-3 left-1/2 w-full h-[2px] bg-gray-100 transition-colors"></div>
             </div>
 
-            {{-- Step 5: Service Process --}}
-            <div class="step-item flex-1 relative {{ $currentIndex >= 3 ? ($currentIndex > 3 ? 'completed' : 'active') : '' }}">
+            {{-- Step 4: Service Process --}}
+            <div class="step-item flex-1 relative {{ $currentIndex > 4 ? 'completed' : ($currentIndex == 4 ? 'active' : '') }}">
                 <div class="flex flex-col items-center">
                     <div class="step-icon w-6 h-6 rounded-full border-2 border-gray-200 bg-white flex items-center justify-center z-10 transition-colors">
                         @if($currentIndex > 3)<svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>@endif
                     </div>
-                    <div class="text-[10px] font-bold uppercase mt-3 {{ $currentIndex >= 3 ? 'text-gray-900' : 'text-gray-400' }}">Service Process</div>
+                    <div class="text-[10px] font-bold uppercase mt-3 {{ $currentIndex >= 4 ? 'text-gray-900' : 'text-gray-400' }}">Service Process</div>
+                </div>
+                <div class="step-line absolute top-3 left-1/2 w-full h-[2px] bg-gray-100 transition-colors"></div>
+            </div>
+
+            {{-- Step 5: Payment --}}
+            <div class="step-item flex-1 relative {{ $currentIndex > 5 ? 'completed' : ($currentIndex == 5 ? 'active' : '') }}">
+                <div class="flex flex-col items-center">
+                    <div class="step-icon w-6 h-6 rounded-full border-2 border-gray-200 bg-white flex items-center justify-center z-10 transition-colors">
+                        @if($currentIndex > 4)<svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>@endif
+                    </div>
+                    <div class="text-[10px] font-bold uppercase mt-3 {{ $currentIndex >= 5 ? 'text-gray-900' : 'text-gray-400' }}">Payment</div>
                 </div>
                 <div class="step-line absolute top-3 left-1/2 w-full h-[2px] bg-gray-100 transition-colors"></div>
             </div>
 
             {{-- Step 6: Completed --}}
-            <div class="step-item flex-1 relative {{ $currentIndex >= 4 ? 'completed active' : '' }}">
+            <div class="step-item flex-1 relative {{ $currentIndex == 6 ? 'completed active' : '' }}">
                 <div class="flex flex-col items-center">
                     <div class="step-icon w-6 h-6 rounded-full border-2 border-gray-200 bg-white flex items-center justify-center z-10 transition-colors">
-                        @if($currentIndex >= 4)<svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>@endif
+                        @if($currentIndex >= 6)<svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>@endif
                     </div>
-                    <div class="text-[10px] font-bold uppercase mt-3 {{ $currentIndex >= 4 ? 'text-gray-900' : 'text-gray-400' }}">Completed</div>
+                    <div class="text-[10px] font-bold uppercase mt-3 {{ $currentIndex >= 6 ? 'text-gray-900' : 'text-gray-400' }}">Completed</div>
                 </div>
             </div>
         </div>
@@ -145,18 +144,22 @@
     @if($order->status !== 'cancelled')
     <div class="bg-gray-50 border border-gray-100 rounded-3xl p-6 mb-8 flex items-start gap-4">
         <div class="w-10 h-10 rounded-full bg-white border border-gray-200 flex items-center justify-center shrink-0">
-            <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            <svg class="w-5 h-5 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
         </div>
         <div>
             <h3 class="text-sm font-bold text-gray-900 mb-1">What's happening now?</h3>
-            @if($order->status === 'pending_valuation')
+            @if($order->status === 'pending_valuation' && $order->agreed_price === null)
                 <p class="text-xs text-gray-600 font-medium leading-relaxed">Your order is being reviewed by Admin. We are verifying service details. Admin will contact you via chat to discuss details and total price if needed.</p>
                 <div class="mt-3 flex items-center gap-1.5 text-[10px] font-bold text-gray-400 uppercase tracking-wide">
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                     Estimated review time: 1-2 working hours
                 </div>
             @elseif($order->status === 'pending_valuation' && $order->agreed_price !== null)
-                <p class="text-xs text-gray-600 font-medium leading-relaxed">Admin has reviewed your order and proposed a price. Please review the service details and the proposed price. You can accept or continue negotiating via chat.</p>
+                <p class="text-xs text-gray-600 font-medium leading-relaxed">Admin has sent a price proposal for your order. Please review the cost details below and make your decision.</p>
+                <div class="mt-3 flex items-center gap-1.5 text-[10px] font-bold text-gray-400 uppercase tracking-wide">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    Estimated review time: 1 working day
+                </div>
             @elseif($order->status === 'waiting_payment')
                 <p class="text-xs text-gray-600 font-medium leading-relaxed">Price has been agreed upon. Please proceed to payment to confirm your booking and schedule the service.</p>
             @elseif($order->status === 'processing')
@@ -177,8 +180,12 @@
                         <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                     </div>
                     <div>
-                        <h2 class="text-xl font-black text-gray-900 font-plus">Pre-Invoice from Admin</h2>
-                        <p class="text-xs text-gray-500 font-medium mt-1">Issued on {{ now()->subHours(2)->translatedFormat('d M Y') }} | Expiring on {{ now()->addDays(3)->translatedFormat('d M Y') }}</p>
+                        <div class="flex items-center gap-3">
+                            <h2 class="text-xl font-black text-gray-900 font-plus">Pro-invoice from Admin</h2>
+                            <span class="inline-flex items-center px-2 py-0.5 rounded text-[9px] font-bold bg-gray-100 text-gray-500 border border-gray-200 uppercase tracking-tighter">Awaiting Approval</span>
+                        </div>
+                        <p class="text-xs text-gray-500 font-medium mt-1">PO# {{ $order->invoice_number ?? 'BWP-2026-0001' }} • Awaiting your approval</p>
+                        <p class="text-[10px] text-gray-400 font-medium italic">Valid until {{ now()->addDays(5)->translatedFormat('d M Y') }} • 5 days left</p>
                     </div>
                 </div>
                 <button class="px-4 py-2 border border-gray-200 rounded-xl text-xs font-bold text-gray-700 hover:bg-gray-50 transition-colors hidden sm:block">
@@ -191,29 +198,29 @@
                 <div class="space-y-4 text-sm font-medium">
                     <div class="flex justify-between items-start pb-4 border-b border-gray-50">
                         <div>
-                            <div class="text-gray-900 font-bold">Deep Cleaning 50M</div>
-                            <div class="text-[11px] text-gray-400">Estimated Base Service Price</div>
+                            <div class="text-gray-900 font-bold">Deep Cleaning 50m²</div>
+                            <div class="text-[11px] text-gray-400">Subtotal area measurement to be assessed</div>
                         </div>
-                        <div class="text-gray-900 font-bold">Rp 2.200.000</div>
+                        <div class="text-gray-900 font-bold">Rp 2.000.000</div>
                     </div>
                     <div class="flex justify-between items-start pb-4 border-b border-gray-50">
                         <div>
                             <div class="text-gray-900 font-bold">Extra 2 Bathrooms</div>
-                            <div class="text-[11px] text-gray-400">Deep Cleaning For Extra Toilets</div>
+                            <div class="text-[11px] text-gray-400">Deep cleaning includes fixtures & tiles</div>
                         </div>
-                        <div class="text-gray-900 font-bold">Rp 200.000</div>
+                        <div class="text-gray-900 font-bold">Rp 400.000</div>
                     </div>
                     <div class="flex justify-between items-start pb-4 border-b border-gray-50">
                         <div>
-                            <div class="text-gray-900 font-bold">Balcony 10m²</div>
-                            <div class="text-[11px] text-gray-400">Standard Cleaning Service</div>
+                            <div class="text-gray-900 font-bold">Balcony 20m²</div>
+                            <div class="text-[11px] text-gray-400">Estimated floor area service</div>
                         </div>
-                        <div class="text-gray-900 font-bold">Rp 100.000</div>
+                        <div class="text-gray-900 font-bold">Rp 200.000</div>
                     </div>
                     
                     <div class="flex justify-between items-center pt-4">
                         <div class="text-gray-500 font-bold uppercase text-[10px] tracking-widest">Subtotal</div>
-                        <div class="text-gray-900 font-black font-plus">Rp 2.500.000</div>
+                        <div class="text-gray-900 font-black font-plus">Rp 2.600.000</div>
                     </div>
                     <div class="flex justify-between items-center pb-4 border-b border-gray-200">
                         <div class="text-gray-500 font-bold uppercase text-[10px] tracking-widest">Discount</div>
@@ -227,21 +234,21 @@
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 relative z-10">
                     <div>
                         <div class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Estimated Range</div>
-                        <p class="text-[11px] text-gray-500 font-medium">Final price depends on actual service process</p>
+                        <p class="text-[11px] text-gray-500 font-medium">Final price depends on actual work completed</p>
                     </div>
                     <div class="text-right">
-                        <div class="text-3xl font-black text-gray-900 font-plus tracking-tight">Rp {{ number_format($order->agreed_price ?? 2500000, 0, ',', '.') }}</div>
+                        <div class="text-3xl font-black text-gray-900 font-plus tracking-tight">Rp {{ number_format($order->agreed_price ?? 2600000, 0, ',', '.') }}</div>
                         <div class="text-[11px] font-bold text-gray-400 mt-1">± 10% tolerance</div>
                     </div>
                 </div>
                 <div class="grid grid-cols-2 gap-4 mt-6 pt-6 border-t border-gray-200 relative z-10">
                     <div>
-                        <div class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Service</div>
-                        <div class="text-sm font-bold text-gray-900">Rp {{ number_format($order->agreed_price ?? 2500000, 0, ',', '.') }}</div>
+                        <div class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Minimum</div>
+                        <div class="text-sm font-bold text-gray-900">Rp {{ number_format(($order->agreed_price ?? 2600000) * 0.9, 0, ',', '.') }}</div>
                     </div>
-                    <div>
-                        <div class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Materials</div>
-                        <div class="text-sm font-bold text-gray-900">Rp 0</div>
+                    <div class="text-right">
+                        <div class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Maximum</div>
+                        <div class="text-sm font-bold text-gray-900">Rp {{ number_format(($order->agreed_price ?? 2600000) * 1.1, 0, ',', '.') }}</div>
                     </div>
                 </div>
             </div>
@@ -488,44 +495,46 @@
     <div class="mb-12">
         <h2 class="text-xl font-black text-gray-900 font-plus mb-6">Order Activity</h2>
         
-        <div class="space-y-6 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-slate-200 before:to-transparent">
+        <div class="space-y-8 relative">
+            <div class="absolute left-[11px] top-2 bottom-2 w-px bg-gray-100"></div>
             
             {{-- Loop through Logs --}}
             @forelse($logs as $log)
-            <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
-                <div class="flex items-center justify-center w-10 h-10 rounded-full border border-white bg-slate-200 group-[.is-active]:bg-[#2D2D2D] text-white shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 shadow-sm z-10">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                </div>
-                
-                <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] p-4 rounded-2xl bg-white border border-gray-100 shadow-sm">
-                    <div class="flex items-center justify-between mb-1">
-                        <div class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">{{ $log->created_at->format('d M, H:i') }}</div>
+                <div class="flex gap-6 relative z-10">
+                    <div class="w-6 h-6 rounded-full bg-gray-900 border-4 border-white flex items-center justify-center shrink-0 shadow-sm">
+                        {{-- Dot --}}
                     </div>
-                    <div class="text-sm font-bold text-gray-900 mb-1">{{ $log->action }}</div>
-                    <div class="text-[11px] text-gray-500 leading-relaxed font-medium">
-                        {{ $log->reason ?? 'System state updated.' }}
+                    <div>
+                        <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{{ $log->created_at->format('d M, H:i') }}</p>
+                        <p class="text-xs font-bold text-gray-900 mt-0.5">{{ $log->action }}</p>
+                        @if($log->reason)
+                            <p class="text-[11px] text-gray-500 font-medium leading-relaxed mt-1 italic">"{{ $log->reason }}"</p>
+                        @endif
                     </div>
                 </div>
-            </div>
             @empty
-            {{-- Default Creation Log if no logs exist --}}
-            <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
-                <div class="flex items-center justify-center w-10 h-10 rounded-full border border-white bg-[#2D2D2D] text-white shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 shadow-sm z-10">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                </div>
-                
-                <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] p-4 rounded-2xl bg-white border border-gray-100 shadow-sm">
-                    <div class="flex items-center justify-between mb-1">
-                        <div class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">{{ $order->created_at->format('d M, H:i') }}</div>
+                <div class="flex gap-6 relative z-10">
+                    <div class="w-6 h-6 rounded-full bg-gray-900 border-4 border-white flex items-center justify-center shrink-0 shadow-sm">
                     </div>
-                    <div class="text-sm font-bold text-gray-900 mb-1">Order Created</div>
-                    <div class="text-[11px] text-gray-500 leading-relaxed font-medium">
-                        Order #{{ $order->invoice_number ?? 'INV-'.$order->id }} was successfully created.
+                    <div>
+                        <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{{ $order->created_at->format('d M, H:i') }}</p>
+                        <p class="text-xs font-bold text-gray-900 mt-0.5">Order Created</p>
                     </div>
                 </div>
-            </div>
             @endforelse
             
+            {{-- Future Step Indicator --}}
+            @if($order->status !== 'completed' && $order->status !== 'cancelled')
+            <div class="flex gap-6 relative z-10 opacity-40">
+                <div class="w-6 h-6 rounded-full bg-white border-2 border-gray-200 flex items-center justify-center shrink-0">
+                    {{-- Empty Dot --}}
+                </div>
+                <div>
+                    <p class="text-[10px] font-bold text-gray-300 uppercase tracking-widest">Next Step</p>
+                    <p class="text-xs font-bold text-gray-400 mt-0.5">Awaiting further progress...</p>
+                </div>
+            </div>
+            @endif
         </div>
     </div>
 
