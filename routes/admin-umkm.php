@@ -20,6 +20,7 @@ Route::middleware(['auth', 'verified', 'role:admin_umkm'])->group(function () {
         Route::get('/services', \App\Livewire\AdminUmkm\Product\Index::class)->name('services');
 
         Route::get('/verification', \App\Livewire\AdminUmkm\Verification::class)->name('verification');
+        Route::get('/staff', \App\Livewire\AdminUmkm\Staff\Index::class)->name('staff');
 
        
     });

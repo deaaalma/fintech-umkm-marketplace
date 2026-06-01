@@ -52,6 +52,16 @@
             </div>
         </a>
 
+        <a href="{{ route('umkm.staff') }}" 
+           class="flex items-center justify-between px-6 py-4 rounded-2xl transition-all duration-300 group {{ request()->routeIs('umkm.staff') ? 'bg-white/5 text-white active-nav' : 'text-white/50 hover:bg-white/5 hover:text-white' }}">
+            <div class="flex items-center gap-4">
+                <svg class="w-6 h-6 {{ request()->routeIs('umkm.staff') ? 'text-[#0077B6]' : 'text-slate-500 group-hover:text-blue-200' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                    <path d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" stroke-linecap="round" stroke-linejoin="round"></path>
+                </svg>
+                <span class="text-xs font-bold tracking-wider uppercase">Staff</span>
+            </div>
+        </a>
+
         <a href="#" 
            class="flex items-center justify-between px-6 py-4 rounded-2xl transition-all duration-300 group text-white/50 hover:bg-white/5 hover:text-white">
             <div class="flex items-center gap-4">
