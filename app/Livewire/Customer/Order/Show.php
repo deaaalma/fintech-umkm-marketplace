@@ -11,6 +11,12 @@ use Livewire\Attributes\Layout;
 class Show extends Component
 {
     public Order $order;
+    public $showAcceptModal = false;
+
+    public function toggleAcceptModal()
+    {
+        $this->showAcceptModal = !$this->showAcceptModal;
+    }
 
     public function mount(Order $order)
     {

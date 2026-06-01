@@ -238,17 +238,17 @@
                     </div>
                     <div class="text-right">
                         <div class="text-3xl font-black text-gray-900 font-plus tracking-tight">Rp {{ number_format($order->agreed_price ?? 2600000, 0, ',', '.') }}</div>
-                        <div class="text-[11px] font-bold text-gray-400 mt-1">± 10% tolerance</div>
+                        <div class="text-[11px] font-bold text-gray-400 mt-1">± 15% tolerance</div>
                     </div>
                 </div>
                 <div class="grid grid-cols-2 gap-4 mt-6 pt-6 border-t border-gray-200 relative z-10">
                     <div>
                         <div class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Minimum</div>
-                        <div class="text-sm font-bold text-gray-900">Rp {{ number_format(($order->agreed_price ?? 2600000) * 0.9, 0, ',', '.') }}</div>
+                        <div class="text-sm font-bold text-gray-900">Rp {{ number_format(($order->agreed_price ?? 2600000) * 0.85, 0, ',', '.') }}</div>
                     </div>
                     <div class="text-right">
                         <div class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Maximum</div>
-                        <div class="text-sm font-bold text-gray-900">Rp {{ number_format(($order->agreed_price ?? 2600000) * 1.1, 0, ',', '.') }}</div>
+                        <div class="text-sm font-bold text-gray-900">Rp {{ number_format(($order->agreed_price ?? 2600000) * 1.15, 0, ',', '.') }}</div>
                     </div>
                 </div>
             </div>
@@ -271,7 +271,7 @@
             <div class="border-t border-gray-100 pt-8">
                 <h3 class="text-sm font-bold text-gray-900 mb-4">Do you agree with this price?</h3>
                 <div class="flex flex-col sm:flex-row gap-3">
-                    <button wire:click="acceptPrice" wire:confirm="Are you sure you want to accept this price and proceed?" class="flex-1 py-3.5 bg-[#2D2D2D] text-white rounded-xl text-xs font-bold hover:bg-black transition-colors flex items-center justify-center gap-2 shadow-sm">
+                    <button wire:click="toggleAcceptModal" class="flex-1 py-3.5 bg-[#2D2D2D] text-white rounded-xl text-xs font-bold hover:bg-black transition-colors flex items-center justify-center gap-2 shadow-sm">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                         Accept & Continue to Schedule
                     </button>
@@ -563,4 +563,65 @@
         <p class="text-xs text-gray-500 font-medium">Need help with your order? <a href="#" class="text-gray-900 font-bold hover:underline">Contact Support</a></p>
     </div>
 
+    {{-- CONFIRM ACCEPTANCE MODAL --}}
+    @if($showAcceptModal)
+    <div class="fixed inset-0 z-[100] overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity" aria-hidden="true" wire:click="toggleAcceptModal"></div>
+
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+
+            <div class="inline-block align-bottom bg-white rounded-[32px] text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full p-8 md:p-10">
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-6 border border-gray-100">
+                        <div class="w-8 h-8 rounded-full border-4 border-gray-900 flex items-center justify-center">
+                            <div class="w-2 h-2 rounded-full bg-gray-900"></div>
+                        </div>
+                    </div>
+                    <h3 class="text-2xl font-black text-gray-900 font-plus mb-2" id="modal-title">Confirm Acceptance</h3>
+                    <p class="text-sm text-gray-500 font-medium">Are you sure you accept this price range?</p>
+                </div>
+
+                <div class="mt-8 bg-gray-50 rounded-3xl p-6 border border-gray-100">
+                    <div class="text-center border-b border-gray-200 pb-4 mb-4">
+                        <div class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Estimated Total:</div>
+                        <div class="text-2xl font-black text-gray-900 font-plus">Rp {{ number_format($order->agreed_price ?? 2600000, 0, ',', '.') }}</div>
+                        <div class="text-[10px] font-bold text-gray-400 mt-1">± 15%</div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="text-center">
+                            <div class="text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-1">Minimum</div>
+                            <div class="text-sm font-black text-gray-900 font-plus">Rp {{ number_format(($order->agreed_price ?? 2600000) * 0.85, 0, ',', '.') }}</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-1">Maximum</div>
+                            <div class="text-sm font-black text-gray-900 font-plus">Rp {{ number_format(($order->agreed_price ?? 2600000) * 1.15, 0, ',', '.') }}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-6 bg-gray-50/50 rounded-2xl p-4 border border-gray-100 flex gap-3 items-start">
+                    <div class="w-5 h-5 bg-white rounded-full flex items-center justify-center border border-gray-200 shrink-0 mt-0.5">
+                        <svg class="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    </div>
+                    <div>
+                        <h4 class="text-[11px] font-bold text-gray-900 mb-1 uppercase tracking-wide">Important Notice</h4>
+                        <p class="text-[10px] text-gray-500 font-medium leading-relaxed">
+                            By accepting, you agree to the estimated price range. Final invoice will be calculated based on actual work completed and sent after service completion. You will be notified before payment is required.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="mt-10 grid grid-cols-2 gap-4">
+                    <button type="button" wire:click="toggleAcceptModal" class="py-4 bg-white border border-gray-200 rounded-2xl text-xs font-bold text-gray-700 hover:bg-gray-50 transition-colors">
+                        Cancel
+                    </button>
+                    <button type="button" wire:click="acceptPrice" class="py-4 bg-[#2D2D2D] rounded-2xl text-xs font-bold text-white hover:bg-black transition-colors shadow-lg">
+                        Yes, Accept & Continue
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
 </div>
