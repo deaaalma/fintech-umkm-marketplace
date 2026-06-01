@@ -7,12 +7,12 @@
             <h1 class="text-2xl font-bold text-gray-900">Manajemen Staff</h1>
             <p class="text-sm text-gray-500 mt-1 font-medium">Kelola data staff dan admin internal</p>
         </div>
-        <button class="bg-[#2D2D2D] hover:bg-black text-white px-6 py-2.5 rounded-full font-bold flex items-center gap-2 transition-all shadow-sm">
+        <a href="{{ route('umkm.staff.create') }}" class="bg-[#2D2D2D] hover:bg-black text-white px-6 py-2.5 rounded-full font-bold flex items-center gap-2 transition-all shadow-sm">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
             </svg>
             Tambah Staff Baru
-        </button>
+        </a>
     </div>
 
     {{-- Filter Bar --}}
@@ -160,9 +160,9 @@
             </div>
             <h3 class="text-lg font-bold text-gray-900 mb-2">Belum ada staff</h3>
             <p class="text-sm text-gray-500 font-medium max-w-xs mx-auto mb-8">Mulai kelola tim Anda dengan menambahkan staff pertama.</p>
-            <button class="bg-[#2D2D2D] hover:bg-black text-white px-8 py-3 rounded-full font-bold transition-all shadow-sm">
+            <a href="{{ route('umkm.staff.create') }}" class="bg-[#2D2D2D] hover:bg-black text-white px-8 py-3 rounded-full font-bold transition-all shadow-sm">
                 Tambah Staff Pertama
-            </button>
+            </a>
         </div>
         @endif
 

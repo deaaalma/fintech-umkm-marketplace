@@ -5,6 +5,7 @@ namespace App\Livewire\AdminUmkm\Staff;
 use App\Models\User;
 use App\Models\Umkm;
 use App\Models\UmkmWorker;
+use App\Services\Staff\StaffService;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -39,7 +40,8 @@ class Index extends Component
         $umkmId = Umkm::where('owner_id', auth()->id())->value('id');
 
         if ($worker && $worker->umkm_id === $umkmId) {
-            $worker->delete();
+            $service = app(StaffService::class);
+            $service->delete($worker);
             $this->dispatch('notify', [
                 'message' => 'Staff berhasil dihapus dari tim',
                 'type' => 'success'

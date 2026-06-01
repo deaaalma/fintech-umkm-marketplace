@@ -26,6 +26,9 @@ class User extends Authenticatable
         'role',
         'otp_code',
         'otp_expires_at',
+        'profile_photo_path',
+        'nik',
+        'date_of_birth',
     ];
 
     /**
