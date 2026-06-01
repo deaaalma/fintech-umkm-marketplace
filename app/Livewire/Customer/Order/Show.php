@@ -79,7 +79,7 @@ class Show extends Component
             abort(403, 'Unauthorized action.');
         }
         
-        $this->order = $order->load(['umkm', 'product']);
+        $this->order = $order->load(['umkm', 'product', 'review']);
     }
 
     public function cancelOrder()

@@ -33,4 +33,9 @@ class Order extends Model
     {
         return $this->hasOne(OrderAssignment::class, 'order_id');
     }
+
+    public function review()
+    {
+        return $this->hasOne(OrderReview::class);
+    }
 }

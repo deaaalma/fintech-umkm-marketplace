@@ -731,18 +731,31 @@
     @elseif($order->status === 'completed')
         {{-- COMPLETED VIEW (Step 6) --}}
         <div class="space-y-8">
-            {{-- Review Prompt Card --}}
+            {{-- Review Section --}}
+            @if(!$order->review)
             <div class="bg-white border border-gray-100 rounded-[32px] p-8 shadow-sm text-center">
                 <div class="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-6">
                     <svg class="w-8 h-8 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                 </div>
                 <h3 class="text-xl font-black text-gray-900 font-plus mb-2">How do you feel?</h3>
                 <p class="text-sm text-gray-500 font-medium mb-8">Awesome experience with {{ $order->umkm->name }}?</p>
-                <button class="px-8 py-4 bg-[#2D2D2D] hover:bg-black text-white rounded-2xl font-black text-xs uppercase tracking-widest transition-all shadow-lg flex items-center justify-center gap-2 mx-auto">
+                <a href="{{ route('customer.order-review', $order->id) }}" class="px-8 py-4 bg-[#2D2D2D] hover:bg-black text-white rounded-2xl font-black text-xs uppercase tracking-widest transition-all shadow-lg flex items-center justify-center gap-2 mx-auto w-fit">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
                     Write a Review
-                </button>
+                </a>
             </div>
+            @else
+            <div class="bg-gradient-to-br from-teal-500 to-teal-600 rounded-[32px] p-8 shadow-xl text-center text-white relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16"></div>
+                <div class="relative z-10">
+                    <div class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-6 backdrop-blur-sm">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+                    </div>
+                    <h3 class="text-xl font-black font-plus mb-2">Thank you for your review!</h3>
+                    <p class="text-sm text-teal-50 font-medium mb-0">Your feedback helps {{ $order->umkm->name }} improve their service and helps other customers make better choices.</p>
+                </div>
+            </div>
+            @endif
 
             {{-- Work Results Gallery --}}
             <div class="bg-white border border-gray-100 rounded-[32px] p-8 shadow-sm">
