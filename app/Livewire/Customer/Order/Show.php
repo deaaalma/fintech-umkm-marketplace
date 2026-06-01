@@ -12,6 +12,61 @@ class Show extends Component
 {
     public Order $order;
     public $showAcceptModal = false;
+    
+    // Mock data for Service Process (Step 4)
+    public $staffTeam = [
+        ['name' => 'Ahmad Syarif', 'role' => 'Team Lead', 'experience' => '5 years experience', 'initials' => 'AS'],
+        ['name' => 'Budi Santoso', 'role' => 'Member', 'experience' => '2 years experience', 'initials' => 'BS'],
+    ];
+
+    public $workScope = [
+        'Deep cleaning 50m² living area',
+        'Extra 2 bathrooms deep cleaning',
+        'Balcony 10m² cleaning',
+    ];
+
+    public $workProgress = [
+        ['task' => 'Living room', 'status' => 'completed', 'time' => '10:00'],
+        ['task' => 'Bedroom 1', 'status' => 'completed', 'time' => '10:20'],
+        ['task' => 'Bathroom 1', 'status' => 'in_progress', 'time' => 'Currently working...'],
+        ['task' => 'Bathroom 2', 'status' => 'pending', 'time' => ''],
+        ['task' => 'Kitchen', 'status' => 'pending', 'time' => ''],
+        ['task' => 'Balcony', 'status' => 'pending', 'time' => ''],
+    ];
+
+    // Mock data for Payment (Step 5)
+    public $paymentDetails = [
+        'base_services' => [
+            ['name' => 'Deep cleaning 50m²', 'price' => 2210000],
+            ['name' => 'Extra 2 Bathrooms', 'price' => 390000],
+            ['name' => 'Balcony 20m²', 'price' => 187200],
+        ],
+        'additional_services' => [
+            ['name' => 'Window Cleaning (3 windows)', 'price' => 117000],
+            ['name' => 'AC Filter Cleaning (1 unit)', 'price' => 150000],
+        ],
+        'discounts' => [
+            ['name' => 'Loyalty Discount', 'amount' => 30000],
+        ],
+        'fees' => [
+            ['name' => 'Admin Fee', 'amount' => 4600],
+        ],
+        'final_total' => 2728800
+    ];
+
+    // Mock data for Completed (Step 6)
+    public $workResults = [
+        'https://images.unsplash.com/photo-1581578731548-c64695cc6958?q=80&w=500&auto=format&fit=crop',
+        'https://images.unsplash.com/photo-1527515545081-5db817172677?q=80&w=500&auto=format&fit=crop',
+        'https://images.unsplash.com/photo-1628177142898-93e36e4e3a50?q=80&w=500&auto=format&fit=crop',
+        'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?q=80&w=500&auto=format&fit=crop',
+    ];
+
+    public $verificationData = [
+        'completed_at' => '14 Jan 2024, 11:45',
+        'transaction_id' => 'TRX-992100445',
+        'method' => 'Bank Transfer (BCA)',
+    ];
 
     public function toggleAcceptModal()
     {

@@ -143,29 +143,39 @@
     {{-- Banner "What's happening now?" --}}
     @if($order->status !== 'cancelled')
     <div class="bg-gray-50 border border-gray-100 rounded-3xl p-6 mb-8 flex items-start gap-4">
-        <div class="w-10 h-10 rounded-full bg-white border border-gray-200 flex items-center justify-center shrink-0">
-            <svg class="w-5 h-5 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <div class="w-10 h-10 rounded-full bg-white border border-gray-200 flex items-center justify-center shrink-0 shadow-sm">
+            @if($order->status === 'processing')
+                <div class="w-2.5 h-2.5 rounded-full bg-teal-500 animate-pulse"></div>
+            @elseif($order->status === 'waiting_payment')
+                <svg class="w-5 h-5 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+            @elseif($order->status === 'completed')
+                <svg class="w-5 h-5 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            @else
+                <svg class="w-5 h-5 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            @endif
         </div>
         <div>
-            <h3 class="text-sm font-bold text-gray-900 mb-1">What's happening now?</h3>
+            <h3 class="text-sm font-bold text-gray-900 mb-1">
+                @if($order->status === 'processing')
+                    Service in Progress
+                @elseif($order->status === 'waiting_payment')
+                    Service Completed Successfully
+                @elseif($order->status === 'completed')
+                    Order Completed
+                @else
+                    What's happening now?
+                @endif
+            </h3>
             @if($order->status === 'pending_valuation' && $order->agreed_price === null)
                 <p class="text-xs text-gray-600 font-medium leading-relaxed">Your order is being reviewed by Admin. We are verifying service details. Admin will contact you via chat to discuss details and total price if needed.</p>
-                <div class="mt-3 flex items-center gap-1.5 text-[10px] font-bold text-gray-400 uppercase tracking-wide">
-                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                    Estimated review time: 1-2 working hours
-                </div>
             @elseif($order->status === 'pending_valuation' && $order->agreed_price !== null)
                 <p class="text-xs text-gray-600 font-medium leading-relaxed">Admin has sent a price proposal for your order. Please review the cost details below and make your decision.</p>
-                <div class="mt-3 flex items-center gap-1.5 text-[10px] font-bold text-gray-400 uppercase tracking-wide">
-                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                    Estimated review time: 1 working day
-                </div>
             @elseif($order->status === 'waiting_payment')
-                <p class="text-xs text-gray-600 font-medium leading-relaxed">Price has been agreed upon. Please proceed to payment to confirm your booking and schedule the service.</p>
+                <p class="text-xs text-gray-600 font-medium leading-relaxed">Good news! Our professional staff have successfully completed the service. Please review the work summary and the final payment details below.</p>
             @elseif($order->status === 'processing')
-                <p class="text-xs text-gray-600 font-medium leading-relaxed">Your order is currently in progress. The service provider will arrive at the scheduled time.</p>
+                <p class="text-xs text-gray-600 font-medium leading-relaxed">Our professional staff is currently working at your location. You can track the progress below and contact them if needed.</p>
             @elseif($order->status === 'completed')
-                <p class="text-xs text-gray-600 font-medium leading-relaxed">Service has been completed. Thank you for using our services! Please leave a review.</p>
+                <p class="text-xs text-gray-600 font-medium leading-relaxed">Thank you for trusting our service. The service is now complete and verified. Check your work results below.</p>
             @endif
         </div>
     </div>
@@ -345,6 +355,499 @@
             </div>
         </div>
 
+    @elseif($order->status === 'processing')
+        {{-- SERVICE PROCESS VIEW (Step 4) --}}
+        <div class="space-y-8">
+            {{-- Progress Status Card --}}
+            <div class="bg-white border border-gray-200 rounded-[32px] p-6 md:p-8 shadow-sm">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-8">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-2xl bg-teal-50 border border-teal-100 flex items-center justify-center shrink-0">
+                            <svg class="w-6 h-6 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                        </div>
+                        <div>
+                            <h2 class="text-lg font-black text-gray-900 font-plus">Service In Progress</h2>
+                            <p class="text-xs text-gray-500 font-medium">Started at 09:30 WIB</p>
+                        </div>
+                    </div>
+                    <span class="px-4 py-2 bg-teal-50 text-teal-700 rounded-xl text-[10px] font-black uppercase tracking-widest border border-teal-100 flex items-center gap-2">
+                        <span class="w-1.5 h-1.5 rounded-full bg-teal-500 animate-pulse"></span>
+                        Working Now
+                    </span>
+                </div>
+
+                <div class="space-y-3">
+                    <div class="flex justify-between items-end mb-1">
+                        <span class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Progress</span>
+                        <span class="text-xs font-black text-gray-900 font-plus">1h 10m elapsed</span>
+                    </div>
+                    <div class="h-3 bg-gray-100 rounded-full overflow-hidden flex border border-gray-200/50">
+                        <div class="w-3/5 bg-gray-900 rounded-full"></div>
+                    </div>
+                    <div class="flex justify-between items-center text-[10px] font-bold text-gray-400">
+                        <span>Started: 09:30</span>
+                        <span>Est. finish: 11:30 WIB (2h remaining)</span>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Staff Team Card --}}
+            <div class="bg-white border border-gray-100 rounded-[32px] p-8 shadow-sm">
+                <h3 class="text-sm font-black text-gray-900 font-plus uppercase tracking-wider mb-6">Staff Team</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    @foreach($staffTeam as $staff)
+                    <div class="bg-gray-50/50 border border-gray-100 rounded-2xl p-5 group hover:bg-white hover:border-gray-200 transition-all">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-xl bg-white border border-gray-200 flex items-center justify-center text-sm font-black text-gray-400 group-hover:border-gray-900 group-hover:text-gray-900 transition-colors">
+                                    {{ $staff['initials'] }}
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-black text-gray-900 font-plus">{{ $staff['name'] }}</h4>
+                                    <p class="text-[10px] text-gray-500 font-medium">{{ $staff['experience'] }}</p>
+                                </div>
+                            </div>
+                            <span class="px-2 py-1 bg-white border border-gray-200 rounded text-[9px] font-bold text-gray-400 uppercase tracking-tighter">{{ $staff['role'] }}</span>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <button class="py-2 bg-white border border-gray-200 rounded-xl text-[10px] font-bold text-gray-600 hover:bg-gray-50 transition-colors flex items-center justify-center gap-1.5">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+                                Call
+                            </button>
+                            <button class="py-2 bg-white border border-gray-200 rounded-xl text-[10px] font-bold text-gray-600 hover:bg-gray-50 transition-colors flex items-center justify-center gap-1.5">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+                                Chat
+                            </button>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+
+            {{-- Service Details Card --}}
+            <div class="bg-white border border-gray-100 rounded-[32px] p-8 shadow-sm">
+                <h3 class="text-sm font-black text-gray-900 font-plus uppercase tracking-wider mb-6">Service Details</h3>
+                <div class="bg-gray-50/50 border border-gray-100 rounded-3xl p-6 md:p-8 space-y-6">
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-xl bg-white border border-gray-200 flex items-center justify-center shrink-0">
+                            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                        </div>
+                        <div>
+                            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-0.5">Service Date</p>
+                            <p class="text-sm font-black text-gray-900">{{ $order->booking_date ? \Carbon\Carbon::parse($order->booking_date)->translatedFormat('l, d F Y') : '-' }}</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-xl bg-white border border-gray-200 flex items-center justify-center shrink-0">
+                            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        </div>
+                        <div>
+                            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-0.5">Time Slot</p>
+                            <p class="text-sm font-black text-gray-900">09:30 - 11:30 WIB (2 hours)</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-xl bg-white border border-gray-200 flex items-center justify-center shrink-0">
+                            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                        </div>
+                        <div>
+                            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-0.5">Service Location</p>
+                            <p class="text-xs font-bold text-gray-900 leading-relaxed">{{ $order->service_address }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8">
+                    <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-4">Work Scope</p>
+                    <div class="space-y-3">
+                        @foreach($workScope as $scope)
+                        <div class="flex items-center gap-3">
+                            <div class="w-5 h-5 rounded-full border border-gray-200 flex items-center justify-center shrink-0">
+                                <div class="w-2.5 h-2.5 rounded-full bg-gray-100"></div>
+                            </div>
+                            <span class="text-xs font-bold text-gray-600">{{ $scope }}</span>
+                        </div>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+
+            {{-- Work Progress Card --}}
+            <div class="bg-white border border-gray-100 rounded-[32px] p-8 shadow-sm">
+                <div class="flex items-center gap-2 mb-6">
+                    <div class="w-6 h-6 rounded-full bg-gray-900 border-4 border-white flex items-center justify-center shrink-0 shadow-sm">
+                        <div class="w-1 h-1 rounded-full bg-white"></div>
+                    </div>
+                    <h3 class="text-sm font-black text-gray-900 font-plus uppercase tracking-wider">Work Progress</h3>
+                </div>
+                <p class="text-[11px] text-gray-500 font-medium mb-8">Staff will update progress as they complete each task.</p>
+
+                <div class="space-y-8 relative">
+                    <div class="absolute left-[9px] top-2 bottom-2 w-px bg-gray-100"></div>
+                    @foreach($workProgress as $progress)
+                    <div class="flex gap-6 relative z-10 {{ $progress['status'] === 'pending' ? 'opacity-40' : '' }}">
+                        <div class="w-5 h-5 rounded-full border-2 {{ $progress['status'] === 'completed' ? 'bg-gray-900 border-gray-900' : ($progress['status'] === 'in_progress' ? 'bg-white border-gray-900' : 'bg-white border-gray-200') }} flex items-center justify-center shrink-0 shadow-sm">
+                            @if($progress['status'] === 'completed')
+                                <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+                            @elseif($progress['status'] === 'in_progress')
+                                <div class="w-1.5 h-1.5 rounded-full bg-gray-900 animate-pulse"></div>
+                            @endif
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <p class="text-xs font-black text-gray-900">{{ $progress['task'] }} - {{ ucfirst(str_replace('_', ' ', $progress['status'])) }}</p>
+                                @if($progress['time'] && $progress['status'] === 'completed')
+                                    <span class="text-[9px] font-bold text-gray-400 bg-gray-100 px-2 py-0.5 rounded">Finished at {{ $progress['time'] }}</span>
+                                @endif
+                            </div>
+                            @if($progress['time'] && $progress['status'] === 'in_progress')
+                                <p class="text-[10px] text-gray-500 font-bold mt-1 tracking-tight">{{ $progress['time'] }}</p>
+                            @endif
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+
+            {{-- Important Notes Card --}}
+            <div class="bg-gray-50 border border-gray-200 rounded-[32px] p-8">
+                <div class="flex items-center gap-2 mb-6">
+                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    <h3 class="text-sm font-black text-gray-900 font-plus uppercase tracking-wider">Important Notes</h3>
+                </div>
+                <ul class="space-y-4 text-xs font-medium text-gray-600 list-disc list-inside">
+                    <li>Please ensure the staff has access to water and electricity.</li>
+                    <li>You can contact staff directly if you have specific requests.</li>
+                    <li>Payment will be required after service completion.</li>
+                    <li>Staff take a verification photo after service is complete.</li>
+                </ul>
+            </div>
+
+            {{-- Process Action Buttons --}}
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <button class="py-4 bg-white border border-gray-200 rounded-2xl text-xs font-black text-gray-900 hover:bg-gray-50 transition-all flex items-center justify-center gap-2 shadow-sm uppercase tracking-widest">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+                    Chat with Staff
+                </button>
+                <button class="py-4 bg-white border border-gray-200 rounded-2xl text-xs font-black text-gray-900 hover:bg-gray-50 transition-all flex items-center justify-center gap-2 shadow-sm uppercase tracking-widest">
+                    <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                    Report Issue
+                </button>
+                <button class="py-4 bg-white border border-gray-200 rounded-2xl text-xs font-black text-gray-900 hover:bg-gray-50 transition-all flex items-center justify-center gap-2 shadow-sm uppercase tracking-widest">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg>
+                    Share Status
+                </button>
+            </div>
+        </div>
+    @elseif($order->status === 'waiting_payment')
+        {{-- PAYMENT VIEW (Step 5) --}}
+        <div class="space-y-8">
+            {{-- Work Summary Card --}}
+            <div class="bg-white border border-gray-100 rounded-[32px] p-8 shadow-sm">
+                <h3 class="text-sm font-black text-gray-900 font-plus uppercase tracking-wider mb-6">Service Summary</h3>
+                <div class="bg-gray-50/50 border border-gray-100 rounded-3xl p-6 md:p-8 space-y-6">
+                    <div class="flex items-center gap-4 pb-4 border-b border-gray-100">
+                        <div class="w-10 h-10 rounded-xl bg-white border border-gray-200 flex items-center justify-center shrink-0">
+                            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                        </div>
+                        <div>
+                            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-0.5">Completed Date</p>
+                            <p class="text-sm font-black text-gray-900">{{ now()->translatedFormat('l, d F Y') }}</p>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-3">
+                            <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Work Completed</p>
+                            @foreach($workScope as $scope)
+                            <div class="flex items-center gap-2">
+                                <svg class="w-3.5 h-3.5 text-teal-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                                <span class="text-[11px] font-bold text-gray-600">{{ $scope }}</span>
+                            </div>
+                            @endforeach
+                        </div>
+                        <div class="space-y-3">
+                            <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Staff Insights</p>
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-xl bg-gray-100 flex items-center justify-center text-xs font-black text-gray-400">AS</div>
+                                <div>
+                                    <p class="text-[11px] font-black text-gray-900">Ahmad Syarif</p>
+                                    <p class="text-[9px] text-gray-500 font-medium">Team Lead</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Final Payment Card --}}
+            <div class="bg-white border border-gray-200 rounded-[32px] p-6 md:p-10 shadow-sm overflow-hidden relative">
+                <div class="absolute top-0 right-0 p-4">
+                    <span class="px-3 py-1 bg-gray-100 text-gray-400 rounded-lg text-[9px] font-black uppercase tracking-tighter border border-gray-200">Final Invoice</span>
+                </div>
+                
+                <h3 class="text-xl font-black text-gray-900 font-plus mb-8">Final Payment Required</h3>
+
+                <div class="space-y-6">
+                    {{-- Base Services --}}
+                    <div>
+                        <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-4">Service Breakdown</p>
+                        <div class="space-y-3">
+                            @foreach($paymentDetails['base_services'] as $service)
+                            <div class="flex justify-between items-center text-sm">
+                                <span class="text-gray-600 font-bold">{{ $service['name'] }}</span>
+                                <span class="text-gray-900 font-black">Rp {{ number_format($service['price'], 0, ',', '.') }}</span>
+                            </div>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    {{-- Additional Services --}}
+                    <div class="bg-gray-50 rounded-2xl p-5 border border-gray-100">
+                        <div class="flex items-center gap-2 mb-4">
+                            <span class="px-2 py-0.5 bg-gray-900 text-white rounded text-[8px] font-black uppercase tracking-tighter">Additional Services</span>
+                            <span class="text-[10px] font-bold text-gray-400">Requested during work</span>
+                        </div>
+                        <div class="space-y-3">
+                            @foreach($paymentDetails['additional_services'] as $service)
+                            <div class="flex justify-between items-center text-xs">
+                                <span class="text-gray-500 font-bold">{{ $service['name'] }}</span>
+                                <span class="text-gray-900 font-black">Rp {{ number_format($service['price'], 0, ',', '.') }}</span>
+                            </div>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    {{-- Calculation --}}
+                    <div class="pt-6 border-t border-gray-100 space-y-3">
+                        @foreach($paymentDetails['discounts'] as $discount)
+                        <div class="flex justify-between items-center text-xs">
+                            <span class="text-teal-600 font-bold">{{ $discount['name'] }}</span>
+                            <span class="text-teal-600 font-black">- Rp {{ number_format($discount['amount'], 0, ',', '.') }}</span>
+                        </div>
+                        @endforeach
+                        @foreach($paymentDetails['fees'] as $fee)
+                        <div class="flex justify-between items-center text-xs text-gray-400">
+                            <span class="font-bold">{{ $fee['name'] }}</span>
+                            <span>+ Rp {{ number_format($fee['amount'], 0, ',', '.') }}</span>
+                        </div>
+                        @endforeach
+                    </div>
+
+                    {{-- Final Price --}}
+                    <div class="pt-8 border-t-2 border-gray-900 flex justify-between items-center">
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <h4 class="text-lg font-black text-gray-900 font-plus uppercase">Final Price</h4>
+                                <span class="px-2 py-0.5 bg-teal-500 text-white rounded text-[8px] font-black uppercase tracking-tighter">Fixed</span>
+                            </div>
+                            <p class="text-[10px] text-gray-400 font-medium mt-1">Verified by UMKM Admin</p>
+                        </div>
+                        <div class="text-3xl font-black text-gray-900 font-plus">Rp {{ number_format($paymentDetails['final_total'], 0, ',', '.') }}</div>
+                    </div>
+                </div>
+
+                {{-- Comparison Block --}}
+                <div class="mt-10 pt-8 border-t border-gray-100 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-2">
+                            <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                            <h4 class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Price Comparison</h4>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center text-[11px] font-bold">
+                                <span class="text-gray-400">Initial Estimate:</span>
+                                <span class="text-gray-500 line-through italic">Rp 2.210.000 - Rp 2.990.000</span>
+                            </div>
+                            <div class="flex justify-between items-center text-sm font-black">
+                                <span class="text-gray-900">Final Price:</span>
+                                <span class="text-gray-900">Rp {{ number_format($paymentDetails['final_total'], 0, ',', '.') }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 rounded-2xl p-4 border border-gray-100">
+                        <p class="text-[10px] text-gray-500 font-medium leading-relaxed italic">
+                            "Price is within the projected estimate range. Additional services were requested and verified during the service process."
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Payment Methods Card --}}
+            <div class="bg-white border border-gray-100 rounded-[32px] p-8 shadow-sm">
+                <h3 class="text-sm font-black text-gray-900 font-plus uppercase tracking-wider mb-8">Select Payment Method</h3>
+                <div class="space-y-4">
+                    <label class="relative flex items-center p-5 bg-white border-2 border-gray-900 rounded-2xl cursor-pointer shadow-sm group">
+                        <input type="radio" name="payment_method" class="hidden" checked>
+                        <div class="flex items-center gap-4 flex-1">
+                            <div class="w-10 h-10 rounded-xl bg-gray-50 flex items-center justify-center border border-gray-100 group-hover:bg-gray-100 transition-colors">
+                                <svg class="w-6 h-6 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
+                            </div>
+                            <div>
+                                <p class="text-sm font-black text-gray-900 font-plus">Virtual Account / Transfer</p>
+                                <p class="text-[10px] text-gray-500 font-medium italic">Instant verification. Supports all major banks.</p>
+                            </div>
+                        </div>
+                        <div class="w-6 h-6 rounded-full border-4 border-gray-900 flex items-center justify-center">
+                            <div class="w-2 h-2 rounded-full bg-gray-900"></div>
+                        </div>
+                    </label>
+
+                    <label class="relative flex items-center p-5 bg-white border border-gray-100 rounded-2xl cursor-pointer hover:border-gray-300 transition-all group">
+                        <input type="radio" name="payment_method" class="hidden">
+                        <div class="flex items-center gap-4 flex-1">
+                            <div class="w-10 h-10 rounded-xl bg-gray-50 flex items-center justify-center border border-gray-100 group-hover:bg-gray-100 transition-colors">
+                                <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
+                            </div>
+                            <div>
+                                <p class="text-sm font-black text-gray-400 font-plus">Credit Card</p>
+                                <p class="text-[10px] text-gray-400 font-medium">Pay securely with your VISA/Mastercard.</p>
+                            </div>
+                        </div>
+                        <div class="w-6 h-6 rounded-full border border-gray-200"></div>
+                    </label>
+
+                    <label class="relative flex items-center p-5 bg-white border border-gray-100 rounded-2xl cursor-pointer hover:border-gray-300 transition-all group">
+                        <input type="radio" name="payment_method" class="hidden">
+                        <div class="flex items-center gap-4 flex-1">
+                            <div class="w-10 h-10 rounded-xl bg-gray-50 flex items-center justify-center border border-gray-100 group-hover:bg-gray-100 transition-colors">
+                                <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                            </div>
+                            <div>
+                                <p class="text-sm font-black text-gray-400 font-plus">E-Wallet</p>
+                                <p class="text-[10px] text-gray-400 font-medium">GoPay, OVO, Dana, ShopeePay.</p>
+                            </div>
+                        </div>
+                        <div class="w-6 h-6 rounded-full border border-gray-200"></div>
+                    </label>
+                </div>
+            </div>
+
+            {{-- Final Proceed Button --}}
+            <button class="w-full py-5 bg-[#2D2D2D] hover:bg-black text-white rounded-[24px] font-black text-sm uppercase tracking-widest transition-all shadow-xl flex items-center justify-center gap-3">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
+                Proceed to Payment (Rp {{ number_format($paymentDetails['final_total'], 0, ',', '.') }})
+            </button>
+        </div>
+    @elseif($order->status === 'completed')
+        {{-- COMPLETED VIEW (Step 6) --}}
+        <div class="space-y-8">
+            {{-- Review Prompt Card --}}
+            <div class="bg-white border border-gray-100 rounded-[32px] p-8 shadow-sm text-center">
+                <div class="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <svg class="w-8 h-8 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                </div>
+                <h3 class="text-xl font-black text-gray-900 font-plus mb-2">How do you feel?</h3>
+                <p class="text-sm text-gray-500 font-medium mb-8">Awesome experience with {{ $order->umkm->name }}?</p>
+                <button class="px-8 py-4 bg-[#2D2D2D] hover:bg-black text-white rounded-2xl font-black text-xs uppercase tracking-widest transition-all shadow-lg flex items-center justify-center gap-2 mx-auto">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                    Write a Review
+                </button>
+            </div>
+
+            {{-- Work Results Gallery --}}
+            <div class="bg-white border border-gray-100 rounded-[32px] p-8 shadow-sm">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-sm font-black text-gray-900 font-plus uppercase tracking-wider">Work Results</h3>
+                    <span class="text-[10px] font-bold text-gray-400">4 Photos attached</span>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                    @foreach($workResults as $image)
+                    <div class="aspect-square bg-gray-100 rounded-2xl overflow-hidden border border-gray-200 group relative">
+                        <img src="{{ $image }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors"></div>
+                    </div>
+                    @endforeach
+                </div>
+                <div class="flex flex-col sm:flex-row gap-3">
+                    <button class="flex-1 py-3.5 bg-white border border-gray-200 rounded-xl text-[10px] font-black text-gray-900 hover:bg-gray-50 transition-all flex items-center justify-center gap-2 uppercase tracking-widest">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                        View in Gallery Mode
+                    </button>
+                    <button class="flex-1 py-3.5 bg-white border border-gray-200 rounded-xl text-[10px] font-black text-gray-900 hover:bg-gray-50 transition-all flex items-center justify-center gap-2 uppercase tracking-widest">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                        Download Photos
+                    </button>
+                </div>
+            </div>
+
+            {{-- Payment Summary Card --}}
+            <div class="bg-white border border-gray-100 rounded-[32px] p-8 shadow-sm">
+                <h3 class="text-sm font-black text-gray-900 font-plus uppercase tracking-wider mb-6">Payment Summary</h3>
+                <div class="space-y-4 mb-8">
+                    <div class="flex justify-between items-center text-xs">
+                        <span class="text-gray-400 font-bold uppercase tracking-tighter">Paid Date</span>
+                        <span class="text-gray-900 font-black">14 Jan 2024, 11:45</span>
+                    </div>
+                    <div class="flex justify-between items-center text-xs">
+                        <span class="text-gray-400 font-bold uppercase tracking-tighter">Total Paid</span>
+                        <span class="text-gray-900 font-black">Rp 2.728.800</span>
+                    </div>
+                    <div class="flex justify-between items-center text-xs">
+                        <span class="text-gray-400 font-bold uppercase tracking-tighter">Method</span>
+                        <span class="text-gray-900 font-black">Bank Transfer (BCA)</span>
+                    </div>
+                    <div class="flex justify-between items-center text-xs">
+                        <span class="text-gray-400 font-bold uppercase tracking-tighter">Transaction ID</span>
+                        <span class="text-gray-900 font-black">TRX-992100445</span>
+                    </div>
+                </div>
+                <div class="flex flex-col sm:flex-row gap-3">
+                    <button class="flex-1 py-3.5 bg-gray-50 rounded-xl text-[10px] font-black text-gray-900 hover:bg-gray-100 transition-all flex items-center justify-center gap-2 uppercase tracking-widest">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                        View Full Invoice
+                    </button>
+                    <button class="flex-1 py-3.5 bg-gray-50 rounded-xl text-[10px] font-black text-gray-900 hover:bg-gray-100 transition-all flex items-center justify-center gap-2 uppercase tracking-widest">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"/></svg>
+                        Download Receipt
+                    </button>
+                </div>
+            </div>
+
+            {{-- Rebook Section --}}
+            <div class="bg-gray-900 rounded-[40px] p-10 text-white relative overflow-hidden group">
+                <div class="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-bl-full -mr-20 -mt-20 group-hover:scale-110 transition-transform duration-700"></div>
+                <h3 class="text-2xl font-black font-plus mb-2 relative z-10">Want to book for this again?</h3>
+                <p class="text-gray-400 text-sm font-medium mb-8 relative z-10">Repeat this service with the same professional team.</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10 relative z-10">
+                    <button class="p-4 bg-white/10 border border-white/20 rounded-2xl text-left hover:bg-white/20 transition-all">
+                        <p class="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1">Frequency</p>
+                        <p class="text-sm font-black">One-time</p>
+                    </button>
+                    <button class="p-4 bg-white/10 border border-white/20 rounded-2xl text-left hover:bg-white/20 transition-all">
+                        <p class="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1">Frequency</p>
+                        <p class="text-sm font-black">Monthly</p>
+                    </button>
+                    <button class="p-4 bg-white/10 border border-white/20 rounded-2xl text-left hover:bg-white/20 transition-all">
+                        <p class="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1">Frequency</p>
+                        <p class="text-sm font-black">Weekly</p>
+                    </button>
+                </div>
+
+                <button class="w-full py-5 bg-white text-gray-900 rounded-[24px] font-black text-sm uppercase tracking-widest hover:bg-gray-100 transition-all shadow-xl flex items-center justify-center gap-3 relative z-10">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
+                    Book Again
+                </button>
+            </div>
+
+            {{-- Share Section --}}
+            <div class="bg-white border border-gray-100 rounded-[32px] p-8 shadow-sm">
+                <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+                    <div>
+                        <h4 class="text-sm font-black text-gray-900 font-plus uppercase tracking-wider mb-1 text-center md:text-left">Share your success</h4>
+                        <p class="text-[11px] text-gray-500 font-medium text-center md:text-left">Let your friends know about your clean space!</p>
+                    </div>
+                    <div class="flex gap-3">
+                        <button class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-purple-600 to-pink-500 flex items-center justify-center text-white shadow-lg hover:scale-110 transition-transform">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                        </button>
+                        <button class="w-12 h-12 rounded-2xl bg-teal-500 flex items-center justify-center text-white shadow-lg hover:scale-110 transition-transform">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766 0-3.18-2.587-5.77-5.764-5.77zm3.391 8.232c-.154.433-.746.77-1.028.814-.247.039-.553.056-.906-.057-.233-.074-.527-.172-.857-.311-1.414-.59-2.316-2.022-2.386-2.115-.07-.093-.578-.769-.578-1.479 0-.71.372-1.058.504-1.203.132-.144.288-.18.384-.18s.192.001.276.005c.094.004.22-.035.344.267.126.307.432 1.053.47 1.13.038.077.064.167.013.269-.051.103-.077.167-.154.257-.077.09-.161.2-.23.269-.077.077-.158.161-.068.315.09.154.399.658.855 1.064.588.524 1.082.686 1.236.762.154.077.243.064.333-.038.09-.103.384-.449.487-.603.103-.154.205-.128.346-.077s.91.43 1.064.513c.154.083.256.128.295.192.039.064.039.372-.115.805zM12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm.013 21.05c-1.636 0-3.23-.433-4.629-1.253l-3.303.866.881-3.218c-.9-1.458-1.375-3.136-1.373-4.856.003-5.068 4.129-9.19 9.199-9.19 2.456.001 4.765.957 6.5 2.694 1.734 1.737 2.69 4.048 2.688 6.502-.004 5.07-4.13 9.195-9.163 9.195z"/></svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
     @else
         {{-- STANDARD VIEW --}}
         {{-- Main Content Section --}}
