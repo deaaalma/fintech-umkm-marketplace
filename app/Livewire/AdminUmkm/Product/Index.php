@@ -4,14 +4,16 @@ namespace App\Livewire\AdminUmkm\Product;
 
 use App\Models\Product;
 use App\Models\Umkm;
+use App\Services\Product\ProductService;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Livewire\WithFileUploads;
 
 #[Layout('layouts.admin-umkm')]
 class Index extends Component
 {
-    use WithPagination;
+    use WithPagination, WithFileUploads;
 
     public $search = '';
 
@@ -23,13 +25,29 @@ class Index extends Component
     public function toggleStatus($productId)
     {
         $product = Product::find($productId);
-        // Only allow toggling if it belongs to the current UMKM
         $umkmId = Umkm::where('owner_id', auth()->id())->value('id');
         
         if ($product && $product->umkm_id === $umkmId) {
             $product->update([
                 'is_active' => !$product->is_active
             ]);
+        }
+    }
+
+    public function edit($productId)
+    {
+        return redirect()->route('umkm.services.edit', $productId);
+    }
+
+    public function delete($productId)
+    {
+        $product = Product::find($productId);
+        $umkmId = Umkm::where('owner_id', auth()->id())->value('id');
+
+        if ($product && $product->umkm_id === $umkmId) {
+            $service = app(ProductService::class);
+            $service->delete($product);
+            $this->dispatch('notify', ['message' => 'Layanan berhasil dihapus', 'type' => 'success']);
         }
     }
 

@@ -24,12 +24,12 @@
             <h1 class="text-2xl font-bold text-gray-900">Manajemen Produk / Layanan</h1>
             <p class="text-sm text-gray-500 mt-1 font-medium">Kelola semua layanan yang tampil ke pelanggan</p>
         </div>
-        <button class="bg-[#2D2D2D] hover:bg-black text-white px-6 py-2.5 rounded-full font-bold flex items-center gap-2 transition-all shadow-sm">
+        <a href="{{ route('umkm.services.create') }}" class="bg-[#2D2D2D] hover:bg-black text-white px-6 py-2.5 rounded-full font-bold flex items-center gap-2 transition-all shadow-sm">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
             </svg>
             Tambah Layanan Baru
-        </button>
+        </a>
     </div>
 
     {{-- Search and Info Bar --}}
@@ -93,11 +93,11 @@
 
                 {{-- Actions --}}
                 <div class="flex gap-3 mt-auto">
-                    <button class="flex-1 flex items-center justify-center gap-2 py-2 border border-gray-200 rounded-xl text-sm font-bold text-gray-700 hover:bg-gray-50 transition-all">
+                    <a href="{{ route('umkm.services.edit', $product->id) }}" class="flex-1 flex items-center justify-center gap-2 py-2 border border-gray-200 rounded-xl text-sm font-bold text-gray-700 hover:bg-gray-50 transition-all">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
                         Edit
-                    </button>
-                    <button class="flex-1 flex items-center justify-center gap-2 py-2 border border-gray-200 rounded-xl text-sm font-bold text-gray-700 hover:bg-gray-50 transition-all">
+                    </a>
+                    <button wire:click="delete({{ $product->id }})" wire:confirm="Apakah Anda yakin ingin menghapus layanan ini?" class="flex-1 flex items-center justify-center gap-2 py-2 border border-gray-200 rounded-xl text-sm font-bold text-gray-700 hover:bg-gray-50 transition-all">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
                         Hapus
                     </button>
