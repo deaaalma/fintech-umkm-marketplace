@@ -16,22 +16,21 @@ class Index extends Component
         $userId = Auth::id();
 
         // 1. Hitung Pesanan Aktif (Belum selesai atau dibatalkan)
-        $activeOrdersCount = Order::where('customer_id', $userId)
+        $activeOrders = Order::with(['umkm', 'product'])
+            ->where('customer_id', $userId)
             ->whereIn('status', ['pending_valuation', 'waiting_payment', 'paid', 'processing'])
-            ->count();
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        $activeOrdersCount = $activeOrders->count();
 
         // 2. Hitung Pesanan Sukses
         $successOrdersCount = Order::where('customer_id', $userId)
             ->where('status', 'completed')
             ->count();
 
-        // 3. Ambil Pesanan Terbaru (Maksimal 5, beserta data UMKM & Produk)
-        $recentOrder = Order::with(['umkm', 'product'])
-            ->where('customer_id', $userId)
-            ->orderBy('created_at', 'desc')
-            ->take(1)
-            ->get()
-            ->first();
+        // 3. Hitung Pesanan Perlu Tindakan (Step 3: Negotiation atau Step 4: Payment)
+        $needsActionCount = $activeOrders->whereIn('current_step', [3, 4])->count();
 
         // 4. Rekomendasi Partner (Ambil 4 UMKM aktif secara acak)
         $partners = Umkm::where('status', 'active')
@@ -41,21 +40,14 @@ class Index extends Component
             ->get();
 
         // 5. Jumlah Notifikasi
-        $notifications = auth()->user()->userNotifications()->take(5)->get()->map(function($n) {
-            return [
-                'message' => $n->title, // atau combine dengan message
-                'time' => $n->created_at->diffForHumans(),
-                'is_read' => $n->read_at !== null,
-                'link' => $n->link
-            ];
-        });
-
+        $notifications = auth()->user()->userNotifications()->take(5)->get();
         $notifCount = auth()->user()->userNotifications()->whereNull('read_at')->count();
 
         return view('livewire.customer.index', [
+            'activeOrders'       => $activeOrders,
             'activeOrdersCount'  => $activeOrdersCount,
             'successOrdersCount' => $successOrdersCount,
-            'recentOrder'       => $recentOrder,
+            'needsActionCount'   => $needsActionCount,
             'partners'           => $partners,
             'notifCount'         => $notifCount,
             'notifications'      => $notifications,
