@@ -2,7 +2,7 @@
     <div class="w-full bg-white border-b border-[#e5e5e5]">
         <div class="max-w-[1400px] mx-auto px-6 lg:px-8 py-4">
             <div class="flex items-center gap-2 text-sm">
-                <a href="{{ route('superadmin.dashboard.preview') }}" class="text-[#666666] hover:text-[#0078b7] transition-colors" style="font-family: 'Figtree', sans-serif;">Dashboard</a>
+                <a href="{{ route('superadmin.dashboard') }}" class="text-[#666666] hover:text-[#0078b7] transition-colors" style="font-family: 'Figtree', sans-serif;">Dashboard</a>
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[#999999]"><polyline points="9 18 15 12 9 6"></polyline></svg>
                 <span class="text-[#003d5c] font-medium" style="font-family: 'Figtree', sans-serif;">Monitoring Transaksi</span>
             </div>

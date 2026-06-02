@@ -60,7 +60,7 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
 
                 {{-- ── Card 1: Total Pengguna ── --}}
-                <a href="{{ route('admin.dashboard.users') }}" class="metric-card group bg-white rounded-2xl border border-slate-300 animate-fade-in-up hover:border-[#0077B6] hover:scale-[1.01] transition-all duration-300 overflow-hidden shadow-sm flex flex-col" style="animation-delay: 0.08s">
+                <a href="{{ route('superadmin.dashboard.users') }}" class="metric-card group bg-white rounded-2xl border border-slate-300 animate-fade-in-up hover:border-[#0077B6] hover:scale-[1.01] transition-all duration-300 overflow-hidden shadow-sm flex flex-col" style="animation-delay: 0.08s">
                     {{-- Top row: label + dots --}}
                     <div class="flex items-center px-6 pt-6 pb-4 border-b border-slate-200 group-hover:bg-blue-50/50 transition-colors">
                         <span class="text-base font-bold text-slate-700 flex-1 group-hover:text-[#0077B6] transition-colors">Total Pengguna</span>

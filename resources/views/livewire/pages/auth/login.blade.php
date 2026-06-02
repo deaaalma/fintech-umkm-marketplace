@@ -23,7 +23,7 @@ new
 
         // Tentukan URL berdasarkan role & kondisi data
         $redirectUrl = match ($role) {
-            'superadmin' => route('admin.dashboard', absolute: false),
+            'superadmin' => route('superadmin.dashboard', absolute: false),
             
             'admin_umkm' => $user->umkm()->exists() 
                 ? route('umkm.dashboard', absolute: false) 
