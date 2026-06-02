@@ -63,9 +63,12 @@
                         <div class="flex items-center justify-between">
                             <div>
                                 <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-0.5">Mulai dari</p>
-                                <p class="text-base font-black text-[#2D2D2D]">Rp {{ number_format($product->price ?? 0, 0, ',', '.') }}</p>
+                                <p class="text-base font-black text-[#2D2D2D]">Rp {{ number_format($product->estimated_price ?? 0, 0, ',', '.') }}</p>
                             </div>
-                            <button class="px-5 py-2.5 bg-[#2D2D2D] text-white rounded-xl text-xs font-bold hover:bg-black transition-colors">
+                            <button 
+                                wire:click="pesanSekarang({{ $product->id }})"
+                                class="px-5 py-2.5 bg-[#2D2D2D] text-white rounded-xl text-xs font-bold hover:bg-black transition-colors"
+                            >
                                 Pesan Sekarang
                             </button>
                         </div>
