@@ -16,7 +16,7 @@ class Index extends Component
 
     public function render()
     {
-        $query = Umkm::where('status', 'approved')->latest()->with('category');
+        $query = Umkm::where('status', 'active')->latest()->with('category');
 
         // Filter Search
         if ($this->search) {

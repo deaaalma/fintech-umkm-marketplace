@@ -84,7 +84,7 @@
                 </div>
 
                 <div class="flex gap-3">
-                    <a href="{{ route('customer.order-details', $partner['id']) }}" class="flex-1 py-4 bg-[#2D2D2D] hover:bg-black text-white rounded-2xl font-black text-xs uppercase tracking-widest transition-all text-center shadow-lg">
+                    <a href="{{ route('customer.partner-detail', $partner['id']) }}" class="flex-1 py-4 bg-[#2D2D2D] hover:bg-black text-white rounded-2xl font-black text-xs uppercase tracking-widest transition-all text-center shadow-lg">
                         Lihat Detail
                     </a>
                     <button class="w-14 h-14 rounded-2xl bg-white border border-gray-200 flex items-center justify-center text-gray-400 hover:text-gray-900 hover:border-gray-900 transition-all shadow-sm">

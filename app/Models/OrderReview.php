@@ -30,4 +30,9 @@ class OrderReview extends Model
     {
         return $this->belongsTo(Order::class);
     }
+
+    public function customer()
+    {
+        return $this->belongsTo(User::class, 'customer_id');
+    }
 }
