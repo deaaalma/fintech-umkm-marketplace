@@ -109,12 +109,12 @@ class Tasks extends Component
             $photoPaths[] = $path;
         }
 
-        // Update Order
+        // Update Order (Stay in processing until customer accepts)
         $order->update([
-            'status' => 'waiting_payment',
             'worker_notes' => $this->summary,
             'work_result_photos' => $photoPaths,
-            'current_step' => 5 // Payment step
+            'is_work_accepted' => false,
+            // current_step remains 4
         ]);
 
         // Update Assignment

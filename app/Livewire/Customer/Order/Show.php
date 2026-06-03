@@ -129,6 +129,25 @@ class Show extends Component
         }
     }
 
+    public function approveWork()
+    {
+        $this->order->update([
+            'is_work_accepted' => true,
+            'status' => 'waiting_payment',
+            'current_step' => 5
+        ]);
+
+        OrderLog::create([
+            'order_id' => $this->order->id,
+            'actor_id' => auth()->id(),
+            'action' => 'Customer Approved Work',
+            'reason' => 'Customer has reviewed and accepted the work results submitted by the staff.',
+        ]);
+
+        session()->flash('message', 'Hasil kerja telah disetujui. Silahkan lakukan pembayaran.');
+        $this->order->refresh();
+    }
+
     public function cancelOrder()
     {
         if (in_array($this->order->status, ['pending_valuation', 'negotiation', 'waiting_payment'])) {

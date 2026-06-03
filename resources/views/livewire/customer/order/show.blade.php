@@ -506,6 +506,51 @@
                 </ul>
             </div>
 
+            @if($order->work_result_photos)
+            {{-- Staff Work Results Card --}}
+            <div class="bg-white border-2 border-teal-500 rounded-[32px] p-8 shadow-lg shadow-teal-50/50">
+                <div class="flex items-center justify-between mb-8">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-teal-500 text-white flex items-center justify-center shadow-lg shadow-teal-100">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-black text-gray-900 font-plus uppercase tracking-wider">Hasil Kerja Staff</h3>
+                            <p class="text-[10px] text-teal-600 font-bold uppercase tracking-widest mt-0.5">Menunggu Persetujuan Anda</p>
+                        </div>
+                    </div>
+                </div>
+
+                @if($order->worker_notes)
+                <div class="p-6 bg-teal-50/50 rounded-2xl border border-teal-100 mb-8">
+                    <p class="text-[9px] font-black text-teal-700 uppercase tracking-widest mb-2">Laporan Staff:</p>
+                    <p class="text-xs font-bold text-gray-800 italic leading-relaxed">"{{ $order->worker_notes }}"</p>
+                </div>
+                @endif
+
+                <div class="flex gap-4 overflow-x-auto hide-scrollbar pb-4 mb-8">
+                    @foreach($order->work_result_photos as $image)
+                    <div class="w-40 h-40 md:w-56 md:h-56 bg-gray-100 rounded-2xl overflow-hidden border border-gray-200 shrink-0 group relative cursor-pointer">
+                        <img src="{{ asset('storage/' . $image) }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all flex items-center justify-center">
+                            <svg class="w-6 h-6 text-white scale-0 group-hover:scale-100 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0h-3"/></svg>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <button wire:click="approveWork" class="flex-1 py-5 bg-gray-900 text-white rounded-2xl text-xs font-black uppercase tracking-widest hover:bg-black transition-all shadow-xl shadow-gray-200 flex items-center justify-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                        Setujui Hasil & Lanjut ke Pembayaran
+                    </button>
+                    <button class="px-8 py-5 bg-white border border-gray-200 text-gray-400 rounded-2xl text-xs font-black uppercase tracking-widest hover:bg-gray-50 transition-all">
+                        Laporkan Masalah
+                    </button>
+                </div>
+            </div>
+            @endif
+
             {{-- Process Action Buttons --}}
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <button class="py-4 bg-white border border-gray-200 rounded-2xl text-xs font-black text-gray-900 hover:bg-gray-50 transition-all flex items-center justify-center gap-2 shadow-sm uppercase tracking-widest">

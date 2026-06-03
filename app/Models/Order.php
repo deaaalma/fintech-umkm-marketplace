@@ -12,6 +12,7 @@ class Order extends Model
         'booking_date' => 'date',
         'photos' => 'json',
         'work_result_photos' => 'json',
+        'is_work_accepted' => 'boolean',
     ];
 
     public function umkm()
