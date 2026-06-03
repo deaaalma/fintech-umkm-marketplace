@@ -224,8 +224,20 @@
                     </div>
                 </div>
 
-                <button class="w-full py-5 bg-[#2D2D2D] hover:bg-black text-white rounded-[24px] text-xs font-black uppercase tracking-widest transition-all shadow-xl shadow-gray-200">
-                    Simpan Progress & Selesaikan Tugas
+                @if (session()->has('message'))
+                    <div class="p-4 bg-green-50 border border-green-100 rounded-2xl text-green-600 text-xs font-bold uppercase tracking-widest">
+                        {{ session('message') }}
+                    </div>
+                @endif
+
+                <button 
+                    wire:click="submitReport"
+                    wire:loading.attr="disabled"
+                    wire:target="photos"
+                    class="w-full py-5 bg-[#2D2D2D] hover:bg-black text-white rounded-[24px] text-xs font-black uppercase tracking-widest transition-all shadow-xl shadow-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                    <span wire:loading.remove wire:target="submitReport">Simpan Progress & Selesaikan Tugas</span>
+                    <span wire:loading wire:target="submitReport">Sedang Mengirim...</span>
                 </button>
             </div>
         </div>

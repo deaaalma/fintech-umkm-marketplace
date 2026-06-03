@@ -11,6 +11,7 @@ class Order extends Model
     protected $casts = [
         'booking_date' => 'date',
         'photos' => 'json',
+        'work_result_photos' => 'json',
     ];
 
     public function umkm()
