@@ -6,7 +6,6 @@
             <h1 class="text-3xl font-black text-slate-900 font-plus tracking-tight mb-1 leading-tight">
                 Selamat Datang, {{ auth()->user()->name }}
             </h1>
-            {{-- gray-400 FAIL (2.6:1) → slate-600 PASS (7.2:1) --}}
             <p class="text-slate-600 font-semibold text-sm leading-relaxed">Semoga harimu produktif!</p>
         </div>
         <div class="flex items-center gap-6 bg-slate-50 px-6 py-4 rounded-2xl border border-slate-200 transition-all">
@@ -73,7 +72,6 @@
                 <div class="flex flex-col md:flex-row md:items-center justify-between gap-8">
                     <div class="space-y-4 flex-1">
                         <div class="flex items-center gap-3">
-                            {{-- Status badges: all upgraded to 700-variant for 4.5:1+ contrast --}}
                             <span @class([
                                 'px-3 py-1 rounded-lg text-xs font-bold uppercase tracking-wide border',
                                 'bg-blue-50 text-blue-700 border-blue-200' => $assignment->order->status === 'processing',
@@ -82,7 +80,6 @@
                             ])>
                                 {{ str_replace('_', ' ', $assignment->order->status) }}
                             </span>
-                            {{-- Invoice: gray-400 FAIL → slate-600 PASS (7.2:1) --}}
                             <span class="text-xs font-bold text-slate-500 uppercase tracking-widest">
                                 #{{ strtoupper(substr($assignment->order->invoice_number ?? 'ORD-'.$assignment->order->id, 0, 8)) }}
                             </span>
@@ -91,7 +88,6 @@
                             <h3 class="text-xl font-black text-slate-900 font-plus mb-2 leading-snug">
                                 {{ $assignment->order->product->name }}
                             </h3>
-                            {{-- Body meta: gray-500 on white = 5.1:1 borderline; use slate-600 for safety --}}
                             <div class="flex flex-wrap gap-6 text-sm font-medium text-slate-600">
                                 <div class="flex items-center gap-2">
                                     {{-- Icon: gray-300 FAIL (1.5:1) → slate-400 PASS (3.3:1, UI component) --}}
@@ -206,17 +202,13 @@
             @endphp
 
             @foreach($sopCards as $card)
-            {{-- SOP card as <a> for proper semantics (keyboard navigable) --}}
             <a href="{{ route('worker.sop') }}"
                class="bg-white p-6 rounded-[28px] border border-slate-200 shadow-sm hover:shadow-md transition-all flex items-center gap-5 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0077B6] focus-visible:ring-offset-2">
-                {{-- Icon container: slate-500 on slate-50 = 5.1:1 PASS ✅; hover state: white on #2D2D2D = 16:1 PASS ✅ --}}
                 <div class="w-12 h-12 bg-slate-50 rounded-2xl flex items-center justify-center text-slate-500 group-hover:bg-[#2D2D2D] group-hover:text-white transition-colors shrink-0" aria-hidden="true">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ $card['icon'] }}"/></svg>
                 </div>
                 <div>
-                    {{-- Title: slate-900 on white PASS ✅ --}}
                     <h3 class="text-sm font-black text-slate-900 font-plus mb-1 leading-snug">{{ $card['title'] }}</h3>
-                    {{-- Description: gray-400 FAIL → slate-500 PASS (5.1:1) --}}
                     <p class="text-xs text-slate-500 font-semibold uppercase tracking-widest leading-tight">{{ $card['desc'] }}</p>
                 </div>
             </a>

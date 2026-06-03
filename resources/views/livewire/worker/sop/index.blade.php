@@ -7,7 +7,7 @@
                 <p class="text-slate-500 font-semibold text-sm">Pilih panduan untuk melihat standar operasional UMKM.</p>
             </div>
             
-            {{-- Search Input (WCAG compliant colors & focus) --}}
+                {{-- Search Input --}}
             <div class="relative w-full md:w-80 group">
                 <input type="text" 
                        wire:model.live="search"
@@ -17,7 +17,7 @@
             </div>
         </div>
 
-        {{-- Horizontal Pill Navigation --}}
+                {{-- Horizontal Pill Navigation --}}
         <div class="flex items-center gap-3 overflow-x-auto pb-4 no-scrollbar px-2">
             @forelse($sopsList as $sop)
                 <button wire:click="selectSop({{ $sop['id'] }})" 
@@ -129,7 +129,7 @@
             </button>
         </div>
 
-        {{-- Safety Notice (WCAG High Contrast) --}}
+        {{-- Safety Notice --}}
         <div class="bg-red-50 p-10 md:p-12 rounded-[48px] border border-red-100 shadow-sm relative overflow-hidden">
             <div class="absolute -right-10 -bottom-10 opacity-10">
                 <svg class="w-64 h-64 text-red-900" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L1 21h22L12 2zm0 3.45L19.53 19H4.47L12 5.45zM11 16h2v2h-2v-2zm0-7h2v5h-2V9z"/></svg>
