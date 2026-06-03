@@ -54,13 +54,33 @@ class Show extends Component
         'final_total' => 2728800
     ];
 
-    // Mock data for Completed (Step 6)
-    public $workResults = [
-        'https://images.unsplash.com/photo-1581578731548-c64695cc6958?q=80&w=500&auto=format&fit=crop',
-        'https://images.unsplash.com/photo-1527515545081-5db817172677?q=80&w=500&auto=format&fit=crop',
-        'https://images.unsplash.com/photo-1628177142898-93e36e4e3a50?q=80&w=500&auto=format&fit=crop',
-        'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?q=80&w=500&auto=format&fit=crop',
-    ];
+    // Use order photos if available, otherwise mock
+    public function getWorkResultsProperty()
+    {
+        $photos = $this->order->photos;
+        
+        // If it's a string, it means casting didn't happen or failed
+        if (is_string($photos)) {
+            $photos = json_decode($photos, true);
+        }
+
+        // Final fallback to raw original if still empty/null
+        if (!$photos) {
+            $raw = $this->order->getRawOriginal('photos');
+            $photos = is_string($raw) ? json_decode($raw, true) : $raw;
+        }
+
+        if ($photos && is_array($photos) && count($photos) > 0) {
+            return collect($photos)->map(fn($path) => asset('storage/' . $path))->toArray();
+        }
+        
+        return [
+            'https://images.unsplash.com/photo-1581578731548-c64695cc6958?q=80&w=500&auto=format&fit=crop',
+            'https://images.unsplash.com/photo-1527515545081-5db817172677?q=80&w=500&auto=format&fit=crop',
+            'https://images.unsplash.com/photo-1628177142898-93e36e4e3a50?q=80&w=500&auto=format&fit=crop',
+            'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?q=80&w=500&auto=format&fit=crop',
+        ];
+    }
 
     public $verificationData = [
         'completed_at' => '14 Jan 2024, 11:45',

@@ -181,6 +181,7 @@
     </div>
     @endif
 
+
     @if($order->status === 'pending_valuation' && $order->agreed_price !== null)
         {{-- NEGOTIATION VIEW --}}
         <div class="bg-white border border-gray-200 rounded-3xl p-6 md:p-8 shadow-sm mb-10">
@@ -760,11 +761,11 @@
             {{-- Work Results Gallery --}}
             <div class="bg-white border border-gray-100 rounded-[32px] p-8 shadow-sm">
                 <div class="flex justify-between items-center mb-6">
-                    <h3 class="text-sm font-black text-gray-900 font-plus uppercase tracking-wider">Work Results</h3>
-                    <span class="text-[10px] font-bold text-gray-400">4 Photos attached</span>
+                    <h3 class="text-sm font-black text-gray-900 font-plus uppercase tracking-wider">Work Results / Order Photos</h3>
+                    <span class="text-[10px] font-bold text-gray-400">{{ count($this->workResults) }} Photos attached</span>
                 </div>
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-                    @foreach($workResults as $image)
+                    @foreach($this->workResults as $image)
                     <div class="aspect-square bg-gray-100 rounded-2xl overflow-hidden border border-gray-200 group relative">
                         <img src="{{ $image }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
                         <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors"></div>
@@ -977,33 +978,22 @@
         </div>
         @endif
 
-        {{-- Site Photos (Mockup placeholder as requested) --}}
+        {{-- Site Photos (Dynamic) --}}
         <div class="mb-12">
-            <h2 class="text-xl font-black text-gray-900 font-plus mb-4">Site Photos (3 photos)</h2>
+            <h2 class="text-xl font-black text-gray-900 font-plus mb-4">Site Photos ({{ count($this->workResults) }} photos)</h2>
             <div class="flex gap-4 overflow-x-auto hide-scrollbar pb-2">
-                <div class="w-32 h-32 md:w-40 md:h-40 bg-gray-100 rounded-2xl flex items-center justify-center border border-gray-200 shrink-0">
-                    <div class="text-center">
-                        <div class="w-8 h-8 bg-gray-200 rounded-lg mx-auto mb-2"></div>
-                        <span class="text-[10px] font-bold text-gray-400">Photo 1</span>
-                    </div>
+                @foreach($this->workResults as $image)
+                <div class="w-32 h-32 md:w-40 md:h-40 bg-gray-100 rounded-2xl overflow-hidden border border-gray-200 shrink-0 group relative">
+                    <img src="{{ $image }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors"></div>
                 </div>
-                <div class="w-32 h-32 md:w-40 md:h-40 bg-gray-100 rounded-2xl flex items-center justify-center border border-gray-200 shrink-0">
-                    <div class="text-center">
-                        <div class="w-8 h-8 bg-gray-200 rounded-lg mx-auto mb-2"></div>
-                        <span class="text-[10px] font-bold text-gray-400">Photo 2</span>
-                    </div>
-                </div>
-                <div class="w-32 h-32 md:w-40 md:h-40 bg-gray-100 rounded-2xl flex items-center justify-center border border-gray-200 shrink-0">
-                    <div class="text-center">
-                        <div class="w-8 h-8 bg-gray-200 rounded-lg mx-auto mb-2"></div>
-                        <span class="text-[10px] font-bold text-gray-400">Photo 3</span>
-                    </div>
-                </div>
+                @endforeach
             </div>
+            @if(count($this->workResults) > 0)
             <button class="mt-4 px-4 py-2 border border-gray-200 rounded-xl text-xs font-bold text-gray-700 hover:bg-gray-50 transition-colors">
                 View All Photos
             </button>
-            <p class="text-[10px] text-gray-400 font-medium mt-2">*Photos are mockups and cannot be expanded in this version.</p>
+            @endif
         </div>
     @endif
 
