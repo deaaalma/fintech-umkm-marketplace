@@ -86,16 +86,32 @@
                 </div>
             </div>
 
-            {{-- Site Photos (Mock) --}}
+            {{-- Site Photos (Dynamic) --}}
             <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-8">
-                <h2 class="text-lg font-bold text-gray-900 mb-6">Site Photos (Mockup)</h2>
-                <div class="flex gap-4 overflow-x-auto pb-2">
-                    @for($i=1; $i<=3; $i++)
-                        <div class="w-40 h-40 bg-gray-100 rounded-2xl border border-gray-200 flex items-center justify-center shrink-0">
-                            <span class="text-xs font-bold text-gray-400">Photo {{ $i }}</span>
-                        </div>
-                    @endfor
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-lg font-bold text-gray-900">Site Photos ({{ count($this->sitePhotos) }})</h2>
+                    @if(count($this->sitePhotos) > 0)
+                        <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Customer Uploads</span>
+                    @endif
                 </div>
+                <div class="flex gap-4 overflow-x-auto pb-4 hide-scrollbar">
+                    @forelse($this->sitePhotos as $image)
+                        <div class="w-40 h-40 bg-gray-100 rounded-2xl border border-gray-200 overflow-hidden shrink-0 group relative cursor-pointer">
+                            <img src="{{ $image }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                            <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors"></div>
+                        </div>
+                    @empty
+                        @for($i=1; $i<=3; $i++)
+                            <div class="w-40 h-40 bg-gray-50 rounded-2xl border border-gray-100 flex flex-col items-center justify-center shrink-0 border-dashed">
+                                <svg class="w-6 h-6 text-gray-300 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                                <span class="text-[10px] font-bold text-gray-300 uppercase tracking-widest">No Photo {{ $i }}</span>
+                            </div>
+                        @endfor
+                    @endforelse
+                </div>
+                @if(count($this->sitePhotos) > 0)
+                    <p class="text-[10px] text-gray-400 font-medium mt-3 italic">* These photos were uploaded by the customer to help with your valuation.</p>
+                @endif
             </div>
         </div>
 

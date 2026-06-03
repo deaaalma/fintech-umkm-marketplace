@@ -80,6 +80,28 @@ class Show extends Component
         return redirect()->route('umkm.orders');
     }
 
+    public function getSitePhotosProperty()
+    {
+        $photos = $this->order->photos;
+        
+        // Safety decode if it comes back as a string
+        if (is_string($photos)) {
+            $photos = json_decode($photos, true);
+        }
+
+        // Final fallback to raw original if still empty/null
+        if (!$photos) {
+            $raw = $this->order->getRawOriginal('photos');
+            $photos = is_string($raw) ? json_decode($raw, true) : $raw;
+        }
+
+        if ($photos && is_array($photos) && count($photos) > 0) {
+            return collect($photos)->map(fn($path) => asset('storage/' . $path))->toArray();
+        }
+        
+        return [];
+    }
+
     public function render()
     {
         $logs = OrderLog::where('order_id', $this->order->id)->latest()->get();
