@@ -160,7 +160,7 @@
                     Service in Progress
                 @elseif($order->status === 'waiting_payment')
                     Service Completed Successfully
-                @elseif($order->status === 'completed')
+                @elseif(in_array($order->status, ['paid', 'completed']))
                     Order Completed
                 @else
                     What's happening now?
@@ -174,8 +174,8 @@
                 <p class="text-xs text-gray-600 font-medium leading-relaxed">Good news! Our professional staff have successfully completed the service. Please review the work summary and the final payment details below.</p>
             @elseif($order->status === 'processing')
                 <p class="text-xs text-gray-600 font-medium leading-relaxed">Our professional staff is currently working at your location. You can track the progress below and contact them if needed.</p>
-            @elseif($order->status === 'completed')
-                <p class="text-xs text-gray-600 font-medium leading-relaxed">Thank you for trusting our service. The service is now complete and verified. Check your work results below.</p>
+            @elseif(in_array($order->status, ['paid', 'completed']))
+                <p class="text-xs text-gray-600 font-medium leading-relaxed">Thank you! Payment received and service successfully completed. We hope you're satisfied with the results.</p>
             @endif
         </div>
     </div>
@@ -780,7 +780,7 @@
                 </div>
             </div>
         </div>
-    @elseif($order->status === 'completed')
+    @elseif(in_array($order->status, ['paid', 'completed']))
         {{-- COMPLETED VIEW (Step 6) --}}
         <div class="space-y-8">
             {{-- Review Section --}}
