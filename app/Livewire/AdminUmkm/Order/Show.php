@@ -6,6 +6,7 @@ use App\Models\Order;
 use App\Models\OrderLog;
 use App\Models\Umkm;
 use App\Models\UmkmWorker;
+use App\Models\Payment;
 use Livewire\Component;
 use Livewire\Attributes\Layout;
 
@@ -25,7 +26,7 @@ class Show extends Component
             abort(403);
         }
 
-        $this->order = $order->load(['customer', 'product', 'orderAssignment.worker']);
+        $this->order = $order->load(['customer', 'product', 'orderAssignment.worker', 'payments']);
         $this->agreed_price = $order->agreed_price ?? ($order->product->estimated_price ?? 0);
         
         $this->availableWorkers = UmkmWorker::where('umkm_id', $umkmId)
@@ -36,6 +37,46 @@ class Show extends Component
         if ($this->order->orderAssignment) {
             $this->selectedWorkerId = $this->order->orderAssignment->worker_id;
         }
+    }
+
+    public function verifyPayment($paymentId)
+    {
+        $payment = Payment::find($paymentId);
+        $payment->update([
+            'status' => 'success',
+            'paid_at' => now(),
+        ]);
+
+        $this->order->update([
+            'status' => 'paid',
+            'current_step' => 6 // Completed/Review step
+        ]);
+
+        OrderLog::create([
+            'order_id' => $this->order->id,
+            'actor_id' => auth()->id(),
+            'action' => 'Payment Verified',
+            'reason' => 'Admin has verified the QRIS payment proof and confirmed receipt of funds.',
+        ]);
+
+        session()->flash('message', 'Pembayaran berhasil diverifikasi.');
+        $this->order->refresh();
+    }
+
+    public function rejectPayment($paymentId)
+    {
+        $payment = Payment::find($paymentId);
+        $payment->update(['status' => 'failed']);
+
+        OrderLog::create([
+            'order_id' => $this->order->id,
+            'actor_id' => auth()->id(),
+            'action' => 'Payment Rejected',
+            'reason' => 'Admin rejected the payment proof. Please re-upload a valid receipt.',
+        ]);
+
+        session()->flash('error', 'Pembayaran ditolak.');
+        $this->order->refresh();
     }
 
     public function assignWorker()

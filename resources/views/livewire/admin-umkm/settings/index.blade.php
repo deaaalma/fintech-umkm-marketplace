@@ -167,12 +167,94 @@
             @endif
 
             @if($activeTab === 'pembayaran')
-            <div class="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm text-center py-20 animate-fade-in">
-                <div class="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4 text-gray-300">
-                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+            <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden animate-fade-in">
+                <div class="p-8 border-b border-gray-50">
+                    <h2 class="text-lg font-bold text-gray-900">Pengaturan Pembayaran</h2>
+                    <p class="text-xs text-gray-500 font-medium mt-1">Kelola metode pembayaran yang diterima</p>
                 </div>
-                <h3 class="text-sm font-bold text-gray-900">Segera Hadir</h3>
-                <p class="text-xs text-gray-500 font-medium mt-1">Fitur manajemen pembayaran sedang dalam pengembangan.</p>
+                
+                <div class="p-8 space-y-10">
+                    {{-- QRIS Static Upload --}}
+                    <div>
+                        <div class="flex items-center justify-between mb-6">
+                            <div>
+                                <h3 class="text-sm font-black text-gray-900 font-plus uppercase tracking-wider">QRIS Static</h3>
+                                <p class="text-[10px] text-gray-500 font-medium mt-1">Unggah gambar QRIS statis bisnis Anda untuk mempermudah pembayaran pelanggan.</p>
+                            </div>
+                            <span class="px-3 py-1 bg-teal-50 text-teal-700 rounded-lg text-[9px] font-black uppercase tracking-widest border border-teal-100">Recommended</span>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
+                            {{-- Preview Area --}}
+                            <div class="bg-gray-50 rounded-[40px] p-8 border-2 border-dashed border-gray-200 flex flex-col items-center justify-center relative group min-h-[350px]">
+                                @if($qris_image)
+                                    <img src="{{ $qris_image->temporaryUrl() }}" class="w-full h-full object-contain rounded-2xl shadow-2xl">
+                                    <div class="absolute inset-0 bg-white/10 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center rounded-[38px]">
+                                        <span class="px-5 py-2.5 bg-gray-900 text-white rounded-xl text-[10px] font-black uppercase tracking-widest shadow-xl">New Selection Preview</span>
+                                    </div>
+                                @elseif($umkm->qris_image_url)
+                                    <img src="{{ asset($umkm->qris_image_url) }}" class="w-full h-full object-contain rounded-2xl shadow-xl">
+                                    <div class="absolute inset-0 bg-white/10 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center rounded-[38px]">
+                                        <span class="px-5 py-2.5 bg-gray-900 text-white rounded-xl text-[10px] font-black uppercase tracking-widest shadow-xl">Current Active QRIS</span>
+                                    </div>
+                                @else
+                                    <div class="text-center space-y-4">
+                                        <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mx-auto shadow-sm text-gray-300">
+                                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"/></svg>
+                                        </div>
+                                        <p class="text-xs font-bold text-gray-400 uppercase tracking-widest">Belum ada QRIS</p>
+                                    </div>
+                                @endif
+                            </div>
+
+                            {{-- Actions & Guide --}}
+                            <div class="space-y-6">
+                                <div class="space-y-2">
+                                    <button type="button" onclick="document.getElementById('qris-upload').click()" class="w-full py-4 bg-white border-2 border-gray-900 rounded-2xl text-xs font-black text-gray-900 uppercase tracking-widest hover:bg-gray-50 transition-all flex items-center justify-center gap-3 shadow-sm">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+                                        Unggah QRIS Baru
+                                    </button>
+                                    <input type="file" id="qris-upload" wire:model="qris_image" class="hidden" accept="image/*">
+                                    @error('qris_image') <span class="text-[10px] text-red-500 font-bold mt-1 inline-block">{{ $message }}</span> @enderror
+                                    @if($qris_image || $umkm->qris_image_url)
+                                        <button type="button" class="w-full py-3 text-[10px] font-black text-red-500 uppercase tracking-widest hover:bg-red-50 rounded-xl transition-all">
+                                            Hapus Gambar
+                                        </button>
+                                    @endif
+                                </div>
+
+                                <div class="bg-gray-50 rounded-2xl p-6 border border-gray-100">
+                                    <h4 class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-4">Panduan QRIS</h4>
+                                    <ul class="space-y-4">
+                                        <li class="flex gap-3">
+                                            <div class="w-5 h-5 rounded-full bg-teal-500 text-white flex items-center justify-center text-[10px] font-black shrink-0">1</div>
+                                            <p class="text-[11px] font-medium text-gray-600 leading-relaxed">Gunakan gambar QRIS statis yang Anda dapatkan dari bank atau penyedia e-wallet.</p>
+                                        </li>
+                                        <li class="flex gap-3">
+                                            <div class="w-5 h-5 rounded-full bg-teal-500 text-white flex items-center justify-center text-[10px] font-black shrink-0">2</div>
+                                            <p class="text-[11px] font-medium text-gray-600 leading-relaxed">Pastikan kode QR terlihat jelas dan tidak terpotong (Crop tepat di area QR).</p>
+                                        </li>
+                                        <li class="flex gap-3">
+                                            <div class="w-5 h-5 rounded-full bg-teal-500 text-white flex items-center justify-center text-[10px] font-black shrink-0">3</div>
+                                            <p class="text-[11px] font-medium text-gray-600 leading-relaxed">Gambar ini akan ditampilkan secara otomatis saat pelanggan berada di tahap pembayaran.</p>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- Other Payment Options --}}
+                    <div class="pt-10 border-t border-gray-50 opacity-40 grayscale pointer-events-none">
+                         <div class="flex items-center justify-between mb-6">
+                            <div>
+                                <h3 class="text-sm font-black text-gray-400 font-plus uppercase tracking-wider">Virtual Account (Auto)</h3>
+                                <p class="text-[10px] text-gray-400 font-medium mt-1">Integrasi pembayaran otomatis melalui Payment Gateway.</p>
+                            </div>
+                            <span class="px-3 py-1 bg-gray-100 text-gray-400 rounded-lg text-[9px] font-black uppercase tracking-widest border border-gray-200">Soon</span>
+                        </div>
+                    </div>
+                </div>
             </div>
             @endif
 

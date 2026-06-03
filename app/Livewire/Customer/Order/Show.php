@@ -4,14 +4,19 @@ namespace App\Livewire\Customer\Order;
 
 use App\Models\Order;
 use App\Models\OrderLog;
+use App\Models\Payment;
+use Livewire\WithFileUploads;
 use Livewire\Component;
 use Livewire\Attributes\Layout;
 
 #[Layout('layouts.customer-layout')]
 class Show extends Component
 {
+    use WithFileUploads;
+
     public Order $order;
     public $showAcceptModal = false;
+    public $paymentProof;
     
     // Dynamic data containers
     public $staffTeam = [];
@@ -146,6 +151,32 @@ class Show extends Component
 
         session()->flash('message', 'Hasil kerja telah disetujui. Silahkan lakukan pembayaran.');
         $this->order->refresh();
+    }
+
+    public function submitPayment()
+    {
+        $this->validate([
+            'paymentProof' => 'required|image|max:2048',
+        ]);
+
+        $path = $this->paymentProof->store('payments/proofs', 'public');
+
+        Payment::create([
+            'order_id' => $this->order->id,
+            'payment_method' => 'QRIS',
+            'amount' => $this->order->agreed_price,
+            'payment_gateway_ref' => $path, // Storing path here
+            'status' => 'pending',
+        ]);
+
+        OrderLog::create([
+            'order_id' => $this->order->id,
+            'actor_id' => auth()->id(),
+            'action' => 'Payment Proof Uploaded',
+            'reason' => 'Customer has uploaded payment proof for verification.',
+        ]);
+
+        session()->flash('message', 'Bukti pembayaran berhasil diunggah. Menunggu verifikasi Admin.');
     }
 
     public function cancelOrder()

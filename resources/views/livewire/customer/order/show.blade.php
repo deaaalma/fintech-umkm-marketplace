@@ -700,61 +700,85 @@
                 </div>
             </div>
 
-            {{-- Payment Methods Card --}}
-            <div class="bg-white border border-gray-100 rounded-[32px] p-8 shadow-sm">
-                <h3 class="text-sm font-black text-gray-900 font-plus uppercase tracking-wider mb-8">Select Payment Method</h3>
-                <div class="space-y-4">
-                    <label class="relative flex items-center p-5 bg-white border-2 border-gray-900 rounded-2xl cursor-pointer shadow-sm group">
-                        <input type="radio" name="payment_method" class="hidden" checked>
-                        <div class="flex items-center gap-4 flex-1">
-                            <div class="w-10 h-10 rounded-xl bg-gray-50 flex items-center justify-center border border-gray-100 group-hover:bg-gray-100 transition-colors">
-                                <svg class="w-6 h-6 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
-                            </div>
-                            <div>
-                                <p class="text-sm font-black text-gray-900 font-plus">Virtual Account / Transfer</p>
-                                <p class="text-[10px] text-gray-500 font-medium italic">Instant verification. Supports all major banks.</p>
-                            </div>
+            {{-- QRIS Payment Card --}}
+            <div class="bg-white border border-gray-200 rounded-[32px] p-8 md:p-12 shadow-sm">
+                <div class="max-w-md mx-auto text-center">
+                    <h3 class="text-xl font-black text-gray-900 font-plus mb-2">QRIS Payment</h3>
+                    <p class="text-xs text-gray-500 font-medium mb-10 uppercase tracking-widest">Scan QR code below to pay</p>
+                    
+                    {{-- QR Code Display --}}
+                    <div class="bg-white p-6 rounded-[40px] border-2 border-gray-900 shadow-2xl shadow-gray-100 inline-block mb-10 relative group">
+                        @if($order->umkm->qris_image_url)
+                            <img src="{{ asset($order->umkm->qris_image_url) }}" class="w-64 h-64 md:w-80 md:h-80 mx-auto rounded-2xl object-contain">
+                        @else
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=ORDER-{{ $order->id }}-TOTAL-{{ $order->agreed_price }}" class="w-64 h-64 md:w-80 md:h-80 mx-auto rounded-2xl">
+                        @endif
+                        <div class="absolute inset-0 bg-white/10 backdrop-blur-[1px] opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center">
+                            <span class="px-6 py-3 bg-gray-900 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-xl">UMKM Verified QRIS</span>
                         </div>
-                        <div class="w-6 h-6 rounded-full border-4 border-gray-900 flex items-center justify-center">
-                            <div class="w-2 h-2 rounded-full bg-gray-900"></div>
-                        </div>
-                    </label>
+                    </div>
 
-                    <label class="relative flex items-center p-5 bg-white border border-gray-100 rounded-2xl cursor-pointer hover:border-gray-300 transition-all group">
-                        <input type="radio" name="payment_method" class="hidden">
-                        <div class="flex items-center gap-4 flex-1">
-                            <div class="w-10 h-10 rounded-xl bg-gray-50 flex items-center justify-center border border-gray-100 group-hover:bg-gray-100 transition-colors">
-                                <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
-                            </div>
-                            <div>
-                                <p class="text-sm font-black text-gray-400 font-plus">Credit Card</p>
-                                <p class="text-[10px] text-gray-400 font-medium">Pay securely with your VISA/Mastercard.</p>
-                            </div>
+                    <div class="space-y-4 text-left mb-10">
+                        <div class="flex items-start gap-4 p-4 bg-gray-50 rounded-2xl border border-gray-100">
+                            <div class="w-8 h-8 rounded-lg bg-white flex items-center justify-center text-gray-900 font-black text-xs shrink-0 shadow-sm border border-gray-100">1</div>
+                            <p class="text-[11px] font-bold text-gray-600 leading-relaxed">Buka aplikasi mobile banking atau e-wallet (GoPay, OVO, Dana, dll).</p>
                         </div>
-                        <div class="w-6 h-6 rounded-full border border-gray-200"></div>
-                    </label>
+                        <div class="flex items-start gap-4 p-4 bg-gray-50 rounded-2xl border border-gray-100">
+                            <div class="w-8 h-8 rounded-lg bg-white flex items-center justify-center text-gray-900 font-black text-xs shrink-0 shadow-sm border border-gray-100">2</div>
+                            <p class="text-[11px] font-bold text-gray-600 leading-relaxed">Scan kode QR di atas dan masukkan nominal sesuai tagihan.</p>
+                        </div>
+                        <div class="flex items-start gap-4 p-4 bg-gray-50 rounded-2xl border border-gray-100">
+                            <div class="w-8 h-8 rounded-lg bg-white flex items-center justify-center text-gray-900 font-black text-xs shrink-0 shadow-sm border border-gray-100">3</div>
+                            <p class="text-[11px] font-bold text-gray-600 leading-relaxed">Simpan bukti transfer dan unggah di bawah ini untuk verifikasi admin.</p>
+                        </div>
+                    </div>
 
-                    <label class="relative flex items-center p-5 bg-white border border-gray-100 rounded-2xl cursor-pointer hover:border-gray-300 transition-all group">
-                        <input type="radio" name="payment_method" class="hidden">
-                        <div class="flex items-center gap-4 flex-1">
-                            <div class="w-10 h-10 rounded-xl bg-gray-50 flex items-center justify-center border border-gray-100 group-hover:bg-gray-100 transition-colors">
-                                <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                    {{-- Upload Section --}}
+                    @php $pendingPayment = $order->payments->where('status', 'pending')->first(); @endphp
+
+                    @if($pendingPayment)
+                        <div class="p-8 bg-blue-50 rounded-[32px] border border-blue-100 flex flex-col items-center gap-4">
+                            <div class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-blue-600 shadow-sm border border-blue-100">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                             </div>
-                            <div>
-                                <p class="text-sm font-black text-gray-400 font-plus">E-Wallet</p>
-                                <p class="text-[10px] text-gray-400 font-medium">GoPay, OVO, Dana, ShopeePay.</p>
+                            <div class="text-center">
+                                <h4 class="text-sm font-black text-blue-900 font-plus mb-1 uppercase tracking-tight">Menunggu Verifikasi</h4>
+                                <p class="text-[10px] text-blue-600 font-bold uppercase tracking-widest leading-relaxed">Bukti pembayaran Anda sedang dicek oleh Admin UMKM.</p>
                             </div>
                         </div>
-                        <div class="w-6 h-6 rounded-full border border-gray-200"></div>
-                    </label>
+                    @else
+                        <div class="space-y-4">
+                            <div class="relative group">
+                                <input type="file" wire:model="paymentProof" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
+                                <div class="p-8 bg-gray-50 rounded-[32px] border-2 border-dashed border-gray-200 group-hover:border-gray-900 transition-all flex flex-col items-center gap-4">
+                                    @if($paymentProof)
+                                        <img src="{{ $paymentProof->temporaryUrl() }}" class="w-32 h-32 object-cover rounded-2xl shadow-lg border-2 border-white">
+                                        <p class="text-[10px] font-black text-gray-900 uppercase tracking-widest">Receipt Selected ✓</p>
+                                    @else
+                                        <div class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-gray-400 group-hover:bg-gray-900 group-hover:text-white transition-all shadow-sm border border-gray-100">
+                                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                                        </div>
+                                        <div>
+                                            <h4 class="text-xs font-black text-gray-900 font-plus uppercase">Upload Bukti Transfer</h4>
+                                            <p class="text-[10px] text-gray-400 font-bold mt-1 tracking-tight">Format: JPG, PNG, max 2MB</p>
+                                        </div>
+                                    @endif
+                                </div>
+                                @error('paymentProof') <span class="text-[10px] text-red-500 font-bold mt-2 inline-block">{{ $message }}</span> @enderror
+                            </div>
+
+                            <button 
+                                wire:click="submitPayment"
+                                wire:loading.attr="disabled"
+                                class="w-full py-5 bg-gray-900 text-white rounded-[24px] font-black text-xs uppercase tracking-widest transition-all shadow-xl hover:bg-black disabled:opacity-50"
+                            >
+                                <span wire:loading.remove wire:target="submitPayment">Submit Bukti Pembayaran</span>
+                                <span wire:loading wire:target="submitPayment">Mengirim Bukti...</span>
+                            </button>
+                        </div>
+                    @endif
                 </div>
             </div>
-
-            {{-- Final Proceed Button --}}
-            <button class="w-full py-5 bg-[#2D2D2D] hover:bg-black text-white rounded-[24px] font-black text-sm uppercase tracking-widest transition-all shadow-xl flex items-center justify-center gap-3">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
-                Proceed to Payment (Rp {{ number_format($paymentDetails['final_total'], 0, ',', '.') }})
-            </button>
         </div>
     @elseif($order->status === 'completed')
         {{-- COMPLETED VIEW (Step 6) --}}

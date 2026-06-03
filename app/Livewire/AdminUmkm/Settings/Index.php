@@ -22,6 +22,7 @@ class Index extends Component
     public $tagline;
     public $description;
     public $logo;
+    public $qris_image;
     public $address;
     public $email;
     public $phone;
@@ -57,14 +58,24 @@ class Index extends Component
         $this->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email',
-            'logo' => 'nullable|image|max:1024',
+            'logo' => 'nullable|image|max:2048',
+            'qris_image' => 'nullable|image|max:2048',
         ]);
 
+        $logoPath = $this->umkm->logo_url;
         if ($this->logo) {
             if ($this->umkm->logo_url) {
                 Storage::disk('public')->delete(str_replace('storage/', '', $this->umkm->logo_url));
             }
-            $this->umkm->logo_url = 'storage/' . $this->logo->store('umkm-logos', 'public');
+            $logoPath = 'storage/' . $this->logo->store('umkm-logos', 'public');
+        }
+
+        $qrisPath = $this->umkm->qris_image_url;
+        if ($this->qris_image) {
+            if ($this->umkm->qris_image_url) {
+                Storage::disk('public')->delete(str_replace('storage/', '', $this->umkm->qris_image_url));
+            }
+            $qrisPath = 'storage/' . $this->qris_image->store('umkm-qris', 'public');
         }
 
         $this->umkm->update([
@@ -78,7 +89,13 @@ class Index extends Component
             'whatsapp_number' => $this->whatsapp_number,
             'facebook_url' => $this->facebook_url,
             'website_url' => $this->website_url,
+            'logo_url' => $logoPath,
+            'qris_image_url' => $qrisPath,
         ]);
+
+        $this->logo = null;
+        $this->qris_image = null;
+        $this->umkm->refresh();
 
         $this->dispatch('notify', [
             'message' => 'Pengaturan berhasil disimpan',

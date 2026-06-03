@@ -230,6 +230,39 @@
                     @endforeach
                 </div>
             </div>
+            {{-- Payment Verification Section --}}
+            @php $pendingPayment = $order->payments->where('status', 'pending')->first(); @endphp
+            @if($pendingPayment)
+            <div class="bg-white rounded-3xl border-2 border-blue-500 shadow-xl p-8 relative overflow-hidden">
+                <div class="absolute top-0 right-0 p-4">
+                    <span class="animate-pulse flex h-3 w-3">
+                      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                      <span class="relative inline-flex rounded-full h-3 w-3 bg-blue-500"></span>
+                    </span>
+                </div>
+
+                <h2 class="text-lg font-black text-gray-900 font-plus mb-6 uppercase tracking-tight">Verify Payment</h2>
+                
+                <div class="space-y-6">
+                    <div class="aspect-[3/4] bg-gray-50 rounded-2xl overflow-hidden border border-gray-100 group relative cursor-pointer">
+                        <img src="{{ asset('storage/' . $pendingPayment->payment_gateway_ref) }}" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all flex items-center justify-center">
+                            <a href="{{ asset('storage/' . $pendingPayment->payment_gateway_ref) }}" target="_blank" class="px-4 py-2 bg-white rounded-xl text-[10px] font-black uppercase tracking-widest shadow-xl scale-0 group-hover:scale-100 transition-all">View Full Receipt</a>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col gap-3">
+                        <button wire:click="verifyPayment({{ $pendingPayment->id }})" class="w-full py-4 bg-blue-600 text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-blue-700 transition-all shadow-lg flex items-center justify-center gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                            Confirm Receipt
+                        </button>
+                        <button wire:click="rejectPayment({{ $pendingPayment->id }})" class="w-full py-4 bg-white border border-red-100 text-red-500 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-red-50 transition-all flex items-center justify-center gap-2">
+                            Reject Payment
+                        </button>
+                    </div>
+                </div>
+            </div>
+            @endif
         </div>
     </div>
 </div>
