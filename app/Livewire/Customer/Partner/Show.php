@@ -26,10 +26,13 @@ class Show extends Component
     public $lat;
     public $lng;
     public $orderPhotos = [];
+    public $selectedWorkerId;
+    public $workers = [];
 
     public function mount(Umkm $partner)
     {
-        $this->partner = $partner->load(['category', 'products', 'reviews.customer']);
+        $this->partner = $partner->load(['category', 'products', 'reviews.customer', 'workers.user']);
+        $this->workers = $this->partner->workers;
     }
 
     public function removePhoto($index)

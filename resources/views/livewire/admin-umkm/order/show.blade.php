@@ -117,6 +117,41 @@
 
         {{-- Right Column: Actions --}}
         <div class="space-y-6">
+            {{-- Worker Assignment Section --}}
+            <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-8">
+                <h2 class="text-lg font-black text-gray-900 font-plus mb-6">Assign Staff / Worker</h2>
+                
+                @if($order->orderAssignment)
+                <div class="flex items-center gap-4 p-4 bg-blue-50 rounded-2xl border border-blue-100 mb-6">
+                    <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center text-blue-600 border border-blue-200 shrink-0 font-black text-lg shadow-sm">
+                        {{ substr($order->orderAssignment->worker->name, 0, 1) }}
+                    </div>
+                    <div>
+                        <p class="text-[10px] font-bold text-blue-400 uppercase tracking-widest mb-0.5">Currently Assigned</p>
+                        <p class="text-sm font-black text-blue-900">{{ $order->orderAssignment->worker->name }}</p>
+                    </div>
+                </div>
+                @endif
+
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2.5 ml-1">Select Available Staff</label>
+                        <select wire:model="selectedWorkerId" class="w-full px-4 py-3.5 bg-gray-50 border border-gray-100 rounded-2xl focus:bg-white focus:ring-2 focus:ring-gray-900 focus:border-transparent transition-all text-sm font-medium outline-none">
+                            <option value="">-- Choose Worker --</option>
+                            @foreach($availableWorkers as $worker)
+                                <option value="{{ $worker->user_id }}">{{ $worker->user->name }}</option>
+                            @endforeach
+                        </select>
+                        @error('selectedWorkerId') <span class="text-[10px] text-red-500 font-bold mt-1 ml-1">{{ $message }}</span> @enderror
+                    </div>
+                    
+                    <button wire:click="assignWorker" class="w-full py-4 bg-gray-900 text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-black transition-all shadow-lg flex items-center justify-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/></svg>
+                        {{ $order->orderAssignment ? 'Update Assignment' : 'Assign to Order' }}
+                    </button>
+                </div>
+            </div>
+
             @if($order->status === 'pending_valuation')
             <div class="bg-[#1F2937] rounded-3xl shadow-xl p-8 text-white relative overflow-hidden group">
                 <div class="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-bl-full -mr-10 -mt-10 group-hover:scale-110 transition-transform duration-500"></div>

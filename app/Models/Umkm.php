@@ -38,6 +38,11 @@ class Umkm extends Model
         return $this->hasMany(OrderReview::class);
     }
 
+    public function workers()
+    {
+        return $this->hasMany(UmkmWorker::class);
+    }
+
     public function detail()
     {
         return $this->hasOne(UmkmDetail::class);

@@ -5,6 +5,7 @@ namespace App\Livewire\AdminUmkm\Order;
 use App\Models\Order;
 use App\Models\OrderLog;
 use App\Models\Umkm;
+use App\Models\UmkmWorker;
 use Livewire\Component;
 use Livewire\Attributes\Layout;
 
@@ -14,6 +15,8 @@ class Show extends Component
     public Order $order;
     public $agreed_price;
     public $admin_note;
+    public $selectedWorkerId;
+    public $availableWorkers = [];
 
     public function mount(Order $order)
     {
@@ -22,8 +25,39 @@ class Show extends Component
             abort(403);
         }
 
-        $this->order = $order->load(['customer', 'product']);
+        $this->order = $order->load(['customer', 'product', 'orderAssignment.worker']);
         $this->agreed_price = $order->agreed_price ?? ($order->product->estimated_price ?? 0);
+        
+        $this->availableWorkers = UmkmWorker::where('umkm_id', $umkmId)
+            ->with('user')
+            ->where('is_active', true)
+            ->get();
+            
+        if ($this->order->orderAssignment) {
+            $this->selectedWorkerId = $this->order->orderAssignment->worker_id;
+        }
+    }
+
+    public function assignWorker()
+    {
+        $this->validate([
+            'selectedWorkerId' => 'required|exists:users,id'
+        ]);
+
+        \App\Models\OrderAssignment::updateOrCreate(
+            ['order_id' => $this->order->id],
+            ['worker_id' => $this->selectedWorkerId, 'status' => 'assigned']
+        );
+
+        OrderLog::create([
+            'order_id' => $this->order->id,
+            'actor_id' => auth()->id(),
+            'action' => 'Worker Assigned',
+            'reason' => 'Admin assigned a worker to this order.',
+        ]);
+
+        $this->order->load('orderAssignment.worker');
+        session()->flash('message', 'Petugas berhasil ditugaskan.');
     }
 
     public function acceptOrder()

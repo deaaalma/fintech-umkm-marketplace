@@ -205,37 +205,19 @@
             </div>
 
             <div class="mb-8">
-                <h3 class="text-sm font-bold text-gray-900 mb-4">Cost Breakdown</h3>
+                <h3 class="text-sm font-bold text-gray-900 mb-4">Ringkasan Biaya</h3>
                 <div class="space-y-4 text-sm font-medium">
                     <div class="flex justify-between items-start pb-4 border-b border-gray-50">
                         <div>
-                            <div class="text-gray-900 font-bold">Deep Cleaning 50m²</div>
-                            <div class="text-[11px] text-gray-400">Subtotal area measurement to be assessed</div>
+                            <div class="text-gray-900 font-bold">{{ $order->product->name }}</div>
+                            <div class="text-[11px] text-gray-400">Layanan profesional dari {{ $order->umkm->name }}</div>
                         </div>
-                        <div class="text-gray-900 font-bold">Rp 2.000.000</div>
-                    </div>
-                    <div class="flex justify-between items-start pb-4 border-b border-gray-50">
-                        <div>
-                            <div class="text-gray-900 font-bold">Extra 2 Bathrooms</div>
-                            <div class="text-[11px] text-gray-400">Deep cleaning includes fixtures & tiles</div>
-                        </div>
-                        <div class="text-gray-900 font-bold">Rp 400.000</div>
-                    </div>
-                    <div class="flex justify-between items-start pb-4 border-b border-gray-50">
-                        <div>
-                            <div class="text-gray-900 font-bold">Balcony 20m²</div>
-                            <div class="text-[11px] text-gray-400">Estimated floor area service</div>
-                        </div>
-                        <div class="text-gray-900 font-bold">Rp 200.000</div>
+                        <div class="text-gray-900 font-bold">Rp {{ number_format($order->agreed_price, 0, ',', '.') }}</div>
                     </div>
                     
-                    <div class="flex justify-between items-center pt-4">
-                        <div class="text-gray-500 font-bold uppercase text-[10px] tracking-widest">Subtotal</div>
-                        <div class="text-gray-900 font-black font-plus">Rp 2.600.000</div>
-                    </div>
-                    <div class="flex justify-between items-center pb-4 border-b border-gray-200">
-                        <div class="text-gray-500 font-bold uppercase text-[10px] tracking-widest">Discount</div>
-                        <div class="text-gray-900 font-black font-plus">Rp 0</div>
+                    <div class="flex justify-between items-center pt-2">
+                        <div class="text-gray-500 font-bold uppercase text-[10px] tracking-widest">Total Bayar</div>
+                        <div class="text-gray-900 font-black font-plus text-lg">Rp {{ number_format($order->agreed_price, 0, ',', '.') }}</div>
                     </div>
                 </div>
             </div>
