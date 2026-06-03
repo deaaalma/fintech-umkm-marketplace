@@ -841,19 +841,19 @@
                 <div class="space-y-4 mb-8">
                     <div class="flex justify-between items-center text-xs">
                         <span class="text-gray-400 font-bold uppercase tracking-tighter">Paid Date</span>
-                        <span class="text-gray-900 font-black">14 Jan 2024, 11:45</span>
+                        <span class="text-gray-900 font-black">{{ $verificationData['completed_at'] ?? '-' }}</span>
                     </div>
                     <div class="flex justify-between items-center text-xs">
                         <span class="text-gray-400 font-bold uppercase tracking-tighter">Total Paid</span>
-                        <span class="text-gray-900 font-black">Rp 2.728.800</span>
+                        <span class="text-gray-900 font-black">Rp {{ number_format($verificationData['amount'] ?? 0, 0, ',', '.') }}</span>
                     </div>
                     <div class="flex justify-between items-center text-xs">
                         <span class="text-gray-400 font-bold uppercase tracking-tighter">Method</span>
-                        <span class="text-gray-900 font-black">Bank Transfer (BCA)</span>
+                        <span class="text-gray-900 font-black uppercase">{{ $verificationData['method'] ?? '-' }}</span>
                     </div>
                     <div class="flex justify-between items-center text-xs">
                         <span class="text-gray-400 font-bold uppercase tracking-tighter">Transaction ID</span>
-                        <span class="text-gray-900 font-black">TRX-992100445</span>
+                        <span class="text-gray-900 font-black">{{ $verificationData['transaction_id'] ?? '-' }}</span>
                     </div>
                 </div>
                 <div class="flex flex-col sm:flex-row gap-3">

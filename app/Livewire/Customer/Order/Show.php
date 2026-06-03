@@ -125,11 +125,13 @@ class Show extends Component
         ];
 
         // 5. Dynamic Verification Data
-        if ($this->order->status === 'completed' || $this->order->status === 'paid') {
+        $successPayment = $this->order->payments->where('status', 'success')->first();
+        if ($this->order->status === 'completed' || $this->order->status === 'paid' || $successPayment) {
             $this->verificationData = [
-                'completed_at' => $this->order->updated_at->format('d M Y, H:i'),
-                'transaction_id' => $this->order->invoice_number ?? ('TRX-' . str_pad($this->order->id, 8, '0', STR_PAD_LEFT)),
-                'method' => 'Saldo / Transfer',
+                'completed_at' => $successPayment ? $successPayment->paid_at->format('d M Y, H:i') : $this->order->updated_at->format('d M Y, H:i'),
+                'transaction_id' => $successPayment ? ($successPayment->payment_gateway_ref ?? ('TRX-' . $this->order->id)) : ($this->order->invoice_number ?? ('TRX-' . str_pad($this->order->id, 8, '0', STR_PAD_LEFT))),
+                'method' => $successPayment ? $successPayment->payment_method : 'Saldo / Transfer',
+                'amount' => $successPayment ? $successPayment->amount : $this->order->agreed_price,
             ];
         }
     }
