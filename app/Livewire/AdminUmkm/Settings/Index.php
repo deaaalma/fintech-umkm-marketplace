@@ -56,8 +56,8 @@ class Index extends Component
     public function save()
     {
         $this->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email',
+            'name' => 'nullable|string|max:255',
+            'email' => 'nullable|email',
             'logo' => 'nullable|image|max:2048',
             'qris_image' => 'nullable|image|max:2048',
         ]);

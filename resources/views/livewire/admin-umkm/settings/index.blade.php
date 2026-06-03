@@ -67,9 +67,9 @@
                         <div class="flex items-center gap-8">
                             <div class="w-24 h-24 rounded-2xl bg-gray-50 border border-gray-100 flex items-center justify-center overflow-hidden">
                                 @if($logo)
-                                    <img src="{{ $logo->temporaryUrl() }}" class="w-full h-full object-contain p-2">
+                                    <img wire:key="logo-preview" src="{{ $logo->temporaryUrl() }}" class="w-full h-full object-contain p-2">
                                 @elseif($umkm->logo_url)
-                                    <img src="{{ asset($umkm->logo_url) }}" class="w-full h-full object-contain p-2">
+                                    <img wire:key="logo-active" src="{{ asset($umkm->logo_url) }}" class="w-full h-full object-contain p-2">
                                 @else
                                     <svg class="w-10 h-10 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
                                 @endif
@@ -188,12 +188,12 @@
                             {{-- Preview Area --}}
                             <div class="bg-gray-50 rounded-[40px] p-8 border-2 border-dashed border-gray-200 flex flex-col items-center justify-center relative group min-h-[350px]">
                                 @if($qris_image)
-                                    <img src="{{ $qris_image->temporaryUrl() }}" class="w-full h-full object-contain rounded-2xl shadow-2xl">
+                                    <img wire:key="qris-preview" src="{{ $qris_image->temporaryUrl() }}" class="w-full h-full object-contain rounded-2xl shadow-2xl">
                                     <div class="absolute inset-0 bg-white/10 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center rounded-[38px]">
                                         <span class="px-5 py-2.5 bg-gray-900 text-white rounded-xl text-[10px] font-black uppercase tracking-widest shadow-xl">New Selection Preview</span>
                                     </div>
                                 @elseif($umkm->qris_image_url)
-                                    <img src="{{ asset($umkm->qris_image_url) }}" class="w-full h-full object-contain rounded-2xl shadow-xl">
+                                    <img wire:key="qris-active" src="{{ asset($umkm->qris_image_url) }}" class="w-full h-full object-contain rounded-2xl shadow-xl">
                                     <div class="absolute inset-0 bg-white/10 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center rounded-[38px]">
                                         <span class="px-5 py-2.5 bg-gray-900 text-white rounded-xl text-[10px] font-black uppercase tracking-widest shadow-xl">Current Active QRIS</span>
                                     </div>
