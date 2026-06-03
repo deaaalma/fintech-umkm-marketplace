@@ -13,46 +13,12 @@ class Show extends Component
     public Order $order;
     public $showAcceptModal = false;
     
-    // Mock data for Service Process (Step 4)
-    public $staffTeam = [
-        ['name' => 'Ahmad Syarif', 'role' => 'Team Lead', 'experience' => '5 years experience', 'initials' => 'AS'],
-        ['name' => 'Budi Santoso', 'role' => 'Member', 'experience' => '2 years experience', 'initials' => 'BS'],
-    ];
-
-    public $workScope = [
-        'Deep cleaning 50m² living area',
-        'Extra 2 bathrooms deep cleaning',
-        'Balcony 10m² cleaning',
-    ];
-
-    public $workProgress = [
-        ['task' => 'Living room', 'status' => 'completed', 'time' => '10:00'],
-        ['task' => 'Bedroom 1', 'status' => 'completed', 'time' => '10:20'],
-        ['task' => 'Bathroom 1', 'status' => 'in_progress', 'time' => 'Currently working...'],
-        ['task' => 'Bathroom 2', 'status' => 'pending', 'time' => ''],
-        ['task' => 'Kitchen', 'status' => 'pending', 'time' => ''],
-        ['task' => 'Balcony', 'status' => 'pending', 'time' => ''],
-    ];
-
-    // Mock data for Payment (Step 5)
-    public $paymentDetails = [
-        'base_services' => [
-            ['name' => 'Deep cleaning 50m²', 'price' => 2210000],
-            ['name' => 'Extra 2 Bathrooms', 'price' => 390000],
-            ['name' => 'Balcony 20m²', 'price' => 187200],
-        ],
-        'additional_services' => [
-            ['name' => 'Window Cleaning (3 windows)', 'price' => 117000],
-            ['name' => 'AC Filter Cleaning (1 unit)', 'price' => 150000],
-        ],
-        'discounts' => [
-            ['name' => 'Loyalty Discount', 'amount' => 30000],
-        ],
-        'fees' => [
-            ['name' => 'Admin Fee', 'amount' => 4600],
-        ],
-        'final_total' => 2728800
-    ];
+    // Dynamic data containers
+    public $staffTeam = [];
+    public $workScope = [];
+    public $workProgress = [];
+    public $paymentDetails = [];
+    public $verificationData = [];
 
     // Use order photos if available, otherwise mock
     public function getWorkResultsProperty()
@@ -82,11 +48,6 @@ class Show extends Component
         ];
     }
 
-    public $verificationData = [
-        'completed_at' => '14 Jan 2024, 11:45',
-        'transaction_id' => 'TRX-992100445',
-        'method' => 'Bank Transfer (BCA)',
-    ];
 
     public function toggleAcceptModal()
     {
@@ -98,8 +59,74 @@ class Show extends Component
         if ($order->customer_id !== auth()->id()) {
             abort(403, 'Unauthorized action.');
         }
-        
-        $this->order = $order->load(['umkm', 'product', 'review']);
+        $this->order = $order->load(['umkm', 'product', 'orderAssignment.worker']);
+
+        // 1. Dynamic Staff Team
+        if ($this->order->orderAssignment && $this->order->orderAssignment->worker) {
+            $worker = $this->order->orderAssignment->worker;
+            $this->staffTeam = [
+                [
+                    'name' => $worker->name, 
+                    'role' => 'Assigned Specialist', 
+                    'experience' => 'Certified Staff @ ' . $this->order->umkm->name, 
+                    'initials' => strtoupper(substr($worker->name, 0, 1))
+                ]
+            ];
+        } else {
+            $this->staffTeam = [
+                ['name' => 'Pending Assignment', 'role' => 'Awaiting Admin', 'experience' => '-', 'initials' => '?']
+            ];
+        }
+
+        // 2. Dynamic Work Scope
+        $this->workScope = [
+            'Layanan: ' . $this->order->product->name,
+            'Lokasi: ' . ($this->order->service_address ?? 'Alamat terdaftar'),
+            'Catatan: ' . ($this->order->notes ?? 'Prosedur standar'),
+        ];
+
+        // 3. Dynamic Work Progress (Based on Status)
+        if ($this->order->status === 'processing') {
+            $this->workProgress = [
+                ['task' => 'Persiapan Alat & Bahan', 'status' => 'completed', 'time' => $this->order->updated_at->format('H:i')],
+                ['task' => 'Pengerjaan Layanan: ' . $this->order->product->name, 'status' => 'in_progress', 'time' => 'Sedang dikerjakan...'],
+                ['task' => 'Pembersihan & Finishing', 'status' => 'pending', 'time' => ''],
+                ['task' => 'Verifikasi Hasil', 'status' => 'pending', 'time' => ''],
+            ];
+        } elseif (in_array($this->order->status, ['waiting_payment', 'paid', 'completed'])) {
+            $this->workProgress = [
+                ['task' => 'Persiapan Alat & Bahan', 'status' => 'completed', 'time' => '-'],
+                ['task' => 'Pengerjaan Layanan', 'status' => 'completed', 'time' => '-'],
+                ['task' => 'Pembersihan & Finishing', 'status' => 'completed', 'time' => '-'],
+                ['task' => 'Verifikasi Hasil', 'status' => 'completed', 'time' => '-'],
+            ];
+        } else {
+            $this->workProgress = [
+                ['task' => 'Menunggu Penugasan', 'status' => 'pending', 'time' => ''],
+            ];
+        }
+
+        // 4. Dynamic Payment Details
+        $this->paymentDetails = [
+            'base_services' => [
+                ['name' => $this->order->product->name, 'price' => $this->order->agreed_price ?? 0],
+            ],
+            'additional_services' => [],
+            'discounts' => [],
+            'fees' => [
+                ['name' => 'Biaya Layanan', 'amount' => $this->order->platform_fee ?? 0],
+            ],
+            'final_total' => $this->order->agreed_price ?? 0
+        ];
+
+        // 5. Dynamic Verification Data
+        if ($this->order->status === 'completed' || $this->order->status === 'paid') {
+            $this->verificationData = [
+                'completed_at' => $this->order->updated_at->format('d M Y, H:i'),
+                'transaction_id' => $this->order->invoice_number ?? ('TRX-' . str_pad($this->order->id, 8, '0', STR_PAD_LEFT)),
+                'method' => 'Saldo / Transfer',
+            ];
+        }
     }
 
     public function cancelOrder()
