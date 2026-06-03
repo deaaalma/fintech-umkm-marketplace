@@ -68,4 +68,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Order::class, 'customer_id');
     }
+
+    public function workerAt()
+    {
+        return $this->hasOne(UmkmWorker::class, 'user_id');
+    }
 }

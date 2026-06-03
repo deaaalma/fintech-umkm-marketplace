@@ -2,8 +2,9 @@
 
 namespace App\Livewire\Worker;
 
-use App\Models\Order;
 use App\Models\OrderAssignment;
+use App\Models\UserNotification;
+use App\Models\WorkerAttendance;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
@@ -12,6 +13,69 @@ use Carbon\Carbon;
 #[Layout('layouts.worker-layout')]
 class Index extends Component
 {
+    public $month;
+    public $year;
+    public $todayAttendance;
+
+    public function mount()
+    {
+        $this->month = Carbon::now()->month;
+        $this->year = Carbon::now()->year;
+        $this->checkAttendance();
+    }
+
+    public function checkAttendance()
+    {
+        $this->todayAttendance = WorkerAttendance::where('user_id', Auth::id())
+            ->whereDate('date', Carbon::today())
+            ->first();
+    }
+
+    public function clockIn()
+    {
+        if (!$this->todayAttendance) {
+            $this->todayAttendance = WorkerAttendance::create([
+                'user_id' => Auth::id(),
+                'date' => Carbon::today(),
+                'clock_in' => Carbon::now()->toTimeString(),
+                'status' => 'present'
+            ]);
+            
+            $this->dispatch('notify', [
+                'type' => 'success',
+                'message' => 'Berhasil absen masuk! Selamat bekerja.'
+            ]);
+        }
+    }
+
+    public function clockOut()
+    {
+        if ($this->todayAttendance && !$this->todayAttendance->clock_out) {
+            $this->todayAttendance->update([
+                'clock_out' => Carbon::now()->toTimeString()
+            ]);
+            
+            $this->dispatch('notify', [
+                'type' => 'success',
+                'message' => 'Berhasil absen keluar! Sampai jumpa besok.'
+            ]);
+        }
+    }
+
+    public function nextMonth()
+    {
+        $date = Carbon::createFromDate($this->year, $this->month, 1)->addMonth();
+        $this->month = $date->month;
+        $this->year = $date->year;
+    }
+
+    public function previousMonth()
+    {
+        $date = Carbon::createFromDate($this->year, $this->month, 1)->subMonth();
+        $this->month = $date->month;
+        $this->year = $date->year;
+    }
+
     public function render()
     {
         $workerId = Auth::id();
@@ -24,47 +88,47 @@ class Index extends Component
             ->with(['order.umkm', 'order.product'])
             ->get();
 
-        // Tugas Minggu Ini (Summary)
-        $tasksThisWeek = [];
-        for ($i = 0; $i < 7; $i++) {
-            $date = Carbon::today()->addDays($i);
+        // Full Month Calendar logic
+        $targetDate = Carbon::createFromDate($this->year, $this->month, 1);
+        $startOfMonth = $targetDate->copy()->startOfMonth();
+        $endOfMonth = $targetDate->copy()->endOfMonth();
+        
+        // Find the start of the calendar grid (leading days from prev month)
+        $startOfGrid = $startOfMonth->copy()->startOfWeek(Carbon::SUNDAY);
+        $endOfGrid = $endOfMonth->copy()->endOfWeek(Carbon::SATURDAY);
+        
+        $calendarDays = [];
+        $currentDate = $startOfGrid->copy();
+        
+        while ($currentDate <= $endOfGrid) {
             $count = OrderAssignment::where('worker_id', $workerId)
-                ->whereHas('order', function($query) use ($date) {
-                    $query->whereDate('booking_date', $date);
+                ->whereHas('order', function($query) use ($currentDate) {
+                    $query->whereDate('booking_date', $currentDate);
                 })
                 ->count();
-            
-            $tasksThisWeek[] = [
-                'day' => $date->translatedFormat('l'),
-                'date' => $date->translatedFormat('d M Y'),
-                'count' => $count,
-                'is_today' => $i === 0
+                
+            $calendarDays[] = [
+                'date_obj' => $currentDate->copy(),
+                'date_string' => $currentDate->toDateString(),
+                'day_num' => $currentDate->format('d'),
+                'is_today' => $currentDate->isToday(),
+                'is_current_month' => $currentDate->month === (int)$this->month,
+                'count' => $count
             ];
+            
+            $currentDate->addDay();
         }
 
-        // Mock Announcements
-        $announcements = [
-            [
-                'title' => 'Perubahan SOP Cleaning Area Basah',
-                'description' => 'Mulai 10 Jan, gunakan cairan pembersih jenis baru untuk area kamar mandi.',
-                'date' => '10 Jan 2024'
-            ],
-            [
-                'title' => 'Jadwal Training Bulanan',
-                'description' => 'Training wajib untuk semua staff akan diadakan tanggal 20 Jan di kantor pusat.',
-                'date' => '08 Jan 2024'
-            ],
-            [
-                'title' => 'Update Seragam Tim',
-                'description' => 'Seragam baru sudah bisa diambil di bagian HR mulai hari Senin besok.',
-                'date' => '05 Jan 2024'
-            ]
-        ];
+        // Real Notifications from DB
+        $notifications = UserNotification::where('user_id', $workerId)
+            ->latest()
+            ->take(3)
+            ->get();
 
         return view('livewire.worker.index', [
             'tasksToday' => $tasksToday,
-            'tasksThisWeek' => $tasksThisWeek,
-            'announcements' => $announcements
+            'calendarDays' => $calendarDays,
+            'notifications' => $notifications
         ]);
     }
 }

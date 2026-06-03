@@ -4,19 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class UserNotification extends Model
+class WorkerAttendance extends Model
 {
     protected $fillable = [
         'user_id',
-        'title',
-        'message',
-        'type',
-        'link',
-        'read_at',
-    ];
-
-    protected $casts = [
-        'read_at' => 'datetime',
+        'date',
+        'clock_in',
+        'clock_out',
+        'status',
+        'note',
     ];
 
     public function user()

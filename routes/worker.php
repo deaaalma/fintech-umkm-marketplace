@@ -21,6 +21,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         // Profil
         Route::get('/profile', \App\Livewire\Worker\Profile::class)->name('profile');
+        // Notifikasi
+        Route::get('/notifications', \App\Livewire\Worker\Notifications::class)->name('notifications');
 
     });
 
