@@ -113,6 +113,45 @@
                     <p class="text-[10px] text-gray-400 font-medium mt-3 italic">* These photos were uploaded by the customer to help with your valuation.</p>
                 @endif
             </div>
+
+            {{-- Staff Work Results --}}
+            @if($order->worker_notes || $order->work_result_photos)
+            <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-8">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-10 h-10 rounded-xl bg-teal-50 flex items-center justify-center text-teal-600">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    </div>
+                    <h2 class="text-lg font-black text-gray-900 font-plus uppercase tracking-tight">Staff Work Results</h2>
+                </div>
+
+                <div class="space-y-6">
+                    @if($order->worker_notes)
+                    <div>
+                        <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-3">Worker Report / Notes</label>
+                        <div class="p-5 bg-gray-50 rounded-2xl border border-gray-100 text-sm font-medium text-gray-700 leading-relaxed italic">
+                            "{{ $order->worker_notes }}"
+                        </div>
+                    </div>
+                    @endif
+
+                    @if($order->work_result_photos)
+                    <div>
+                        <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-3">Work Evidence Photos</label>
+                        <div class="flex gap-4 overflow-x-auto pb-2 hide-scrollbar">
+                            @foreach($order->work_result_photos as $photo)
+                                <div class="w-48 h-48 rounded-2xl border border-gray-100 overflow-hidden shrink-0 group relative cursor-pointer">
+                                    <img src="{{ asset('storage/' . $photo) }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                                    <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all flex items-center justify-center">
+                                        <a href="{{ asset('storage/' . $photo) }}" target="_blank" class="px-4 py-2 bg-white rounded-xl text-[10px] font-black uppercase tracking-widest shadow-xl scale-0 group-hover:scale-100 transition-all">View Proof</a>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                    @endif
+                </div>
+            </div>
+            @endif
         </div>
 
         {{-- Right Column: Actions --}}
@@ -202,12 +241,57 @@
                 </button>
             </div>
             @elseif($order->status === 'waiting_payment')
-            <div class="bg-orange-500 rounded-3xl shadow-xl p-8 text-white relative overflow-hidden group">
-                <div class="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-bl-full -mr-10 -mt-10 group-hover:scale-110 transition-transform duration-500"></div>
-                <h2 class="text-lg font-black font-plus mb-6 relative z-10">Awaiting Payment</h2>
-                <p class="text-xs text-orange-50 font-medium mb-2 leading-relaxed relative z-10">
-                    The service is done and we are waiting for the customer to complete the payment.
-                </p>
+            <div class="bg-white rounded-3xl border-2 border-orange-500 shadow-xl p-8 relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-orange-50 rounded-bl-full -mr-10 -mt-10"></div>
+                
+                <div class="relative z-10">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-10 h-10 rounded-xl bg-orange-100 flex items-center justify-center text-orange-600">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        </div>
+                        <h2 class="text-lg font-black text-gray-900 font-plus uppercase tracking-tight">Awaiting Payment</h2>
+                    </div>
+
+                    <div class="p-6 bg-orange-50 rounded-2xl border border-orange-100 mb-8 text-center">
+                        <p class="text-[10px] font-black text-orange-400 uppercase tracking-widest mb-1">Agreed Price</p>
+                        <p class="text-3xl font-black text-orange-600">Rp {{ number_format($order->agreed_price, 0, ',', '.') }}</p>
+                    </div>
+
+                    {{-- QRIS Verification nested here for better flow --}}
+                    @php $pendingPayment = $order->payments->where('status', 'pending')->first(); @endphp
+                    @if($pendingPayment)
+                        <div class="space-y-6">
+                            <div class="p-4 bg-blue-50 border border-blue-100 rounded-2xl flex items-center gap-3">
+                                <div class="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></div>
+                                <p class="text-[11px] font-black text-blue-700 uppercase tracking-widest">New Payment Proof Uploaded</p>
+                            </div>
+
+                            <div class="aspect-[3/4] bg-gray-50 rounded-2xl overflow-hidden border border-gray-100 group relative cursor-pointer shadow-sm">
+                                <img src="{{ asset('storage/' . $pendingPayment->payment_gateway_ref) }}" class="w-full h-full object-cover">
+                                <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all flex items-center justify-center">
+                                    <a href="{{ asset('storage/' . $pendingPayment->payment_gateway_ref) }}" target="_blank" class="px-4 py-2 bg-white rounded-xl text-[10px] font-black uppercase tracking-widest shadow-xl scale-0 group-hover:scale-100 transition-all">Full View</a>
+                                </div>
+                            </div>
+
+                            <div class="flex flex-col gap-3">
+                                <button wire:click="verifyPayment({{ $pendingPayment->id }})" class="w-full py-4 bg-gray-900 text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-black transition-all shadow-lg flex items-center justify-center gap-2">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                                    Confirm Receipt
+                                </button>
+                                <button wire:click="rejectPayment({{ $pendingPayment->id }})" class="w-full py-4 bg-white border border-red-100 text-red-500 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-red-50 transition-all flex items-center justify-center gap-2">
+                                    Reject Payment
+                                </button>
+                            </div>
+                        </div>
+                    @else
+                        <div class="p-8 text-center bg-gray-50 rounded-2xl border border-dashed border-gray-200">
+                            <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center mx-auto mb-3 text-gray-300 shadow-sm">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            </div>
+                            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest leading-relaxed">Waiting for customer<br>to upload receipt...</p>
+                        </div>
+                    @endif
+                </div>
             </div>
             @endif
 
@@ -230,39 +314,6 @@
                     @endforeach
                 </div>
             </div>
-            {{-- Payment Verification Section --}}
-            @php $pendingPayment = $order->payments->where('status', 'pending')->first(); @endphp
-            @if($pendingPayment)
-            <div class="bg-white rounded-3xl border-2 border-blue-500 shadow-xl p-8 relative overflow-hidden">
-                <div class="absolute top-0 right-0 p-4">
-                    <span class="animate-pulse flex h-3 w-3">
-                      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-                      <span class="relative inline-flex rounded-full h-3 w-3 bg-blue-500"></span>
-                    </span>
-                </div>
-
-                <h2 class="text-lg font-black text-gray-900 font-plus mb-6 uppercase tracking-tight">Verify Payment</h2>
-                
-                <div class="space-y-6">
-                    <div class="aspect-[3/4] bg-gray-50 rounded-2xl overflow-hidden border border-gray-100 group relative cursor-pointer">
-                        <img src="{{ asset('storage/' . $pendingPayment->payment_gateway_ref) }}" class="w-full h-full object-cover">
-                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all flex items-center justify-center">
-                            <a href="{{ asset('storage/' . $pendingPayment->payment_gateway_ref) }}" target="_blank" class="px-4 py-2 bg-white rounded-xl text-[10px] font-black uppercase tracking-widest shadow-xl scale-0 group-hover:scale-100 transition-all">View Full Receipt</a>
-                        </div>
-                    </div>
-
-                    <div class="flex flex-col gap-3">
-                        <button wire:click="verifyPayment({{ $pendingPayment->id }})" class="w-full py-4 bg-blue-600 text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-blue-700 transition-all shadow-lg flex items-center justify-center gap-2">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-                            Confirm Receipt
-                        </button>
-                        <button wire:click="rejectPayment({{ $pendingPayment->id }})" class="w-full py-4 bg-white border border-red-100 text-red-500 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-red-50 transition-all flex items-center justify-center gap-2">
-                            Reject Payment
-                        </button>
-                    </div>
-                </div>
-            </div>
-            @endif
         </div>
     </div>
 </div>
