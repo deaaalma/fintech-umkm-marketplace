@@ -142,5 +142,162 @@
                 </div>
             </div>
         </div>
+
+        {{-- Order Form Modal --}}
+        @if($showOrderModal)
+        <div class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+            <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true" wire:click="$set('showOrderModal', false)"></div>
+
+                <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+
+                <div class="inline-block align-bottom bg-white rounded-[32px] text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full animate-fade-in">
+                    <div class="bg-white px-8 pt-8 pb-8">
+                        <div class="sm:flex sm:items-start">
+                            <div class="mt-3 text-left w-full">
+                                <h3 class="text-2xl font-black text-gray-900 font-plus mb-2" id="modal-title">
+                                    Detail Pemesanan
+                                </h3>
+                                <p class="text-xs text-gray-400 font-bold uppercase tracking-widest mb-8">
+                                    Lengkapi detail berikut untuk melanjutkan pesanan
+                                </p>
+
+                                <div class="space-y-6">
+                                    {{-- Address --}}
+                                    <div class="space-y-2">
+                                        <label class="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Alamat Layanan</label>
+                                        <textarea wire:model="address" rows="3" placeholder="Masukkan alamat lengkap lokasi pembersihan..." class="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl text-sm font-medium focus:ring-0 focus:border-[#2D2D2D] outline-none transition-all resize-none"></textarea>
+                                        @error('address') <span class="text-[10px] text-red-500 font-bold ml-1">{{ $message }}</span> @enderror
+                                    </div>
+
+                                    {{-- Map Picker --}}
+                                    <div class="space-y-2" 
+                                         x-data="{
+                                            lat: @entangle('lat'),
+                                            lng: @entangle('lng'),
+                                            map: null,
+                                            marker: null,
+                                            initMap() {
+                                                const defaultLat = -8.6500; // Bali default
+                                                const defaultLng = 115.2167;
+                                                
+                                                this.map = L.map('map-picker').setView([this.lat || defaultLat, this.lng || defaultLng], 13);
+                                                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                                                    attribution: '© OpenStreetMap'
+                                                }).addTo(this.map);
+
+                                                this.marker = L.marker([this.lat || defaultLat, this.lng || defaultLng], {
+                                                    draggable: true
+                                                }).addTo(this.map);
+
+                                                this.marker.on('dragend', (e) => {
+                                                    const pos = e.target.getLatLng();
+                                                    this.lat = pos.lat;
+                                                    this.lng = pos.lng;
+                                                });
+
+                                                this.map.on('click', (e) => {
+                                                    this.marker.setLatLng(e.latlng);
+                                                    this.lat = e.latlng.lat;
+                                                    this.lng = e.latlng.lng;
+                                                });
+                                                
+                                                // Trigger resize after modal animation
+                                                setTimeout(() => this.map.invalidateSize(), 100);
+                                            },
+                                            useCurrentLocation() {
+                                                if (navigator.geolocation) {
+                                                    navigator.geolocation.getCurrentPosition((position) => {
+                                                        const pos = [position.coords.latitude, position.coords.longitude];
+                                                        this.lat = position.coords.latitude;
+                                                        this.lng = position.coords.longitude;
+                                                        this.map.setView(pos, 16);
+                                                        this.marker.setLatLng(pos);
+                                                    });
+                                                }
+                                            }
+                                         }" 
+                                         x-init="initMap()">
+                                        <div class="flex items-center justify-between mb-2">
+                                            <label class="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Pin Point Lokasi</label>
+                                            <button type="button" @click="useCurrentLocation" class="text-[10px] font-black text-blue-600 uppercase tracking-widest flex items-center gap-1 hover:text-blue-800 transition-colors">
+                                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                                                Gunakan Lokasi Saat Ini
+                                            </button>
+                                        </div>
+                                        <div id="map-picker" class="h-48 w-full rounded-2xl border border-gray-100 z-0 shadow-inner" wire:ignore></div>
+                                        <div class="flex gap-4 mt-2">
+                                            <div class="flex-1 px-3 py-2 bg-gray-50 rounded-lg border border-gray-100">
+                                                <p class="text-[8px] text-gray-400 font-bold uppercase tracking-widest">Latitude</p>
+                                                <p class="text-[10px] font-mono font-bold text-gray-600" x-text="lat || '-'"></p>
+                                            </div>
+                                            <div class="flex-1 px-3 py-2 bg-gray-50 rounded-lg border border-gray-100">
+                                                <p class="text-[8px] text-gray-400 font-bold uppercase tracking-widest">Longitude</p>
+                                                <p class="text-[10px] font-mono font-bold text-gray-600" x-text="lng || '-'"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="grid grid-cols-2 gap-4">
+                                        {{-- Date --}}
+                                        <div class="space-y-2">
+                                            <label class="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Tanggal</label>
+                                            <input type="date" wire:model="booking_date" class="w-full px-5 py-3.5 bg-gray-50 border border-gray-100 rounded-2xl text-sm font-medium focus:ring-0 focus:border-[#2D2D2D] outline-none transition-all">
+                                            @error('booking_date') <span class="text-[10px] text-red-500 font-bold ml-1">{{ $message }}</span> @enderror
+                                        </div>
+                                        {{-- Time --}}
+                                        <div class="space-y-2">
+                                            <label class="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Jam</label>
+                                            <input type="time" wire:model="booking_time" class="w-full px-5 py-3.5 bg-gray-50 border border-gray-100 rounded-2xl text-sm font-medium focus:ring-0 focus:border-[#2D2D2D] outline-none transition-all">
+                                            @error('booking_time') <span class="text-[10px] text-red-500 font-bold ml-1">{{ $message }}</span> @enderror
+                                        </div>
+                                    </div>
+
+                                    {{-- Photo Uploads --}}
+                                    <div class="space-y-3">
+                                        <label class="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Foto Kondasi Area (Opsional)</label>
+                                        <div class="grid grid-cols-4 gap-4">
+                                            <label class="aspect-square bg-gray-50 rounded-2xl border-2 border-dashed border-gray-100 flex flex-col items-center justify-center cursor-pointer hover:border-[#2D2D2D] transition-all group">
+                                                <input type="file" multiple wire:model="orderPhotos" class="hidden">
+                                                <div class="w-8 h-8 bg-white rounded-lg flex items-center justify-center text-gray-300 group-hover:bg-[#2D2D2D] group-hover:text-white transition-all shadow-sm">
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                                                </div>
+                                                <span class="text-[8px] font-black text-gray-400 uppercase tracking-widest mt-2">Tambah</span>
+                                            </label>
+
+                                            @foreach($orderPhotos as $index => $photo)
+                                            <div class="aspect-square bg-gray-100 rounded-2xl overflow-hidden relative group">
+                                                <img src="{{ $photo->temporaryUrl() }}" class="w-full h-full object-cover">
+                                                <button type="button" wire:click="removePhoto({{ $index }})" class="absolute top-1 right-1 w-6 h-6 bg-red-500 text-white rounded-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all shadow-lg">
+                                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                                                </button>
+                                            </div>
+                                            @endforeach
+                                        </div>
+                                        @error('orderPhotos.*') <span class="text-[10px] text-red-500 font-bold ml-1">{{ $message }}</span> @enderror
+                                        <p class="text-[9px] text-gray-400 font-bold uppercase tracking-widest ml-1 italic">Maksimal 2MB per foto. Membantu UMKM memberikan estimasi biaya lebih akurat.</p>
+                                    </div>
+
+                                    {{-- Notes --}}
+                                    <div class="space-y-2">
+                                        <label class="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Catatan Khusus (Opsional)</label>
+                                        <textarea wire:model="notes" rows="2" placeholder="Contoh: Fokus ke area dapur, ada noda membandel di karpet..." class="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl text-sm font-medium focus:ring-0 focus:border-[#2D2D2D] outline-none transition-all resize-none"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 px-8 py-6 sm:flex sm:flex-row-reverse gap-3">
+                        <button type="button" wire:click="confirmOrder" class="w-full inline-flex justify-center rounded-2xl border border-transparent shadow-lg shadow-gray-200 px-8 py-4 bg-[#2D2D2D] text-xs font-black text-white uppercase tracking-widest hover:bg-black focus:outline-none transition-all sm:w-auto">
+                            Konfirmasi Pesanan
+                        </button>
+                        <button type="button" wire:click="$set('showOrderModal', false)" class="mt-3 w-full inline-flex justify-center rounded-2xl border border-gray-200 px-8 py-4 bg-white text-xs font-black text-gray-400 uppercase tracking-widest hover:bg-gray-50 focus:outline-none transition-all sm:mt-0 sm:w-auto">
+                            Batal
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @endif
     </div>
 </div>

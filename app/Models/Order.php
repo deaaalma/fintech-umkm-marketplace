@@ -10,8 +10,7 @@ class Order extends Model
 
     protected $casts = [
         'booking_date' => 'date',
-        // kalau ada kolom waktu juga:
-        // 'booking_time' => 'datetime', 
+        'photos' => 'json',
     ];
 
     public function umkm()
