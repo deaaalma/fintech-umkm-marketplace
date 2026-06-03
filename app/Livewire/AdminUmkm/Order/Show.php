@@ -126,8 +126,8 @@ class Show extends Component
     public function completeOrder()
     {
         $this->order->update([
-            'status' => 'pending_valuation',
-            'current_step' => 2 // Move to Payment step
+            'status' => 'waiting_payment',
+            'current_step' => 5
         ]);
 
         OrderLog::create([
@@ -138,6 +138,33 @@ class Show extends Component
         ]);
 
         session()->flash('message', 'Layanan telah selesai. Menunggu pembayaran dari pelanggan.');
+    }
+
+    public function markAsPaidManual()
+    {
+        Payment::create([
+            'order_id' => $this->order->id,
+            'payment_method' => 'Manual/Cash',
+            'amount' => $this->order->agreed_price,
+            'status' => 'success',
+            'paid_at' => now(),
+            'payment_gateway_ref' => 'MANUAL-PAID-' . auth()->id(),
+        ]);
+
+        $this->order->update([
+            'status' => 'paid',
+            'current_step' => 6
+        ]);
+
+        OrderLog::create([
+            'order_id' => $this->order->id,
+            'actor_id' => auth()->id(),
+            'action' => 'Payment Completed (Manual)',
+            'reason' => 'Admin manually marked this order as paid (Cash/Manual).',
+        ]);
+
+        session()->flash('message', 'Pesanan berhasil ditandai sebagai LUNAS.');
+        $this->order->refresh();
     }
 
     public function rejectOrder()

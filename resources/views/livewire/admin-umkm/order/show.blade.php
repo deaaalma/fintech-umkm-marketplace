@@ -284,11 +284,18 @@
                             </div>
                         </div>
                     @else
-                        <div class="p-8 text-center bg-gray-50 rounded-2xl border border-dashed border-gray-200">
-                            <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center mx-auto mb-3 text-gray-300 shadow-sm">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        <div class="space-y-4">
+                            <div class="p-8 text-center bg-gray-50 rounded-2xl border border-dashed border-gray-200">
+                                <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center mx-auto mb-3 text-gray-300 shadow-sm">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                </div>
+                                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest leading-relaxed">Waiting for customer<br>to upload receipt...</p>
                             </div>
-                            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest leading-relaxed">Waiting for customer<br>to upload receipt...</p>
+
+                            <button wire:click="markAsPaidManual" wire:confirm="Are you sure you want to mark this as PAID manually (Cash/Manual)?" class="w-full py-4 bg-gray-100 text-gray-600 rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-gray-200 transition-all flex items-center justify-center gap-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                                Mark as Paid Manually
+                            </button>
                         </div>
                     @endif
                 </div>
