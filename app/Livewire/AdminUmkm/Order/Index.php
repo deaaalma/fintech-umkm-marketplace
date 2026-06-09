@@ -199,7 +199,7 @@ class Index extends Component
 
             return [
                 'id_raw' => $order->id,
-                'id'     => $order->invoice_number ?? 'INV-'.$order->id,
+                'id'     => $order->invoice_number ?? 'ORDER-'.$order->id,
                 'client' => $order->customer->name ?? 'Guest',
                 'service'=> $order->product->name ?? 'Unknown',
                 'price'  => 'Rp ' . number_format($order->agreed_price, 0, ',', '.'),

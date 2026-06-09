@@ -58,7 +58,7 @@ class Index extends Component
         $orders = collect($ordersRaw->items())->map(function($o) {
             return [
                 'id' => $o->id,
-                'invoice' => $o->invoice_number ?? 'INV-'.$o->id,
+                'invoice' => $o->invoice_number ?? 'ORDER-'.$o->id,
                 'service_name' => $o->product->name ?? 'Layanan Tidak Diketahui',
                 'status' => $o->status,
                 'price' => $o->agreed_price ?? 0,

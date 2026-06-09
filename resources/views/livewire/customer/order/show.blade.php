@@ -52,7 +52,7 @@
             @endif
         </div>
         
-        <h1 class="text-3xl font-black text-gray-900 font-plus tracking-tight mb-2">#{{ $order->invoice_number ?? 'INV-'.$order->id }}</h1>
+        <h1 class="text-3xl font-black text-gray-900 font-plus tracking-tight mb-2">#{{ $order->invoice_number ?? 'ORDER-'.$order->id }}</h1>
         <p class="text-gray-700 text-sm font-medium">Dibuat, {{ $order->created_at->translatedFormat('d F Y, H:i') }} WIB</p>
     </div>
 
@@ -1085,7 +1085,7 @@
 
     <div class="mt-8 text-center bg-gray-50 rounded-xl py-4 border border-gray-100">
         @php
-            $invoiceNo = $order->invoice_number ?? 'INV-' . $order->id;
+            $invoiceNo = $order->invoice_number ?? 'ORDER-' . $order->id;
             $waText = urlencode("Halo Support, saya mau melaporkan kendala terkait pesanan dengan nomor Invoice: " . $invoiceNo);
         @endphp
         <p class="text-sm text-gray-700 font-medium">Need help with your order? <a href="https://wa.me/6281339925118?text={{ $waText }}" target="_blank" class="text-gray-900 font-bold hover:underline">Contact Support</a></p>

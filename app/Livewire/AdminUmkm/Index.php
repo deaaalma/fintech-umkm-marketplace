@@ -47,7 +47,8 @@ class Index extends Component
             $statusInfo = $statusMap[$order->status] ?? ['color' => 'slate', 'label' => $order->status];
 
             return [
-                'id'     => $order->invoice_number ?? 'INV-'.$order->id,
+                'id_raw' => $order->id,
+                'id'     => $order->invoice_number ?? 'ORDER-'.$order->id,
                 'client' => $order->customer->name ?? 'Guest',
                 'status' => $statusInfo['label'],
                 'color'  => $statusInfo['color'],

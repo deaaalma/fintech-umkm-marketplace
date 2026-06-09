@@ -186,7 +186,7 @@ class DatabaseSeeder extends Seeder
             $status = $faker->randomElement(['pending_valuation', 'waiting_payment', 'paid', 'processing', 'completed', 'completed', 'completed', 'completed']);
 
             $orderId = DB::table('orders')->insertGetId([
-                'invoice_number' => 'INV-' . date('Ymd') . '-' . Str::upper(Str::random(6)),
+                'invoice_number' => null,
                 'customer_id' => $cust,
                 'umkm_id' => $prod['umkm_id'],
                 'product_id' => $prod['id'],
