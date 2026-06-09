@@ -35,7 +35,7 @@
                 </div>
             </div>
             <div class="px-6 pt-5 pb-6 group-hover:bg-emerald-50/30 transition-colors">
-                <h3 class="text-4xl font-black text-[#000B44] font-plus tracking-tighter leading-none group-hover:scale-105 transition-transform duration-500 origin-left whitespace-nowrap">Rp {{ number_format($stats['total_balance'] / 1000000, 2) }}M</h3>
+                <h3 class="text-3xl font-black text-[#000B44] font-plus tracking-tighter leading-none group-hover:scale-105 transition-transform duration-500 origin-left whitespace-nowrap">Rp {{ number_format($stats['total_balance'], 0, ',', '.') }}</h3>
             </div>
         </div>
 
@@ -53,51 +53,138 @@
         </a>
     </div>
 
-    <div class="grid grid-cols-12 gap-8 items-start">
-        <div class="col-span-12 xl:col-span-8 bg-white p-10 rounded-[2.5rem] border border-slate-100 shadow-sm font-plus">
-            <h3 class="text-2xl font-black text-[#000B44] tracking-tight mb-10">Live Pipeline</h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10">
-                @foreach($pipeline as $label => $count)
-                <div class="space-y-4">
-                    <div class="flex justify-between items-end px-1">
-                        <span class="text-xs font-black text-[#000B44] uppercase tracking-widest">{{ $label }}</span>
-                        <span class="text-sm font-black text-[#000B44]">{{ $count }} <span class="text-[10px] text-slate-400 uppercase">Orders</span></span>
-                    </div>
-                    <div class="w-full h-8 bg-slate-50 rounded-xl border border-slate-100 overflow-hidden shadow-inner">
-                        <div class="h-full bg-[#000B44] rounded-xl" style="width: {{ $count > 0 ? min($count * 10, 100) : 0 }}%"></div>
+    <div class="grid grid-cols-12 gap-8 items-stretch">
+        {{-- Status Orderan (Formerly Live Pipeline) --}}
+        <div class="col-span-12 xl:col-span-4 bg-white p-10 rounded-[2.5rem] border border-slate-100 shadow-sm font-plus flex flex-col">
+            <h3 class="text-2xl font-black text-[#000B44] tracking-tight mb-10">Status Orderan</h3>
+            <div class="flex-1 flex flex-col items-center justify-center">
+                @php
+                    $totalPipelineOrders = array_sum($pipeline) > 0 ? array_sum($pipeline) : 1;
+                    $cumulativePercent = 0;
+                    $colors = [
+                        'waiting'    => '#f59e0b', // amber-500
+                        'paid'       => '#14b8a6', // teal-500
+                        'processing' => '#3b82f6', // blue-500
+                        'completed'  => '#10b981', // emerald-500
+                    ];
+                @endphp
+                
+                {{-- Donut Chart --}}
+                <div class="relative w-48 h-48 mb-10">
+                    <svg viewBox="0 0 100 100" class="transform -rotate-90 w-full h-full drop-shadow-sm">
+                        <!-- Background circle -->
+                        <circle cx="50" cy="50" r="40" fill="transparent" stroke="#f8fafc" stroke-width="14" />
+                        
+                        @foreach($pipeline as $label => $count)
+                            @php
+                                $percent = ($count / $totalPipelineOrders) * 100;
+                                // Circumference = 2 * pi * 40 = 251.327
+                                $dasharray = ($percent * 251.327 / 100) . ' 251.327'; 
+                                $offset = -($cumulativePercent * 251.327 / 100);
+                            @endphp
+                            @if($percent > 0)
+                                <circle cx="50" cy="50" r="40" fill="transparent" stroke="{{ $colors[strtolower($label)] ?? '#cbd5e1' }}" stroke-width="14" stroke-dasharray="{{ $dasharray }}" stroke-dashoffset="{{ $offset }}" class="transition-all duration-1000 ease-out" />
+                            @endif
+                            @php $cumulativePercent += $percent; @endphp
+                        @endforeach
+                    </svg>
+                    <div class="absolute inset-0 flex flex-col items-center justify-center">
+                        <span class="text-4xl font-black text-[#000B44] tracking-tighter">{{ array_sum($pipeline) }}</span>
+                        <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-1">Total Orders</span>
                     </div>
                 </div>
-                @endforeach
+
+                {{-- KPI Cards (Legend) --}}
+                <div class="w-full grid grid-cols-2 gap-4 mt-auto">
+                    @foreach($pipeline as $label => $count)
+                    <div class="bg-slate-50/50 rounded-2xl p-4 border border-slate-100 flex items-center gap-3">
+                        <div class="w-2.5 h-2.5 rounded-full shrink-0" style="background-color: {{ $colors[strtolower($label)] ?? '#cbd5e1' }}"></div>
+                        <div class="flex-1">
+                            <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-0.5">{{ $label }}</p>
+                            <p class="text-lg font-black text-[#000B44] leading-none">{{ $count }}</p>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
             </div>
         </div>
 
-        <div class="col-span-12 xl:col-span-4 bg-white p-10 rounded-[2.5rem] border border-slate-100 flex flex-col font-plus shadow-sm">
-            <h3 class="text-2xl font-black text-[#000B44] tracking-tight mb-10">Recent Orders</h3>
-            <div class="border border-slate-100 rounded-[2rem] overflow-hidden">
+        {{-- Pesanan Baru (Table) --}}
+        <div class="col-span-12 xl:col-span-8 bg-white rounded-[2.5rem] border border-slate-100 overflow-hidden shadow-sm animate-fade-in-up font-plus flex flex-col h-full" style="animation-delay: 0.4s">
+            {{-- Header --}}
+            <div class="px-10 py-8 flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-100">
+                <div class="flex items-center gap-3">
+                    <h3 class="text-2xl font-black text-[#000B44] tracking-tight">New Orders</h3>
+                </div>
+                <div class="flex items-center">
+                    <a href="{{ route('umkm.orders') }}" class="px-6 py-3 bg-[#000B44] text-white rounded-xl text-xs font-bold hover:bg-[#001166] transition-colors shadow-sm">
+                        View All Orders &rarr;
+                    </a>
+                </div>
+            </div>
+
+            {{-- Table --}}
+            <div class="overflow-x-auto flex-1">
                 <table class="w-full text-left">
-                    <thead class="bg-slate-50/70 border-b border-slate-100">
-                        <tr>
-                            <th class="p-5 text-[10px] font-black text-slate-500 uppercase">ID</th>
-                            <th class="p-5 text-center border-l border-slate-100 text-[10px] font-black text-slate-500 uppercase">Status</th>
+                    <thead>
+                        <tr class="border-b border-slate-100 bg-slate-50/50">
+                            <th class="px-10 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest">Invoice / Layanan</th>
+                            <th class="px-6 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest">Pelanggan</th>
+                            <th class="px-6 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest">Tanggal</th>
+                            <th class="px-6 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest text-center">Status</th>
+                            <th class="px-10 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest text-center">Aksi</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-100">
-                        @forelse($recentOrders as $o)
-                        <tr class="hover:bg-slate-50/50 transition-all cursor-pointer">
-                            <td class="p-5"><p class="text-[13px] font-black text-[#000B44] tracking-tight">{{ $o['id'] }}</p></td>
-                            <td class="p-5 border-l border-slate-100 text-center">
-                                <span class="px-3 py-1.5 rounded-xl text-[9px] font-black uppercase tracking-widest bg-{{ $o['color'] }}-50 text-{{ $o['color'] }}-600 border border-{{ $o['color'] }}-100">
-                                    {{ $o['status'] }}
+                        @forelse($recentOrders as $order)
+                        <tr class="hover:bg-slate-50 transition-colors group">
+                            <td class="px-10 py-6">
+                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">#{{ $order->invoice_number ?? 'ORDER-'.$order->id }}</p>
+                                <p class="text-sm font-bold text-[#000B44]">{{ $order->product->name ?? 'Layanan Umum' }}</p>
+                            </td>
+                            <td class="px-6 py-6">
+                                <span class="text-sm font-bold text-slate-800">{{ $order->customer->name ?? 'Guest' }}</span>
+                            </td>
+                            <td class="px-6 py-6">
+                                <p class="text-sm font-semibold text-slate-700">{{ $order->booking_date?->translatedFormat('d M Y') ?? '-' }}</p>
+                                <p class="text-[11px] text-slate-400 font-medium mt-0.5">{{ $order->booking_time ?? '-' }}</p>
+                            </td>
+                            <td class="px-6 py-6 text-center">
+                                <span class="px-4 py-1.5 rounded-xl text-[9px] font-black uppercase tracking-widest bg-amber-50 text-amber-600 border border-amber-100">
+                                    NEW ORDER
                                 </span>
+                            </td>
+                            <td class="px-10 py-6 text-center">
+                                <a href="{{ route('umkm.orders.show', $order->id) }}" class="inline-flex items-center justify-center w-[120px] px-4 py-2 bg-white text-slate-600 rounded-xl text-[11px] font-bold hover:bg-slate-50 hover:text-[#000B44] border border-slate-200 transition-colors shadow-sm">
+                                    Proses Order
+                                </a>
                             </td>
                         </tr>
                         @empty
-                        <tr><td colspan="2" class="p-5 text-center text-slate-400 text-xs">No recent orders.</td></tr>
+                        <tr>
+                            <td colspan="5" class="px-10 py-12 text-center">
+                                <p class="text-sm font-bold text-slate-400">Tidak ada pesanan baru</p>
+                            </td>
+                        </tr>
                         @endforelse
                     </tbody>
                 </table>
             </div>
-            <a href="{{ route('admin-umkm.orders.preview') }}" class="w-full mt-8 py-5 bg-slate-50 hover:bg-[#000B44] hover:text-white text-center border border-slate-100 rounded-[1.5rem] text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] transition-all duration-300">View All Orders</a>
+            
+            {{-- Footer Note --}}
+            @if($stats['new_orders'] > 4)
+            <div class="px-10 py-4 border-t border-slate-100 bg-slate-50/50 flex justify-center items-center">
+                <p class="text-[11px] font-bold text-slate-400">
+                    Menampilkan 4 dari total <span class="text-[#000B44]">{{ $stats['new_orders'] }}</span> pesanan baru.
+                </p>
+            </div>
+            @else
+            <div class="px-10 py-4 border-t border-slate-100 bg-slate-50/50 flex justify-center items-center">
+                <p class="text-[11px] font-bold text-slate-400">
+                    Menampilkan semua pesanan baru.
+                </p>
+            </div>
+            @endif
         </div>
     </div>
 </div>
