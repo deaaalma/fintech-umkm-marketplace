@@ -144,6 +144,10 @@
                                 <a href="{{ route('customer.order-details', $order->id) }}" class="inline-flex items-center justify-center w-40 gap-2 px-4 py-2 bg-[#0077B6] text-white rounded-lg text-xs font-bold hover:bg-[#005f8e] transition-colors shadow-sm">
                                     Bayar Sekarang
                                 </a>
+                            @elseif($order->status === 'paid')
+                                <a href="{{ route('customer.order-review', $order->id) }}" class="inline-flex items-center justify-center w-40 gap-2 px-4 py-2 bg-emerald-500 text-white rounded-lg text-xs font-bold hover:bg-emerald-600 transition-colors shadow-sm">
+                                    Beri Ulasan
+                                </a>
                             @else
                                 <a href="{{ route('customer.order-details', $order->id) }}" class="inline-flex items-center justify-center w-40 gap-2 px-4 py-2 bg-white border border-slate-200 text-slate-700 rounded-lg text-xs font-bold hover:bg-slate-50 transition-colors shadow-sm">
                                     Lihat Detail

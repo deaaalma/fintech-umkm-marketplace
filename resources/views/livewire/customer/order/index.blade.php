@@ -410,6 +410,13 @@
                             <a href="{{ route('customer.order-details', $order['id']) }}" class="w-full sm:w-auto flex-1 py-3 text-center bg-white border border-slate-200 text-slate-700 rounded-xl text-sm font-bold hover:bg-slate-50 transition-colors shadow-sm">
                                 Lihat Detail
                             </a>
+                        @elseif($order['status'] === 'paid')
+                            <a href="{{ route('customer.order-review', $order['id']) }}" class="w-full sm:w-auto flex-1 py-3 text-center bg-emerald-500 text-white rounded-xl text-sm font-bold hover:bg-emerald-600 transition-colors shadow-sm">
+                                Beri Ulasan
+                            </a>
+                            <a href="{{ route('customer.order-details', $order['id']) }}" class="w-full sm:w-auto flex-1 py-3 text-center bg-white border border-slate-200 text-slate-700 rounded-xl text-sm font-bold hover:bg-slate-50 transition-colors shadow-sm">
+                                Lihat Detail
+                            </a>
                         @else
                             <a href="{{ route('customer.order-details', $order['id']) }}" class="w-full sm:w-auto flex-1 py-3 text-center bg-[#000B44] text-white rounded-xl text-sm font-bold hover:bg-[#001166] transition-colors shadow-sm">
                                 Lihat Detail

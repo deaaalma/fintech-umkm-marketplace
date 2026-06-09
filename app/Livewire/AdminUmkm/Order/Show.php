@@ -71,9 +71,17 @@ class Show extends Component
         UserNotification::create([
             'user_id' => $this->order->customer_id,
             'title'   => 'Pembayaran Dikonfirmasi ✓',
-            'message' => 'Pembayaran untuk pesanan #' . ($this->order->invoice_number ?? $this->order->id) . ' telah berhasil dikonfirmasi. Terima kasih!',
+            'message' => 'Pembayaran untuk pesanan #' . ($this->order->invoice_number ?? 'ORDER-' . $this->order->id) . ' telah berhasil dikonfirmasi. Terima kasih!',
             'type'    => 'payment',
             'link'    => route('customer.order-details', $this->order->id),
+        ]);
+
+        UserNotification::create([
+            'user_id' => $this->order->customer_id,
+            'title'   => 'Jangan Lupa Berikan Ulasan ⭐',
+            'message' => 'Layanan pesanan #' . ($this->order->invoice_number ?? 'ORDER-' . $this->order->id) . ' telah selesai. Yuk, berikan ulasan untuk membantu UMKM kami!',
+            'type'    => 'order_status',
+            'link'    => route('customer.order-review', $this->order->id),
         ]);
 
         session()->flash('message', 'Pembayaran berhasil diverifikasi.');
@@ -219,9 +227,17 @@ class Show extends Component
         UserNotification::create([
             'user_id' => $this->order->customer_id,
             'title'   => 'Pesanan Lunas ✓',
-            'message' => 'Pesanan #' . ($this->order->invoice_number ?? $this->order->id) . ' telah ditandai sebagai LUNAS oleh admin. Terima kasih telah menggunakan layanan kami!',
+            'message' => 'Pesanan #' . ($this->order->invoice_number ?? 'ORDER-' . $this->order->id) . ' telah ditandai sebagai LUNAS oleh admin. Terima kasih telah menggunakan layanan kami!',
             'type'    => 'payment',
             'link'    => route('customer.order-details', $this->order->id),
+        ]);
+
+        UserNotification::create([
+            'user_id' => $this->order->customer_id,
+            'title'   => 'Jangan Lupa Berikan Ulasan ⭐',
+            'message' => 'Layanan pesanan #' . ($this->order->invoice_number ?? 'ORDER-' . $this->order->id) . ' telah selesai. Yuk, berikan ulasan untuk membantu UMKM kami!',
+            'type'    => 'order_status',
+            'link'    => route('customer.order-review', $this->order->id),
         ]);
 
         session()->flash('message', 'Pesanan berhasil ditandai sebagai LUNAS.');
