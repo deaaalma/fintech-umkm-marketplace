@@ -1,22 +1,14 @@
 <x-slot:title>Order Lists</x-slot>
 
+@push('styles')
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+@endpush
+
+@push('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+@endpush
 <div class="space-y-6">
-    {{-- Breadcrumbs --}}
-    <nav class="flex text-sm text-gray-500 font-medium" aria-label="Breadcrumb">
-        <ol class="inline-flex items-center space-x-1 md:space-x-3">
-            <li class="inline-flex items-center">
-                <a href="#" class="hover:text-gray-700">Home</a>
-            </li>
-            <li>
-                <div class="flex items-center">
-                    <svg class="w-3 h-3 text-gray-400 mx-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
-                    </svg>
-                    <span class="ml-1 md:ml-2">Orders</span>
-                </div>
-            </li>
-        </ol>
-    </nav>
+
 
     {{-- Title and Action --}}
     <div class="flex justify-between items-center">
@@ -90,8 +82,12 @@
                     <button wire:click="setDateRange('month')" class="px-4 py-2 text-xs font-bold border border-gray-200 rounded-lg bg-white text-gray-700 hover:bg-gray-50 transition-all">Month</button>
                 </div>
                 <div class="space-y-2">
-                    <input type="date" wire:model.live="date_start" class="w-full px-4 py-2 border border-gray-200 rounded-lg text-sm">
-                    <input type="date" wire:model.live="date_end" class="w-full px-4 py-2 border border-gray-200 rounded-lg text-sm">
+                    <div x-data="{ init() { if (typeof flatpickr !== 'undefined') flatpickr($refs.dateStart, { dateFormat: 'Y-m-d', altInput: true, altFormat: 'j M Y', onChange: (d, str) => { @this.set('date_start', str) } }) } }">
+                        <input type="text" x-ref="dateStart" wire:model="date_start" placeholder="Start Date" readonly class="w-full px-4 py-2 border border-gray-200 rounded-lg text-sm cursor-pointer">
+                    </div>
+                    <div x-data="{ init() { if (typeof flatpickr !== 'undefined') flatpickr($refs.dateEnd, { dateFormat: 'Y-m-d', altInput: true, altFormat: 'j M Y', onChange: (d, str) => { @this.set('date_end', str) } }) } }">
+                        <input type="text" x-ref="dateEnd" wire:model="date_end" placeholder="End Date" readonly class="w-full px-4 py-2 border border-gray-200 rounded-lg text-sm cursor-pointer">
+                    </div>
                 </div>
                 <button wire:click="$set('date_start', ''); $set('date_end', '')" class="text-xs text-gray-400 font-bold hover:text-gray-600 underline">Clear All</button>
             </div>

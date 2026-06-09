@@ -1,3 +1,9 @@
+@push('styles')
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+@endpush
+@push('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+@endpush
 <div class="min-h-screen">
     <div class="w-full bg-white border-b border-[#e5e5e5]">
         <div class="max-w-[1400px] mx-auto px-6 lg:px-8 py-6">
@@ -97,7 +103,9 @@
 
                         <div>
                             <label class="{{ $labelClass }}" style="font-family: 'Figtree', sans-serif;">Custom Date From</label>
-                            <input type="date" wire:model="dateFrom" class="{{ $inputClass }}" style="font-family: 'Figtree', sans-serif;">
+                            <div x-data="{ init() { if (typeof flatpickr !== 'undefined') flatpickr($refs.dateFrom, { dateFormat: 'Y-m-d', altInput: true, altFormat: 'j M Y', onChange: (d, str) => { @this.set('dateFrom', str) } }) } }">
+                                <input type="text" x-ref="dateFrom" wire:model="dateFrom" placeholder="Select Date" class="{{ $inputClass }} cursor-pointer" style="font-family: 'Figtree', sans-serif;">
+                            </div>
                         </div>
 
                         <div>
@@ -126,7 +134,9 @@
 
                         <div>
                             <label class="{{ $labelClass }}" style="font-family: 'Figtree', sans-serif;">Custom Date To</label>
-                            <input type="date" wire:model="dateTo" class="{{ $inputClass }}" style="font-family: 'Figtree', sans-serif;">
+                            <div x-data="{ init() { if (typeof flatpickr !== 'undefined') flatpickr($refs.dateTo, { dateFormat: 'Y-m-d', altInput: true, altFormat: 'j M Y', onChange: (d, str) => { @this.set('dateTo', str) } }) } }">
+                                <input type="text" x-ref="dateTo" wire:model="dateTo" placeholder="Select Date" class="{{ $inputClass }} cursor-pointer" style="font-family: 'Figtree', sans-serif;">
+                            </div>
                         </div>
 
                         <div>

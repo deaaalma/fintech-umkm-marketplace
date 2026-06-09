@@ -31,7 +31,7 @@
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
             Kembali ke Pesanan Saya
         </a>
-        <div class="text-[10px] font-bold text-gray-400 mb-4 uppercase tracking-widest">Dashboard / Pesanan Saya / <span class="text-gray-900">Detail Pesanan</span></div>
+
         
         <div class="flex items-center gap-3 mb-2">
             @php

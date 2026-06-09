@@ -11,16 +11,29 @@ use Livewire\Component;
 #[Layout('layouts.customer-layout')]
 class Index extends Component
 {
+    public $search = '';
+
     public function render()
     {
         $userId = Auth::id();
 
         // 1. Hitung Pesanan Aktif (Belum selesai atau dibatalkan)
-        $activeOrders = Order::with(['umkm', 'product'])
+        $query = Order::with(['umkm', 'product'])
             ->where('customer_id', $userId)
-            ->whereIn('status', ['pending_valuation', 'waiting_payment', 'paid', 'processing'])
-            ->orderBy('created_at', 'desc')
-            ->get();
+            ->whereIn('status', ['pending_valuation', 'waiting_payment', 'paid', 'processing']);
+
+        if (!empty($this->search)) {
+            $query->where(function($q) {
+                $q->whereHas('product', function($q2) {
+                    $q2->where('name', 'like', '%' . $this->search . '%');
+                })->orWhere('invoice_number', 'like', '%' . $this->search . '%')
+                  ->orWhereHas('umkm', function($q3) {
+                      $q3->where('name', 'like', '%' . $this->search . '%');
+                  });
+            });
+        }
+
+        $activeOrders = $query->orderBy('created_at', 'desc')->get();
 
         $activeOrdersCount = $activeOrders->count();
 

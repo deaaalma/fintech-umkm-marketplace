@@ -9,7 +9,7 @@ use Livewire\Component;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Storage;
 
-#[Layout('layouts.customer')]
+#[Layout('layouts.customer-layout')]
 class Review extends Component
 {
     use WithFileUploads;

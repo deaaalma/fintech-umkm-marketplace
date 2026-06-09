@@ -1,5 +1,12 @@
 <x-slot:title>Laporan & Analytics</x-slot>
 
+@push('styles')
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+@endpush
+
+@push('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+@endpush
 <div class="space-y-6 pb-10 animate-fade-in-up">
     {{-- Header --}}
     <div>
@@ -10,15 +17,15 @@
     {{-- Filter Bar --}}
     <div class="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div class="flex items-center gap-2">
-            <div class="relative">
+            <div class="relative" x-data="{ init() { if (typeof flatpickr !== 'undefined') flatpickr($refs.dateStart, { dateFormat: 'Y-m-d', altInput: true, altFormat: 'j M Y', onChange: (d, str) => { @this.set('startDate', str) } }) } }">
                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
                 </div>
-                <input type="date" wire:model="startDate" class="pl-10 pr-4 py-2 bg-gray-50 border-none rounded-xl text-sm focus:ring-2 focus:ring-black/5 transition-all w-40">
+                <input type="text" x-ref="dateStart" wire:model="startDate" readonly class="pl-10 pr-4 py-2 bg-gray-50 border-none rounded-xl text-sm focus:ring-2 focus:ring-black/5 transition-all w-40 cursor-pointer">
             </div>
             <span class="text-gray-400 font-bold">-</span>
-            <div class="relative">
-                <input type="date" wire:model="endDate" class="px-4 py-2 bg-gray-50 border-none rounded-xl text-sm focus:ring-2 focus:ring-black/5 transition-all w-40">
+            <div class="relative" x-data="{ init() { if (typeof flatpickr !== 'undefined') flatpickr($refs.dateEnd, { dateFormat: 'Y-m-d', altInput: true, altFormat: 'j M Y', onChange: (d, str) => { @this.set('endDate', str) } }) } }">
+                <input type="text" x-ref="dateEnd" wire:model="endDate" readonly class="px-4 py-2 bg-gray-50 border-none rounded-xl text-sm focus:ring-2 focus:ring-black/5 transition-all w-40 cursor-pointer">
             </div>
         </div>
         

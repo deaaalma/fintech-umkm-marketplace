@@ -12,15 +12,13 @@ class Index extends Component
 {
     use WithPagination;
 
-    public $activeTab = 'semua';
     public $search = '';
     public $statusFilter = '';
     public $dateRange = [];
 
-    protected $queryString = ['activeTab', 'search', 'statusFilter'];
+    protected $queryString = ['search', 'statusFilter'];
 
     public function updatedSearch() { $this->resetPage(); }
-    public function updatedActiveTab() { $this->resetPage(); }
     public function updatedStatusFilter() { $this->resetPage(); }
     public function updatedDateRange() { $this->resetPage(); }
 
@@ -38,24 +36,15 @@ class Index extends Component
             });
         }
 
-        // Tab Logic (Mockup categories)
-        if ($this->activeTab === 'menunggu_review') {
-            $query->where('status', 'pending_valuation')->whereNull('agreed_price');
-        } elseif ($this->activeTab === 'negosiasi') {
-            $query->where('status', 'pending_valuation')->whereNotNull('agreed_price');
-        } elseif ($this->activeTab === 'payment') {
-            $query->where('status', 'waiting_payment');
-        } elseif ($this->activeTab === 'in_progress') {
-            $query->whereIn('status', ['paid', 'processing']);
-        } elseif ($this->activeTab === 'completed') {
-            $query->where('status', 'completed');
-        } elseif ($this->activeTab === 'cancelled') {
-            $query->where('status', 'cancelled');
-        }
-
         // Dropdown Status Filter
         if ($this->statusFilter) {
-            $query->where('status', $this->statusFilter);
+            if ($this->statusFilter === 'pending_valuation_negotiation') {
+                $query->where('status', 'pending_valuation')->whereNotNull('agreed_price');
+            } elseif ($this->statusFilter === 'pending_valuation') {
+                $query->where('status', 'pending_valuation')->whereNull('agreed_price');
+            } else {
+                $query->where('status', $this->statusFilter);
+            }
         }
 
         // Date Range Filter
@@ -84,23 +73,9 @@ class Index extends Component
             ];
         });
 
-        // Generate Counts for Tabs
-        $baseQuery = Order::where('customer_id', $userId);
-        
-        $tabs = [
-            ['id' => 'semua', 'label' => 'All', 'count' => (clone $baseQuery)->count()],
-            ['id' => 'menunggu_review', 'label' => 'Menunggu Review', 'count' => (clone $baseQuery)->where('status', 'pending_valuation')->whereNull('agreed_price')->count()],
-            ['id' => 'negosiasi', 'label' => 'Negosiasi', 'count' => (clone $baseQuery)->where('status', 'pending_valuation')->whereNotNull('agreed_price')->count()],
-            ['id' => 'payment', 'label' => 'Payment', 'count' => (clone $baseQuery)->where('status', 'waiting_payment')->count()],
-            ['id' => 'in_progress', 'label' => 'In Progress', 'count' => (clone $baseQuery)->whereIn('status', ['paid', 'processing'])->count()],
-            ['id' => 'completed', 'label' => 'Completed', 'count' => (clone $baseQuery)->where('status', 'completed')->count()],
-            ['id' => 'cancelled', 'label' => 'Cancelled', 'count' => (clone $baseQuery)->where('status', 'cancelled')->count()],
-        ];
-
         return view('livewire.customer.order.index', [
             'orders' => $orders,
-            'orders_pagination' => $ordersRaw,
-            'tabs' => $tabs
+            'orders_pagination' => $ordersRaw
         ]);
     }
 }

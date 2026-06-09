@@ -284,6 +284,13 @@ class extends Component {
     }
 }; ?>
 
+@push('styles')
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+@endpush
+@push('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+@endpush
+
 <div class="min-h-screen bg-[#f8fafc] font-['Figtree'] selection:bg-[#0077B6]/10 selection:text-[#0077B6]">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Figtree:wght@300..900&family=Inter:wght@100..900&family=Plus+Jakarta+Sans:wght@200..800&display=swap');
@@ -502,7 +509,9 @@ class extends Component {
                                 </div>
                                 <div class="space-y-2">
                                     <label class="text-sm font-bold text-[#000B44] font-plus tracking-wide uppercase opacity-70">Tgl Lahir (Min 18th) <span class="text-red-500">*</span></label>
-                                    <input wire:model.blur="formData.owner_dob" type="date" class="w-full px-5 py-4 bg-slate-50 border-2 border-slate-100 rounded-2xl font-medium input-focus">
+                                    <div x-data="{ init() { if (typeof flatpickr !== 'undefined') flatpickr($refs.dob, { dateFormat: 'Y-m-d', altInput: true, altFormat: 'j M Y', onChange: (d, str) => { @this.set('formData.owner_dob', str) } }) } }">
+                                        <input type="text" x-ref="dob" wire:model.blur="formData.owner_dob" placeholder="Pilih Tanggal" class="w-full px-5 py-4 bg-slate-50 border-2 border-slate-100 rounded-2xl font-medium input-focus cursor-pointer">
+                                    </div>
                                     @error('formData.owner_dob') <p class="text-[10px] font-bold text-red-500 uppercase mt-1">{{ $message }}</p> @enderror
                                 </div>
                             </div>

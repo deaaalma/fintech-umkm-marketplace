@@ -1,14 +1,14 @@
 <x-slot:title>{{ $partner->name }} - Detail Partner</x-slot:title>
 
+@push('styles')
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+@endpush
+
+@push('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+@endpush
 <div class="max-w-[1200px] mx-auto pb-20">
-    {{-- Breadcrumb --}}
-    <div class="flex items-center gap-2 text-xs font-bold text-gray-400 mb-8">
-        <a href="{{ route('customer.dashboard') }}" class="hover:text-gray-900 transition-colors">Dashboard</a>
-        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-        <a href="{{ route('customer.partners') }}" class="hover:text-gray-900 transition-colors">Partners</a>
-        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-        <span class="text-gray-900">{{ $partner->name }}</span>
-    </div>
+
 
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
         {{-- Left: Partner Info & Products --}}
@@ -240,9 +240,23 @@
 
                                     <div class="grid grid-cols-2 gap-4">
                                         {{-- Date --}}
-                                        <div class="space-y-2">
+                                        <div class="space-y-2" x-data="{
+                                            init() {
+                                                if (typeof flatpickr !== 'undefined') {
+                                                    flatpickr($refs.dateInput, {
+                                                        dateFormat: 'Y-m-d',
+                                                        altInput: true,
+                                                        altFormat: 'j M Y',
+                                                        minDate: 'today',
+                                                        onChange: (selectedDates, dateStr) => {
+                                                            @this.set('booking_date', dateStr);
+                                                        }
+                                                    });
+                                                }
+                                            }
+                                        }">
                                             <label class="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Tanggal</label>
-                                            <input type="date" wire:model="booking_date" class="w-full px-5 py-3.5 bg-gray-50 border border-gray-100 rounded-2xl text-sm font-medium focus:ring-0 focus:border-[#2D2D2D] outline-none transition-all">
+                                            <input type="text" x-ref="dateInput" readonly placeholder="Pilih Tanggal" wire:model="booking_date" class="w-full px-5 py-3.5 bg-gray-50 border border-gray-100 rounded-2xl text-sm font-medium focus:ring-0 focus:border-[#2D2D2D] outline-none transition-all cursor-pointer">
                                             @error('booking_date') <span class="text-[10px] text-red-500 font-bold ml-1">{{ $message }}</span> @enderror
                                         </div>
                                         {{-- Time --}}

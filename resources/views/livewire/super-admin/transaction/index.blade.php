@@ -1,3 +1,9 @@
+@push('styles')
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+@endpush
+@push('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+@endpush
 <div class="min-h-screen" x-data="{ activeTab: @entangle('activeTab') }">
     <div class="w-full bg-white border-b border-[#e5e5e5]">
         <div class="max-w-[1400px] mx-auto px-6 lg:px-8 py-4">
@@ -72,8 +78,12 @@
                     <div class="md:col-span-4">
                         <label class="{{ $labelClass }}">Date Range</label>
                         <div class="flex gap-2">
-                            <input type="date" wire:model.live="dateFrom" class="{{ $inputClass }}">
-                            <input type="date" wire:model.live="dateTo" class="{{ $inputClass }}">
+                            <div class="w-full" x-data="{ init() { if (typeof flatpickr !== 'undefined') flatpickr($refs.dateFrom, { dateFormat: 'Y-m-d', altInput: true, altFormat: 'j M Y', onChange: (d, str) => { @this.set('dateFrom', str) } }) } }">
+                                <input type="text" x-ref="dateFrom" wire:model="dateFrom" placeholder="Start Date" class="{{ $inputClass }} cursor-pointer">
+                            </div>
+                            <div class="w-full" x-data="{ init() { if (typeof flatpickr !== 'undefined') flatpickr($refs.dateTo, { dateFormat: 'Y-m-d', altInput: true, altFormat: 'j M Y', onChange: (d, str) => { @this.set('dateTo', str) } }) } }">
+                                <input type="text" x-ref="dateTo" wire:model="dateTo" placeholder="End Date" class="{{ $inputClass }} cursor-pointer">
+                            </div>
                         </div>
                     </div>
 

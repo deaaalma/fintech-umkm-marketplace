@@ -55,7 +55,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         $role = auth()->user()->role;
         return match($role) {
             'superadmin' => redirect()->route('superadmin.dashboard'),
-            'admin_umkm'  => redirect()->route('admin-umkm.dashboard'),
+            'admin_umkm'  => redirect()->route('umkm.dashboard'),
             'worker'      => redirect()->route('worker.dashboard'),
             'customer'    => redirect()->route('customer.dashboard'),
             default       => redirect('/'),

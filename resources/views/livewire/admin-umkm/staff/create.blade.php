@@ -1,27 +1,16 @@
 <x-slot:title>Tambah Staff Baru</x-slot>
 
+@push('styles')
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+@endpush
+
+@push('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+@endpush
 <div class="space-y-6 pb-24 relative animate-fade-in-up">
     {{-- Breadcrumbs & Header --}}
     <div>
-        <nav class="flex text-sm text-gray-500 font-medium mb-4" aria-label="Breadcrumb">
-            <ol class="inline-flex items-center space-x-1 md:space-x-3">
-                <li class="inline-flex items-center">
-                    <a href="{{ route('umkm.dashboard') }}" class="hover:text-gray-700">Home</a>
-                </li>
-                <li>
-                    <div class="flex items-center">
-                        <svg class="w-3 h-3 text-gray-400 mx-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/></svg>
-                        <a href="{{ route('umkm.staff') }}" class="ml-1 md:ml-2 hover:text-gray-700">Staff</a>
-                    </div>
-                </li>
-                <li>
-                    <div class="flex items-center">
-                        <svg class="w-3 h-3 text-gray-400 mx-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/></svg>
-                        <span class="ml-1 md:ml-2 text-gray-900 font-bold">Tambah Staff</span>
-                    </div>
-                </li>
-            </ol>
-        </nav>
+
         
         <div>
             <h1 class="text-2xl font-bold text-gray-900">Tambah Staff Baru</h1>
@@ -125,7 +114,9 @@
                 </div>
                 <div>
                     <label class="block text-xs font-black text-gray-400 uppercase tracking-widest mb-3">Tanggal Lahir</label>
-                    <input type="date" wire:model="date_of_birth" class="w-full px-5 py-3.5 bg-gray-50 border-none rounded-2xl text-sm focus:ring-2 focus:ring-black/5 transition-all {{ $userExists ? 'opacity-60 cursor-not-allowed' : '' }}" {{ $userExists ? 'readonly' : '' }}>
+                    <div x-data="{ init() { if (typeof flatpickr !== 'undefined' && !{{ $userExists ? 'true' : 'false' }}) flatpickr($refs.dob, { dateFormat: 'Y-m-d', altInput: true, altFormat: 'j M Y', onChange: (d, str) => { @this.set('date_of_birth', str) } }) } }">
+                        <input type="text" x-ref="dob" wire:model="date_of_birth" placeholder="Pilih Tanggal" class="w-full px-5 py-3.5 bg-gray-50 border-none rounded-2xl text-sm focus:ring-2 focus:ring-black/5 transition-all {{ $userExists ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer' }}" {{ $userExists ? 'readonly' : '' }}>
+                    </div>
                     @error('date_of_birth') <span class="text-red-500 text-xs font-bold mt-2 block">{{ $message }}</span> @enderror
                 </div>
                 <div class="md:col-span-2">

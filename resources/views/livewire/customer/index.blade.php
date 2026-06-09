@@ -1,258 +1,183 @@
 <div class="max-w-[1200px] mx-auto animate-fade-in-up">
-    
+    <style>
+        .metric-card { transition: box-shadow 0.2s ease; }
+        .metric-card:hover { box-shadow: 0 8px 24px -4px rgba(0,11,68,0.10); }
+    </style>
+
     {{-- Header Section --}}
     <div class="mb-8">
-        <h1 class="text-3xl font-black text-gray-900 font-plus tracking-tight">Halo, {{ explode(' ', auth()->user()->name)[0] }}</h1>
-        <p class="text-gray-500 mt-1 font-medium">Berikut ringkasan pesanan Anda</p>
-        <p class="text-[10px] text-gray-400 font-bold mt-2">{{ now()->translatedFormat('l, d F Y') }}</p>
+        <h1 class="text-3xl font-black text-[#000B44] font-plus tracking-tight">Halo, {{ explode(' ', auth()->user()->name)[0] }}</h1>
+        <p class="text-slate-600 mt-1 font-medium">Berikut ringkasan pesanan Anda</p>
+        <p class="text-xs text-slate-400 font-medium mt-2">{{ now()->translatedFormat('l, d F Y') }}</p>
     </div>
 
     {{-- Stats Cards --}}
     <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-10">
+
         {{-- Pesanan Aktif --}}
-        <div class="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm flex items-center gap-5 hover:shadow-md transition-shadow">
-            <div class="w-12 h-12 rounded-xl bg-gray-50 flex items-center justify-center shrink-0">
-                <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+        <div class="metric-card group bg-white rounded-2xl border border-slate-300 hover:border-[#0077B6] transition-all duration-300 overflow-hidden shadow-sm">
+            <div class="flex items-center px-6 pt-6 pb-4 border-b border-slate-200 group-hover:bg-blue-50/50 transition-colors">
+                <span class="text-base font-bold text-slate-700 flex-1 group-hover:text-[#0077B6] transition-colors">Pesanan Aktif</span>
+                <div class="text-slate-400 group-hover:text-[#0077B6] transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.75"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"/></svg>
+                </div>
             </div>
-            <div>
-                <div class="text-3xl font-black text-gray-900 font-plus leading-none mb-1">{{ $activeOrdersCount ?? 2 }}</div>
-                <div class="text-xs font-bold text-gray-500">Pesanan Aktif</div>
+            <div class="px-6 pt-5 pb-6 group-hover:bg-blue-50/30 transition-colors">
+                <h3 class="text-5xl font-black text-[#000B44] font-plus tracking-tighter leading-none group-hover:scale-105 transition-transform duration-500 origin-left" aria-label="{{ $activeOrdersCount ?? 2 }} pesanan aktif">{{ $activeOrdersCount ?? 2 }}</h3>
             </div>
         </div>
 
         {{-- Perlu Tindakan --}}
-        <div class="bg-[#2D2D2D] rounded-2xl p-6 border border-[#2D2D2D] shadow-lg shadow-black/10 flex items-center gap-5 relative overflow-hidden group">
+        <div class="metric-card bg-[#000B44] rounded-2xl border border-[#1a3a7a] flex flex-col group relative overflow-hidden" role="status" aria-live="polite">
             @if($needsActionCount > 0)
-                <div class="absolute top-4 right-4 w-2 h-2 rounded-full bg-red-500 animate-pulse"></div>
+                <div class="absolute top-4 right-4 w-2.5 h-2.5 rounded-full bg-yellow-400 animate-pulse" aria-hidden="true"></div>
             @endif
-            <div class="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center shrink-0">
-                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
-            </div>
-            <div>
-                <div class="text-3xl font-black text-white font-plus leading-none mb-1">{{ $needsActionCount }}</div>
-                <div class="text-xs font-bold text-white/80">Perlu Tindakan</div>
-                <div class="text-[9px] text-white/50 mt-1.5 leading-tight">
-                    @if($needsActionCount > 0)
-                        Ada {{ $needsActionCount }} pesanan yang memerlukan perhatian Anda
-                    @else
-                        Semua pesanan Anda berjalan lancar
-                    @endif
+            <div class="flex items-center px-6 pt-6 pb-4 border-b border-white/15">
+                <span class="text-base font-bold text-white/90 flex-1">Perlu Tindakan</span>
+                <div class="text-white/30 group-hover:text-white/60 transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.75"><path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0M3.124 7.5A8.969 8.969 0 0 1 5.292 3m13.416 0a8.969 8.969 0 0 1 2.168 4.5"/></svg>
                 </div>
+            </div>
+            <div class="px-6 pt-5 pb-4">
+                <h3 class="text-5xl font-black text-white font-plus tracking-tighter leading-none" aria-label="{{ $needsActionCount }} pesanan perlu tindakan">{{ $needsActionCount }}</h3>
+            </div>
+            <div class="px-6 pb-6 pt-3 border-t border-white/15 flex items-center justify-between">
+                <span class="text-white/70 text-xs font-medium">
+                    @if($needsActionCount > 0)
+                        Memerlukan perhatian Anda
+                    @else
+                        Semua pesanan berjalan lancar
+                    @endif
+                </span>
             </div>
         </div>
 
         {{-- Selesai --}}
-        <div class="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm flex items-center gap-5 hover:shadow-md transition-shadow">
-            <div class="w-12 h-12 rounded-xl bg-gray-50 flex items-center justify-center shrink-0">
-                <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <div class="metric-card group bg-white rounded-2xl border border-slate-300 hover:border-[#0077B6] transition-all duration-300 overflow-hidden shadow-sm">
+            <div class="flex items-center px-6 pt-6 pb-4 border-b border-slate-200 group-hover:bg-blue-50/50 transition-colors">
+                <span class="text-base font-bold text-slate-700 flex-1 group-hover:text-[#0077B6] transition-colors">Selesai</span>
+                <div class="text-slate-400 group-hover:text-[#0077B6] transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.75"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg>
+                </div>
             </div>
-            <div>
-                <div class="text-3xl font-black text-gray-900 font-plus leading-none mb-1">{{ $successOrdersCount ?? 8 }}</div>
-                <div class="text-xs font-bold text-gray-500">Selesai</div>
+            <div class="px-6 pt-5 pb-6 group-hover:bg-blue-50/30 transition-colors">
+                <h3 class="text-5xl font-black text-[#000B44] font-plus tracking-tighter leading-none group-hover:scale-105 transition-transform duration-500 origin-left" aria-label="{{ $successOrdersCount ?? 0 }} pesanan selesai">{{ $successOrdersCount ?? 0 }}</h3>
             </div>
         </div>
     </div>
 
-    {{-- Main Content Grid --}}
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        
-        {{-- Left Column (Active Orders) --}}
-        <div class="lg:col-span-8 space-y-6">
-            <div class="flex items-center justify-between mb-2">
-                <h2 class="text-lg font-black text-gray-900 font-plus">Pesanan Aktif</h2>
-                <a href="{{ route('customer.orders') }}" class="text-xs font-bold text-gray-500 hover:text-black transition-colors flex items-center gap-1">
-                    Lihat Semua <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-                </a>
+    {{-- Active Orders Table --}}
+    <div class="bg-white rounded-2xl border border-slate-300 overflow-hidden shadow-sm animate-fade-in-up" style="animation-delay: 0.4s">
+        {{-- Header --}}
+        <div class="px-8 py-5 flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200">
+            <div class="flex items-center gap-3">
+                <h3 class="text-base font-bold text-slate-800">Pesanan Aktif</h3>
+                <span class="bg-slate-800 text-white text-xs font-bold px-2.5 py-0.5 rounded-full">{{ count($activeOrders) }}</span>
             </div>
+            <div class="flex flex-wrap items-center gap-3">
+                {{-- Search --}}
+                <div class="relative">
+                    <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <circle cx="11" cy="11" r="8"/><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35"/>
+                    </svg>
+                    <input type="text" wire:model.live.debounce.300ms="search" placeholder="Cari layanan, toko, invoice..." class="pl-9 pr-4 py-2 text-sm text-slate-600 bg-slate-50 border border-slate-200 rounded-xl w-full md:w-72 focus:outline-none focus:border-[#0077B6] focus:bg-white transition-all placeholder:text-slate-400">
+                </div>
+                {{-- Chat Admin Button --}}
+                <button class="flex items-center gap-2 px-4 py-2 text-sm font-bold text-white bg-[#000B44] hover:bg-[#001166] rounded-xl transition-all shadow-sm focus:outline-none focus:ring-2 focus:ring-[#000B44] focus:ring-offset-2">
+                    <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.75"><path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 0 1 .865-.501 48.172 48.172 0 0 0 3.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z"/></svg>
+                    Chat Admin
+                </button>
+            </div>
+        </div>
 
-            @forelse($activeOrders as $order)
-                <div class="bg-white border {{ $order->current_step >= 3 && $order->current_step <= 4 ? 'border-[#2D2D2D]/20' : 'border-gray-100' }} rounded-3xl p-6 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden">
-                    @if($order->current_step == 4)
-                        <div class="bg-[#2D2D2D] px-6 py-2 -mx-6 -mt-6 mb-6 flex items-center gap-2 text-white">
-                            <svg class="w-4 h-4 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
-                            <span class="text-[10px] font-black uppercase tracking-widest">PENTING - Menunggu Pembayaran</span>
-                        </div>
-                    @endif
-
-                    <div class="flex flex-col md:flex-row justify-between gap-4 mb-6">
-                        <div>
-                            <div class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Nomor Pesanan: #{{ $order->invoice_number ?? 'ORDER-'.$order->id }}</div>
-                            <h3 class="text-lg font-black text-gray-900 font-plus mb-1">{{ $order->product->name }}</h3>
-                            <div class="flex items-center gap-2">
-                                <span class="text-[10px] font-bold text-gray-500">
+        {{-- Table --}}
+        <div class="overflow-x-auto">
+            <table class="w-full text-left">
+                <thead>
+                    <tr class="border-b border-slate-100 bg-slate-50/50">
+                        <th class="px-8 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Invoice / Layanan</th>
+                        <th class="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Penyedia Jasa</th>
+                        <th class="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Tanggal</th>
+                        <th class="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Status</th>
+                        <th class="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                    @forelse($activeOrders as $order)
+                    <tr class="hover:bg-slate-50 transition-colors group">
+                        <td class="px-8 py-4">
+                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-0.5">#{{ $order->invoice_number ?? 'ORDER-'.$order->id }}</p>
+                            <p class="text-sm font-bold text-[#000B44]">{{ $order->product->name }}</p>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="text-sm font-bold text-slate-800">{{ $order->umkm->name }}</span>
+                        </td>
+                        <td class="px-6 py-4">
+                            <p class="text-sm font-semibold text-slate-700">{{ $order->booking_date?->translatedFormat('d M Y') ?? '-' }}</p>
+                            <p class="text-[11px] text-slate-500 font-medium">{{ $order->booking_time ?? '-' }}</p>
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="flex flex-col items-start gap-1.5">
+                                <span class="inline-block px-3 py-1 bg-slate-100 text-slate-600 text-[11px] font-bold rounded-lg uppercase tracking-wider">
                                     @switch($order->status)
-                                        @case('pending_valuation') Menunggu Review Admin @break
-                                        @case('waiting_payment') Menunggu Pembayaran @break
+                                        @case('pending_valuation') Menunggu Review @break
+                                        @case('waiting_payment') Menunggu Bayar @break
                                         @case('paid') Sudah Dibayar @break
                                         @case('processing') Sedang Diproses @break
                                         @default {{ $order->status }}
                                     @endswitch
                                 </span>
-                                @if($order->current_step == 3)
-                                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[8px] font-black bg-red-100 text-red-700 uppercase tracking-widest border border-red-200">
-                                        Perlu Tindakan Anda
+                                @if($order->current_step == 3 || $order->current_step == 4)
+                                    <span class="text-[10px] font-bold text-orange-600 flex items-center gap-1.5">
+                                        <div class="w-2 h-2 rounded-full bg-orange-500 animate-pulse"></div>
+                                        Perlu Tindakan
                                     </span>
                                 @endif
                             </div>
-                        </div>
-                    </div>
-
-                    @if($order->current_step == 3)
-                        <div class="bg-gray-50 border border-gray-100 rounded-xl p-4 mb-6 flex items-start gap-3">
-                            <svg class="w-4 h-4 text-gray-500 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                            <p class="text-xs text-gray-700 font-medium leading-relaxed">Admin telah memproses pre-invoice. Silakan review dan setujui untuk melanjutkan ke tahap pembayaran.</p>
-                        </div>
-                    @elseif($order->current_step == 4)
-                        <div class="bg-gray-50 border border-gray-100 rounded-xl p-4 mb-6 flex items-start gap-3">
-                            <svg class="w-4 h-4 text-gray-500 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
-                            <p class="text-xs text-gray-700 font-medium leading-relaxed">Selesaikan pembayaran untuk konfirmasi booking layanan Anda.</p>
-                        </div>
-                    @endif
-
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-                        <div class="flex items-start gap-3">
-                            <div class="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center shrink-0">
-                                <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                            </div>
-                            <div>
-                                <div class="text-[10px] font-bold text-gray-400 uppercase">Tanggal & Waktu</div>
-                                <div class="text-xs font-bold text-gray-900 mt-0.5">{{ $order->booking_date?->translatedFormat('d F Y') ?? '-' }}</div>
-                                <div class="text-[10px] text-gray-500 font-medium">{{ $order->booking_time ?? '-' }}</div>
-                            </div>
-                        </div>
-                        <div class="flex items-start gap-3">
-                            <div class="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center shrink-0">
-                                <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                            </div>
-                            <div>
-                                <div class="text-[10px] font-bold text-gray-400 uppercase">Lokasi</div>
-                                <div class="text-xs font-bold text-gray-900 mt-0.5 truncate max-w-[120px]">{{ $order->service_address ?? '-' }}</div>
-                            </div>
-                        </div>
-                        <div class="flex items-start gap-3">
-                            <div class="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center shrink-0">
-                                <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
-                            </div>
-                            <div>
-                                <div class="text-[10px] font-bold text-gray-400 uppercase">Harga</div>
-                                <div class="text-xs font-bold text-gray-900 mt-0.5">Rp {{ number_format($order->agreed_price ?? 0, 0, ',', '.') }}</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="flex items-center justify-between border-t border-gray-50 pt-5">
-                        <div>
-                            <div class="text-[10px] text-gray-400 font-medium">Penyedia Jasa:</div>
-                            <div class="text-xs font-bold text-gray-900">{{ $order->umkm->name }}</div>
-                        </div>
-                        @if($order->current_step == 3)
-                            <a href="{{ route('customer.order-details', $order->id) }}" class="px-6 py-2.5 bg-[#2D2D2D] text-white rounded-xl text-xs font-bold hover:bg-black transition-colors flex items-center gap-2">
-                                Review Pre-invoice <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-                            </a>
-                        @elseif($order->current_step == 4)
-                            <a href="{{ route('customer.order-details', $order->id) }}" class="px-6 py-2.5 bg-[#2D2D2D] text-white rounded-xl text-xs font-bold hover:bg-black transition-colors flex items-center gap-2">
-                                Bayar Sekarang <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-                            </a>
-                        @else
-                            <a href="{{ route('customer.order-details', $order->id) }}" class="px-6 py-2.5 bg-white border border-gray-200 text-gray-700 rounded-xl text-xs font-bold hover:bg-gray-50 transition-colors flex items-center gap-2">
-                                Lihat Detail <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-                            </a>
-                        @endif
-                    </div>
-                </div>
-            @empty
-                <div class="bg-white border border-dashed border-gray-200 rounded-3xl p-12 text-center">
-                    <div class="w-16 h-16 bg-gray-50 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                        <svg class="w-8 h-8 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
-                    </div>
-                    <h3 class="text-sm font-black text-gray-900 font-plus mb-1">Belum Ada Pesanan Aktif</h3>
-                    <p class="text-xs text-gray-500 max-w-[200px] mx-auto">Mulai cari layanan untuk kebutuhan Anda sekarang.</p>
-                    <a href="{{ route('customer.partners') }}" class="inline-flex items-center gap-2 mt-6 px-6 py-2.5 bg-[#2D2D2D] text-white rounded-xl text-xs font-bold hover:bg-black transition-colors">
-                        Cari Layanan
-                    </a>
-                </div>
-            @endforelse
-
-            @if($activeOrders->count() > 0)
-                <a href="{{ route('customer.orders') }}" class="block w-full py-4 bg-white border border-gray-200 text-gray-700 rounded-2xl text-xs font-bold hover:bg-gray-50 transition-colors text-center">
-                    Lihat Semua Pesanan
-                </a>
-            @endif
-        </div>
-
-        {{-- Right Column (Sidebar) --}}
-        <div class="lg:col-span-4 space-y-6">
-            
-            {{-- Menu Cepat --}}
-            <div class="bg-white rounded-3xl p-6 border border-gray-100 shadow-sm">
-                <h3 class="text-sm font-black text-gray-900 font-plus mb-4">Menu Cepat</h3>
-                <div class="space-y-3">
-                    <button class="w-full flex items-center justify-between p-3 bg-[#2D2D2D] hover:bg-black text-white rounded-xl transition-colors group">
-                        <div class="flex items-center gap-3">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
-                            <span class="text-xs font-bold">Chat Admin</span>
-                        </div>
-                        {{-- <span class="w-5 h-5 flex items-center justify-center bg-white text-black text-[10px] font-black rounded-full">3</span> --}}
-                    </button>
-                    
-                    <button class="w-full flex items-center justify-between p-3 border border-gray-200 text-gray-700 hover:bg-gray-50 rounded-xl transition-colors">
-                        <div class="flex items-center gap-3">
-                            <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
-                            <span class="text-xs font-bold">Notifikasi</span>
-                        </div>
-                        @if($notifCount > 0)
-                            <span class="w-5 h-5 flex items-center justify-center bg-[#2D2D2D] text-white text-[10px] font-black rounded-full">{{ $notifCount }}</span>
-                        @endif
-                    </button>
-
-                    <button class="w-full flex items-center p-3 border border-gray-200 text-gray-700 hover:bg-gray-50 rounded-xl transition-colors gap-3">
-                        <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
-                        <span class="text-xs font-bold">Hubungi Kami</span>
-                    </button>
-                </div>
-            </div>
-
-            {{-- Notifikasi Terbaru --}}
-            <div class="bg-white rounded-3xl p-6 border border-gray-100 shadow-sm">
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-sm font-black text-gray-900 font-plus">Notifikasi Terbaru</h3>
-                    @if($notifCount > 0)
-                        <span class="w-4 h-4 flex items-center justify-center bg-[#2D2D2D] text-white text-[9px] font-black rounded-full">{{ $notifCount }}</span>
-                    @endif
-                </div>
-                
-                <div class="space-y-3">
-                    @forelse($notifications as $notification)
-                        <div class="p-3 {{ $notification->read_at ? 'bg-white' : 'bg-gray-50' }} rounded-xl border border-gray-100 flex gap-3 relative">
-                            @if(!$notification->read_at)
-                                <div class="w-1.5 h-1.5 rounded-full bg-blue-500 absolute top-4 right-3"></div>
+                        </td>
+                        <td class="px-6 py-4">
+                            @if($order->current_step == 3)
+                                <a href="{{ route('customer.order-details', $order->id) }}" class="inline-flex items-center gap-2 px-4 py-2 bg-[#0077B6] text-white rounded-lg text-xs font-bold hover:bg-[#005f8e] transition-colors shadow-sm">
+                                    Review Pre-invoice
+                                </a>
+                            @elseif($order->current_step == 4)
+                                <a href="{{ route('customer.order-details', $order->id) }}" class="inline-flex items-center gap-2 px-4 py-2 bg-[#0077B6] text-white rounded-lg text-xs font-bold hover:bg-[#005f8e] transition-colors shadow-sm">
+                                    Bayar Sekarang
+                                </a>
+                            @else
+                                <a href="{{ route('customer.order-details', $order->id) }}" class="inline-flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 text-slate-700 rounded-lg text-xs font-bold hover:bg-slate-50 transition-colors shadow-sm">
+                                    Lihat Detail
+                                </a>
                             @endif
-                            <div class="flex-1">
-                                <p class="text-xs text-gray-900 font-bold leading-snug mb-1 pr-4">{{ $notification->title }}</p>
-                                <p class="text-[9px] text-gray-400 font-medium">{{ $notification->created_at->diffForHumans() }}</p>
-                            </div>
-                        </div>
+                        </td>
+                    </tr>
                     @empty
-                        <div class="py-6 text-center">
-                            <p class="text-[10px] text-gray-400 font-medium">Tidak ada notifikasi baru</p>
-                        </div>
+                    <tr>
+                        <td colspan="5" class="px-6 py-12 text-center">
+                            <div class="w-12 h-12 bg-slate-100 rounded-xl flex items-center justify-center mx-auto mb-3">
+                                <svg class="w-6 h-6 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"/></svg>
+                            </div>
+                            <p class="text-sm font-bold text-slate-500">Tidak ada pesanan aktif.</p>
+                            @if(!empty($search))
+                                <p class="text-xs text-slate-400 mt-1">Coba kata kunci pencarian yang lain.</p>
+                            @endif
+                        </td>
+                    </tr>
                     @endforelse
-                </div>
-
-                <button class="w-full mt-4 py-2.5 bg-gray-50 text-gray-600 hover:text-black hover:bg-gray-100 rounded-xl text-[10px] font-bold transition-colors uppercase tracking-widest">
-                    Lihat Semua
-                </button>
-            </div>
-
-            {{-- Butuh Bantuan --}}
-            <div class="bg-gray-50 rounded-3xl p-6 border border-gray-100 text-center">
-                <h3 class="text-sm font-black text-gray-900 font-plus mb-2">Butuh Bantuan?</h3>
-                <p class="text-[10px] text-gray-500 font-medium mb-4">Tim support kami siap membantu Anda kapan saja.</p>
-                <button class="w-full py-3 bg-[#2D2D2D] hover:bg-black text-white rounded-xl text-xs font-bold transition-colors">
-                    Hubungi Support
-                </button>
-            </div>
-
+                </tbody>
+            </table>
         </div>
+
+        @if(count($activeOrders) > 0 && empty($search))
+            {{-- Pagination / Footer --}}
+            <div class="px-8 py-4 border-t border-slate-100 flex items-center justify-between bg-slate-50/50">
+                <div class="flex items-center gap-2 text-xs font-medium text-slate-500">
+                    Menampilkan <span class="font-bold text-slate-700">{{ count($activeOrders) }}</span> pesanan aktif
+                </div>
+                <a href="{{ route('customer.orders') }}" class="text-xs font-bold text-[#0077B6] hover:text-[#005f8e] transition-colors">
+                    Lihat Semua History &rarr;
+                </a>
+            </div>
+        @endif
     </div>
 </div>
