@@ -125,7 +125,18 @@
             @endif
             @if($statusFilter)
             <div class="flex items-center gap-2 px-3 py-1.5 bg-indigo-50 border border-indigo-100 rounded-lg">
-                <span class="text-xs font-bold text-indigo-700">Status: {{ str_replace('_', ' ', $statusFilter) }}</span>
+                @php
+                    $statusLabels = [
+                        'pending_valuation' => 'Negosiasi Harga',
+                        'waiting_payment' => 'Menunggu Bayar',
+                        'paid' => 'Menunggu Review',
+                        'processing' => 'Sedang Diproses',
+                        'completed' => 'Selesai',
+                        'cancelled' => 'Dibatalkan',
+                    ];
+                    $displayStatus = $statusLabels[$statusFilter] ?? str_replace('_', ' ', $statusFilter);
+                @endphp
+                <span class="text-xs font-bold text-indigo-700">Status: {{ $displayStatus }}</span>
                 <button wire:click="$set('statusFilter', '')" class="text-indigo-400 hover:text-indigo-600">
                     <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                 </button>
