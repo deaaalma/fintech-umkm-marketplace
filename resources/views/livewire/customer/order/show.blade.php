@@ -781,10 +781,10 @@
             @endif
 
             {{-- Work Results Gallery --}}
-            <div class="bg-white border border-gray-100 rounded-[32px] p-8 shadow-sm">
+            <div class="bg-white border border-gray-100 rounded-[32px] p-8 shadow-sm" x-data="photoDownloader()">
                 <div class="flex justify-between items-center mb-6">
                     <h3 class="text-sm font-black text-gray-900 font-plus uppercase tracking-wider">Work Results / Order Photos</h3>
-                    <span class="text-sm font-bold text-gray-600">{{ count($this->workResults) }} Photos attached</span>
+                    <span class="text-sm font-bold text-gray-600">{{ count($this->workResults) }} Foto terlampir</span>
                 </div>
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
                     @foreach($this->workResults as $image)
@@ -795,16 +795,37 @@
                     @endforeach
                 </div>
                 <div class="flex flex-col sm:flex-row gap-3">
-                    <button class="flex-1 py-3.5 bg-white border border-gray-200 rounded-xl text-sm font-black text-gray-900 hover:bg-gray-50 transition-all flex items-center justify-center gap-2 uppercase tracking-widest">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                        View in Gallery Mode
-                    </button>
-                    <button class="flex-1 py-3.5 bg-white border border-gray-200 rounded-xl text-sm font-black text-gray-900 hover:bg-gray-50 transition-all flex items-center justify-center gap-2 uppercase tracking-widest">
+                    <button @click="downloadAll()" class="w-full py-3.5 bg-white border border-gray-200 rounded-xl text-sm font-black text-gray-900 hover:bg-gray-50 transition-all flex items-center justify-center gap-2 uppercase tracking-widest">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-                        Download Photos
+                        Unduh Foto
                     </button>
                 </div>
             </div>
+
+            <script>
+                document.addEventListener('alpine:init', () => {
+                    Alpine.data('photoDownloader', () => ({
+                        urls: @json($this->workResults),
+                        downloadAll() {
+                            this.urls.forEach((url, index) => {
+                                fetch(url)
+                                    .then(response => response.blob())
+                                    .then(blob => {
+                                        const blobUrl = window.URL.createObjectURL(blob);
+                                        const a = document.createElement('a');
+                                        a.href = blobUrl;
+                                        a.download = `hasil_kerja_${index + 1}.jpg`;
+                                        document.body.appendChild(a);
+                                        a.click();
+                                        document.body.removeChild(a);
+                                        window.URL.revokeObjectURL(blobUrl);
+                                    })
+                                    .catch(err => console.error('Error downloading image', err));
+                            });
+                        }
+                    }))
+                })
+            </script>
 
             {{-- Pembayaran Summary Card --}}
             <div class="bg-white border border-gray-100 rounded-[32px] p-8 shadow-sm">
@@ -828,14 +849,14 @@
                     </div>
                 </div>
                 <div class="flex flex-col sm:flex-row gap-3">
-                    <button class="flex-1 py-3.5 bg-gray-50 rounded-xl text-sm font-black text-gray-900 hover:bg-gray-100 transition-all flex items-center justify-center gap-2 uppercase tracking-widest">
+                    <a href="{{ route('customer.order-invoice', $order->id) }}" target="_blank" class="flex-1 py-3.5 bg-gray-50 rounded-xl text-sm font-black text-gray-900 hover:bg-gray-100 transition-all flex items-center justify-center gap-2 uppercase tracking-widest text-center">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                         View Full Invoice
-                    </button>
-                    <button class="flex-1 py-3.5 bg-gray-50 rounded-xl text-sm font-black text-gray-900 hover:bg-gray-100 transition-all flex items-center justify-center gap-2 uppercase tracking-widest">
+                    </a>
+                    <a href="{{ route('customer.order-invoice-download', $order->id) }}" class="flex-1 py-3.5 bg-gray-50 rounded-xl text-sm font-black text-gray-900 hover:bg-gray-100 transition-all flex items-center justify-center gap-2 uppercase tracking-widest text-center">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"/></svg>
                         Download Receipt
-                    </button>
+                    </a>
                 </div>
             </div>
 
