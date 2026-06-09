@@ -48,7 +48,7 @@ class Index extends Component
         }
 
         // Date Range Filter
-        if (count($this->dateRange) === 2) {
+        if (is_array($this->dateRange) && count($this->dateRange) === 2) {
             $query->whereBetween('created_at', [$this->dateRange[0] . ' 00:00:00', $this->dateRange[1] . ' 23:59:59']);
         }
 

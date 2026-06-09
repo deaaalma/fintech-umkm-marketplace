@@ -14,6 +14,15 @@ class Index extends Component
 
     protected $queryString = ['search', 'activeCategory'];
 
+    public function updatedSearch()
+    {
+        // Auto-reset category to 'semua' whenever user types in search box
+        // so search is always global and not constrained by a previous category filter
+        if ($this->search) {
+            $this->activeCategory = 'semua';
+        }
+    }
+
     public function render()
     {
         $query = Umkm::where('status', 'active')->latest()->with('category');

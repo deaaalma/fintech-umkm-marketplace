@@ -9,6 +9,7 @@
 @endpush
 
 <div class="max-w-[1200px] mx-auto animate-fade-in-up" x-data="{
+    showFilters: false,
     init() {
         flatpickr($refs.dateInput, {
             mode: 'range',
@@ -23,7 +24,7 @@
                         return localDate.toISOString().split('T')[0];
                     }));
                 } else if (selectedDates.length === 0) {
-                    $wire.set('dateRange', []);
+                    $wire.set('dateRange', null);
                 }
             }
         });
@@ -48,9 +49,9 @@
     <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 mb-6 space-y-4">
         <div class="flex flex-col md:flex-row items-center gap-3">
             {{-- Search --}}
-            <div class="relative flex-1 w-full">
+            <div class="relative flex-1 w-full group">
                 <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                    <svg class="h-5 w-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="h-5 w-5 text-slate-400 group-focus-within:text-[#0077B6] transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                     </svg>
                 </div>
@@ -59,41 +60,81 @@
                     class="block w-full pl-11 pr-3 py-3 border border-slate-200 rounded-xl bg-white placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-[#0077B6]/30 focus:border-[#0077B6] text-sm transition-all">
             </div>
 
-            {{-- Date Range --}}
-            <div class="relative w-full md:w-48">
-                <input type="text" x-ref="dateInput" placeholder="Filter Tanggal" readonly
-                       class="w-full pl-4 pr-10 py-3 bg-white border border-slate-200 rounded-xl text-sm font-medium cursor-pointer text-slate-600 focus:outline-none focus:border-[#0077B6] transition-all">
-                <svg class="w-4 h-4 text-slate-400 absolute right-3 top-3.5 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-            </div>
+            {{-- Filter Launcher --}}
+            <div class="relative w-full md:w-auto">
+                <button @click="showFilters = !showFilters" 
+                    class="w-full md:w-auto px-6 py-3 bg-white border border-slate-200 rounded-xl text-sm font-bold text-slate-700 hover:bg-slate-50 shadow-sm transition-all flex items-center justify-center gap-2">
+                    <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/></svg>
+                    Filter
+                    @if($statusFilter || (is_array($dateRange) && count($dateRange) === 2))
+                        <span class="w-5 h-5 flex items-center justify-center rounded-full bg-[#0077B6] text-white text-[10px] font-black">
+                            {{ ($statusFilter ? 1 : 0) + ((is_array($dateRange) && count($dateRange) === 2) ? 1 : 0) }}
+                        </span>
+                    @endif
+                </button>
 
-            {{-- Status Filter --}}
-            <select wire:model.live="statusFilter" class="w-full md:w-48 px-4 py-3 bg-white border border-slate-200 rounded-xl text-sm text-slate-600 focus:outline-none focus:border-[#0077B6] transition-all cursor-pointer">
-                <option value="">Semua Status</option>
-                <option value="pending_valuation">Menunggu Review</option>
-                <option value="pending_valuation_negotiation">Perlu Tindakan (Negosiasi)</option>
-                <option value="waiting_payment">Menunggu Bayar</option>
-                <option value="paid">Sudah Dibayar</option>
-                <option value="processing">Sedang Diproses</option>
-                <option value="completed">Selesai</option>
-                <option value="cancelled">Dibatalkan</option>
-            </select>
+                {{-- Dropdown Filter Panel --}}
+                <div x-show="showFilters" x-cloak wire:ignore.self
+                    @click.away="if (!$event.target.closest('.flatpickr-calendar')) showFilters = false"
+                    x-transition:enter="transition ease-out duration-200"
+                    x-transition:enter-start="opacity-0 translate-y-2 scale-95"
+                    x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+                    class="absolute right-0 mt-3 w-full md:w-[320px] bg-white rounded-2xl border border-slate-200 shadow-xl z-50 p-5 space-y-5">
+                    
+                    <div wire:ignore>
+                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Rentang Tanggal</label>
+                        <div class="relative">
+                            <input type="text" x-ref="dateInput" placeholder="Pilih tanggal..." readonly
+                                class="w-full pl-4 pr-10 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium cursor-pointer text-slate-700 focus:outline-none focus:border-[#0077B6] transition-all">
+                            <svg class="w-4 h-4 text-slate-400 absolute right-3 top-3 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Status Pesanan</label>
+                        <select wire:model.live="statusFilter" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-700 focus:outline-none focus:border-[#0077B6] transition-all cursor-pointer">
+                            <option value="">Semua Status</option>
+                            <option value="pending_valuation">Menunggu Review</option>
+                            <option value="pending_valuation_negotiation">Perlu Tindakan (Negosiasi)</option>
+                            <option value="waiting_payment">Menunggu Bayar</option>
+                            <option value="paid">Sudah Dibayar</option>
+                            <option value="processing">Sedang Diproses</option>
+                            <option value="completed">Selesai</option>
+                            <option value="cancelled">Dibatalkan</option>
+                        </select>
+                    </div>
+
+                    <div class="pt-2 border-t border-slate-100 flex gap-2">
+                        <button @click="$wire.set('statusFilter', ''); $wire.set('dateRange', null); $refs.dateInput._flatpickr.clear(); showFilters = false;" type="button" class="flex-1 py-2 bg-slate-100 text-slate-600 rounded-xl text-xs font-bold hover:bg-slate-200 transition-colors">Reset</button>
+                        <button @click="showFilters = false" class="flex-1 py-2 bg-[#000B44] text-white rounded-xl text-xs font-bold hover:bg-[#001166] transition-colors">Terapkan</button>
+                    </div>
+                </div>
+            </div>
         </div>
 
         {{-- Active Filter Tags --}}
-        @if($search || $statusFilter)
+        @if($search || $statusFilter || (is_array($dateRange) && count($dateRange) === 2))
         <div class="flex flex-wrap items-center gap-2 pt-3 border-t border-slate-100">
             @if($search)
-            <div class="flex items-center gap-2 px-3 py-1.5 bg-slate-100 rounded-lg">
-                <span class="text-xs font-bold text-slate-600">Cari: "{{ $search }}"</span>
-                <button wire:click="$set('search', '')" class="text-slate-400 hover:text-slate-600">
+            <div class="flex items-center gap-2 px-3 py-1.5 bg-blue-50 border border-blue-100 rounded-lg">
+                <span class="text-xs font-bold text-blue-700">Cari: "{{ $search }}"</span>
+                <button wire:click="$set('search', '')" class="text-blue-400 hover:text-blue-600">
                     <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                 </button>
             </div>
             @endif
             @if($statusFilter)
-            <div class="flex items-center gap-2 px-3 py-1.5 bg-slate-100 rounded-lg">
-                <span class="text-xs font-bold text-slate-600">Status: {{ $statusFilter }}</span>
-                <button wire:click="$set('statusFilter', '')" class="text-slate-400 hover:text-slate-600">
+            <div class="flex items-center gap-2 px-3 py-1.5 bg-indigo-50 border border-indigo-100 rounded-lg">
+                <span class="text-xs font-bold text-indigo-700">Status: {{ str_replace('_', ' ', $statusFilter) }}</span>
+                <button wire:click="$set('statusFilter', '')" class="text-indigo-400 hover:text-indigo-600">
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+            @endif
+            @if(is_array($dateRange) && count($dateRange) === 2)
+            <div class="flex items-center gap-2 px-3 py-1.5 bg-teal-50 border border-teal-100 rounded-lg">
+                <span class="text-xs font-bold text-teal-700">Tanggal Aktif</span>
+                <button @click="$refs.dateInput._flatpickr.clear(); $wire.set('dateRange', null)" class="text-teal-400 hover:text-teal-600">
                     <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                 </button>
             </div>
