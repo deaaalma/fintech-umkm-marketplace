@@ -860,46 +860,31 @@
                 </div>
             </div>
 
-            {{-- Rebook Section --}}
-            <div class="bg-gray-900 rounded-[40px] p-10 text-white relative overflow-hidden group">
-                <div class="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-bl-full -mr-20 -mt-20 group-hover:scale-110 transition-transform duration-700"></div>
-                <h3 class="text-2xl font-black font-plus mb-2 relative z-10">Want to book for this again?</h3>
-                <p class="text-gray-600 text-sm font-medium mb-8 relative z-10">Repeat this service with the same professional team.</p>
-                
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10 relative z-10">
-                    <button class="p-4 bg-white/10 border border-white/20 rounded-2xl text-left hover:bg-white/20 transition-all">
-                        <p class="text-sm font-black uppercase tracking-widest text-gray-600 mb-1">Frequency</p>
-                        <p class="text-sm font-black">One-time</p>
-                    </button>
-                    <button class="p-4 bg-white/10 border border-white/20 rounded-2xl text-left hover:bg-white/20 transition-all">
-                        <p class="text-sm font-black uppercase tracking-widest text-gray-600 mb-1">Frequency</p>
-                        <p class="text-sm font-black">Monthly</p>
-                    </button>
-                    <button class="p-4 bg-white/10 border border-white/20 rounded-2xl text-left hover:bg-white/20 transition-all">
-                        <p class="text-sm font-black uppercase tracking-widest text-gray-600 mb-1">Frequency</p>
-                        <p class="text-sm font-black">Weekly</p>
-                    </button>
-                </div>
-
-                <button class="w-full py-5 bg-white text-gray-900 rounded-[24px] font-black text-sm uppercase tracking-widest hover:bg-gray-100 transition-all shadow-xl flex items-center justify-center gap-3 relative z-10">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
-                    Book Again
-                </button>
-            </div>
-
             {{-- Share Section --}}
-            <div class="bg-white border border-gray-100 rounded-[32px] p-8 shadow-sm">
+            @php
+                $umkmName = $order->umkm->name ?? 'Mitra UMKM';
+                $umkmLink = isset($order->umkm->id) ? route('customer.partner-detail', $order->umkm->id) : url('/');
+                $shareText = "Saya baru saja menyelesaikan transaksi saya di {$umkmName} dengan sangat memuaskan! 🚀\n\nPesan layanan profesional yang sama melalui platform JOS sekarang:\n{$umkmLink}";
+                $waShare = "https://wa.me/?text=" . urlencode($shareText);
+            @endphp
+            <div x-data="{ shareText: `{{ $shareText }}` }" class="bg-[#000B44] border border-blue-800 rounded-[32px] p-8 shadow-sm text-white">
                 <div class="flex flex-col md:flex-row justify-between items-center gap-6">
                     <div>
-                        <h4 class="text-sm font-black text-gray-900 font-plus uppercase tracking-wider mb-1 text-center md:text-left">Share your success</h4>
-                        <p class="text-sm text-gray-700 font-medium text-center md:text-left">Let your friends know about your clean space!</p>
+                        <h4 class="text-sm font-black text-white font-plus uppercase tracking-wider mb-1 text-center md:text-left">Bagikan Pengalaman Anda</h4>
+                        <p class="text-sm text-blue-200 font-medium text-center md:text-left">Beri tahu teman Anda tentang layanan luar biasa ini!</p>
                     </div>
                     <div class="flex gap-3">
-                        <button class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-purple-600 to-pink-500 flex items-center justify-center text-white shadow-lg hover:scale-110 transition-transform">
+                        {{-- WhatsApp --}}
+                        <a href="{{ $waShare }}" target="_blank" class="w-12 h-12 rounded-2xl bg-[#25D366] flex items-center justify-center text-white shadow-lg hover:scale-110 transition-transform" title="Share ke WhatsApp">
+                            <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12c0 2.12.553 4.12 1.536 5.862L.266 23.734l6.02-1.58C7.94 23.23 9.92 23.8 12 23.8c6.627 0 12-5.373 12-12S18.627 0 12 0zm5.666 16.945c-.256.719-1.488 1.378-2.08 1.467-.549.082-1.222.12-3.32-.75-2.518-1.045-4.103-3.626-4.227-3.791-.125-.164-1.008-1.34-1.008-2.557 0-1.218.633-1.817.859-2.05.226-.234.492-.293.657-.293.164 0 .328.001.472.008.151.007.353-.059.553.42.211.505.719 1.758.784 1.889.066.132.11.286.028.451-.082.164-.123.266-.247.411-.123.146-.263.32-.373.434-.124.126-.253.266-.111.512.143.246.634 1.047 1.365 1.7.941.84 1.728 1.1 1.974 1.224.246.123.391.103.535-.06.143-.163.623-.726.791-.975.168-.248.337-.207.564-.123.226.082 1.438.677 1.684.801.246.123.411.185.472.287.062.102.062.593-.194 1.312z"/></svg>
+                        </a>
+                        {{-- Instagram (Copy & Open) --}}
+                        <button x-on:click="navigator.clipboard.writeText(shareText); alert('Teks berhasil disalin! Silakan paste di Story atau DM Instagram Anda.'); window.open('https://instagram.com', '_blank');" class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-purple-600 to-pink-500 flex items-center justify-center text-white shadow-lg hover:scale-110 transition-transform" title="Share ke Instagram">
                             <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
                         </button>
-                        <button class="w-12 h-12 rounded-2xl bg-blue-900 flex items-center justify-center text-white shadow-lg hover:scale-110 transition-transform">
-                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766 0-3.18-2.587-5.77-5.764-5.77zm3.391 8.232c-.154.433-.746.77-1.028.814-.247.039-.553.056-.906-.057-.233-.074-.527-.172-.857-.311-1.414-.59-2.316-2.022-2.386-2.115-.07-.093-.578-.769-.578-1.479 0-.71.372-1.058.504-1.203.132-.144.288-.18.384-.18s.192.001.276.005c.094.004.22-.035.344.267.126.307.432 1.053.47 1.13.038.077.064.167.013.269-.051.103-.077.167-.154.257-.077.09-.161.2-.23.269-.077.077-.158.161-.068.315.09.154.399.658.855 1.064.588.524 1.082.686 1.236.762.154.077.243.064.333-.038.09-.103.384-.449.487-.603.103-.154.205-.128.346-.077s.91.43 1.064.513c.154.083.256.128.295.192.039.064.039.372-.115.805zM12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm.013 21.05c-1.636 0-3.23-.433-4.629-1.253l-3.303.866.881-3.218c-.9-1.458-1.375-3.136-1.373-4.856.003-5.068 4.129-9.19 9.199-9.19 2.456.001 4.765.957 6.5 2.694 1.734 1.737 2.69 4.048 2.688 6.502-.004 5.07-4.13 9.195-9.163 9.195z"/></svg>
+                        {{-- Copy Link / Text --}}
+                        <button x-on:click="navigator.clipboard.writeText(shareText); alert('Teks dan link berhasil disalin!');" class="w-12 h-12 rounded-2xl bg-white/20 border border-white/30 flex items-center justify-center text-white shadow-lg hover:bg-white/30 transition-all" title="Copy Text & Link">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
                         </button>
                     </div>
                 </div>
