@@ -11,6 +11,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@300..900&family=Plus+Jakarta+Sans:wght@200..800&display=swap" rel="stylesheet">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    
+    @stack('styles')
 
     <style>
         .font-plus { font-family: 'Plus Jakarta Sans', sans-serif; }
@@ -40,5 +42,7 @@
     </div>
 
     <x-auth.register-choice-modal />
+
+    @stack('scripts')
 </body>
 </html>

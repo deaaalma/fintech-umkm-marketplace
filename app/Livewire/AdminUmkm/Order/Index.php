@@ -9,6 +9,7 @@ use App\Models\Product;
 use App\Models\UmkmWorker;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\On;
+use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -18,6 +19,7 @@ class Index extends Component
    use WithPagination;
 
     public $search = '';
+    #[Url]
     public $category = 'All';
     public $status = 'All';
     public $showFilters = false;
@@ -121,6 +123,8 @@ class Index extends Component
             $query->where('status', 'paid');
         } elseif ($this->category == 'In Process') {
             $query->where('status', 'processing');
+        } elseif ($this->category == 'Active') {
+            $query->whereIn('status', ['paid', 'processing']);
         } elseif ($this->category == 'Completed') {
             $query->where('status', 'completed');
         } elseif ($this->category == 'Cancelled') {

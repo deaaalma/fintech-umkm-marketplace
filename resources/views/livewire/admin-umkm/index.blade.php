@@ -40,7 +40,7 @@
         </div>
 
         {{-- Active Orders --}}
-        <a href="{{ route('umkm.orders') }}" class="metric-card group block bg-white rounded-2xl border border-slate-300 hover:border-[#0077B6] transition-all duration-300 overflow-hidden shadow-sm animate-fade-in-up" style="animation-delay: 0.3s">
+        <a href="{{ route('umkm.orders', ['category' => 'Active']) }}" class="metric-card group block bg-white rounded-2xl border border-slate-300 hover:border-[#0077B6] transition-all duration-300 overflow-hidden shadow-sm animate-fade-in-up" style="animation-delay: 0.3s">
             <div class="flex items-center px-6 pt-6 pb-4 border-b border-slate-200 group-hover:bg-blue-50/50 transition-colors">
                 <span class="text-base font-bold text-slate-700 flex-1 group-hover:text-[#0077B6] transition-colors">Active Orders</span>
                 <div class="text-slate-400 group-hover:text-[#0077B6] transition-colors">
