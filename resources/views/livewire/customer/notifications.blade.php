@@ -1,4 +1,4 @@
-<div class="max-w-3xl mx-auto py-6 animate-fade-in-up">
+<div class="w-full py-6 animate-fade-in-up">
 
     {{-- Flash Message --}}
     @if(session()->has('message'))

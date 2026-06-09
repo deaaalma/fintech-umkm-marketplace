@@ -8,7 +8,7 @@
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 @endpush
 
-<div class="max-w-[1200px] mx-auto animate-fade-in-up" x-data="{
+<div class="w-full animate-fade-in-up" x-data="{
     showFilters: false,
     init() {
         flatpickr($refs.dateInput, {

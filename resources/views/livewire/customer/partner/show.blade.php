@@ -7,7 +7,7 @@
 @push('scripts')
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 @endpush
-<div class="max-w-[1200px] mx-auto pb-20 font-plus">
+<div class="w-full pb-20 font-plus">
 
 
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">

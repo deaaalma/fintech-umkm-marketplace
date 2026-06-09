@@ -23,7 +23,7 @@
 </style>
 @endpush
 
-<div class="max-w-[800px] mx-auto animate-fade-in-up pb-20">
+<div class="w-full animate-fade-in-up pb-20">
     
     {{-- Header Section --}}
     <div class="mb-8">

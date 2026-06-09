@@ -1,6 +1,6 @@
 <x-slot:title>Tulis Review</x-slot>
 
-<div class="max-w-[800px] mx-auto animate-fade-in-up pb-20">
+<div class="w-full animate-fade-in-up pb-20">
     {{-- Header --}}
     <div class="mb-10">
         <a href="{{ route('customer.order-details', $order->id) }}" class="inline-flex items-center gap-2 text-xs font-bold text-gray-500 hover:text-gray-900 transition-colors mb-6">

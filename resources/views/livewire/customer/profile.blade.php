@@ -1,4 +1,4 @@
-<div class="max-w-4xl mx-auto animate-fade-in-up font-plus" x-data>
+<div class="w-full animate-fade-in-up font-plus" x-data>
     <style>
         .p-input {
             width: 100%;

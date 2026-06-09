@@ -20,7 +20,7 @@
 </style>
 @endpush
 
-<div class="max-w-[1200px] mx-auto animate-fade-in-up pb-20 font-plus">
+<div class="w-full animate-fade-in-up pb-20 font-plus">
     {{-- Header Section --}}
     <div class="mb-10">
         <h1 class="text-4xl font-black text-[#000B44] font-plus tracking-tight mb-2">UMKM Partner</h1>

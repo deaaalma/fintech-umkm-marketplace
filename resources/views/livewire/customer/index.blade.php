@@ -1,4 +1,4 @@
-<div class="max-w-[1200px] mx-auto animate-fade-in-up">
+<div class="w-full animate-fade-in-up">
     <style>
         .metric-card { transition: box-shadow 0.2s ease; }
         .metric-card:hover { box-shadow: 0 8px 24px -4px rgba(0,11,68,0.10); }
