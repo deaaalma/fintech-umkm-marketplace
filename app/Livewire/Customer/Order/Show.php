@@ -101,12 +101,13 @@ class Show extends Component
                     'name' => $worker->name, 
                     'role' => 'Spesialis Ditugaskan', 
                     'experience' => 'Staf Tersertifikasi @ ' . $this->order->umkm->name, 
-                    'initials' => strtoupper(substr($worker->name, 0, 1))
+                    'initials' => strtoupper(substr($worker->name, 0, 1)),
+                    'phone' => $worker->phone ?? 'Nomor tidak tersedia'
                 ]
             ];
         } else {
             $this->staffTeam = [
-                ['name' => 'Menunggu Penugasan', 'role' => 'Menunggu Admin', 'experience' => '-', 'initials' => '?']
+                ['name' => 'Menunggu Penugasan', 'role' => 'Menunggu Admin', 'experience' => '-', 'initials' => '?', 'phone' => '-']
             ];
         }
 
