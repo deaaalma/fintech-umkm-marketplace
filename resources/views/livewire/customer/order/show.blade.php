@@ -657,10 +657,6 @@
                             <h4 class="text-sm font-black text-gray-600 uppercase tracking-widest">Price Comparison</h4>
                         </div>
                         <div class="space-y-2">
-                            <div class="flex justify-between items-center text-sm font-bold">
-                                <span class="text-gray-600">Initial Estimate:</span>
-                                <span class="text-gray-700 line-through italic">Rp 2.210.000 - Rp 2.990.000</span>
-                            </div>
                             <div class="flex justify-between items-center text-sm font-black">
                                 <span class="text-gray-900">Final Price:</span>
                                 <span class="text-gray-900">Rp {{ number_format($paymentDetails['final_total'], 0, ',', '.') }}</span>
@@ -669,7 +665,7 @@
                     </div>
                     <div class="bg-gray-50 rounded-2xl p-4 border border-gray-100">
                         <p class="text-sm text-gray-700 font-medium leading-relaxed italic">
-                            "Price is within the projected estimate range. Additional services were requested and verified during the service process."
+                            Harga di atas adalah total akhir yang telah disepakati bersama, termasuk jika ada layanan tambahan yang diajukan selama proses pengerjaan.
                         </p>
                     </div>
                 </div>
@@ -743,12 +739,12 @@
                             </div>
 
                             <button 
-                                wire:click="submitPembayaran"
+                                wire:click="submitPayment"
                                 wire:loading.attr="disabled"
                                 class="w-full py-5 bg-gray-900 text-white rounded-[24px] font-black text-sm uppercase tracking-widest transition-all shadow-xl hover:bg-black disabled:opacity-50"
                             >
-                                <span wire:loading.remove wire:target="submitPembayaran">Submit Bukti Pembayaran</span>
-                                <span wire:loading wire:target="submitPembayaran">Mengirim Bukti...</span>
+                                <span wire:loading.remove wire:target="submitPayment">Submit Bukti Pembayaran</span>
+                                <span wire:loading wire:target="submitPayment">Mengirim Bukti...</span>
                             </button>
                         </div>
                     @endif
@@ -962,7 +958,7 @@
                 @endif
             </div>
             @if($order->status === 'pending_valuation')
-            <div class="text-sm font-medium text-gray-700 mt-2">* Final price will be updated by Admin.</div>
+            <div class="text-sm font-medium text-gray-700 mt-2">* Harga final akan ditentukan oleh Admin.</div>
             @endif
         </div>
 

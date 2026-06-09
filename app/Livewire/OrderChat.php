@@ -13,7 +13,6 @@ class OrderChat extends Component
     public $newMessage = '';
     public $unreadCount = 0;
     
-    // For Additional Fees
     public $additionalFeeName = '';
     public $additionalFeeAmount = '';
     
@@ -107,7 +106,6 @@ class OrderChat extends Component
 
         if ($this->order->status !== 'processing') return;
 
-        // Create the fee record
         $fee = \App\Models\OrderAdditionalFee::create([
             'order_id' => $this->order->id,
             'name' => $this->additionalFeeName,
@@ -115,7 +113,6 @@ class OrderChat extends Component
             'status' => 'pending'
         ]);
 
-        // Send a message with type additional_cost
         OrderMessage::create([
             'order_id' => $this->order->id,
             'sender_id' => Auth::id(),
@@ -125,7 +122,7 @@ class OrderChat extends Component
                 'fee_id' => $fee->id,
                 'name' => $this->additionalFeeName,
                 'amount' => $this->additionalFeeAmount,
-                'status' => 'pending' // pending, accepted, rejected
+                'status' => 'pending'
             ]
         ]);
 
@@ -142,7 +139,6 @@ class OrderChat extends Component
         $fee = \App\Models\OrderAdditionalFee::find($message->metadata['fee_id']);
         if (!$fee || $fee->status !== 'pending') return;
 
-        // Update fee status
         $fee->update(['status' => 'accepted']);
 
         // Update message metadata
@@ -176,7 +172,6 @@ class OrderChat extends Component
         $fee = \App\Models\OrderAdditionalFee::find($message->metadata['fee_id']);
         if (!$fee || $fee->status !== 'pending') return;
 
-        // Update fee status
         $fee->update(['status' => 'rejected']);
 
         // Update message metadata

@@ -269,7 +269,7 @@
                         @endif
                     </div>
 
-                    {{-- QRIS Verification nested here for better flow --}}
+
                     @php $pendingPayment = $order->payments->where('status', 'pending')->first(); @endphp
                     @if($pendingPayment)
                         <div class="space-y-6">
@@ -336,7 +336,7 @@
         </div>
     </div>
     
-    {{-- Functional Livewire Chat Widget --}}
+
     @if($order->status === 'pending_valuation' && $order->agreed_price !== null || in_array($order->status, ['negotiation', 'processing', 'waiting_payment']))
         <livewire:order-chat :order="$order" />
     @endif

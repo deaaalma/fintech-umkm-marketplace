@@ -20,25 +20,21 @@ class Show extends Component
     public $newNote = '';
     public $paymentProof;
     
-    // Dynamic data containers
     public $staffTeam = [];
     public $workScope = [];
     public $workProgress = [];
     public $paymentDetails = [];
     public $verificationData = [];
 
-    // Use order photos if available, otherwise mock
     public function getWorkResultsProperty()
     {
         $photos = $this->order->photos;
         
-        // If it's a string, it means casting didn't happen or failed
         if (is_string($photos)) {
             $photos = json_decode($photos, true);
         }
 
-        // Final fallback to raw original if still empty/null
-        if (!$photos) {
+        if (empty($photos)) {
             $raw = $this->order->getRawOriginal('photos');
             $photos = is_string($raw) ? json_decode($raw, true) : $raw;
         }
@@ -93,7 +89,6 @@ class Show extends Component
         }
         $this->order = $order->load(['umkm', 'product', 'orderAssignment.worker']);
 
-        // 1. Dynamic Staff Team
         if ($this->order->orderAssignment && $this->order->orderAssignment->worker) {
             $worker = $this->order->orderAssignment->worker;
             $this->staffTeam = [
@@ -111,14 +106,12 @@ class Show extends Component
             ];
         }
 
-        // 2. Dynamic Work Scope
         $this->workScope = [
             'Layanan: ' . $this->order->product->name,
             'Lokasi: ' . ($this->order->service_address ?? 'Alamat terdaftar'),
             'Catatan: ' . ($this->order->notes ?? 'Prosedur standar'),
         ];
 
-        // 3. Dynamic Work Progress (Based on Status)
         if ($this->order->status === 'processing') {
             if ($this->order->orderAssignment) {
                 $this->workProgress = [
@@ -145,7 +138,6 @@ class Show extends Component
             ];
         }
 
-        // Fetch accepted additional fees
         $additionalFees = \App\Models\OrderAdditionalFee::where('order_id', $this->order->id)
                             ->where('status', 'accepted')
                             ->get();
@@ -157,7 +149,6 @@ class Show extends Component
             $additionalTotal += $fee->amount;
         }
 
-        // 4. Dynamic Payment Details
         $this->paymentDetails = [
             'base_services' => [
                 ['name' => $this->order->product->name, 'price' => $this->order->agreed_price ?? 0],
@@ -170,7 +161,6 @@ class Show extends Component
             'final_total' => ($this->order->agreed_price ?? 0) + $additionalTotal
         ];
 
-        // 5. Dynamic Verification Data
         $successPayment = $this->order->payments->where('status', 'success')->first();
         if ($this->order->status === 'completed' || $this->order->status === 'paid' || $successPayment) {
             $this->verificationData = [
@@ -205,6 +195,10 @@ class Show extends Component
     {
         $this->validate([
             'paymentProof' => 'required|image|max:2048',
+        ], [
+            'paymentProof.required' => 'File bukti transfer wajib diunggah.',
+            'paymentProof.image' => 'File harus berupa gambar (JPG, PNG).',
+            'paymentProof.max' => 'Ukuran file maksimal 2MB.',
         ]);
 
         $path = $this->paymentProof->store('payments/proofs', 'public');

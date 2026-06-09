@@ -24,20 +24,20 @@
              "
              class="fixed top-1/2 -translate-y-1/2 right-6 z-[9999] flex items-center gap-4">
             
-            {{-- Chat Icon Button --}}
+
             <button x-show="!chatOpen" @click="chatOpen = true" x-transition class="w-14 h-14 bg-[#000B44] text-white rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-transform relative">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
                 
-                {{-- Red Dot Indicator --}}
+
                 <div x-cloak x-show="unread > 0" class="absolute -top-1 -right-1 flex w-5 h-5">
                     <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
                     <span class="relative inline-flex rounded-full h-5 w-5 bg-red-500 border-2 border-white shadow-sm"></span>
                 </div>
             </button>
 
-            {{-- Chat Popup Panel --}}
+
             <div x-cloak x-show="chatOpen" x-transition.opacity.scale.origin.right class="bg-white rounded-2xl shadow-2xl w-80 sm:w-96 overflow-hidden border border-gray-100 flex flex-col mt-4" style="height: 450px;">
-                {{-- Header --}}
+
                 <div class="bg-[#000B44] px-4 py-3 flex items-center justify-between text-white">
                     <div class="flex items-center gap-3">
                         <div class="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center font-bold text-xs uppercase">{{ substr($order->umkm->name ?? 'Admin', 0, 2) }}</div>
@@ -51,7 +51,7 @@
                     </button>
                 </div>
                 
-                {{-- Chat Body --}}
+
                 <div class="flex-1 bg-gray-50 p-4 overflow-y-auto flex flex-col gap-3" id="chatBody" x-init="$watch('chatOpen', value => { if(value) setTimeout(() => $el.scrollTop = $el.scrollHeight, 100) })">
                     @forelse($messages as $msg)
                         @if($msg->type === 'system')
@@ -96,13 +96,13 @@
                                 <div class="text-[10px] text-gray-400 mt-3 text-center">{{ $msg->created_at->format('H:i') }}</div>
                             </div>
                         @elseif($msg->sender_id === Auth::id())
-                            {{-- My Message --}}
+
                             <div class="bg-[#000B44] px-4 py-2 rounded-2xl rounded-tr-sm shadow-sm text-sm text-white self-end max-w-[85%]">
                                 {{ $msg->message }}
                                 <div class="text-[10px] text-blue-200 mt-1 text-right">{{ $msg->created_at->format('H:i') }}</div>
                             </div>
                         @else
-                            {{-- Their Message --}}
+
                             <div class="bg-white px-4 py-2 rounded-2xl rounded-tl-sm shadow-sm text-sm text-gray-800 border border-gray-100 self-start max-w-[85%]">
                                 <div class="text-[10px] font-bold text-blue-900 mb-0.5">{{ $msg->sender->name }}</div>
                                 {{ $msg->message }}
@@ -116,7 +116,7 @@
                     @endforelse
                 </div>
                 
-                {{-- Chat Input --}}
+
                 <form wire:submit="sendMessage" class="p-3 bg-white border-t border-gray-100 relative">
                     <input wire:model="newMessage" type="text" placeholder="Ketik pesan..." class="w-full bg-gray-50 border border-gray-200 rounded-full pl-4 pr-12 py-2.5 text-sm outline-none focus:border-[#000B44] focus:ring-1 focus:ring-[#000B44] transition-all" required autocomplete="off">
                     <button type="submit" class="absolute right-4 top-1/2 -translate-y-1/2 w-8 h-8 bg-[#000B44] text-white rounded-full flex items-center justify-center hover:scale-105 transition-transform disabled:opacity-50">
@@ -150,7 +150,7 @@
         </div>
     </template>
 
-    {{-- Auto-scroll script --}}
+
     <script>
         document.addEventListener('livewire:initialized', () => {
             Livewire.hook('morph.updated', (el, component) => {
