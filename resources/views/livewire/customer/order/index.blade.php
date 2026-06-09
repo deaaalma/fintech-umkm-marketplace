@@ -94,10 +94,10 @@
                         <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Status Pesanan</label>
                         <select wire:model.live="statusFilter" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-700 focus:outline-none focus:border-[#0077B6] transition-all cursor-pointer">
                             <option value="">Semua Status</option>
-                            <option value="pending_valuation">Menunggu Review</option>
+                            <option value="pending_valuation">Menunggu Tinjauan</option>
                             <option value="pending_valuation_negotiation">Perlu Tindakan (Negosiasi)</option>
                             <option value="waiting_payment">Menunggu Bayar</option>
-                            <option value="paid">Sudah Dibayar</option>
+                            <option value="paid">Menunggu Review</option>
                             <option value="processing">Sedang Diproses</option>
                             <option value="completed">Selesai</option>
                             <option value="cancelled">Dibatalkan</option>
@@ -154,9 +154,9 @@
                 $needsAction = $order['status'] === 'pending_valuation' && $order['agreed_price'] !== null;
 
                 $statusLabel = match($order['status']) {
-                    'pending_valuation' => 'Menunggu Review',
+                    'pending_valuation' => $order['agreed_price'] ? 'Negosiasi Harga' : 'Menunggu Tinjauan',
                     'waiting_payment'   => 'Menunggu Pembayaran',
-                    'paid'              => 'Sudah Dibayar',
+                    'paid'              => 'Menunggu Review',
                     'processing'        => 'Sedang Diproses',
                     'completed'         => 'Selesai',
                     'cancelled'         => 'Dibatalkan',

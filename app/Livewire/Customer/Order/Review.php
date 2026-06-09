@@ -74,8 +74,8 @@ class Review extends Component
             'is_resolved' => $this->is_resolved,
         ]);
 
-        // Update order status if needed (optional)
-        // $this->order->update(['status' => 'completed']);
+        // Update order status to completed and step to 6
+        $this->order->update(['status' => 'completed', 'current_step' => 6]);
 
         session()->flash('message', 'Thank you for your review!');
         return redirect()->route('customer.order-details', $this->order->id);

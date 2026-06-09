@@ -42,8 +42,18 @@ class Index extends Component
             ->where('status', 'completed')
             ->count();
 
-        // 3. Hitung Pesanan Perlu Tindakan (Step 3: Negotiation atau Step 4: Payment)
-        $needsActionCount = $activeOrders->whereIn('current_step', [3, 4])->count();
+        // 3. Hitung Pesanan Dibatalkan
+        $cancelledOrdersCount = Order::where('customer_id', $userId)
+            ->where('status', 'cancelled')
+            ->count();
+
+        // 4. Hitung Pesanan Perlu Tindakan
+        // Kriteria: current_step in [3, 4] ATAU status 'waiting_payment' ATAU (status 'pending_valuation' dan agreed_price tidak null)
+        $needsActionCount = $activeOrders->filter(function($order) {
+            return in_array($order->current_step, [3, 4]) || 
+                   $order->status === 'waiting_payment' || 
+                   ($order->status === 'pending_valuation' && !is_null($order->agreed_price));
+        })->count();
 
         // 4. Rekomendasi Partner (Ambil 4 UMKM aktif secara acak)
         $partners = Umkm::where('status', 'active')
@@ -57,13 +67,14 @@ class Index extends Component
         $notifCount = auth()->user()->userNotifications()->whereNull('read_at')->count();
 
         return view('livewire.customer.index', [
-            'activeOrders'       => $activeOrders,
-            'activeOrdersCount'  => $activeOrdersCount,
-            'successOrdersCount' => $successOrdersCount,
-            'needsActionCount'   => $needsActionCount,
-            'partners'           => $partners,
-            'notifCount'         => $notifCount,
-            'notifications'      => $notifications,
+            'activeOrders'         => $activeOrders,
+            'activeOrdersCount'    => $activeOrdersCount,
+            'successOrdersCount'   => $successOrdersCount,
+            'cancelledOrdersCount' => $cancelledOrdersCount,
+            'needsActionCount'     => $needsActionCount,
+            'partners'             => $partners,
+            'notifCount'           => $notifCount,
+            'notifications'        => $notifications,
         ]);
     }
 }
