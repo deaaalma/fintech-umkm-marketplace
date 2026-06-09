@@ -16,6 +16,8 @@ Route::middleware(['auth', 'verified', 'role:customer'])->group(function () {
         Route::get('/orders/{order}/review', \App\Livewire\Customer\Order\Review::class)->name('order-review');
         Route::get('/partners', \App\Livewire\Customer\Partner\Index::class)->name('partners');
         Route::get('/partners/{partner}', \App\Livewire\Customer\Partner\Show::class)->name('partner-detail');
+        Route::get('/notifications', \App\Livewire\Customer\Notifications::class)->name('notifications');
+        Route::get('/profile', \App\Livewire\Customer\Profile::class)->name('profile');
        
     });
 

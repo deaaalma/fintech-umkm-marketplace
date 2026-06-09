@@ -29,6 +29,7 @@ class User extends Authenticatable
         'profile_photo_path',
         'nik',
         'date_of_birth',
+        'address',
     ];
 
     /**
@@ -50,7 +51,8 @@ class User extends Authenticatable
     {
         return [
             'email_verified_at' => 'datetime',
-            'password' => 'hashed',
+            'password'          => 'hashed',
+            'date_of_birth'     => 'date',
         ];
     }
 

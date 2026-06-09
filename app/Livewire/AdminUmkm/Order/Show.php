@@ -7,6 +7,7 @@ use App\Models\OrderLog;
 use App\Models\Umkm;
 use App\Models\UmkmWorker;
 use App\Models\Payment;
+use App\Models\UserNotification;
 use Livewire\Component;
 use Livewire\Attributes\Layout;
 
@@ -59,6 +60,15 @@ class Show extends Component
             'reason' => 'Admin has verified the QRIS payment proof and confirmed receipt of funds.',
         ]);
 
+        // Notifikasi ke customer
+        UserNotification::create([
+            'user_id' => $this->order->customer_id,
+            'title'   => 'Pembayaran Dikonfirmasi ✓',
+            'message' => 'Pembayaran untuk pesanan #' . ($this->order->invoice_number ?? $this->order->id) . ' telah berhasil dikonfirmasi. Terima kasih!',
+            'type'    => 'payment',
+            'link'    => route('customer.order-details', $this->order->id),
+        ]);
+
         session()->flash('message', 'Pembayaran berhasil diverifikasi.');
         $this->order->refresh();
     }
@@ -73,6 +83,15 @@ class Show extends Component
             'actor_id' => auth()->id(),
             'action' => 'Payment Rejected',
             'reason' => 'Admin rejected the payment proof. Please re-upload a valid receipt.',
+        ]);
+
+        // Notifikasi ke customer
+        UserNotification::create([
+            'user_id' => $this->order->customer_id,
+            'title'   => 'Bukti Pembayaran Ditolak',
+            'message' => 'Bukti pembayaran pesanan #' . ($this->order->invoice_number ?? $this->order->id) . ' ditolak. Silakan unggah ulang bukti pembayaran yang valid.',
+            'type'    => 'payment',
+            'link'    => route('customer.order-details', $this->order->id),
         ]);
 
         session()->flash('error', 'Pembayaran ditolak.');
@@ -119,6 +138,15 @@ class Show extends Component
             'reason' => 'Admin set the price to Rp ' . number_format($this->agreed_price, 0, ',', '.') . '. ' . $this->admin_note,
         ]);
 
+        // Notifikasi ke customer
+        UserNotification::create([
+            'user_id' => $this->order->customer_id,
+            'title'   => 'Proposal Harga Diterima',
+            'message' => 'Admin telah mengirimkan proposal harga Rp ' . number_format($this->agreed_price, 0, ',', '.') . ' untuk pesanan #' . ($this->order->invoice_number ?? $this->order->id) . '. Segera tinjau dan setujui harga.',
+            'type'    => 'order_status',
+            'link'    => route('customer.order-details', $this->order->id),
+        ]);
+
         session()->flash('message', 'Proposal harga berhasil dikirim ke pelanggan.');
         return redirect()->route('umkm.orders');
     }
@@ -135,6 +163,15 @@ class Show extends Component
             'actor_id' => auth()->id(),
             'action' => 'Service Completed',
             'reason' => 'Admin marked the service as completed. Waiting for customer payment.',
+        ]);
+
+        // Notifikasi ke customer
+        UserNotification::create([
+            'user_id' => $this->order->customer_id,
+            'title'   => 'Layanan Selesai – Lakukan Pembayaran',
+            'message' => 'Pengerjaan layanan untuk pesanan #' . ($this->order->invoice_number ?? $this->order->id) . ' telah selesai. Silakan tinjau hasil dan lakukan pembayaran.',
+            'type'    => 'order_status',
+            'link'    => route('customer.order-details', $this->order->id),
         ]);
 
         session()->flash('message', 'Layanan telah selesai. Menunggu pembayaran dari pelanggan.');
@@ -163,6 +200,15 @@ class Show extends Component
             'reason' => 'Admin manually marked this order as paid (Cash/Manual).',
         ]);
 
+        // Notifikasi ke customer
+        UserNotification::create([
+            'user_id' => $this->order->customer_id,
+            'title'   => 'Pesanan Lunas ✓',
+            'message' => 'Pesanan #' . ($this->order->invoice_number ?? $this->order->id) . ' telah ditandai sebagai LUNAS oleh admin. Terima kasih telah menggunakan layanan kami!',
+            'type'    => 'payment',
+            'link'    => route('customer.order-details', $this->order->id),
+        ]);
+
         session()->flash('message', 'Pesanan berhasil ditandai sebagai LUNAS.');
         $this->order->refresh();
     }
@@ -176,6 +222,15 @@ class Show extends Component
             'actor_id' => auth()->id(),
             'action' => 'Admin Rejected Order',
             'reason' => 'Admin rejected the order request.',
+        ]);
+
+        // Notifikasi ke customer
+        UserNotification::create([
+            'user_id' => $this->order->customer_id,
+            'title'   => 'Pesanan Ditolak',
+            'message' => 'Mohon maaf, pesanan #' . ($this->order->invoice_number ?? $this->order->id) . ' Anda telah ditolak oleh penyedia jasa. Silakan hubungi admin untuk informasi lebih lanjut.',
+            'type'    => 'order_status',
+            'link'    => route('customer.order-details', $this->order->id),
         ]);
 
         session()->flash('message', 'Pesanan telah ditolak.');
