@@ -119,12 +119,18 @@ class Show extends Component
 
         // 3. Dynamic Work Progress (Based on Status)
         if ($this->order->status === 'processing') {
-            $this->workProgress = [
-                ['task' => 'Persiapan Alat & Bahan', 'status' => 'completed', 'time' => $this->order->updated_at->format('H:i')],
-                ['task' => 'Pengerjaan Layanan: ' . $this->order->product->name, 'status' => 'in_progress', 'time' => 'Sedang dikerjakan...'],
-                ['task' => 'Pembersihan & Finishing', 'status' => 'pending', 'time' => ''],
-                ['task' => 'Verifikasi Hasil', 'status' => 'pending', 'time' => ''],
-            ];
+            if ($this->order->orderAssignment) {
+                $this->workProgress = [
+                    ['task' => 'Persiapan Alat & Bahan', 'status' => 'completed', 'time' => $this->order->updated_at->format('H:i')],
+                    ['task' => 'Pengerjaan Layanan: ' . $this->order->product->name, 'status' => 'in_progress', 'time' => 'Sedang dikerjakan...'],
+                    ['task' => 'Pembersihan & Finishing', 'status' => 'pending', 'time' => ''],
+                    ['task' => 'Verifikasi Hasil', 'status' => 'pending', 'time' => ''],
+                ];
+            } else {
+                $this->workProgress = [
+                    ['task' => 'Menunggu Admin Menugaskan Staf', 'status' => 'pending', 'time' => ''],
+                ];
+            }
         } elseif (in_array($this->order->status, ['waiting_payment', 'paid', 'completed'])) {
             $this->workProgress = [
                 ['task' => 'Persiapan Alat & Bahan', 'status' => 'completed', 'time' => '-'],

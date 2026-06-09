@@ -48,7 +48,7 @@ class OrderChat extends Component
         if ($this->order->status !== 'pending_valuation') return;
 
         $this->order->update([
-            'status' => 'waiting_payment',
+            'status' => 'processing',
             'current_step' => 4,
         ]);
 

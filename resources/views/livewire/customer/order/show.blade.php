@@ -65,7 +65,7 @@
 
     @if($order->status !== 'cancelled')
     <div class="mb-10 overflow-x-auto hide-scrollbar pb-4">
-        <div class="flex items-center min-w-[800px] px-2">
+        <div class="flex items-start min-w-[800px] px-2">
             {{-- Step 1: Created --}}
             <div class="step-item flex-1 relative {{ $currentIndex > 1 ? 'completed' : ($currentIndex == 1 ? 'active' : '') }}">
                 <div class="flex flex-col items-center">
@@ -164,9 +164,13 @@
         <div>
             <h3 class="text-sm font-bold text-gray-900 mb-1">
                 @if($order->status === 'processing')
-                    Service in Progress
+                    @if($order->orderAssignment)
+                        Layanan Sedang Berjalan
+                    @else
+                        Menunggu Penugasan Staf
+                    @endif
                 @elseif($order->status === 'waiting_payment')
-                    Service Selesai Successfully
+                    Menunggu Pembayaran
                 @elseif(in_array($order->status, ['paid', 'completed']))
                     Order Selesai
                 @else
@@ -178,9 +182,13 @@
             @elseif($order->status === 'pending_valuation' && $order->agreed_price !== null)
                 <p class="text-sm text-gray-600 font-medium leading-relaxed">Admin telah mengirimkan penawaran harga untuk pesanan Anda. Silakan periksa rincian biaya di bawah ini.</p>
             @elseif($order->status === 'waiting_payment')
-                <p class="text-sm text-gray-600 font-medium leading-relaxed">Kabar baik! Staf profesional kami telah berhasil menyelesaikan layanan. Silakan periksa ringkasan pekerjaan dan rincian pembayaran akhir di bawah ini.</p>
+                <p class="text-sm text-gray-600 font-medium leading-relaxed">Pengerjaan layanan telah selesai. Silakan lakukan pembayaran sesuai dengan harga yang telah disepakati sebelumnya.</p>
             @elseif($order->status === 'processing')
-                <p class="text-sm text-gray-600 font-medium leading-relaxed">Staf profesional kami sedang bekerja di lokasi Anda. Anda dapat melacak progresnya di bawah ini dan menghubungi mereka jika diperlukan.</p>
+                @if($order->orderAssignment)
+                    <p class="text-sm text-gray-600 font-medium leading-relaxed">Staf profesional kami sedang bekerja di lokasi Anda. Anda dapat melacak progresnya di bawah ini dan menghubungi mereka jika diperlukan.</p>
+                @else
+                    <p class="text-sm text-gray-600 font-medium leading-relaxed">Pesanan Anda telah masuk tahap pengerjaan. Admin sedang mengatur jadwal dan akan segera menugaskan staf untuk Anda.</p>
+                @endif
             @elseif(in_array($order->status, ['paid', 'completed']))
                 <p class="text-sm text-gray-600 font-medium leading-relaxed">Thank you! Pembayaran received and service successfully completed. We hope you're satisfied with the results.</p>
             @endif
@@ -302,12 +310,13 @@
         {{-- SERVICE PROCESS VIEW (Step 4) --}}
         <div class="space-y-8">
             {{-- Progress Status Card --}}
-            <div class="bg-white border border-gray-200 rounded-[32px] p-6 md:p-8 shadow-sm">
+            @if($order->orderAssignment)
+            <div class="bg-white border border-gray-100 rounded-[32px] p-8 shadow-sm mb-8">
                 <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-8">
                     <div class="flex items-center gap-4">
                         <div>
                             <h2 class="text-lg font-black text-gray-900 font-plus">Service Sedang Berjalan</h2>
-                            <p class="text-sm text-gray-700 font-medium">Dimulai pada 09:30 WIB</p>
+                            <p class="text-sm text-gray-700 font-medium">Dimulai pada {{ $order->updated_at->format('H:i') }} WIB</p>
                         </div>
                     </div>
                 </div>
@@ -315,17 +324,22 @@
                 <div class="space-y-3">
                     <div class="flex justify-between items-end mb-1">
                         <span class="text-sm font-black text-gray-600 uppercase tracking-widest">Progress</span>
-                        <span class="text-sm font-black text-gray-900 font-plus">1h 10m berlalu</span>
+                        <span class="text-sm font-black text-gray-900 font-plus">Dalam Pengerjaan</span>
                     </div>
                     <div class="h-3 bg-gray-100 rounded-full overflow-hidden flex border border-gray-200/50">
-                        <div class="w-3/5 bg-gray-900 rounded-full"></div>
-                    </div>
-                    <div class="flex justify-between items-center text-sm font-bold text-gray-600">
-                        <span>Dimulai: 09:30</span>
-                        <span>Est. Selesai: 11:30 WIB (2h tersisa)</span>
+                        <div class="w-1/2 bg-gray-900 rounded-full animate-pulse"></div>
                     </div>
                 </div>
             </div>
+            @else
+            <div class="bg-yellow-50 border border-yellow-200 rounded-[32px] p-8 shadow-sm mb-8 text-center flex flex-col items-center justify-center">
+                <div class="w-12 h-12 rounded-full bg-yellow-100 flex items-center justify-center mb-4">
+                    <svg class="w-6 h-6 text-yellow-600 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                </div>
+                <h3 class="text-lg font-black text-yellow-900 font-plus mb-2">Menunggu Penugasan Staf</h3>
+                <p class="text-sm text-yellow-800 font-medium max-w-md mx-auto">Admin sedang mengatur jadwal dan menugaskan staf profesional untuk mengerjakan layanan Anda. Mohon ditunggu.</p>
+            </div>
+            @endif
 
             {{-- Tim Staf Card --}}
             <div class="bg-white border border-gray-100 rounded-[32px] p-8 shadow-sm">
@@ -346,7 +360,7 @@
                             <span class="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-[11px] font-bold text-gray-600 uppercase tracking-widest whitespace-nowrap">{{ $staff['role'] }}</span>
                         </div>
                         
-                        @if($staff['name'] !== 'Pending Assignment')
+                        @if($staff['name'] !== 'Menunggu Penugasan')
                         <div class="grid grid-cols-2 gap-3 mt-auto">
                             <button class="py-2.5 bg-white border border-gray-200 rounded-xl text-sm font-bold text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors flex items-center justify-center gap-2">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
@@ -556,10 +570,10 @@
                         <div class="space-y-3">
                             <p class="text-sm font-black text-gray-600 uppercase tracking-widest">Staff Insights</p>
                             <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-xl bg-gray-100 flex items-center justify-center text-sm font-black text-gray-600">AS</div>
+                                <div class="w-10 h-10 rounded-xl bg-gray-100 flex items-center justify-center text-sm font-black text-gray-600">{{ $staffTeam[0]['initials'] }}</div>
                                 <div>
-                                    <p class="text-sm font-black text-gray-900">Ahmad Syarif</p>
-                                    <p class="text-sm text-gray-700 font-medium">Team Lead</p>
+                                    <p class="text-sm font-black text-gray-900">{{ $staffTeam[0]['name'] }}</p>
+                                    <p class="text-sm text-gray-700 font-medium">{{ $staffTeam[0]['role'] }}</p>
                                 </div>
                             </div>
                         </div>
