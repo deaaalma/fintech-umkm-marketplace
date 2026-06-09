@@ -6,6 +6,7 @@ use App\Models\Order;
 use App\Models\Umkm;
 use Livewire\Component;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\On;
 
 #[Layout('layouts.admin-umkm')]
 class Index extends Component

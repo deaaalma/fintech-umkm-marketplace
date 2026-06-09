@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Product;
 use App\Models\UmkmWorker;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -38,6 +39,7 @@ class Index extends Component
             $this->selected = $orderIds;
         }
     }
+
 
     public function setDateRange($range)
     {

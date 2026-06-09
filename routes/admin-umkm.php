@@ -12,6 +12,8 @@ Route::middleware(['auth', 'verified', 'role:admin_umkm'])->group(function () {
         
         // Dashboard Utama
         Route::get('/dashboard', \App\Livewire\AdminUmkm\Index::class)->name('dashboard');
+        
+        Route::get('/notifications', \App\Livewire\AdminUmkm\Notifications::class)->name('notifications');
 
         Route::get('/orders', \App\Livewire\AdminUmkm\Order\Index::class)->name('orders');
         Route::get('/orders/{order}', \App\Livewire\AdminUmkm\Order\Show::class)->name('orders.show');
