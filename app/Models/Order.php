@@ -49,4 +49,9 @@ class Order extends Model
     {
         return $this->hasMany(OrderMessage::class);
     }
+
+    public function additionalFees()
+    {
+        return $this->hasMany(OrderAdditionalFee::class);
+    }
 }

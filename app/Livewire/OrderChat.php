@@ -13,6 +13,10 @@ class OrderChat extends Component
     public $newMessage = '';
     public $unreadCount = 0;
     
+    // For Additional Fees
+    public $additionalFeeName = '';
+    public $additionalFeeAmount = '';
+    
     public function mount(Order $order)
     {
         $this->order = $order;
@@ -92,6 +96,103 @@ class OrderChat extends Component
         ]);
         
         $this->dispatch('proposal-action-taken');
+    }
+
+    public function sendAdditionalFee()
+    {
+        $this->validate([
+            'additionalFeeName' => 'required|string|max:255',
+            'additionalFeeAmount' => 'required|numeric|min:1000',
+        ]);
+
+        if ($this->order->status !== 'processing') return;
+
+        // Create the fee record
+        $fee = \App\Models\OrderAdditionalFee::create([
+            'order_id' => $this->order->id,
+            'name' => $this->additionalFeeName,
+            'amount' => $this->additionalFeeAmount,
+            'status' => 'pending'
+        ]);
+
+        // Send a message with type additional_cost
+        OrderMessage::create([
+            'order_id' => $this->order->id,
+            'sender_id' => Auth::id(),
+            'message' => 'Admin mengajukan biaya tambahan untuk layanan Anda.',
+            'type' => 'additional_cost',
+            'metadata' => [
+                'fee_id' => $fee->id,
+                'name' => $this->additionalFeeName,
+                'amount' => $this->additionalFeeAmount,
+                'status' => 'pending' // pending, accepted, rejected
+            ]
+        ]);
+
+        $this->additionalFeeName = '';
+        $this->additionalFeeAmount = '';
+        $this->dispatch('message-sent');
+    }
+
+    public function acceptAdditionalFee($messageId)
+    {
+        $message = OrderMessage::findOrFail($messageId);
+        if ($message->type !== 'additional_cost' || !isset($message->metadata['fee_id'])) return;
+
+        $fee = \App\Models\OrderAdditionalFee::find($message->metadata['fee_id']);
+        if (!$fee || $fee->status !== 'pending') return;
+
+        // Update fee status
+        $fee->update(['status' => 'accepted']);
+
+        // Update message metadata
+        $metadata = $message->metadata;
+        $metadata['status'] = 'accepted';
+        $message->update(['metadata' => $metadata]);
+
+        // Send system message
+        OrderMessage::create([
+            'order_id' => $this->order->id,
+            'sender_id' => Auth::id(),
+            'message' => 'Biaya tambahan "' . $fee->name . '" telah disetujui oleh pelanggan.',
+            'type' => 'system',
+        ]);
+
+        \App\Models\OrderLog::create([
+            'order_id' => $this->order->id,
+            'actor_id' => Auth::id(),
+            'action' => 'Accepted Additional Fee',
+            'reason' => 'Customer agreed to additional fee: ' . $fee->name . ' (Rp ' . number_format($fee->amount, 0, ',', '.') . ')',
+        ]);
+        
+        $this->dispatch('additional-fee-action');
+    }
+
+    public function rejectAdditionalFee($messageId)
+    {
+        $message = OrderMessage::findOrFail($messageId);
+        if ($message->type !== 'additional_cost' || !isset($message->metadata['fee_id'])) return;
+
+        $fee = \App\Models\OrderAdditionalFee::find($message->metadata['fee_id']);
+        if (!$fee || $fee->status !== 'pending') return;
+
+        // Update fee status
+        $fee->update(['status' => 'rejected']);
+
+        // Update message metadata
+        $metadata = $message->metadata;
+        $metadata['status'] = 'rejected';
+        $message->update(['metadata' => $metadata]);
+
+        // Send system message
+        OrderMessage::create([
+            'order_id' => $this->order->id,
+            'sender_id' => Auth::id(),
+            'message' => 'Biaya tambahan "' . $fee->name . '" ditolak oleh pelanggan.',
+            'type' => 'system',
+        ]);
+        
+        $this->dispatch('additional-fee-action');
     }
 
     public function render()

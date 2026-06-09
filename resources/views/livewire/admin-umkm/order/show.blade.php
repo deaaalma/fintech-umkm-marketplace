@@ -259,8 +259,14 @@
                     </div>
 
                     <div class="p-6 bg-orange-50 rounded-2xl border border-orange-100 mb-8 text-center">
-                        <p class="text-[10px] font-black text-orange-400 uppercase tracking-widest mb-1">Agreed Price</p>
-                        <p class="text-3xl font-black text-orange-600">Rp {{ number_format($order->agreed_price, 0, ',', '.') }}</p>
+                        <p class="text-[10px] font-black text-orange-400 uppercase tracking-widest mb-1">Agreed Price (Final Total)</p>
+                        @php
+                            $additionalTotal = \App\Models\OrderAdditionalFee::where('order_id', $order->id)->where('status', 'accepted')->sum('amount');
+                        @endphp
+                        <p class="text-3xl font-black text-orange-600">Rp {{ number_format($order->agreed_price + $additionalTotal, 0, ',', '.') }}</p>
+                        @if($additionalTotal > 0)
+                        <p class="text-xs font-bold text-orange-500 mt-2">Termasuk Biaya Tambahan: Rp {{ number_format($additionalTotal, 0, ',', '.') }}</p>
+                        @endif
                     </div>
 
                     {{-- QRIS Verification nested here for better flow --}}
@@ -331,7 +337,7 @@
     </div>
     
     {{-- Functional Livewire Chat Widget --}}
-    @if($order->status === 'pending_valuation' && $order->agreed_price !== null || in_array($order->status, ['negotiation', 'waiting_payment']))
+    @if($order->status === 'pending_valuation' && $order->agreed_price !== null || in_array($order->status, ['negotiation', 'processing', 'waiting_payment']))
         <livewire:order-chat :order="$order" />
     @endif
 </div>

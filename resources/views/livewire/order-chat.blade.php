@@ -73,6 +73,28 @@
                                 @endif
                                 <div class="text-[10px] text-gray-400 mt-3 text-center">{{ $msg->created_at->format('H:i') }}</div>
                             </div>
+                        @elseif($msg->type === 'additional_cost')
+                            <div class="bg-white border-2 border-orange-500 rounded-2xl p-4 shadow-sm my-2 self-center w-full max-w-[95%]">
+                                <div class="text-[10px] font-bold text-orange-600 mb-1 text-center tracking-widest uppercase">Tagihan Biaya Tambahan</div>
+                                <div class="text-sm font-medium text-gray-700 text-center mb-1">{{ $msg->metadata['name'] ?? 'Biaya Tambahan' }}</div>
+                                <div class="text-2xl font-black text-gray-900 text-center mb-4 font-plus">Rp {{ number_format($msg->metadata['amount'] ?? 0, 0, ',', '.') }}</div>
+                                
+                                @if(isset($msg->metadata['status']) && $msg->metadata['status'] === 'pending')
+                                    @if(!request()->routeIs('umkm.*'))
+                                    <div class="flex gap-2">
+                                        <button wire:click="rejectAdditionalFee({{ $msg->id }})" wire:confirm="Yakin ingin menolak biaya tambahan ini?" class="flex-1 py-2.5 rounded-xl border-2 border-gray-200 text-gray-600 text-xs font-bold hover:bg-gray-50 transition-colors">Tolak</button>
+                                        <button wire:click="acceptAdditionalFee({{ $msg->id }})" wire:confirm="Yakin ingin menyetujui biaya tambahan ini?" class="flex-1 py-2.5 rounded-xl bg-orange-500 text-white text-xs font-bold hover:bg-orange-600 transition-colors shadow-lg">Terima</button>
+                                    </div>
+                                    @else
+                                    <div class="text-center text-[11px] text-gray-500 font-medium bg-gray-50 py-2 rounded-xl">Menunggu persetujuan pelanggan...</div>
+                                    @endif
+                                @else
+                                    <div class="text-center text-[11px] font-bold py-2 rounded-xl {{ $msg->metadata['status'] === 'accepted' ? 'bg-green-50 text-green-600' : 'bg-red-50 text-red-600' }}">
+                                        {{ $msg->metadata['status'] === 'accepted' ? 'TELAH DISETUJUI' : 'TELAH DITOLAK' }}
+                                    </div>
+                                @endif
+                                <div class="text-[10px] text-gray-400 mt-3 text-center">{{ $msg->created_at->format('H:i') }}</div>
+                            </div>
                         @elseif($msg->sender_id === Auth::id())
                             {{-- My Message --}}
                             <div class="bg-[#000B44] px-4 py-2 rounded-2xl rounded-tr-sm shadow-sm text-sm text-white self-end max-w-[85%]">
@@ -102,6 +124,28 @@
                         <div wire:loading wire:target="sendMessage" class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
                     </button>
                 </form>
+
+                @if(request()->routeIs('umkm.*') && $order->status === 'processing')
+                <div class="px-3 pb-3 bg-white border-t border-gray-100">
+                    <div x-data="{ showFeeForm: false }">
+                        <button type="button" @click="showFeeForm = !showFeeForm" class="w-full py-2 bg-orange-50 text-orange-600 text-xs font-bold rounded-lg flex items-center justify-center gap-2 hover:bg-orange-100 transition-colors mt-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
+                            Ajukan Biaya Tambahan
+                        </button>
+                        
+                        <div x-show="showFeeForm" x-collapse class="mt-3 bg-gray-50 p-3 rounded-xl border border-gray-100">
+                            <form wire:submit="sendAdditionalFee" class="flex flex-col gap-2">
+                                <input wire:model="additionalFeeName" type="text" placeholder="Nama Biaya (Misal: Ganti Freon)" class="w-full text-xs rounded-lg border-gray-200 outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500" required>
+                                <input wire:model="additionalFeeAmount" type="number" placeholder="Nominal (Rp)" class="w-full text-xs rounded-lg border-gray-200 outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500" required min="1000">
+                                <div class="flex gap-2 mt-1">
+                                    <button type="button" @click="showFeeForm = false" class="flex-1 py-2 rounded-lg bg-white border border-gray-200 text-gray-600 text-xs font-bold">Batal</button>
+                                    <button type="submit" @click="setTimeout(() => showFeeForm = false, 500)" class="flex-1 py-2 rounded-lg bg-orange-500 text-white text-xs font-bold hover:bg-orange-600">Kirim</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                @endif
             </div>
         </div>
     </template>

@@ -145,17 +145,29 @@ class Show extends Component
             ];
         }
 
+        // Fetch accepted additional fees
+        $additionalFees = \App\Models\OrderAdditionalFee::where('order_id', $this->order->id)
+                            ->where('status', 'accepted')
+                            ->get();
+
+        $additionalServices = [];
+        $additionalTotal = 0;
+        foreach ($additionalFees as $fee) {
+            $additionalServices[] = ['name' => $fee->name, 'price' => $fee->amount];
+            $additionalTotal += $fee->amount;
+        }
+
         // 4. Dynamic Payment Details
         $this->paymentDetails = [
             'base_services' => [
                 ['name' => $this->order->product->name, 'price' => $this->order->agreed_price ?? 0],
             ],
-            'additional_services' => [],
+            'additional_services' => $additionalServices,
             'discounts' => [],
             'fees' => [
                 ['name' => 'Biaya Layanan', 'amount' => $this->order->platform_fee ?? 0],
             ],
-            'final_total' => $this->order->agreed_price ?? 0
+            'final_total' => ($this->order->agreed_price ?? 0) + $additionalTotal
         ];
 
         // 5. Dynamic Verification Data
