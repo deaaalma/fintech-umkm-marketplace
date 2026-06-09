@@ -60,6 +60,13 @@ class Show extends Component
             'reason' => 'Admin has verified the QRIS payment proof and confirmed receipt of funds.',
         ]);
 
+        OrderLog::create([
+            'order_id' => $this->order->id,
+            'actor_id' => auth()->id(),
+            'action' => 'Order Completed',
+            'reason' => 'Pesanan telah selesai. Menunggu penilaian dan ulasan dari pelanggan.',
+        ]);
+
         // Notifikasi ke customer
         UserNotification::create([
             'user_id' => $this->order->customer_id,
