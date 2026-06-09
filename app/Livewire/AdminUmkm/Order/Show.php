@@ -138,6 +138,14 @@ class Show extends Component
             'reason' => 'Admin set the price to Rp ' . number_format($this->agreed_price, 0, ',', '.') . '. ' . $this->admin_note,
         ]);
 
+        \App\Models\OrderMessage::create([
+            'order_id' => $this->order->id,
+            'sender_id' => auth()->id(),
+            'message' => 'Penawaran harga baru',
+            'type' => 'proposal',
+            'metadata' => ['price' => $this->agreed_price],
+        ]);
+
         // Notifikasi ke customer
         UserNotification::create([
             'user_id' => $this->order->customer_id,

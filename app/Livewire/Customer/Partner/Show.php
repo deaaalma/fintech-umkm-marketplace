@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Livewire\WithFileUploads;
 use Livewire\Component;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Session;
 
 #[Layout('layouts.customer-layout')]
 class Show extends Component
@@ -19,12 +20,24 @@ class Show extends Component
     public $selectedProductId;
     
     // Form fields
+    #[Session]
     public $address;
+    
+    #[Session]
     public $booking_date;
+    
+    #[Session]
     public $booking_time;
+    
+    #[Session]
     public $notes;
+    
+    #[Session]
     public $lat;
+    
+    #[Session]
     public $lng;
+    
     public $orderPhotos = [];
     public $selectedWorkerId;
     public $workers = [];

@@ -16,6 +16,8 @@ class Show extends Component
 
     public Order $order;
     public $showAcceptModal = false;
+    public $showNoteModal = false;
+    public $newNote = '';
     public $paymentProof;
     
     // Dynamic data containers
@@ -59,6 +61,31 @@ class Show extends Component
         $this->showAcceptModal = !$this->showAcceptModal;
     }
 
+    public function toggleNoteModal()
+    {
+        $this->showNoteModal = !$this->showNoteModal;
+        $this->newNote = '';
+    }
+
+    public function submitNote()
+    {
+        $this->validate([
+            'newNote' => 'required|string|max:500',
+        ]);
+
+        OrderLog::create([
+            'order_id' => $this->order->id,
+            'actor_id' => auth()->id(),
+            'action' => 'Catatan Pelanggan',
+            'reason' => $this->newNote,
+        ]);
+
+        $this->newNote = '';
+        $this->showNoteModal = false;
+        
+        session()->flash('message', 'Catatan berhasil ditambahkan ke aktivitas pesanan.');
+    }
+
     public function mount(Order $order)
     {
         if ($order->customer_id !== auth()->id()) {
@@ -72,14 +99,14 @@ class Show extends Component
             $this->staffTeam = [
                 [
                     'name' => $worker->name, 
-                    'role' => 'Assigned Specialist', 
-                    'experience' => 'Certified Staff @ ' . $this->order->umkm->name, 
+                    'role' => 'Spesialis Ditugaskan', 
+                    'experience' => 'Staf Tersertifikasi @ ' . $this->order->umkm->name, 
                     'initials' => strtoupper(substr($worker->name, 0, 1))
                 ]
             ];
         } else {
             $this->staffTeam = [
-                ['name' => 'Pending Assignment', 'role' => 'Awaiting Admin', 'experience' => '-', 'initials' => '?']
+                ['name' => 'Menunggu Penugasan', 'role' => 'Menunggu Admin', 'experience' => '-', 'initials' => '?']
             ];
         }
 

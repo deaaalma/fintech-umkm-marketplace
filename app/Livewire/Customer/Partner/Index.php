@@ -25,7 +25,7 @@ class Index extends Component
 
     public function render()
     {
-        $query = Umkm::where('status', 'active')->latest()->with('category');
+        $query = Umkm::where('status', 'active')->latest()->with(['category', 'reviews', 'products']);
 
         // Filter Search
         if ($this->search) {
@@ -41,15 +41,36 @@ class Index extends Component
         }
 
         $partners = $query->get()->map(function($p) {
+            $reviewsCount = $p->reviews->count();
+            $rating = $reviewsCount > 0 ? round($p->reviews->avg('rating'), 1) : 0;
+            
+            $tags = $p->products->where('type', 'jasa')->pluck('name')->take(3)->toArray();
+            if (empty($tags)) {
+                $tags = ['Layanan Umum'];
+            }
+
+            $minPrice = $p->products->min('estimated_price');
+            $maxPrice = $p->products->max('estimated_price');
+
+            if ($minPrice && $maxPrice) {
+                if ($minPrice == $maxPrice) {
+                    $priceRange = 'Rp ' . number_format($minPrice, 0, ',', '.');
+                } else {
+                    $priceRange = 'Rp ' . number_format($minPrice, 0, ',', '.') . ' - Rp ' . number_format($maxPrice, 0, ',', '.');
+                }
+            } else {
+                $priceRange = 'Harga bervariasi';
+            }
+
             return [
                 'id' => $p->id,
                 'name' => $p->name,
                 'category' => $p->category->name ?? 'Cleaning Service',
                 'location' => $p->city ?? 'Jakarta Pusat',
-                'rating' => 4.8,
-                'reviews_count' => rand(50, 200),
-                'tags' => ['Deep Cleaning', 'Office Cleaning', 'Home Cleaning'],
-                'price_range' => 'Rp 150.000 - Rp 2.500.000',
+                'rating' => $rating,
+                'reviews_count' => $reviewsCount,
+                'tags' => $tags,
+                'price_range' => $priceRange,
                 'img' => $p->logo_url ?? 'https://images.unsplash.com/photo-1581578731548-c64695cc6958?w=800&q=80',
             ];
         });

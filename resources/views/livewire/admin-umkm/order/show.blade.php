@@ -323,4 +323,9 @@
             </div>
         </div>
     </div>
+    
+    {{-- Functional Livewire Chat Widget --}}
+    @if($order->status === 'pending_valuation' && $order->agreed_price !== null || in_array($order->status, ['negotiation', 'waiting_payment']))
+        <livewire:order-chat :order="$order" />
+    @endif
 </div>

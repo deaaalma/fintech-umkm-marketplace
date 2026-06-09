@@ -179,10 +179,11 @@ class DatabaseSeeder extends Seeder
         // ==========================================
         // 4. ORDERS & REVIEWS
         // ==========================================
-        for ($i = 1; $i <= 150; $i++) {
+        for ($i = 1; $i <= 1500; $i++) {
             $prod = $faker->randomElement($productCatalog);
             $cust = $faker->randomElement($customerIds);
-            $status = $faker->randomElement(['pending_valuation', 'waiting_payment', 'paid', 'processing', 'completed']);
+            // Memberikan bobot lebih besar pada 'completed' agar lebih banyak review yang tercipta
+            $status = $faker->randomElement(['pending_valuation', 'waiting_payment', 'paid', 'processing', 'completed', 'completed', 'completed', 'completed']);
 
             $orderId = DB::table('orders')->insertGetId([
                 'invoice_number' => 'INV-' . date('Ymd') . '-' . Str::upper(Str::random(6)),
@@ -190,6 +191,7 @@ class DatabaseSeeder extends Seeder
                 'umkm_id' => $prod['umkm_id'],
                 'product_id' => $prod['id'],
                 'booking_date' => $now->format('Y-m-d'),
+                'service_address' => $faker->address,
                 'agreed_price' => $prod['price'],
                 'status' => $status,
                 'created_at' => $now, 'updated_at' => $now,

@@ -150,12 +150,6 @@
                        class="flex-1 py-4 bg-[#000B44] hover:bg-[#001166] text-white rounded-2xl font-black text-xs uppercase tracking-widest transition-all text-center shadow-lg focus:ring-2 focus:ring-[#0077B6] focus:outline-none">
                         Lihat Detail
                     </a>
-                    <button aria-label="Hubungi {{ $partner['name'] }}" 
-                            class="w-14 h-14 rounded-2xl bg-white border border-gray-200 flex items-center justify-center text-gray-400 hover:text-gray-900 hover:border-gray-900 transition-all shadow-sm focus:ring-2 focus:ring-[#0077B6] focus:outline-none">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
-                        </svg>
-                    </button>
                 </div>
             </div>
         </div>

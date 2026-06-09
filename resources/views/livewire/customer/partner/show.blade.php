@@ -1,4 +1,4 @@
-<x-slot:title>{{ $partner->name }} - Detail Partner</x-slot:title>
+<x-slot:title>{{ $partner->name }}</x-slot:title>
 
 @push('styles')
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
@@ -51,27 +51,38 @@
                 <h2 class="text-xl font-black text-[#000B44] font-plus mb-6">Layanan Tersedia</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     @forelse($partner->products as $product)
-                    <div class="bg-[#000B44] border border-white/5 hover:border-[#0077B6]/40 p-6 rounded-3xl shadow-sm hover:shadow-md transition-shadow group">
-                        <div class="flex justify-between items-start mb-4">
-                            <div class="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center text-cyan-50 group-hover:bg-[#0077B6] group-hover:text-white transition-colors" aria-hidden="true">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                    <div class="bg-white border border-slate-100 rounded-[32px] overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-2 group flex flex-col">
+                        {{-- Image Header --}}
+                        <div class="relative h-48 bg-slate-900 overflow-hidden shrink-0">
+                            <img src="{{ $product->image_url ?? 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=800&q=80' }}" 
+                                 alt="Foto {{ $product->name }}"
+                                 class="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-all duration-700">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                            <div class="absolute bottom-5 left-6">
+                                <span class="px-3 py-1.5 bg-white/20 backdrop-blur-md rounded-full text-[9px] font-black text-white uppercase tracking-widest border border-white/30 shadow-sm">
+                                    {{ $product->category->name ?? $partner->category->name }}
+                                </span>
                             </div>
-                            <span class="text-[10px] font-black text-cyan-200 uppercase tracking-widest">{{ $product->category->name ?? $partner->category->name }}</span>
                         </div>
-                        <h3 class="text-lg font-black text-white font-plus mb-2">{{ $product->name }}</h3>
-                        <p class="text-sm text-cyan-50 mb-6 line-clamp-2">{{ $product->description ?? 'Deskripsi layanan tidak tersedia.' }}</p>
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <p class="text-[10px] font-black text-cyan-200 uppercase tracking-widest mb-0.5">Mulai dari</p>
-                                <p class="text-base font-black text-white">Rp {{ number_format($product->estimated_price ?? 0, 0, ',', '.') }}</p>
+
+                        {{-- Card Body --}}
+                        <div class="p-6 flex flex-col flex-1">
+                            <h3 class="text-lg font-black text-slate-900 font-plus mb-2 leading-tight">{{ $product->name }}</h3>
+                            <p class="text-sm text-slate-600 mb-6 line-clamp-2 leading-relaxed flex-1">{{ $product->description ?? 'Deskripsi layanan tidak tersedia.' }}</p>
+                            
+                            <div class="flex items-end justify-between mt-auto pt-5 border-t border-slate-100">
+                                <div>
+                                    <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Mulai dari</p>
+                                    <p class="text-base font-black text-slate-900 font-plus">Rp {{ number_format($product->estimated_price ?? 0, 0, ',', '.') }}</p>
+                                </div>
+                                <button 
+                                    wire:click="pesanSekarang({{ $product->id }})"
+                                    class="px-5 py-2.5 bg-[#000B44] hover:bg-black text-white rounded-xl text-xs font-bold transition-colors focus:outline-none focus:ring-2 focus:ring-[#0077B6] focus:ring-offset-2 shadow-sm"
+                                    aria-label="Pesan layanan {{ $product->name }}"
+                                >
+                                    Pesan Sekarang
+                                </button>
                             </div>
-                            <button 
-                                wire:click="pesanSekarang({{ $product->id }})"
-                                class="px-5 py-2.5 bg-white hover:bg-slate-100 text-[#000B44] rounded-xl text-xs font-bold transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#000B44]"
-                                aria-label="Pesan layanan {{ $product->name }}"
-                            >
-                                Pesan Sekarang
-                            </button>
                         </div>
                     </div>
                     @empty
@@ -108,20 +119,17 @@
                         </div>
                     </div>
                 </div>
-                <button class="w-full mt-6 py-4 bg-[#000B44] hover:bg-[#000B44]/90 text-white rounded-2xl text-xs font-black uppercase tracking-widest transition-all focus:outline-none focus:ring-2 focus:ring-[#0077B6] focus:ring-offset-2">
-                    Chat Admin
-                </button>
             </div>
 
             {{-- Reviews --}}
-            <div class="bg-white p-8 rounded-[32px] border border-slate-200 shadow-sm">
+            <div x-data="{ showAll: false }" class="bg-white p-8 rounded-[32px] border border-slate-200 shadow-sm">
                 <div class="flex items-center justify-between mb-6">
                     <h2 class="text-sm font-black text-slate-900 font-plus">Reviews</h2>
                     <span class="text-xs font-bold text-yellow-700">{{ $partner->reviews->count() }} Total</span>
                 </div>
                 <div class="space-y-6">
-                    @forelse($partner->reviews->take(3) as $review)
-                    <div class="space-y-3">
+                    @forelse($partner->reviews as $index => $review)
+                    <div class="space-y-3" {{ $index >= 3 ? 'x-show=showAll x-transition.opacity.duration.300ms style=display:none;' : '' }}>
                         <div class="flex items-center justify-between">
                             <div class="flex items-center gap-2">
                                 <div class="w-6 h-6 rounded-full bg-slate-100 flex items-center justify-center text-[10px] font-bold text-slate-600" aria-hidden="true">
@@ -141,6 +149,16 @@
                     <p class="text-center text-sm text-slate-500 py-4">Belum ada review.</p>
                     @endforelse
                 </div>
+
+                @if($partner->reviews->count() > 3)
+                <button 
+                    x-show="!showAll" 
+                    @click="showAll = true" 
+                    class="w-full mt-6 py-3 bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200 rounded-xl text-xs font-bold transition-colors focus:outline-none focus:ring-2 focus:ring-[#0077B6] focus:ring-offset-2"
+                >
+                    Tampilkan lebih banyak
+                </button>
+                @endif
             </div>
         </div>
 
@@ -167,7 +185,7 @@
                                     {{-- Address --}}
                                     <div class="space-y-2">
                                         <label for="address" class="text-[10px] font-black text-slate-600 uppercase tracking-widest ml-1">Alamat Layanan</label>
-                                        <textarea id="address" wire:model="address" rows="3" placeholder="Masukkan alamat lengkap lokasi pembersihan..." class="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl text-sm font-medium focus:ring-2 focus:ring-[#0077B6] focus:border-[#0077B6] outline-none transition-all resize-none text-slate-900"></textarea>
+                                        <textarea id="address" wire:model.live.blur="address" rows="3" placeholder="Masukkan alamat lengkap lokasi pembersihan..." class="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl text-sm font-medium focus:ring-2 focus:ring-[#0077B6] focus:border-[#0077B6] outline-none transition-all resize-none text-slate-900 placeholder-slate-400"></textarea>
                                         @error('address') <span class="text-xs text-red-600 font-bold ml-1" role="alert">{{ $message }}</span> @enderror
                                     </div>
 
@@ -241,29 +259,49 @@
 
                                     <div class="grid grid-cols-2 gap-4">
                                         {{-- Date --}}
-                                        <div class="space-y-2" x-data="{
-                                            init() {
-                                                if (typeof flatpickr !== 'undefined') {
-                                                    flatpickr($refs.dateInput, {
-                                                        dateFormat: 'Y-m-d',
-                                                        altInput: true,
-                                                        altFormat: 'j M Y',
-                                                        minDate: 'today',
-                                                        onChange: (selectedDates, dateStr) => {
-                                                            @this.set('booking_date', dateStr);
-                                                        }
-                                                    });
-                                                }
-                                            }
-                                        }">
+                                        <div class="space-y-2">
                                             <label for="booking_date" class="text-[10px] font-black text-slate-600 uppercase tracking-widest ml-1">Tanggal</label>
-                                            <input type="text" id="booking_date" x-ref="dateInput" readonly placeholder="Pilih Tanggal" wire:model="booking_date" class="w-full px-5 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-sm font-medium focus:ring-2 focus:ring-[#0077B6] focus:border-[#0077B6] outline-none transition-all cursor-pointer text-slate-900">
+                                            <div wire:ignore x-data="{
+                                                init() {
+                                                    if (typeof flatpickr !== 'undefined') {
+                                                        flatpickr($refs.dateInput, {
+                                                            dateFormat: 'Y-m-d',
+                                                            altInput: true,
+                                                            altFormat: 'j M Y',
+                                                            minDate: 'today',
+                                                            onChange: (selectedDates, dateStr) => {
+                                                                @this.set('booking_date', dateStr);
+                                                            }
+                                                        });
+                                                    }
+                                                }
+                                            }">
+                                                <input type="text" id="booking_date" x-ref="dateInput" readonly placeholder="Pilih Tanggal" wire:model="booking_date" class="w-full px-5 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-sm font-medium focus:ring-2 focus:ring-[#0077B6] focus:border-[#0077B6] outline-none transition-all cursor-pointer text-slate-900">
+                                            </div>
                                             @error('booking_date') <span class="text-xs text-red-600 font-bold ml-1" role="alert">{{ $message }}</span> @enderror
                                         </div>
                                         {{-- Time --}}
                                         <div class="space-y-2">
                                             <label for="booking_time" class="text-[10px] font-black text-slate-600 uppercase tracking-widest ml-1">Jam</label>
-                                            <input type="time" id="booking_time" wire:model="booking_time" class="w-full px-5 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-sm font-medium focus:ring-2 focus:ring-[#0077B6] focus:border-[#0077B6] outline-none transition-all text-slate-900">
+                                            <div wire:ignore x-data="{
+                                                init() {
+                                                    if (typeof flatpickr !== 'undefined') {
+                                                        flatpickr($refs.timeInput, {
+                                                            enableTime: true,
+                                                            noCalendar: true,
+                                                            dateFormat: 'H:i',
+                                                            time_24hr: true,
+                                                            altInput: true,
+                                                            altFormat: 'H:i',
+                                                            onChange: (selectedDates, dateStr) => {
+                                                                @this.set('booking_time', dateStr);
+                                                            }
+                                                        });
+                                                    }
+                                                }
+                                            }">
+                                                <input type="text" id="booking_time" x-ref="timeInput" readonly placeholder="Pilih Jam" wire:model="booking_time" class="w-full px-5 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-sm font-medium focus:ring-2 focus:ring-[#0077B6] focus:border-[#0077B6] outline-none transition-all cursor-pointer text-slate-900">
+                                            </div>
                                             @error('booking_time') <span class="text-xs text-red-600 font-bold ml-1" role="alert">{{ $message }}</span> @enderror
                                         </div>
                                     </div>
@@ -296,7 +334,7 @@
                                     {{-- Notes --}}
                                     <div class="space-y-2">
                                         <label for="notes" class="text-[10px] font-black text-slate-600 uppercase tracking-widest ml-1">Catatan Khusus (Opsional)</label>
-                                        <textarea id="notes" wire:model="notes" rows="2" placeholder="Contoh: Fokus ke area dapur, ada noda membandel di karpet..." class="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl text-sm font-medium focus:ring-2 focus:ring-[#0077B6] focus:border-[#0077B6] outline-none transition-all resize-none text-slate-900"></textarea>
+                                        <textarea id="notes" wire:model.live.blur="notes" rows="2" placeholder="Contoh: Fokus ke area dapur, ada noda membandel di karpet..." class="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl text-sm font-medium focus:ring-2 focus:ring-[#0077B6] focus:border-[#0077B6] outline-none transition-all resize-none text-slate-900 placeholder-slate-400"></textarea>
                                     </div>
                                 </div>
                             </div>
