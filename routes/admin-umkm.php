@@ -10,25 +10,29 @@ Route::middleware(['auth', 'verified', 'role:admin_umkm'])->group(function () {
     // Tambahkan middleware 'role:super_admin' (pastikan nama role sesuai database)
     Route::prefix('umkm')->name('umkm.')->group(function () {
         
-        // Dashboard Utama
-        Route::get('/dashboard', \App\Livewire\AdminUmkm\Index::class)->name('dashboard');
-        
-        Route::get('/notifications', \App\Livewire\AdminUmkm\Notifications::class)->name('notifications');
-
-        Route::get('/orders', \App\Livewire\AdminUmkm\Order\Index::class)->name('orders');
-        Route::get('/orders/{order}', \App\Livewire\AdminUmkm\Order\Show::class)->name('orders.show');
-
-        Route::get('/services/create', \App\Livewire\AdminUmkm\Product\Create::class)->name('services.create');
-        Route::get('/services/{id}/edit', \App\Livewire\AdminUmkm\Product\Edit::class)->name('services.edit');
-        Route::get('/services', \App\Livewire\AdminUmkm\Product\Index::class)->name('services');
-
+        // Rute Verifikasi (dapat diakses oleh UMKM yang belum diverifikasi)
         Route::get('/verification', \App\Livewire\AdminUmkm\Verification::class)->name('verification');
-        Route::get('/staff', \App\Livewire\AdminUmkm\Staff\Index::class)->name('staff');
-        Route::get('/staff/create', \App\Livewire\AdminUmkm\Staff\Create::class)->name('staff.create');
-        Route::get('/staff/{id}/edit', \App\Livewire\AdminUmkm\Staff\Edit::class)->name('staff.edit');
-        Route::get('/reports', \App\Livewire\AdminUmkm\Reports\Index::class)->name('reports');
-        Route::get('/settings', \App\Livewire\AdminUmkm\Settings\Index::class)->name('settings');
 
+        // Rute yang membutuhkan UMKM diverifikasi
+        Route::middleware(['umkm.verified'])->group(function () {
+            // Dashboard Utama
+            Route::get('/dashboard', \App\Livewire\AdminUmkm\Index::class)->name('dashboard');
+            
+            Route::get('/notifications', \App\Livewire\AdminUmkm\Notifications::class)->name('notifications');
+
+            Route::get('/orders', \App\Livewire\AdminUmkm\Order\Index::class)->name('orders');
+            Route::get('/orders/{order}', \App\Livewire\AdminUmkm\Order\Show::class)->name('orders.show');
+
+            Route::get('/services/create', \App\Livewire\AdminUmkm\Product\Create::class)->name('services.create');
+            Route::get('/services/{id}/edit', \App\Livewire\AdminUmkm\Product\Edit::class)->name('services.edit');
+            Route::get('/services', \App\Livewire\AdminUmkm\Product\Index::class)->name('services');
+
+            Route::get('/staff', \App\Livewire\AdminUmkm\Staff\Index::class)->name('staff');
+            Route::get('/staff/create', \App\Livewire\AdminUmkm\Staff\Create::class)->name('staff.create');
+            Route::get('/staff/{id}/edit', \App\Livewire\AdminUmkm\Staff\Edit::class)->name('staff.edit');
+            Route::get('/reports', \App\Livewire\AdminUmkm\Reports\Index::class)->name('reports');
+            Route::get('/settings', \App\Livewire\AdminUmkm\Settings\Index::class)->name('settings');
+        });
        
     });
 

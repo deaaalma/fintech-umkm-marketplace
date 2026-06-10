@@ -1,86 +1,49 @@
-<x-slot:title>Verification Status</x-slot>
+<x-slot:title>Menunggu Verifikasi</x-slot>
 
-<div class="flex-1 flex flex-col items-center justify-center p-8 lg:p-20 relative">
-    <div class="w-full max-w-4xl grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+<div class="min-h-screen bg-slate-50 flex flex-col items-center justify-center p-6 relative overflow-hidden">
+    <!-- Clean Abstract Background Elements -->
+    <div class="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+        <div class="absolute top-0 left-0 w-full h-96 bg-gradient-to-b from-[#0077B6]/5 to-transparent"></div>
+        <div class="absolute -top-40 -right-40 w-96 h-96 bg-[#0077B6]/10 rounded-full blur-3xl"></div>
+        <div class="absolute -bottom-40 -left-40 w-[500px] h-[500px] bg-[#000B44]/5 rounded-full blur-3xl"></div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="relative z-10 w-full max-w-lg bg-white border border-slate-100 p-10 lg:p-16 rounded-[3rem] shadow-xl text-center flex flex-col items-center animate-in zoom-in-95 duration-500">
         
-        <div class="space-y-12 text-center lg:text-left">
-            <div class="space-y-4">
-                @if($umkmStatus == 'approved')
-                    <h2 class="text-5xl lg:text-6xl font-black text-[#000B44] font-plus tracking-tighter leading-none">Verifikasi <br> <span class="text-[#0077B6]">Selesai</span></h2>
-                    <p class="text-slate-400 font-medium text-sm lg:text-base leading-relaxed max-w-sm mx-auto lg:mx-0">
-                        Selamat! UMKM Anda telah diverifikasi. Anda sekarang bisa mulai mengelola layanan dan menerima pesanan.
-                    </p>
-                    <div class="pt-4">
-                        <a href="{{ route('admin-umkm.dashboard.preview') }}" class="px-8 py-4 bg-[#000B44] text-white rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-[#0077B6] transition-all inline-block">Masuk ke Dashboard</a>
-                    </div>
-                @else
-                    <h2 class="text-5xl lg:text-6xl font-black text-[#000B44] font-plus tracking-tighter leading-none">Sedang <br> <span class="text-slate-300">Ditinjau</span></h2>
-                    <p class="text-slate-400 font-medium text-sm lg:text-base leading-relaxed max-w-sm mx-auto lg:mx-0">
-                        Mohon tunggu sebentar, kami sedang melakukan verifikasi data dan berkas legalitas UMKM Anda.
-                    </p>
-                @endif
-            </div>
-
-            <div class="space-y-8">
-                @foreach($steps as $s)
-                <div class="flex items-center gap-6">
-                    <div @class([
-                        'w-8 h-8 rounded-xl flex items-center justify-center border transition-all duration-500',
-                        'bg-[#000B44] text-white border-[#000B44]' => $s['status'] == 'check',
-                        'bg-white border-[#0077B6] text-[#0077B6] animate-pulse' => $s['status'] == 'active',
-                        'bg-white border-slate-100 text-slate-200' => $s['status'] == 'waiting',
-                    ])>
-                        @if($s['status'] == 'check') 
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="4"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-                        @elseif($s['status'] == 'active') 
-                            <div class="w-1.5 h-1.5 bg-[#0077B6] rounded-full"></div>
-                        @else 
-                            <div class="w-1.5 h-1.5 bg-slate-100 rounded-full"></div> 
-                        @endif
-                    </div>
-                    <span @class([
-                        'text-[11px] font-black uppercase tracking-widest',
-                        'text-slate-200' => $s['status'] == 'waiting',
-                        'text-[#000B44]' => $s['status'] != 'waiting',
-                    ])>{{ $s['title'] }}</span>
-                </div>
-                @endforeach
+        <!-- Elegant CSS Loading Animation -->
+        <div class="relative w-32 h-32 mb-10 flex items-center justify-center">
+            <!-- Outer Ring -->
+            <div class="absolute inset-0 border-4 border-slate-100 rounded-full"></div>
+            <!-- Spinning Ring 1 (Navy) -->
+            <div class="absolute inset-0 border-4 border-transparent border-t-[#000B44] border-r-[#000B44] rounded-full animate-[spin_1.5s_linear_infinite]"></div>
+            <!-- Spinning Ring 2 (Light Blue) -->
+            <div class="absolute inset-4 border-4 border-transparent border-b-[#0077B6] border-l-[#0077B6] rounded-full animate-[spin_2s_linear_infinite_reverse]"></div>
+            
+            <!-- Center Icon -->
+            <div class="relative z-10 w-12 h-12 bg-white rounded-full flex items-center justify-center text-[#000B44] shadow-sm">
+                <svg class="w-6 h-6 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                </svg>
             </div>
         </div>
 
-        <div class="relative flex justify-center items-center">
-            <div class="absolute inset-0 bg-[#0077B6]/10 blur-3xl -z-10 rounded-full scale-125 opacity-20"></div>
-            <div class="relative w-full aspect-square max-w-[340px] bg-white rounded-[3rem] p-4 shadow-2xl border border-slate-50 overflow-hidden">
-                <div class="w-full h-full bg-[#000B44] rounded-[2.5rem] overflow-hidden relative shadow-inner">
-                    
-                    @if($umkmStatus == 'approved')
-                        <div class="flex flex-col items-center justify-center h-full text-white space-y-4">
-                            <div class="w-20 h-20 bg-[#0077B6] rounded-full flex items-center justify-center shadow-lg shadow-[#0077B6]/40">
-                                <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="3"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-                            </div>
-                            <span class="text-[10px] font-black uppercase tracking-[0.3em] text-blue-200">Verified Partner</span>
-                        </div>
-                    @else
-                        <video autoplay loop muted playsinline class="w-full h-full object-cover opacity-90" style="filter: contrast(110%) brightness(110%);">
-                            <source src="{{ asset('storage/videos/scan.webm') }}" type="video/webm">
-                        </video>
-                        
-                        <div class="absolute inset-0 pointer-events-none opacity-15" style="background: linear-gradient(rgba(18,16,16,0) 50%, rgba(0,0,0,0.1) 50%); background-size: 100% 4px;"></div>
+        <h1 class="text-3xl md:text-4xl font-black text-[#000B44] font-plus tracking-tight mb-4">
+            Sedang <span class="text-[#0077B6]">Ditinjau</span>
+        </h1>
+        
+        <p class="text-slate-500 font-medium text-sm md:text-base leading-relaxed mb-10 px-4">
+            Mohon bersabar, ya. Tim JOS sedang memverifikasi data dan legalitas UMKM Anda demi keamanan bersama. 
+            <br><br>
+            Silakan cek kembali halaman ini secara berkala.
+        </p>
 
-                        <div class="absolute inset-0 p-8 flex flex-col justify-end pointer-events-none">
-                            <div class="flex items-center gap-3">
-                                <span class="text-[9px] font-black text-white/40 uppercase tracking-[0.3em]">Processing...</span>
-                                <div class="flex gap-1">
-                                    <span class="w-1 h-1 bg-[#0077B6] rounded-full animate-bounce"></span>
-                                    <span class="w-1 h-1 bg-[#0077B6] rounded-full animate-bounce" style="animation-delay: 0.1s"></span>
-                                    <span class="w-1 h-1 bg-[#0077B6] rounded-full animate-bounce" style="animation-delay: 0.2s"></span>
-                                </div>
-                            </div>
-                        </div>
-                    @endif
-                </div>
-            </div>
-        </div>
+        <form method="POST" action="{{ route('logout') }}" class="w-full">
+            @csrf
+            <button type="submit" class="w-full px-8 py-4 bg-[#000B44] hover:bg-[#0077B6] text-white rounded-2xl text-xs font-black uppercase tracking-widest transition-all shadow-lg hover:shadow-xl hover:-translate-y-1">
+                Keluar / Logout
+            </button>
+        </form>
 
     </div>
 </div>

@@ -6,12 +6,17 @@ use App\Models\Umkm;
 use Livewire\Component;
 use Livewire\Attributes\Layout;
 
-#[Layout('layouts.admin-umkm')]
+#[Layout('layouts.guest')]
 class Verification extends Component
 {
     public function render()
     {
         $umkm = Umkm::where('owner_id', auth()->id())->first();
+
+        // Redirect if already active (verified)
+        if ($umkm && $umkm->status === 'active') {
+            return redirect()->route('umkm.dashboard');
+        }
 
         // Ambil status asli dari database, default 'pending' jika belum ada
         $currentStatus = $umkm->status ?? 'pending';

@@ -34,6 +34,13 @@
     }
 }">
 
+    @if(session('success'))
+    <div class="mb-4 bg-emerald-50 border border-emerald-200 text-emerald-700 px-5 py-4 rounded-2xl flex items-center gap-3 shadow-sm animate-fade-in-up">
+        <svg class="w-5 h-5 text-emerald-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        <span class="text-sm font-bold">{{ session('success') }}</span>
+    </div>
+    @endif
+
     {{-- Table Header / Inner Title --}}
     <div>
         <h1 class="text-2xl font-black text-[#000B44] font-plus tracking-tight">Daftar Pesanan ({{ $orders_pagination->total() }})</h1>
@@ -180,14 +187,14 @@
 
     {{-- Bulk Action Bar --}}
     @if(count($selected) > 0)
-    <div class="flex items-center justify-between bg-[#2D2D2D] text-white p-4 rounded-xl shadow-lg animate-in fade-in slide-in-from-bottom-4 duration-300">
+    <div class="flex items-center justify-between bg-[#000B44] text-white p-4 rounded-xl shadow-lg animate-in fade-in slide-in-from-bottom-4 duration-300">
         <div class="flex items-center gap-4 pl-4">
             <span class="text-sm font-bold">{{ count($selected) }} selected</span>
         </div>
         <div class="flex items-center gap-3">
-            <button class="px-6 py-2 border border-gray-600 rounded-lg text-sm font-bold hover:bg-gray-800 transition-all">Send Reminder</button>
-            <button class="px-6 py-2 border border-gray-600 rounded-lg text-sm font-bold hover:bg-gray-800 transition-all">Export Selected</button>
-            <button wire:click="$set('selected', [])" class="p-2 text-gray-400 hover:text-white transition-all">
+            <button wire:click="sendReminder" class="px-6 py-2 border border-white/20 rounded-lg text-sm font-bold hover:bg-white/10 transition-all">Send Reminder</button>
+            <button class="px-6 py-2 border border-white/20 rounded-lg text-sm font-bold hover:bg-white/10 transition-all">Export Selected</button>
+            <button wire:click="$set('selected', [])" class="p-2 text-white/50 hover:text-white transition-all">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
             </button>
         </div>
@@ -201,7 +208,7 @@
                 <thead>
                     <tr class="bg-slate-50 border-b border-slate-200">
                         <th class="px-6 py-4">
-                            <input type="checkbox" wire:click="selectAll(@json($orders->pluck('id')))" 
+                            <input type="checkbox" wire:click="selectAll(@json($orders->pluck('id_raw')))" 
                                 {{ count($selected) === count($orders) && count($orders) > 0 ? 'checked' : '' }}
                                 class="w-4 h-4 text-[#0077B6] border-slate-300 rounded focus:ring-[#0077B6] cursor-pointer">
                         </th>
@@ -213,14 +220,14 @@
                         <th class="px-4 py-4 text-[11px] font-bold text-slate-500 uppercase tracking-wider">Status</th>
                         <th class="px-4 py-4 text-[11px] font-bold text-slate-500 uppercase tracking-wider">Amount</th>
                         <th class="px-4 py-4 text-[11px] font-bold text-slate-500 uppercase tracking-wider">Staff</th>
-                        <th class="px-4 py-4 text-[11px] font-bold text-slate-500 uppercase tracking-wider">Actions</th>
+                        <th class="px-4 py-4 text-[11px] font-bold text-slate-500 uppercase tracking-wider text-center">Actions</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-100 text-slate-700">
                     @forelse($orders as $o)
-                    <tr class="hover:bg-slate-50/80 transition-all {{ in_array($o['id'], $selected) ? 'bg-slate-50' : '' }}">
+                    <tr class="hover:bg-slate-50/80 transition-all {{ in_array($o['id_raw'], $selected) ? 'bg-slate-50' : '' }}">
                         <td class="px-6 py-4">
-                            <input type="checkbox" wire:model.live="selected" value="{{ $o['id'] }}" class="w-4 h-4 text-[#0077B6] border-slate-300 rounded focus:ring-[#0077B6] cursor-pointer">
+                            <input type="checkbox" wire:model.live="selected" value="{{ $o['id_raw'] }}" class="w-4 h-4 text-[#0077B6] border-slate-300 rounded focus:ring-[#0077B6] cursor-pointer">
                         </td>
 
                         <td class="px-4 py-4">
@@ -244,14 +251,14 @@
                             <span class="text-sm text-slate-600">{{ $o['time'] }}</span>
                         </td>
                         <td class="px-4 py-4">
-                            <span class="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider
-                                @if($o['color'] == 'amber') bg-amber-50 text-amber-600 
-                                @elseif($o['color'] == 'orange') bg-orange-50 text-orange-600
-                                @elseif($o['color'] == 'teal') bg-teal-50 text-teal-600 
-                                @elseif($o['color'] == 'blue') bg-blue-50 text-blue-600 
-                                @elseif($o['color'] == 'green') bg-green-50 text-green-600
-                                @elseif($o['color'] == 'red') bg-red-50 text-red-600
-                                @else bg-slate-100 text-slate-500 @endif">
+                            <span class="inline-flex px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider
+                                @if($o['color'] == 'amber') bg-amber-50 text-amber-600 border border-amber-200
+                                @elseif($o['color'] == 'orange') bg-orange-50 text-orange-600 border border-orange-200
+                                @elseif($o['color'] == 'teal') bg-teal-50 text-teal-600 border border-teal-200
+                                @elseif($o['color'] == 'blue') bg-blue-50 text-blue-600 border border-blue-200
+                                @elseif($o['color'] == 'green') bg-green-50 text-green-600 border border-green-200
+                                @elseif($o['color'] == 'red') bg-red-50 text-red-600 border border-red-200
+                                @else bg-slate-100 text-slate-500 border border-slate-200 @endif">
                                 {{ $o['status'] }}
                             </span>
                         </td>
@@ -261,9 +268,11 @@
                         <td class="px-4 py-4 text-center">
                             <span class="text-sm text-slate-400">{{ $o['staff'] }}</span>
                         </td>
-                        <td class="px-4 py-4">
-                            <a href="{{ route('umkm.orders.show', $o['id_raw']) }}" class="flex items-center gap-2 px-4 py-2 bg-[#000B44] hover:bg-[#001166] text-white rounded-lg text-xs font-bold transition-all shadow-sm">
-                                Review & Chat
+                        <td class="px-4 py-4 text-center">
+                            <a href="{{ route('umkm.orders.show', $o['id_raw']) }}" 
+                               class="inline-flex items-center justify-center w-8 h-8 bg-slate-100 hover:bg-[#000B44] text-slate-500 hover:text-white rounded-lg transition-all shadow-sm group"
+                               title="Lihat Detail Pesanan">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                             </a>
                         </td>
                     </tr>

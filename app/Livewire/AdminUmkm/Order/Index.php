@@ -74,6 +74,42 @@ class Index extends Component
         $this->reset(['search', 'category', 'status', 'service_type', 'staff_id', 'date_start', 'date_end', 'amount_min', 'amount_max', 'customer_type']);
     }
 
+    public function sendReminder()
+    {
+        if (empty($this->selected)) {
+            return;
+        }
+
+        $orders = Order::whereIn('id', $this->selected)->get();
+        $count = 0;
+
+        foreach ($orders as $order) {
+            $message = '';
+            
+            if ($order->status === 'waiting_payment') {
+                $message = 'Halo, segera lakukan pembayaran untuk pesanan Anda agar dapat kami proses.';
+            } elseif ($order->status === 'pending_valuation') {
+                $message = 'Ada penawaran harga baru dari Admin, mohon segera ditinjau.';
+            } elseif (in_array($order->status, ['processing', 'paid'])) {
+                $message = 'Pesanan Anda sedang kami kerjakan dengan sepenuh hati.';
+            }
+
+            if ($message) {
+                \App\Models\UserNotification::create([
+                    'user_id' => $order->customer_id,
+                    'title'   => 'Pengingat Pesanan #' . ($order->invoice_number ?? $order->id),
+                    'message' => $message,
+                    'type'    => 'system',
+                    'link'    => route('customer.order-details', $order->id),
+                ]);
+                $count++;
+            }
+        }
+
+        $this->selected = [];
+        session()->flash('success', "Pengingat berhasil dikirim ke $count pelanggan.");
+    }
+
     public function render()
     {
         $umkmId = Umkm::where('owner_id', auth()->id())->value('id');
