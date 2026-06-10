@@ -1,6 +1,11 @@
 <x-slot:title>Home</x-slot>
 
 <div class="space-y-10">
+    {{-- Dashboard Header --}}
+    <div class="mb-8 animate-fade-in-up">
+        <h1 class="text-3xl font-black text-[#000B44] font-plus tracking-tight">Dashboard Overview</h1>
+        <p class="text-slate-500 font-medium text-base mt-2">Selamat datang kembali, <span class="text-[#0077B6] font-bold">{{ auth()->user()->name }}</span>!</p>
+    </div>
     <style>
         .metric-card { transition: box-shadow 0.2s ease; }
         .metric-card:hover { box-shadow: 0 8px 24px -4px rgba(0,11,68,0.10); }

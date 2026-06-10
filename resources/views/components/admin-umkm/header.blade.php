@@ -1,14 +1,7 @@
 @props(['title'])
 
-<header class="px-8 lg:px-12 py-8 flex flex-col sm:flex-row justify-between items-center bg-[#F8FAFC]/50 backdrop-blur-xl sticky top-0 z-40 transition-all duration-300 border-b border-slate-100/50">
-    <div class="mb-4 sm:mb-0 text-left w-full sm:w-auto">
-        <h2 class="text-3xl font-black text-[#000B44] font-plus tracking-tight">{{ $title }}</h2>
-        @if(request()->routeIs('umkm.dashboard'))
-        <p class="text-slate-400 font-medium text-base mt-1">Hello, <span class="text-[#0077B6] font-bold">{{ auth()->user()->name }}</span></p>
-        @endif
-    </div>
-    
-    <div class="flex items-center justify-end w-full sm:w-auto gap-4">
+<header class="px-8 lg:px-12 py-4 flex justify-end items-center bg-[#F8FAFC]/50 backdrop-blur-xl sticky top-0 z-40 transition-all duration-300 border-b border-slate-100/50">
+    <div class="flex items-center gap-4 w-full sm:w-auto justify-end">
         @php
             $unreadNotifications = \App\Models\UserNotification::where('user_id', auth()->id())->whereNull('read_at')->count();
             $recentNotifications = \App\Models\UserNotification::where('user_id', auth()->id())->latest()->take(5)->get();

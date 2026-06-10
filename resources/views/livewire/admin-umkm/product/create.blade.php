@@ -1,6 +1,6 @@
 <x-slot:title>Tambah Layanan</x-slot>
 
-<div class="space-y-6 pb-24 relative">
+<div class="space-y-6 pb-24 relative animate-fade-in-up">
     {{-- Breadcrumbs & Header --}}
     <div>
 

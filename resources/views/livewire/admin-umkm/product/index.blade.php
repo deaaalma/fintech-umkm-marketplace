@@ -1,16 +1,15 @@
-<x-slot:title>Manajemen Produk / Layanan</x-slot>
+<x-slot:title>Manajemen Layanan</x-slot>
 
-<div class="space-y-6">
-
+<div class="space-y-6 animate-fade-in-up">
 
     {{-- Title and Action --}}
-    <div class="flex justify-between items-start md:items-center flex-col md:flex-row gap-4">
+    <div class="flex justify-between items-start md:items-center flex-col md:flex-row gap-4 mb-2">
         <div>
-            <h1 class="text-2xl font-bold text-gray-900">Manajemen Produk / Layanan</h1>
-            <p class="text-sm text-gray-500 mt-1 font-medium">Kelola semua layanan yang tampil ke pelanggan</p>
+            <h1 class="text-2xl font-black text-[#000B44] font-plus tracking-tight">Manajemen Layanan</h1>
+            <p class="text-sm text-slate-500 mt-1 font-medium">Kelola semua layanan yang tampil ke pelanggan</p>
         </div>
-        <a href="{{ route('umkm.services.create') }}" class="bg-[#2D2D2D] hover:bg-black text-white px-6 py-2.5 rounded-full font-bold flex items-center gap-2 transition-all shadow-sm">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <a href="{{ route('umkm.services.create') }}" class="bg-[#000B44] hover:bg-[#0077B6] text-white px-6 py-2.5 rounded-2xl text-xs font-black uppercase tracking-widest flex items-center gap-2 transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
             </svg>
             Tambah Layanan Baru
@@ -18,19 +17,42 @@
     </div>
 
     {{-- Search and Info Bar --}}
-    <div class="flex flex-col md:flex-row gap-4 justify-between items-center bg-white p-4 rounded-2xl border border-gray-100 shadow-sm">
-        <div class="relative w-full md:w-96">
-            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-                </svg>
+    <div class="flex flex-col gap-4 mb-8">
+        <div class="flex flex-col md:flex-row gap-4">
+            <div class="relative flex-1 group">
+                <div class="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
+                    <svg class="w-5 h-5 text-slate-400 group-focus-within:text-[#0077B6] transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                    </svg>
+                </div>
+                <input type="text" 
+                       wire:model.live.debounce.300ms="search"
+                       placeholder="Cari nama layanan..." 
+                       aria-label="Cari nama layanan"
+                       class="w-full pl-14 {{ $search ? 'pr-12' : 'pr-6' }} py-4 bg-white border border-slate-200 rounded-[24px] text-sm font-bold shadow-sm text-slate-900 placeholder-slate-400 focus:ring-2 focus:ring-[#0077B6]/30 focus:border-[#0077B6] focus:-translate-y-0.5 focus:shadow-lg transition-all outline-none">
+                @if($search)
+                <button wire:click="$set('search', '')" 
+                        aria-label="Hapus pencarian"
+                        class="absolute inset-y-0 right-0 pr-5 flex items-center text-slate-400 hover:text-slate-700 transition-colors">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+                @endif
             </div>
-            <input type="text" wire:model.live="search" 
-                placeholder="Cari nama layanan..." 
-                class="block w-full pl-11 pr-3 py-2.5 border border-gray-200 rounded-xl leading-5 bg-gray-50 placeholder-gray-400 focus:outline-none focus:bg-white focus:ring-1 focus:ring-gray-300 focus:border-gray-300 sm:text-sm transition-all font-medium">
+            <button aria-label="Lakukan pencarian"
+                    class="px-8 py-4 bg-[#000B44] hover:bg-[#001166] text-white rounded-[20px] font-black text-sm uppercase tracking-widest transition-all shadow-xl flex items-center justify-center gap-2 focus:ring-2 focus:ring-[#0077B6] focus:outline-none">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                </svg>
+                Cari
+            </button>
         </div>
-        <div class="text-sm font-medium text-gray-500 w-full md:w-auto text-right">
-            Menampilkan {{ $products->firstItem() ?? 0 }}-{{ $products->lastItem() ?? 0 }} dari {{ $products->total() }} layanan
+        
+        <div class="flex items-center justify-between">
+            <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">
+                Menampilkan <span class="text-[#000B44] font-black">{{ $products->firstItem() ?? 0 }}-{{ $products->lastItem() ?? 0 }}</span> dari <span class="text-[#000B44] font-black">{{ $products->total() }}</span> layanan
+            </p>
         </div>
     </div>
 
@@ -41,7 +63,12 @@
             {{-- Image Placeholder --}}
             <div class="h-48 bg-[#A2B1C6]/50 flex items-center justify-center relative group">
                 @if($product->thumbnail_url)
-                    <img src="{{ Storage::url($product->thumbnail_url) }}" class="w-full h-full object-cover" alt="{{ $product->name }}">
+                    @php
+                        $imgUrl = Str::startsWith($product->thumbnail_url, 'http') 
+                                    ? $product->thumbnail_url 
+                                    : Storage::url($product->thumbnail_url);
+                    @endphp
+                    <img src="{{ $imgUrl }}" class="w-full h-full object-cover" alt="{{ $product->name }}">
                 @else
                     <span class="text-white font-bold tracking-widest uppercase text-sm">IMAGE</span>
                 @endif

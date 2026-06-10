@@ -17,7 +17,11 @@
     @endif
 
     {{-- Header Section --}}
-    <div class="flex flex-col md:flex-row md:items-center justify-end gap-4 mb-6">
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+        <div>
+            <h1 class="text-2xl font-black text-[#000B44] font-plus tracking-tight">Pusat Notifikasi</h1>
+            <p class="text-sm text-slate-500 mt-1 font-medium">Pantau semua aktivitas dan pembaruan penting di sini.</p>
+        </div>
 
         {{-- Action Buttons --}}
         @if($notifications->count() > 0)

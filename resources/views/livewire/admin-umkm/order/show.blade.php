@@ -1,6 +1,6 @@
 <x-slot:title>Review Order #{{ $order->invoice_number ?? $order->id }}</x-slot>
 
-<div class="space-y-6">
+<div class="space-y-6 animate-fade-in-up">
     {{-- Header --}}
     <div class="flex items-center justify-between">
         <div class="flex items-center gap-4">
