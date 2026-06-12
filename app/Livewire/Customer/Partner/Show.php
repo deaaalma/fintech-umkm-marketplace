@@ -93,6 +93,7 @@ class Show extends Component
         ]);
 
         $this->showOrderModal = false;
+        $this->reset(['address', 'booking_date', 'booking_time', 'notes', 'lat', 'lng', 'orderPhotos']);
         $this->redirect(route('customer.order-details', $order->id), navigate: true);
     }
 
