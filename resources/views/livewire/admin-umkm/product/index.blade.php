@@ -93,7 +93,7 @@
                 {{-- Status Toggle --}}
                 <div class="flex items-center gap-3 mb-5">
                     <span class="text-sm font-bold text-gray-500">Status:</span>
-                    <button wire:click="toggleStatus({{ $product->id }})" class="relative inline-flex h-5 w-9 items-center rounded-full transition-colors focus:outline-none {{ $product->is_active ? 'bg-[#2D2D2D]' : 'bg-gray-200' }}">
+                    <button wire:click="toggleStatus({{ $product->id }})" class="relative inline-flex h-5 w-9 items-center rounded-full transition-colors focus:outline-none {{ $product->is_active ? 'bg-[#000B44]' : 'bg-gray-200' }}">
                         <span class="inline-block h-3.5 w-3.5 transform rounded-full bg-white transition-transform {{ $product->is_active ? 'translate-x-4.5' : 'translate-x-1' }}" style="{{ $product->is_active ? 'transform: translateX(1.1rem);' : '' }}"></span>
                     </button>
                     <span class="text-sm font-bold {{ $product->is_active ? 'text-gray-900' : 'text-gray-400' }}">

@@ -16,6 +16,15 @@ class Index extends Component
     use WithPagination;
 
     public $search = '';
+    public $role = '';
+    public $status = '';
+
+    public function resetFilters()
+    {
+        $this->search = '';
+        $this->role = '';
+        $this->status = '';
+    }
 
     public function toggleStatus($workerId)
     {
@@ -53,10 +62,33 @@ class Index extends Component
     {
         $umkmId = Umkm::where('owner_id', auth()->id())->value('id');
 
+        $showOwner = $this->role !== 'staff';
+        $showStaff = $this->role !== 'admin';
+
+        $owner = auth()->user();
+        if ($this->search && $showOwner) {
+            $searchLower = strtolower($this->search);
+            if (!str_contains(strtolower($owner->name ?? ''), $searchLower) &&
+                !str_contains(strtolower($owner->email ?? ''), $searchLower) &&
+                !str_contains(strtolower($owner->phone ?? ''), $searchLower)) {
+                $showOwner = false;
+            }
+        }
+
         // Fetch workers associated with this UMKM
-        $workers = UmkmWorker::with('user')
-            ->where('umkm_id', $umkmId)
-            ->when($this->search, function ($query) {
+        $workersQuery = UmkmWorker::with('user')->where('umkm_id', $umkmId);
+        
+        if (!$showStaff) {
+            $workersQuery->whereRaw('1 = 0');
+        }
+
+        if ($this->status === 'active') {
+            $workersQuery->where('is_active', true);
+        } elseif ($this->status === 'inactive') {
+            $workersQuery->where('is_active', false);
+        }
+
+        $workers = $workersQuery->when($this->search, function ($query) {
                 $query->whereHas('user', function ($q) {
                     $q->where('name', 'like', '%' . $this->search . '%')
                       ->orWhere('email', 'like', '%' . $this->search . '%')
@@ -68,7 +100,8 @@ class Index extends Component
 
         return view('livewire.admin-umkm.staff.index', [
             'workers' => $workers,
-            'owner' => auth()->user(),
+            'owner' => $owner,
+            'showOwner' => $showOwner,
         ]);
     }
 }
