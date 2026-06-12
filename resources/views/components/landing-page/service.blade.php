@@ -10,11 +10,11 @@
                <div class="flex items-center gap-16 animate-scroll whitespace-nowrap">
                     @if($apps->count() > 0)
                         @foreach($apps as $app)
-                            <img src="{{ data_get($app, 'logo') }}" alt="{{ data_get($app, 'name') }}" class="...">
+                            <img src="{{ data_get($app, 'logo') }}" alt="{{ data_get($app, 'name') }}" class="h-10 w-10 md:h-14 md:w-14 object-contain grayscale hover:grayscale-0 transition-all duration-300 cursor-pointer hover:scale-105">
                         @endforeach
                         {{-- Duplikasi untuk efek infinite scroll --}}
                         @foreach($apps as $app)
-                            <img src="{{ data_get($app, 'logo') }}" alt="{{ data_get($app, 'name') }}" class="...">
+                            <img src="{{ data_get($app, 'logo') }}" alt="{{ data_get($app, 'name') }}" class="h-10 w-10 md:h-14 md:w-14 object-contain grayscale hover:grayscale-0 transition-all duration-300 cursor-pointer hover:scale-105">
                         @endforeach
                     @else
                         {{-- Tampilkan Logo Placeholder jika data kosong agar tidak jelek --}}

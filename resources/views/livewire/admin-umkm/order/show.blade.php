@@ -4,9 +4,6 @@
     {{-- Header --}}
     <div class="flex items-center justify-between">
         <div class="flex items-center gap-4">
-            <a href="{{ route('umkm.orders') }}" class="p-2 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 transition-all text-gray-400 hover:text-gray-900">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
-            </a>
             <div>
                 <h1 class="text-2xl font-bold text-gray-900">Review Order #{{ $order->invoice_number ?? $order->id }}</h1>
                 <p class="text-sm text-gray-500 font-medium">Customer: <span class="text-gray-900 font-bold">{{ $order->customer->name }}</span> • Submitted {{ $order->created_at->diffForHumans() }}</p>
