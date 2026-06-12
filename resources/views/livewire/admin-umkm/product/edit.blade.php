@@ -110,7 +110,7 @@
                     <h3 class="text-sm font-bold text-gray-900">Tampilkan di Website</h3>
                     <p class="text-[11px] text-gray-500 font-medium mt-0.5">Jika aktif, pelanggan dapat melihat dan memesan layanan ini.</p>
                 </div>
-                <button type="button" wire:click="$toggle('is_active')" class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none {{ $is_active ? 'bg-[#2D2D2D]' : 'bg-gray-200' }}">
+                <button type="button" wire:click="$toggle('is_active')" class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none {{ $is_active ? 'bg-[#000B44]' : 'bg-gray-200' }}">
                     <span class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform {{ $is_active ? 'translate-x-6' : 'translate-x-1' }}"></span>
                 </button>
             </div>
@@ -126,7 +126,7 @@
                     <a href="{{ route('umkm.services') }}" class="flex-1 md:flex-none px-6 py-2.5 border border-gray-200 rounded-full text-sm font-bold text-gray-700 bg-white hover:bg-gray-50 transition-all text-center">
                         Batal
                     </a>
-                    <button type="submit" class="flex-1 md:flex-none px-8 py-2.5 bg-[#2D2D2D] hover:bg-black text-white rounded-full text-sm font-bold shadow-sm transition-all flex items-center justify-center gap-2">
+                    <button type="submit" class="flex-1 md:flex-none px-8 py-2.5 bg-[#000B44] hover:bg-[#000066] text-white rounded-full text-sm font-bold shadow-sm transition-all flex items-center justify-center gap-2">
                         <svg wire:loading wire:target="save" class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                         Simpan Perubahan
                     </button>

@@ -8,8 +8,8 @@
             <h1 class="text-2xl font-black text-[#000B44] font-plus tracking-tight">Manajemen Layanan</h1>
             <p class="text-sm text-slate-500 mt-1 font-medium">Kelola semua layanan yang tampil ke pelanggan</p>
         </div>
-        <a href="{{ route('umkm.services.create') }}" class="bg-[#000B44] hover:bg-[#0077B6] text-white px-6 py-2.5 rounded-2xl text-xs font-black uppercase tracking-widest flex items-center gap-2 transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <a href="{{ route('umkm.services.create') }}" class="bg-[#000B44] hover:bg-[#000066] text-white px-6 py-2.5 rounded-full font-bold flex items-center gap-2 transition-all shadow-sm hover:shadow-md">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
             </svg>
             Tambah Layanan Baru
@@ -41,9 +41,9 @@
                 @endif
             </div>
             <button aria-label="Lakukan pencarian"
-                    class="px-8 py-4 bg-[#000B44] hover:bg-[#001166] text-white rounded-[20px] font-black text-sm uppercase tracking-widest transition-all shadow-xl flex items-center justify-center gap-2 focus:ring-2 focus:ring-[#0077B6] focus:outline-none">
+                    class="px-8 py-4 bg-[#000B44] hover:bg-[#000066] text-white rounded-full font-bold text-sm transition-all shadow-md flex items-center justify-center gap-2 focus:ring-2 focus:ring-[#0077B6] focus:outline-none">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                 </svg>
                 Cari
             </button>

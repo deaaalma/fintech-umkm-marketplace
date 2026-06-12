@@ -20,7 +20,7 @@
             <div class="space-y-5">
                 <div>
                     <label class="block text-xs font-bold text-gray-900 uppercase tracking-wider mb-2">Nama Layanan *</label>
-                    <input type="text" wire:model="name" placeholder="Contoh: Deep Cleaning Rumah" class="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:ring-black focus:border-black transition-all">
+                    <input type="text" wire:model="name" placeholder="Contoh: Deep Cleaning Rumah" class="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm placeholder-slate-400 focus:ring-black focus:border-black transition-all">
                     @error('name') <span class="text-red-500 text-xs font-medium">{{ $message }}</span> @enderror
                 </div>
                 <div>
@@ -55,18 +55,18 @@
                     <label class="block text-xs font-bold text-gray-900 uppercase tracking-wider mb-2">Harga (Mulai Dari) *</label>
                     <div class="relative">
                         <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-gray-500 font-bold text-sm pointer-events-none">Rp</span>
-                        <input type="number" wire:model="price" placeholder="50.000" class="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-xl text-sm focus:ring-black focus:border-black transition-all">
+                        <input type="number" wire:model="price" placeholder="50.000" class="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-xl text-sm placeholder-slate-400 focus:ring-black focus:border-black transition-all">
                     </div>
                     @error('price') <span class="text-red-500 text-xs font-medium">{{ $message }}</span> @enderror
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-gray-900 uppercase tracking-wider mb-2">Kategori Satuan *</label>
-                    <input type="text" wire:model="unit_type" placeholder="/m2, /jam, /ruangan..." class="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:ring-black focus:border-black transition-all">
+                    <input type="text" wire:model="unit_type" placeholder="/m2, /jam, /ruangan..." class="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm placeholder-slate-400 focus:ring-black focus:border-black transition-all">
                 </div>
                 <div class="md:col-span-2">
                     <label class="block text-xs font-bold text-gray-900 uppercase tracking-wider mb-2">Estimasi Durasi Pengerjaan</label>
                     <div class="flex gap-3">
-                        <input type="number" wire:model="duration_value" placeholder="1" class="w-24 px-4 py-3 border border-gray-200 rounded-xl text-sm focus:ring-black focus:border-black transition-all">
+                        <input type="number" wire:model="duration_value" placeholder="1" class="w-24 px-4 py-3 border border-gray-200 rounded-xl text-sm placeholder-slate-400 focus:ring-black focus:border-black transition-all">
                         <select wire:model="duration_unit" class="flex-1 px-4 py-3 border border-gray-200 rounded-xl text-sm text-gray-700 focus:ring-black focus:border-black transition-all">
                             <option value="menit">Menit</option>
                             <option value="jam">Jam</option>
@@ -129,7 +129,7 @@
             <div class="space-y-3">
                 @foreach($features as $index => $feature)
                 <div class="flex items-center gap-3">
-                    <input type="text" wire:model="features.{{ $index }}" placeholder="Contoh: Pembersihan debu & vakum karpet" class="flex-1 px-4 py-3 border border-gray-200 rounded-xl text-sm focus:ring-black focus:border-black transition-all">
+                    <input type="text" wire:model="features.{{ $index }}" placeholder="Contoh: Pembersihan debu & vakum karpet" class="flex-1 px-4 py-3 border border-gray-200 rounded-xl text-sm placeholder-slate-400 focus:ring-black focus:border-black transition-all">
                     <button type="button" wire:click="removeFeature({{ $index }})" class="p-3 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-xl transition-all" {{ count($features) == 1 ? 'disabled' : '' }}>
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
                     </button>
@@ -142,7 +142,7 @@
         {{-- 6. Syarat & Ketentuan --}}
         <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
             <h2 class="text-lg font-bold text-gray-900 mb-6">Syarat & Ketentuan</h2>
-            <textarea wire:model="terms" rows="4" placeholder="Contoh:&#10;- Minimal durasi booking 2 jam.&#10;- Pembatalan maksimal 24 jam sebelum jadwal." class="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:ring-black focus:border-black transition-all"></textarea>
+            <textarea wire:model="terms" rows="4" placeholder="Contoh:&#10;- Minimal durasi booking 2 jam.&#10;- Pembatalan maksimal 24 jam sebelum jadwal." class="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm placeholder-slate-400 focus:ring-black focus:border-black transition-all"></textarea>
             <p class="text-[10px] text-gray-400 font-medium mt-2">Syarat dan ketentuan khusus untuk layanan ini.</p>
         </div>
 
@@ -154,7 +154,7 @@
                     <h3 class="text-sm font-bold text-gray-900">Tampilkan di Website</h3>
                     <p class="text-[11px] text-gray-500 font-medium mt-0.5">Jika aktif, pelanggan dapat melihat dan memesan layanan ini.</p>
                 </div>
-                <button type="button" wire:click="$toggle('is_active')" class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none {{ $is_active ? 'bg-[#2D2D2D]' : 'bg-gray-200' }}">
+                <button type="button" wire:click="$toggle('is_active')" class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none {{ $is_active ? 'bg-[#000B44]' : 'bg-gray-200' }}">
                     <span class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform {{ $is_active ? 'translate-x-6' : 'translate-x-1' }}"></span>
                 </button>
             </div>
@@ -171,7 +171,7 @@
                 <button type="button" wire:click="saveAsDraft" class="flex-1 md:flex-none px-6 py-2.5 border border-gray-200 rounded-full text-sm font-bold text-gray-700 bg-white hover:bg-gray-50 transition-all">
                     Simpan Draft
                 </button>
-                <button type="button" wire:click="save" class="flex-1 md:flex-none px-8 py-2.5 bg-[#2D2D2D] hover:bg-black text-white rounded-full text-sm font-bold shadow-sm transition-all flex items-center justify-center gap-2">
+                <button type="button" wire:click="save" class="flex-1 md:flex-none px-8 py-2.5 bg-[#000B44] hover:bg-[#000066] text-white rounded-full text-sm font-bold shadow-sm transition-all flex items-center justify-center gap-2">
                     <svg wire:loading wire:target="save" class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                     Publish Layanan
                 </button>
