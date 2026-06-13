@@ -193,37 +193,52 @@
             <div class="bg-[#000B44] rounded-3xl shadow-xl p-8 text-white relative overflow-hidden group">
                 <div class="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-bl-full -mr-10 -mt-10 group-hover:scale-110 transition-transform duration-500"></div>
                 
+                @php
+                    $latestProposal = $order->messages()->where('type', 'proposal')->latest()->first();
+                    $isPending = $latestProposal && ($latestProposal->metadata['status'] ?? 'pending') === 'pending';
+                @endphp
+
                 <h2 class="text-lg font-black font-plus mb-6 relative z-10">
-                    {{ $order->agreed_price ? 'Update Proposal' : 'Take Action' }}
+                    {{ $order->agreed_price ? ($isPending ? 'Status Proposal' : 'Update Proposal') : 'Take Action' }}
                 </h2>
                 
                 <div class="space-y-6 relative z-10">
-                    <div>
-                        <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2.5">Set Final Price (Proposal)</label>
-                        <div class="relative">
-                            <span class="absolute inset-y-0 left-4 flex items-center text-gray-500 font-bold">Rp</span>
-                            <input type="number" wire:model="agreed_price" class="w-full pl-12 pr-4 py-3.5 bg-white/10 border border-white/20 rounded-2xl focus:bg-white focus:text-gray-900 focus:ring-0 focus:border-white transition-all font-black text-lg outline-none" placeholder="0">
+                    @if($isPending)
+                        <div class="text-center py-6 bg-white/5 rounded-2xl border border-white/10">
+                            <div class="w-12 h-12 rounded-full bg-blue-500/20 text-blue-300 flex items-center justify-center mx-auto mb-3">
+                                <svg class="w-6 h-6 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            </div>
+                            <p class="text-sm font-bold text-white mb-1">Menunggu Review Customer</p>
+                            <p class="text-xs text-blue-200">Proposal seharga Rp {{ number_format($latestProposal->metadata['price'] ?? $order->agreed_price, 0, ',', '.') }} sedang direview.</p>
                         </div>
-                        @error('agreed_price') <span class="text-xs text-red-400 font-bold mt-1.5 inline-block">{{ $message }}</span> @enderror
-                    </div>
+                    @else
+                        <div>
+                            <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2.5">Set Final Price (Proposal)</label>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-4 flex items-center text-gray-500 font-bold">Rp</span>
+                                <input type="number" wire:model="agreed_price" class="w-full pl-12 pr-4 py-3.5 bg-white/10 border border-white/20 rounded-2xl focus:bg-white focus:text-gray-900 focus:ring-0 focus:border-white transition-all font-black text-lg outline-none" placeholder="0">
+                            </div>
+                            @error('agreed_price') <span class="text-xs text-red-400 font-bold mt-1.5 inline-block">{{ $message }}</span> @enderror
+                        </div>
 
-                    <div>
-                        <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2.5">Notes to Customer</label>
-                        <textarea wire:model="admin_note" rows="3" class="w-full px-4 py-3.5 bg-white/10 border border-white/20 rounded-2xl focus:bg-white focus:text-gray-900 focus:ring-0 focus:border-white transition-all text-sm font-medium outline-none placeholder:text-gray-500" placeholder="Explain the price details..."></textarea>
-                    </div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2.5">Notes to Customer</label>
+                            <textarea wire:model="admin_note" rows="3" class="w-full px-4 py-3.5 bg-white/10 border border-white/20 rounded-2xl focus:bg-white focus:text-gray-900 focus:ring-0 focus:border-white transition-all text-sm font-medium outline-none placeholder:text-gray-500" placeholder="Explain the price details..."></textarea>
+                        </div>
 
-                    <div class="space-y-3 pt-4">
-                        <button wire:click="acceptOrder" wire:confirm="Send this price proposal to customer?" class="w-full py-4 bg-white text-gray-900 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-gray-100 transition-all shadow-lg flex items-center justify-center gap-2">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-                            {{ $order->agreed_price ? 'Update & Send Proposal' : 'Accept & Send Proposal' }}
-                        </button>
-                        @if(!$order->agreed_price)
-                        <button wire:click="rejectOrder" wire:confirm="Are you sure you want to REJECT this order?" class="w-full py-4 bg-transparent border border-white/20 text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-white/5 transition-all flex items-center justify-center gap-2">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
-                            Reject Order
-                        </button>
-                        @endif
-                    </div>
+                        <div class="space-y-3 pt-4">
+                            <button wire:click="acceptOrder" wire:confirm="Send this price proposal to customer?" class="w-full py-4 bg-white text-gray-900 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-gray-100 transition-all shadow-lg flex items-center justify-center gap-2">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                                {{ $order->agreed_price ? 'Update & Send Proposal' : 'Accept & Send Proposal' }}
+                            </button>
+                            @if(!$order->agreed_price)
+                            <button wire:click="rejectOrder" wire:confirm="Are you sure you want to REJECT this order?" class="w-full py-4 bg-transparent border border-white/20 text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-white/5 transition-all flex items-center justify-center gap-2">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
+                                Reject Order
+                            </button>
+                            @endif
+                        </div>
+                    @endif
                 </div>
             </div>
             @elseif($order->status === 'processing')
