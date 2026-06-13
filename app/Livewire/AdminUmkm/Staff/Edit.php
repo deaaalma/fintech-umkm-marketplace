@@ -26,8 +26,7 @@ class Edit extends Component
     public $profile_picture;
     public $is_active = true;
 
-    // Permissions
-    public $permissions = [];
+
 
     public function mount($id)
     {
@@ -42,12 +41,7 @@ class Edit extends Component
         $this->date_of_birth = $user->date_of_birth;
         $this->specialization = $this->worker->specialization;
         $this->is_active = $this->worker->is_active;
-        $this->permissions = $this->worker->permissions ?? [
-            'order' => ['view' => false, 'manage' => false, 'delete' => false],
-            'service' => ['create' => false, 'manage' => false, 'delete' => false],
-            'staff' => ['manage' => false, 'delete' => false],
-            'setting' => ['schedule' => false, 'profile' => false],
-        ];
+
     }
 
     protected function rules()
@@ -78,7 +72,7 @@ class Edit extends Component
             'date_of_birth' => $this->date_of_birth,
             'specialization' => $this->specialization,
             'is_active' => $this->is_active,
-            'permissions' => $this->permissions,
+
         ], $this->profile_picture);
 
         $this->dispatch('notify', [

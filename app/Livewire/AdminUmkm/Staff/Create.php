@@ -30,27 +30,7 @@ class Create extends Component
     public $showSuggestions = false;
     public $suggestions = [];
 
-    // Permissions
-    public $permissions = [
-        'order' => [
-            'view' => false,
-            'manage' => false,
-            'delete' => false,
-        ],
-        'service' => [
-            'create' => false,
-            'manage' => false,
-            'delete' => false,
-        ],
-        'staff' => [
-            'manage' => false,
-            'delete' => false,
-        ],
-        'setting' => [
-            'schedule' => false,
-            'profile' => false,
-        ],
-    ];
+
 
     protected $rules = [
         'name' => 'required|string|max:255',
@@ -131,7 +111,6 @@ class Create extends Component
             'date_of_birth' => $this->date_of_birth,
             'specialization' => $this->specialization,
             'is_active' => $this->is_active,
-            'permissions' => $this->permissions,
         ], $this->profile_picture);
 
         $this->dispatch('notify', [

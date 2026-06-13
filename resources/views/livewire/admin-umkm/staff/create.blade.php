@@ -2,6 +2,7 @@
 
 @push('styles')
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/material_blue.css">
 @endpush
 
 @push('scripts')
@@ -64,7 +65,7 @@
                             </button>
                         @endif
                     </div>
-                    <input type="text" wire:model.live.debounce.300ms="name" placeholder="Ketik nama untuk mencari user..." class="w-full px-5 py-3.5 bg-gray-50 border-none rounded-2xl text-sm focus:ring-2 focus:ring-black/5 transition-all {{ $userExists ? 'opacity-60 cursor-not-allowed' : '' }}" {{ $userExists ? 'readonly' : '' }}>
+                    <input type="text" wire:model.live.debounce.300ms="name" autocomplete="off" placeholder="Tulis nama lengkap staff di sini" class="w-full px-5 py-3.5 bg-gray-50 border-none rounded-2xl text-sm placeholder:text-gray-400 focus:ring-2 focus:ring-black/5 transition-all {{ $userExists ? 'opacity-60 cursor-not-allowed' : '' }}" {{ $userExists ? 'readonly' : '' }}>
                     
                     {{-- Suggestions Dropdown --}}
                     @if($showSuggestions && !$userExists)
@@ -93,7 +94,7 @@
                 </div>
                 <div>
                     <label class="block text-xs font-black text-gray-400 uppercase tracking-widest mb-3">Email *</label>
-                    <input type="email" wire:model.live.debounce.500ms="email" placeholder="contoh@email.com" class="w-full px-5 py-3.5 bg-gray-50 border-none rounded-2xl text-sm focus:ring-2 focus:ring-black/5 transition-all {{ $userExists ? 'opacity-60 cursor-not-allowed' : '' }}" {{ $userExists ? 'readonly' : '' }}>
+                    <input type="email" wire:model.live.debounce.500ms="email" autocomplete="off" placeholder="contoh@email.com" class="w-full px-5 py-3.5 bg-gray-50 border-none rounded-2xl text-sm placeholder:text-gray-400 focus:ring-2 focus:ring-black/5 transition-all {{ $userExists ? 'opacity-60 cursor-not-allowed' : '' }}" {{ $userExists ? 'readonly' : '' }}>
                     @if($userExists)
                         <div class="flex items-center gap-1.5 mt-2 text-[#0077B6]">
                             <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
@@ -104,24 +105,24 @@
                 </div>
                 <div>
                     <label class="block text-xs font-black text-gray-400 uppercase tracking-widest mb-3">Nomor Telepon *</label>
-                    <input type="text" wire:model="phone" placeholder="0812..." class="w-full px-5 py-3.5 bg-gray-50 border-none rounded-2xl text-sm focus:ring-2 focus:ring-black/5 transition-all {{ $userExists ? 'opacity-60 cursor-not-allowed' : '' }}" {{ $userExists ? 'readonly' : '' }}>
+                    <input type="text" wire:model="phone" autocomplete="off" placeholder="0812..." class="w-full px-5 py-3.5 bg-gray-50 border-none rounded-2xl text-sm placeholder:text-gray-400 focus:ring-2 focus:ring-black/5 transition-all {{ $userExists ? 'opacity-60 cursor-not-allowed' : '' }}" {{ $userExists ? 'readonly' : '' }}>
                     @error('phone') <span class="text-red-500 text-xs font-bold mt-2 block">{{ $message }}</span> @enderror
                 </div>
                 <div>
                     <label class="block text-xs font-black text-gray-400 uppercase tracking-widest mb-3">NIK</label>
-                    <input type="text" wire:model="nik" placeholder="16 digit NIK" class="w-full px-5 py-3.5 bg-gray-50 border-none rounded-2xl text-sm focus:ring-2 focus:ring-black/5 transition-all {{ $userExists ? 'opacity-60 cursor-not-allowed' : '' }}" {{ $userExists ? 'readonly' : '' }}>
+                    <input type="text" wire:model="nik" autocomplete="off" placeholder="16 digit NIK" class="w-full px-5 py-3.5 bg-gray-50 border-none rounded-2xl text-sm placeholder:text-gray-400 focus:ring-2 focus:ring-black/5 transition-all {{ $userExists ? 'opacity-60 cursor-not-allowed' : '' }}" {{ $userExists ? 'readonly' : '' }}>
                     @error('nik') <span class="text-red-500 text-xs font-bold mt-2 block">{{ $message }}</span> @enderror
                 </div>
                 <div>
                     <label class="block text-xs font-black text-gray-400 uppercase tracking-widest mb-3">Tanggal Lahir</label>
-                    <div x-data="{ init() { if (typeof flatpickr !== 'undefined' && !{{ $userExists ? 'true' : 'false' }}) flatpickr($refs.dob, { dateFormat: 'Y-m-d', altInput: true, altFormat: 'j M Y', onChange: (d, str) => { @this.set('date_of_birth', str) } }) } }">
-                        <input type="text" x-ref="dob" wire:model="date_of_birth" placeholder="Pilih Tanggal" class="w-full px-5 py-3.5 bg-gray-50 border-none rounded-2xl text-sm focus:ring-2 focus:ring-black/5 transition-all {{ $userExists ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer' }}" {{ $userExists ? 'readonly' : '' }}>
+                    <div wire:ignore x-data="{ init() { setTimeout(() => { if (typeof flatpickr !== 'undefined') flatpickr($refs.dob, { dateFormat: 'Y-m-d', altInput: true, altFormat: 'j M Y', defaultDate: $wire.get('date_of_birth'), onChange: (d, str) => { $wire.set('date_of_birth', str) } }) }, 100) } }">
+                        <input type="text" x-ref="dob" autocomplete="off" placeholder="Pilih Tanggal" class="w-full px-5 py-3.5 bg-gray-50 border-none rounded-2xl text-sm placeholder:text-gray-400 focus:ring-2 focus:ring-black/5 transition-all cursor-pointer">
                     </div>
                     @error('date_of_birth') <span class="text-red-500 text-xs font-bold mt-2 block">{{ $message }}</span> @enderror
                 </div>
                 <div class="md:col-span-2">
                     <label class="block text-xs font-black text-gray-400 uppercase tracking-widest mb-3">Posisi / Spesialisasi</label>
-                    <input type="text" wire:model="specialization" placeholder="Contoh: Cleaning Service, Teknisi, Admin" class="w-full px-5 py-3.5 bg-gray-50 border-none rounded-2xl text-sm focus:ring-2 focus:ring-black/5 transition-all">
+                    <input type="text" wire:model="specialization" autocomplete="off" placeholder="Contoh: Cleaning Service, Teknisi, Admin" class="w-full px-5 py-3.5 bg-gray-50 border-none rounded-2xl text-sm placeholder:text-gray-400 focus:ring-2 focus:ring-black/5 transition-all">
                 </div>
             </div>
         </div>
@@ -132,9 +133,15 @@
             <p class="text-xs text-gray-500 font-medium mb-6">Berikan akses untuk staff ini agar dapat login ke dashboard manajemen.</p>
             
             <div class="space-y-6">
-                <div>
+                <div x-data="{ showPassword: false }">
                     <label class="block text-xs font-black text-gray-400 uppercase tracking-widest mb-3">Password *</label>
-                    <input type="password" wire:model="password" placeholder="{{ $userExists ? 'Berhasil Terverifikasi' : 'Min. 8 karakter' }}" class="w-full px-5 py-3.5 bg-gray-50 border-none rounded-2xl text-sm focus:ring-2 focus:ring-black/5 transition-all {{ $userExists ? 'opacity-60 cursor-not-allowed font-black tracking-widest' : '' }}" {{ $userExists ? 'readonly' : '' }}>
+                    <div class="relative">
+                        <input x-bind:type="showPassword ? 'text' : 'password'" wire:model="password" autocomplete="new-password" placeholder="{{ $userExists ? 'Berhasil Terverifikasi' : 'Min. 8 karakter' }}" class="w-full px-5 py-3.5 bg-gray-50 border-none rounded-2xl text-sm placeholder:text-gray-400 focus:ring-2 focus:ring-black/5 transition-all pr-12 {{ $userExists ? 'opacity-60 cursor-not-allowed font-black tracking-widest' : '' }}" {{ $userExists ? 'readonly' : '' }}>
+                        <button type="button" @click="showPassword = !showPassword" class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none {{ $userExists ? 'hidden' : '' }}">
+                            <svg x-show="!showPassword" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                            <svg x-cloak x-show="showPassword" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/></svg>
+                        </button>
+                    </div>
                     @error('password') <span class="text-red-500 text-xs font-bold mt-2 block">{{ $message }}</span> @enderror
                 </div>
                 
@@ -154,139 +161,30 @@
         <div class="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm">
             <h2 class="text-lg font-bold text-gray-900 mb-6">Status Staff</h2>
             <div class="space-y-4">
-                <label class="flex items-start gap-4 p-5 rounded-2xl border transition-all cursor-pointer {{ $is_active ? 'bg-black border-black text-white' : 'bg-gray-50 border-gray-100' }}">
+                <label class="flex items-start gap-4 p-5 rounded-2xl border transition-all cursor-pointer {{ $is_active ? 'bg-[#000B44] border-[#000B44] text-white' : 'bg-gray-50 border-gray-100' }}">
                     <div class="w-5 h-5 rounded-full border-2 mt-0.5 flex items-center justify-center {{ $is_active ? 'border-white' : 'border-gray-300' }}">
                         @if($is_active) <div class="w-2.5 h-2.5 rounded-full bg-white"></div> @endif
                     </div>
                     <div class="flex-1">
                         <h4 class="text-sm font-bold {{ $is_active ? 'text-white' : 'text-gray-900' }}">Aktif</h4>
-                        <p class="text-xs mt-1 {{ $is_active ? 'text-gray-300' : 'text-gray-500' }} font-medium leading-relaxed">Pelanggan dapat melihat dan memesan layanan dari staff ini.</p>
+                        <p class="text-xs mt-1 {{ $is_active ? 'text-blue-100' : 'text-gray-500' }} font-medium leading-relaxed">Pelanggan dapat melihat dan memesan layanan dari staff ini.</p>
                     </div>
-                    <input type="radio" wire:model="is_active" value="1" class="sr-only">
+                    <input type="radio" wire:model.live="is_active" value="1" class="sr-only">
                 </label>
-                <label class="flex items-start gap-4 p-5 rounded-2xl border transition-all cursor-pointer {{ !$is_active ? 'bg-black border-black text-white' : 'bg-gray-50 border-gray-100' }}">
+                <label class="flex items-start gap-4 p-5 rounded-2xl border transition-all cursor-pointer {{ !$is_active ? 'bg-[#000B44] border-[#000B44] text-white' : 'bg-gray-50 border-gray-100' }}">
                     <div class="w-5 h-5 rounded-full border-2 mt-0.5 flex items-center justify-center {{ !$is_active ? 'border-white' : 'border-gray-300' }}">
                         @if(!$is_active) <div class="w-2.5 h-2.5 rounded-full bg-white"></div> @endif
                     </div>
                     <div class="flex-1">
                         <h4 class="text-sm font-bold {{ !$is_active ? 'text-white' : 'text-gray-900' }}">Nonaktif</h4>
-                        <p class="text-xs mt-1 {{ !$is_active ? 'text-gray-300' : 'text-gray-500' }} font-medium leading-relaxed">Staff tidak akan muncul di website dan tidak dapat menerima pesanan baru.</p>
+                        <p class="text-xs mt-1 {{ !$is_active ? 'text-blue-100' : 'text-gray-500' }} font-medium leading-relaxed">Staff tidak akan muncul di website dan tidak dapat menerima pesanan baru.</p>
                     </div>
-                    <input type="radio" wire:model="is_active" value="0" class="sr-only">
+                    <input type="radio" wire:model.live="is_active" value="0" class="sr-only">
                 </label>
             </div>
         </div>
 
-        {{-- 5. Akses & Permissions --}}
-        <div class="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm">
-            <h2 class="text-lg font-bold text-gray-900 mb-6">Akses & Permissions</h2>
-            
-            <div class="space-y-8">
-                {{-- PESANAN --}}
-                <div class="space-y-4">
-                    <h3 class="text-xs font-black text-gray-400 uppercase tracking-widest">Pesanan</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <label class="flex items-center gap-3 group cursor-pointer">
-                            <div class="w-5 h-5 rounded border-2 border-gray-200 flex items-center justify-center transition-all {{ $permissions['order']['view'] ? 'bg-black border-black' : 'group-hover:border-gray-400' }}">
-                                @if($permissions['order']['view']) <svg class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg> @endif
-                            </div>
-                            <input type="checkbox" wire:model.live="permissions.order.view" class="sr-only">
-                            <span class="text-sm font-bold text-gray-700">Dapat melihat pesanan</span>
-                        </label>
-                        <label class="flex items-center gap-3 group cursor-pointer">
-                            <div class="w-5 h-5 rounded border-2 border-gray-200 flex items-center justify-center transition-all {{ $permissions['order']['manage'] ? 'bg-black border-black' : 'group-hover:border-gray-400' }}">
-                                @if($permissions['order']['manage']) <svg class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg> @endif
-                            </div>
-                            <input type="checkbox" wire:model.live="permissions.order.manage" class="sr-only">
-                            <span class="text-sm font-bold text-gray-700">Dapat mengelola pesanan</span>
-                        </label>
-                        <label class="flex items-center gap-3 group cursor-pointer">
-                            <div class="w-5 h-5 rounded border-2 border-gray-200 flex items-center justify-center transition-all {{ $permissions['order']['delete'] ? 'bg-black border-black' : 'group-hover:border-gray-400' }}">
-                                @if($permissions['order']['delete']) <svg class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg> @endif
-                            </div>
-                            <input type="checkbox" wire:model.live="permissions.order.delete" class="sr-only">
-                            <span class="text-sm font-bold text-gray-700">Dapat menghapus pesanan</span>
-                        </label>
-                    </div>
-                </div>
 
-                <hr class="border-gray-50">
-
-                {{-- LAYANAN --}}
-                <div class="space-y-4">
-                    <h3 class="text-xs font-black text-gray-400 uppercase tracking-widest">Layanan</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <label class="flex items-center gap-3 group cursor-pointer">
-                            <div class="w-5 h-5 rounded border-2 border-gray-200 flex items-center justify-center transition-all {{ $permissions['service']['create'] ? 'bg-black border-black' : 'group-hover:border-gray-400' }}">
-                                @if($permissions['service']['create']) <svg class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg> @endif
-                            </div>
-                            <input type="checkbox" wire:model.live="permissions.service.create" class="sr-only">
-                            <span class="text-sm font-bold text-gray-700">Dapat membuat layanan</span>
-                        </label>
-                        <label class="flex items-center gap-3 group cursor-pointer">
-                            <div class="w-5 h-5 rounded border-2 border-gray-200 flex items-center justify-center transition-all {{ $permissions['service']['manage'] ? 'bg-black border-black' : 'group-hover:border-gray-400' }}">
-                                @if($permissions['service']['manage']) <svg class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg> @endif
-                            </div>
-                            <input type="checkbox" wire:model.live="permissions.service.manage" class="sr-only">
-                            <span class="text-sm font-bold text-gray-700">Dapat mengelola layanan</span>
-                        </label>
-                        <label class="flex items-center gap-3 group cursor-pointer">
-                            <div class="w-5 h-5 rounded border-2 border-gray-200 flex items-center justify-center transition-all {{ $permissions['service']['delete'] ? 'bg-black border-black' : 'group-hover:border-gray-400' }}">
-                                @if($permissions['service']['delete']) <svg class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg> @endif
-                            </div>
-                            <input type="checkbox" wire:model.live="permissions.service.delete" class="sr-only">
-                            <span class="text-sm font-bold text-gray-700">Dapat menghapus layanan</span>
-                        </label>
-                    </div>
-                </div>
-
-                <hr class="border-gray-50">
-
-                {{-- MANAJEMEN STAFF --}}
-                <div class="space-y-4">
-                    <h3 class="text-xs font-black text-gray-400 uppercase tracking-widest">Manajemen Staff</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <label class="flex items-center gap-3 group cursor-pointer">
-                            <div class="w-5 h-5 rounded border-2 border-gray-200 flex items-center justify-center transition-all {{ $permissions['staff']['manage'] ? 'bg-black border-black' : 'group-hover:border-gray-400' }}">
-                                @if($permissions['staff']['manage']) <svg class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg> @endif
-                            </div>
-                            <input type="checkbox" wire:model.live="permissions.staff.manage" class="sr-only">
-                            <span class="text-sm font-bold text-gray-700">Dapat mengelola data staff</span>
-                        </label>
-                        <label class="flex items-center gap-3 group cursor-pointer">
-                            <div class="w-5 h-5 rounded border-2 border-gray-200 flex items-center justify-center transition-all {{ $permissions['staff']['delete'] ? 'bg-black border-black' : 'group-hover:border-gray-400' }}">
-                                @if($permissions['staff']['delete']) <svg class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg> @endif
-                            </div>
-                            <input type="checkbox" wire:model.live="permissions.staff.delete" class="sr-only">
-                            <span class="text-sm font-bold text-gray-700">Dapat menghapus staff</span>
-                        </label>
-                    </div>
-                </div>
-
-                <hr class="border-gray-50">
-
-                {{-- PENGATURAN --}}
-                <div class="space-y-4">
-                    <h3 class="text-xs font-black text-gray-400 uppercase tracking-widest">Pengaturan</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <label class="flex items-center gap-3 group cursor-pointer">
-                            <div class="w-5 h-5 rounded border-2 border-gray-200 flex items-center justify-center transition-all {{ $permissions['setting']['schedule'] ? 'bg-black border-black' : 'group-hover:border-gray-400' }}">
-                                @if($permissions['setting']['schedule']) <svg class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg> @endif
-                            </div>
-                            <input type="checkbox" wire:model.live="permissions.setting.schedule" class="sr-only">
-                            <span class="text-sm font-bold text-gray-700">Dapat mengatur jadwal</span>
-                        </label>
-                        <label class="flex items-center gap-3 group cursor-pointer">
-                            <div class="w-5 h-5 rounded border-2 border-gray-200 flex items-center justify-center transition-all {{ $permissions['setting']['profile'] ? 'bg-black border-black' : 'group-hover:border-gray-400' }}">
-                                @if($permissions['setting']['profile']) <svg class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg> @endif
-                            </div>
-                            <input type="checkbox" wire:model.live="permissions.setting.profile" class="sr-only">
-                            <span class="text-sm font-bold text-gray-700">Dapat mengatur profil</span>
-                        </label>
-                    </div>
-                </div>
-            </div>
-        </div>
 
         {{-- Sticky Bottom Action Bar --}}
         <div class="fixed bottom-0 left-0 lg:left-72 right-0 bg-white border-t border-gray-200 p-4 md:px-8 z-40 shadow-[0_-4px_20px_-10px_rgba(0,0,0,0.1)]">
@@ -298,7 +196,7 @@
                     <a href="{{ route('umkm.staff') }}" class="flex-1 md:flex-none px-6 py-2.5 border border-gray-200 rounded-full text-sm font-bold text-gray-700 bg-white hover:bg-gray-50 transition-all text-center">
                         Batal
                     </a>
-                    <button type="submit" class="flex-1 md:flex-none px-8 py-2.5 bg-[#2D2D2D] hover:bg-black text-white rounded-full text-sm font-bold shadow-sm transition-all flex items-center justify-center gap-2">
+                    <button type="submit" class="flex-1 md:flex-none px-8 py-2.5 bg-[#0077B6] hover:bg-[#000B44] text-white rounded-full text-sm font-bold shadow-sm transition-all flex items-center justify-center gap-2">
                         <svg wire:loading wire:target="save" class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                         Simpan Staff Baru
                     </button>
