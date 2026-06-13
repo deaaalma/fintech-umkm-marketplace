@@ -275,8 +275,20 @@
                                         <div class="text-xs text-red-500">Harga per 1 pcs</div>
                                     </div>
                                 </div>
+                                @if(!empty($proposal->metadata['note']))
+                                <div class="flex {{ !$isLast ? 'border-b border-gray-400' : '' }}">
+                                    <div class="flex-1 p-4 text-gray-700 flex items-center">
+                                        Catatan dari Admin UMKM
+                                    </div>
+                                    <div class="flex-1 p-4 border-l border-gray-400">
+                                        <div class="border border-gray-200 rounded p-3 bg-blue-50 text-gray-900 w-full text-sm italic">
+                                            "{{ $proposal->metadata['note'] }}"
+                                        </div>
+                                    </div>
+                                </div>
+                                @endif
                                 @if($index === 0)
-                                <div class="flex border-b border-gray-400">
+                                <div class="flex {{ !$isLast && empty($proposal->metadata['note']) ? 'border-b border-gray-400' : '' }}">
                                     <div class="flex-1 p-4 text-gray-700 flex items-center">
                                         Waktu Pelaksanaan
                                     </div>
@@ -285,16 +297,6 @@
                                             {{ $order->estimated_duration ?? '12' }}
                                         </div>
                                         <div class="text-xs text-red-500">(Dalam Hari Kalender)</div>
-                                    </div>
-                                </div>
-                                <div class="flex {{ !$isLast ? 'border-b border-gray-400' : '' }}">
-                                    <div class="flex-1 p-4 text-gray-700 flex items-center">
-                                        Negosiasi Biaya Pengiriman
-                                    </div>
-                                    <div class="flex-1 p-4 border-l border-gray-400">
-                                        <div class="border border-gray-200 rounded p-2.5 bg-gray-50 text-gray-900 w-full max-w-sm">
-                                            0
-                                        </div>
                                     </div>
                                 </div>
                                 @endif
@@ -307,15 +309,7 @@
                     </div>
                 </div>
 
-                {{-- Biaya Pengiriman --}}
-                <div class="flex border-t border-gray-400 bg-white">
-                    <div class="flex-1 p-2.5 font-bold text-gray-700 border-r border-gray-400">
-                        Biaya Pengiriman
-                    </div>
-                    <div class="w-48 p-2.5 font-bold text-gray-900 bg-white">
-                        Rp. 0
-                    </div>
-                </div>
+
             </div>
 
             @if($isLatestPending)

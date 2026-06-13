@@ -170,7 +170,10 @@ class Show extends Component
             'sender_id' => auth()->id(),
             'message' => 'Penawaran harga baru',
             'type' => 'proposal',
-            'metadata' => ['price' => $this->agreed_price],
+            'metadata' => [
+                'price' => $this->agreed_price,
+                'note' => $this->admin_note
+            ],
         ]);
 
         // Notifikasi ke customer
