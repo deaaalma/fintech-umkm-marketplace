@@ -53,13 +53,14 @@
                             pointBorderColor: chartColors.primary,
                             pointBorderWidth: 2,
                             pointRadius: 4,
-                            pointHoverRadius: 6,
+                            pointHoverRadius: 8, pointHoverBackgroundColor: '#fff', pointHoverBorderWidth: 3,
                             fill: true,
                             tension: 0.4
                         }]
                     },
                     options: {
                         responsive: true,
+                        interaction: { mode: 'index', intersect: false },
                         maintainAspectRatio: false,
                         animation: {
                             duration: 1000,
@@ -72,7 +73,7 @@
                                 titleFont: { family: "'Plus Jakarta Sans', sans-serif", size: 13 },
                                 bodyFont: { family: "'Plus Jakarta Sans', sans-serif", size: 13 },
                                 padding: 12,
-                                cornerRadius: 8,
+                                cornerRadius: 12, displayColors: false,
                                 callbacks: {
                                     label: function(context) {
                                         let label = context.dataset.label || '';
@@ -129,6 +130,7 @@
                     },
                     options: {
                         responsive: true,
+                        interaction: { mode: 'index', intersect: false },
                         maintainAspectRatio: false,
                         animation: {
                             duration: 1000,
@@ -139,7 +141,7 @@
                             tooltip: {
                                 backgroundColor: chartColors.dark,
                                 padding: 12,
-                                cornerRadius: 8
+                                cornerRadius: 12, displayColors: false
                             }
                         },
                         scales: {
@@ -181,6 +183,7 @@
                     },
                     options: {
                         responsive: true,
+                        interaction: { mode: 'index', intersect: false },
                         maintainAspectRatio: false,
                         cutout: '75%',
                         animation: {
@@ -194,7 +197,7 @@
                             tooltip: {
                                 backgroundColor: chartColors.dark,
                                 padding: 12,
-                                cornerRadius: 8,
+                                cornerRadius: 12, displayColors: false,
                                 callbacks: {
                                     label: function(context) {
                                         return context.label + ': ' + context.parsed + '%';
