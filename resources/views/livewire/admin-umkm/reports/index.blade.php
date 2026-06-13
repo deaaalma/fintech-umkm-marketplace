@@ -314,10 +314,9 @@
                 </div>
                 <div class="text-3xl font-black text-white mb-4 font-plus tracking-tighter relative z-10 flex items-center gap-1">
                     <span>Rp</span>
-                    <span x-data="{ count: 0.0, target: {{ $totalRevenue / 1000000 }} }" 
-                          x-init="let interval = setInterval(() => { if(count < target) { count += Math.max(0.1, target/15); if(count > target) count = target; } else clearInterval(interval); }, 30)" 
-                          x-text="count.toFixed(1)">0.0</span>
-                    <span>M</span>
+                    <span x-data="{ count: 0, target: {{ $totalRevenue }} }" 
+                          x-init="let interval = setInterval(() => { if(count < target) { count += Math.max(1000, Math.ceil(target/15)); if(count > target) count = target; } else clearInterval(interval); }, 30)" 
+                          x-text="new Intl.NumberFormat('id-ID').format(Math.round(count))">0</span>
                 </div>
                 
                 {{-- Sparkline --}}
@@ -371,10 +370,9 @@
                 </div>
                 <div class="text-3xl font-black text-gray-900 mb-2 font-plus tracking-tighter flex items-center gap-1">
                     <span>Rp</span>
-                    <span x-data="{ count: 0, target: {{ $aov / 1000 }} }" 
-                          x-init="let interval = setInterval(() => { if(count < target) { count += Math.max(1, Math.ceil(target/15)); if(count > target) count = target; } else clearInterval(interval); }, 30)" 
-                          x-text="count">0</span>
-                    <span>K</span>
+                    <span x-data="{ count: 0, target: {{ $aov }} }" 
+                          x-init="let interval = setInterval(() => { if(count < target) { count += Math.max(100, Math.ceil(target/15)); if(count > target) count = target; } else clearInterval(interval); }, 30)" 
+                          x-text="new Intl.NumberFormat('id-ID').format(Math.round(count))">0</span>
                 </div>
                 <div class="flex items-center gap-1.5 text-gray-500 mt-auto">
                     <span class="text-[10px] font-bold">Rata-rata per transaksi selesai</span>
