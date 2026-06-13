@@ -152,7 +152,7 @@
 
         {{-- Right Column: Actions --}}
         <div class="space-y-6">
-            @if($order->status !== 'pending_valuation')
+            @if(!in_array($order->status, ['pending_valuation', 'paid', 'completed', 'cancelled']))
             {{-- Worker Assignment Section --}}
             <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-8">
                 <h2 class="text-lg font-black text-gray-900 font-plus mb-6">Assign Staff / Worker</h2>
