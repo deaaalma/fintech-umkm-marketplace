@@ -14,7 +14,6 @@ class VerifyEmailController extends Controller
      */
     public function __invoke(EmailVerificationRequest $request): RedirectResponse
     {
-        dd('masuk sini');
         if ($request->user()->hasVerifiedEmail()) {
             if (auth()->user()->role === 'admin_umkm') {
                 // Arahkan ke wizard setup toko
