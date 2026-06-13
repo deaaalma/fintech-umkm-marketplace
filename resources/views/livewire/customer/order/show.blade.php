@@ -197,91 +197,151 @@
     @endif
 
 
-    @if($order->status === 'pending_valuation' && $order->agreed_price !== null)
-        {{-- NEGOTIATION VIEW --}}
-        <div class="bg-white border border-gray-200 rounded-3xl p-6 md:p-8 shadow-sm mb-10">
-            <div class="flex items-center justify-between mb-8 pb-6 border-b border-gray-100">
-                <div class="flex items-center gap-4">
-                    <div class="w-12 h-12 bg-gray-50 rounded-xl flex items-center justify-center border border-gray-100 shrink-0">
-                        <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+    @php
+        $proposals = $order->messages()->where('type', 'proposal')->orderBy('created_at', 'asc')->get();
+        if ($proposals->isEmpty() && $order->agreed_price !== null) {
+            $proposals = collect([(object)[
+                'metadata' => ['price' => $order->agreed_price, 'status' => 'pending']
+            ]]);
+        }
+        $latestProposal = $proposals->last();
+        $isLatestPending = $latestProposal ? ($latestProposal->metadata['status'] ?? 'pending') === 'pending' : false;
+    @endphp
+
+    @if($order->status === 'pending_valuation' && count($proposals) > 0)
+        {{-- NEGOTIATION VIEW (Formal Table Style) --}}
+        <div class="mb-10 w-full overflow-x-auto">
+            <h2 class="text-2xl font-black text-gray-900 font-plus mb-6 text-center uppercase tracking-widest">PROPOSAL HARGA</h2>
+            
+            <div class="border border-gray-400 min-w-[800px] bg-white text-sm font-medium">
+                {{-- Nama UMKM / Vendor --}}
+                <div class="bg-white border-b border-gray-400 p-2.5 font-bold text-gray-900 text-sm">
+                    {{ $order->umkm->name ?? 'Mitra UMKM' }}
+                </div>
+                
+                {{-- Product / Service Info --}}
+                <div class="flex border-b border-gray-400 bg-white">
+                    <div class="flex-1 p-2.5 border-r border-gray-400 flex items-center">
+                        <span class="text-gray-600 mr-2">Nama:</span> <span class="font-bold text-gray-900">{{ $order->product->name }}</span>
                     </div>
-                    <div>
-                        <div class="flex items-center gap-3">
-                            <h2 class="text-xl font-black text-gray-900 font-plus">Proposal Harga dari Mitra</h2>
-                            <span class="inline-flex items-center px-2 py-0.5 rounded text-sm font-bold bg-gray-100 text-gray-700 border border-gray-200 uppercase tracking-tighter">Menunggu Persetujuan</span>
-                        </div>
-                        <p class="text-sm text-gray-700 font-medium mt-1">PO# {{ $order->invoice_number ?? 'ORD-' . date('Y') . '-' . str_pad($order->id, 4, '0', STR_PAD_LEFT) }} • Menunggu persetujuan Anda</p>
-                        <p class="text-sm text-gray-600 font-medium italic">Berlaku hingga {{ now()->addDays(5)->translatedFormat('d M Y') }} • Tersisa 5 hari</p>
+                    <div class="w-32 p-2.5 border-r border-gray-400 flex items-center justify-center text-gray-700">
+                        Qty: 1
+                    </div>
+                    <div class="w-48 p-2.5 border-r border-gray-400 flex items-center justify-center text-gray-700">
+                        Waktu: {{ $order->estimated_duration ?? '1' }} Hari
+                    </div>
+                    <div class="w-48 p-2.5 font-bold text-gray-900 flex items-center justify-center">
+                        Rp. {{ number_format($latestProposal->metadata['price'] ?? $order->agreed_price, 0, ',', '.') }}
                     </div>
                 </div>
-            </div>
 
-            <div class="mb-8">
-                <h3 class="text-sm font-bold text-gray-900 mb-4">Ringkasan Biaya</h3>
-                <div class="space-y-4 text-sm font-medium">
-                    <div class="flex justify-between items-start pb-4 border-b border-gray-50">
-                        <div>
-                            <div class="text-gray-900 font-bold">{{ $order->product->name }}</div>
-                            <div class="text-sm text-gray-600">Layanan profesional dari {{ $order->umkm->name }}</div>
+                <div class="flex">
+                    <div class="flex-1 border-r border-gray-400">
+                        
+                        {{-- Lokasi Layanan --}}
+                        <div class="font-bold p-2.5 text-gray-900 border-b border-gray-200">
+                            Lokasi Layanan
                         </div>
-                        <div class="text-gray-900 font-bold">Rp {{ number_format($order->agreed_price, 0, ',', '.') }}</div>
+                        <div class="p-4 border-b border-gray-400">
+                            <div class="border border-gray-200 rounded p-3 text-gray-600 bg-gray-50/50">
+                                {{ $order->service_address ?: 'Gedung Pusat Rektorat (Jalan Raya Kampus Unud, Jimbaran, Kuta Selatan, Badung Bali 80361 80625 - Badung Bali)' }}
+                            </div>
+                        </div>
+
+                        @foreach($proposals as $index => $proposal)
+                            @php
+                                $price = $proposal->metadata['price'] ?? $order->agreed_price;
+                                $status = $proposal->metadata['status'] ?? 'pending';
+                                $isLast = $loop->last;
+                            @endphp
+
+                            {{-- Negosiasi Header --}}
+                            <div class="font-bold p-2.5 text-gray-900 border-b border-gray-200 bg-gray-50 flex justify-between items-center">
+                                <span>Negosiasi{{ count($proposals) > 1 ? ' ' . ($index + 1) : '' }}</span>
+                                @if($status === 'rejected')
+                                    <span class="text-red-600 text-xs px-2 py-1 bg-red-100 rounded border border-red-200">DITOLAK</span>
+                                @endif
+                            </div>
+                            
+                            <div class="{{ !$isLast ? 'opacity-60 bg-gray-50' : '' }}">
+                                <div class="flex border-b border-gray-400">
+                                    <div class="flex-1 p-4 font-bold text-gray-900 flex items-center">
+                                        {{ $order->product->name }}
+                                    </div>
+                                    <div class="flex-1 p-4 border-l border-gray-400">
+                                        <div class="border border-gray-200 rounded p-2.5 mb-1.5 bg-white text-gray-900 w-full max-w-sm {{ $status === 'rejected' ? 'line-through text-gray-500' : '' }}">
+                                            {{ number_format($price, 0, ',', '.') }}
+                                        </div>
+                                        <div class="text-xs text-red-500">Harga per 1 pcs</div>
+                                    </div>
+                                </div>
+                                @if($index === 0)
+                                <div class="flex border-b border-gray-400">
+                                    <div class="flex-1 p-4 text-gray-700 flex items-center">
+                                        Waktu Pelaksanaan
+                                    </div>
+                                    <div class="flex-1 p-4 border-l border-gray-400">
+                                        <div class="border border-gray-200 rounded p-2.5 mb-1.5 bg-gray-50 text-gray-900 w-full max-w-sm">
+                                            {{ $order->estimated_duration ?? '12' }}
+                                        </div>
+                                        <div class="text-xs text-red-500">(Dalam Hari Kalender)</div>
+                                    </div>
+                                </div>
+                                <div class="flex {{ !$isLast ? 'border-b border-gray-400' : '' }}">
+                                    <div class="flex-1 p-4 text-gray-700 flex items-center">
+                                        Negosiasi Biaya Pengiriman
+                                    </div>
+                                    <div class="flex-1 p-4 border-l border-gray-400">
+                                        <div class="border border-gray-200 rounded p-2.5 bg-gray-50 text-gray-900 w-full max-w-sm">
+                                            0
+                                        </div>
+                                    </div>
+                                </div>
+                                @endif
+                            </div>
+                        @endforeach
                     </div>
                     
-                    <div class="flex justify-between items-center pt-2">
-                        <div class="text-gray-700 font-bold uppercase text-sm tracking-widest">Total Bayar</div>
-                        <div class="text-gray-900 font-black font-plus text-lg">Rp {{ number_format($order->agreed_price, 0, ',', '.') }}</div>
+                    {{-- Right Column (Empty for Udayana Mall layout) --}}
+                    <div class="w-48 bg-white border-gray-400 border-l hidden md:block">
+                    </div>
+                </div>
+
+                {{-- Biaya Pengiriman --}}
+                <div class="flex border-t border-gray-400 bg-white">
+                    <div class="flex-1 p-2.5 font-bold text-gray-700 border-r border-gray-400">
+                        Biaya Pengiriman
+                    </div>
+                    <div class="w-48 p-2.5 font-bold text-gray-900 bg-white">
+                        Rp. 0
                     </div>
                 </div>
             </div>
 
-            <div class="bg-gray-50 border border-gray-200 rounded-2xl p-6 mb-8 relative overflow-hidden">
-                <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-gray-100 to-transparent rounded-bl-full opacity-50"></div>
-                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 relative z-10">
-                    <div>
-                        <div class="text-sm font-bold text-gray-600 uppercase tracking-widest mb-1">Estimated Range</div>
-                        <p class="text-sm text-gray-700 font-medium">Final price depends on actual work completed</p>
-                    </div>
-                    <div class="text-right">
-                        <div class="text-3xl font-black text-gray-900 font-plus tracking-tight">Rp {{ number_format($order->agreed_price ?? 2600000, 0, ',', '.') }}</div>
-                        <div class="text-sm font-bold text-gray-600 mt-1">± 15% tolerance</div>
-                    </div>
+            @if($isLatestPending)
+            {{-- Syarat dan Ketentuan Checkbox & Action Buttons --}}
+            <div class="min-w-[800px] bg-white mt-4" x-data="{ agreed: false }">
+                <div class="bg-gray-50 border border-gray-200 p-4 rounded mb-4">
+                    <label class="flex items-center gap-2 cursor-pointer">
+                        <input type="checkbox" x-model="agreed" class="w-4 h-4 text-red-600 border-gray-300 rounded focus:ring-red-500">
+                        <span class="text-sm font-medium text-gray-700">Saya menyetujui <span class="font-bold">Syarat dan Ketentuan</span> yang berlaku.</span>
+                    </label>
                 </div>
-                <div class="grid grid-cols-2 gap-4 mt-6 pt-6 border-t border-gray-200 relative z-10">
-                    <div>
-                        <div class="text-sm font-bold text-gray-600 uppercase tracking-widest mb-1">Minimum</div>
-                        <div class="text-sm font-bold text-gray-900">Rp {{ number_format(($order->agreed_price ?? 2600000) * 0.85, 0, ',', '.') }}</div>
-                    </div>
-                    <div class="text-right">
-                        <div class="text-sm font-bold text-gray-600 uppercase tracking-widest mb-1">Maximum</div>
-                        <div class="text-sm font-bold text-gray-900">Rp {{ number_format(($order->agreed_price ?? 2600000) * 1.15, 0, ',', '.') }}</div>
-                    </div>
-                </div>
-            </div>
 
-            <div class="bg-blue-50/50 border border-blue-100 rounded-xl p-5 mb-8">
-                <div class="flex items-center gap-2 mb-2">
-                    <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                    <h4 class="text-sm font-bold text-blue-900">Catatan dari Admin</h4>
+                <div class="flex justify-between items-center py-2">
+                    <button wire:click="rejectPrice" wire:confirm="Yakin ingin menolak penawaran harga ini?" class="px-8 py-2 bg-white border border-gray-400 text-gray-700 rounded font-bold text-xs uppercase tracking-wider hover:bg-gray-50 transition-colors">
+                        Kembali (Tolak)
+                    </button>
+                    <button wire:click="acceptPrice" wire:confirm="Yakin ingin menyetujui harga ini?" :class="agreed ? 'bg-[#3C82D6] hover:bg-blue-600 text-white border-[#3C82D6]' : 'bg-gray-300 text-gray-500 border-gray-300 cursor-not-allowed'" :disabled="!agreed" class="px-8 py-2 border rounded font-bold text-xs uppercase tracking-wider transition-colors shadow-sm relative overflow-hidden group">
+                        BELI/LANJUT PEMBAYARAN
+                    </button>
                 </div>
-                <p class="text-sm text-blue-800 font-medium leading-relaxed">
-                    Harga dapat berubah setelah pengecekan di lokasi. Tagihan akhir akan mencakup: (1) ukuran area aktual, (2) layanan tambahan yang diminta, (3) penyesuaian tingkat kesulitan. Pekerjaan tambahan akan dimintakan persetujuan Anda sebelum biaya ditambahkan. Tagihan akhir akan dikirimkan setelah layanan selesai.
-                </p>
-                <ul class="mt-3 space-y-1 text-sm text-blue-700 font-medium list-disc list-inside">
-                    <li>Harga yang tertera adalah untuk kondisi pengerjaan standar</li>
-                    <li>Pembayaran dilakukan setelah layanan selesai (COD/Transfer)</li>
-                    <li>Anda dapat bernegosiasi melalui chat jika diperlukan</li>
-                </ul>
             </div>
-
-            <div class="border-t border-gray-100 pt-8 text-center">
-                <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-blue-50 text-blue-600 mb-4">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
-                </div>
-                <h3 class="text-sm font-bold text-gray-900 mb-2">Penawaran Harga Telah Dikirim</h3>
-                <p class="text-sm text-gray-500 font-medium max-w-md mx-auto">
-                    Silakan periksa kotak obrolan (chat) di pojok kanan bawah untuk melihat, menyetujui, atau menolak penawaran harga dari Admin UMKM.
-                </p>
+            @else
+            <div class="mt-4 p-4 bg-gray-50 border border-gray-200 rounded text-center text-sm text-gray-600 font-medium">
+                Menunggu tanggapan atau proposal baru dari Admin...
             </div>
+            @endif
         </div>
 
         {{-- Order Details Accordion --}}

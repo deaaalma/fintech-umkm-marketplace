@@ -246,6 +246,13 @@ class Show extends Component
                 'current_step' => 4 // Move to Service Process step
             ]);
             
+            $latestProposal = $this->order->messages()->where('type', 'proposal')->latest()->first();
+            if ($latestProposal) {
+                $metadata = $latestProposal->metadata ?? [];
+                $metadata['status'] = 'accepted';
+                $latestProposal->update(['metadata' => $metadata]);
+            }
+
             OrderLog::create([
                 'order_id' => $this->order->id,
                 'actor_id' => auth()->id(),
@@ -260,20 +267,38 @@ class Show extends Component
 
     public function rejectPrice()
     {
-        if ($this->order->status === 'pending_valuation' && $this->order->agreed_price !== null) {
-            $this->order->update([
-                'status' => 'cancelled', 
-                'cancellation_reason' => 'Customer rejected the proposed price.'
+        if ($this->order->status === 'pending_valuation') {
+            $latestProposal = $this->order->messages()->where('type', 'proposal')->latest()->first();
+            
+            if ($latestProposal) {
+                $metadata = $latestProposal->metadata ?? [];
+                $metadata['status'] = 'rejected';
+                $latestProposal->update(['metadata' => $metadata]);
+            }
+            
+            \App\Models\OrderMessage::create([
+                'order_id' => $this->order->id,
+                'sender_id' => auth()->id(),
+                'message' => 'Pelanggan telah menolak penawaran harga. Menunggu penawaran harga baru.',
+                'type' => 'system',
+            ]);
+
+            \App\Models\UserNotification::create([
+                'user_id' => $this->order->umkm->owner_id ?? $this->order->umkm_id,
+                'title'   => 'Proposal Harga Ditolak',
+                'message' => 'Pelanggan menolak proposal harga untuk pesanan #' . ($this->order->invoice_number ?? $this->order->id) . '. Silakan berikan penawaran harga baru.',
+                'type'    => 'order_status',
+                'link'    => route('umkm.orders.show', $this->order->id),
             ]);
             
             OrderLog::create([
                 'order_id' => $this->order->id,
                 'actor_id' => auth()->id(),
                 'action' => 'Price Rejected',
-                'reason' => 'Customer rejected the price proposal and cancelled the order.',
+                'reason' => 'Customer rejected the price proposal. Waiting for a new proposal from Admin.',
             ]);
 
-            session()->flash('message', 'Pesanan dibatalkan karena penolakan harga.');
+            session()->flash('message', 'Penawaran harga ditolak. Menunggu admin memberikan harga baru.');
             return redirect()->route('customer.order-details', $this->order->id);
         }
     }
