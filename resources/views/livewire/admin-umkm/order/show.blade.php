@@ -35,7 +35,6 @@
             <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-8">
                 <div class="flex items-center justify-between mb-8 pb-6 border-b border-gray-50">
                     <h2 class="text-lg font-black text-gray-900 font-plus">Service & Requirement</h2>
-                    <span class="text-xs font-bold text-gray-400">Order Ref: #{{ $order->invoice_number ?? 'BWP-2026-0001' }}</span>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div class="space-y-6">
@@ -153,6 +152,7 @@
 
         {{-- Right Column: Actions --}}
         <div class="space-y-6">
+            @if($order->status !== 'pending_valuation')
             {{-- Worker Assignment Section --}}
             <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-8">
                 <h2 class="text-lg font-black text-gray-900 font-plus mb-6">Assign Staff / Worker</h2>
@@ -187,9 +187,10 @@
                     </button>
                 </div>
             </div>
+            @endif
 
             @if($order->status === 'pending_valuation')
-            <div class="bg-[#1F2937] rounded-3xl shadow-xl p-8 text-white relative overflow-hidden group">
+            <div class="bg-[#000B44] rounded-3xl shadow-xl p-8 text-white relative overflow-hidden group">
                 <div class="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-bl-full -mr-10 -mt-10 group-hover:scale-110 transition-transform duration-500"></div>
                 
                 <h2 class="text-lg font-black font-plus mb-6 relative z-10">
@@ -333,8 +334,8 @@
         </div>
     </div>
     
-
-    @if($order->status === 'pending_valuation' && $order->agreed_price !== null || in_array($order->status, ['negotiation', 'processing', 'waiting_payment']))
+    {{-- Floating Chat (komponen sudah handle floating UI sendiri) --}}
+    @if($order->status === 'pending_valuation' || in_array($order->status, ['negotiation', 'processing', 'waiting_payment']))
         <livewire:order-chat :order="$order" />
     @endif
 </div>

@@ -30,6 +30,7 @@ class User extends Authenticatable
         'nik',
         'date_of_birth',
         'address',
+        'last_seen_at',
     ];
 
     /**
@@ -53,6 +54,7 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password'          => 'hashed',
             'date_of_birth'     => 'date',
+            'last_seen_at'      => 'datetime',
         ];
     }
 

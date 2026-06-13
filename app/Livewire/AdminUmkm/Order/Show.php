@@ -38,6 +38,18 @@ class Show extends Component
         if ($this->order->orderAssignment) {
             $this->selectedWorkerId = $this->order->orderAssignment->worker_id;
         }
+
+        // Update step ke "Tinjauan Admin" saat admin pertama kali membuka pesanan
+        if ($this->order->current_step == 1) {
+            $this->order->update(['current_step' => 2]);
+            
+            OrderLog::create([
+                'order_id' => $this->order->id,
+                'actor_id' => auth()->id(),
+                'action' => 'Admin Reviewing',
+                'reason' => 'Admin sedang meninjau pesanan dan mengevaluasi layanan.',
+            ]);
+        }
     }
 
     public function verifyPayment($paymentId)
@@ -171,7 +183,6 @@ class Show extends Component
         ]);
 
         session()->flash('message', 'Proposal harga berhasil dikirim ke pelanggan.');
-        return redirect()->route('umkm.orders');
     }
 
     public function completeOrder()
@@ -265,7 +276,6 @@ class Show extends Component
         ]);
 
         session()->flash('message', 'Pesanan telah ditolak.');
-        return redirect()->route('umkm.orders');
     }
 
     public function getSitePhotosProperty()

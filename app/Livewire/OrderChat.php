@@ -12,6 +12,8 @@ class OrderChat extends Component
     public Order $order;
     public $newMessage = '';
     public $unreadCount = 0;
+    public $otherPartyOnline = false;
+    public $isAdmin = false;
     
     public $additionalFeeName = '';
     public $additionalFeeAmount = '';
@@ -19,6 +21,7 @@ class OrderChat extends Component
     public function mount(Order $order)
     {
         $this->order = $order;
+        $this->isAdmin = request()->routeIs('umkm.*');
     }
 
     public function markAsRead()
@@ -190,12 +193,29 @@ class OrderChat extends Component
         $this->dispatch('additional-fee-action');
     }
 
+    private function checkOtherPartyOnline(): bool
+    {
+        // Admin melihat status online customer
+        if ($this->isAdmin) {
+            $other = $this->order->customer;
+        } else {
+            // Customer melihat status online admin UMKM
+            $other = $this->order->umkm?->owner;
+        }
+        
+        if (!$other || !$other->last_seen_at) return false;
+        
+        return $other->last_seen_at->diffInMinutes(now()) <= 2;
+    }
+
     public function render()
     {
         $this->unreadCount = $this->order->messages()
             ->where('sender_id', '!=', Auth::id())
             ->where('is_read', false)
             ->count();
+        
+        $this->otherPartyOnline = $this->checkOtherPartyOnline();
 
         return view('livewire.order-chat', [
             'messages' => $this->order->messages()->with('sender')->orderBy('created_at', 'asc')->get()
