@@ -130,7 +130,7 @@ class Index extends Component
             ->with(['customer', 'product'])
             ->when($this->search, function ($query) {
                 $query->where(function ($q) {
-                    $searchClean = ltrim(str_ireplace('#ORD-', '', $this->search), '0');
+                    $searchClean = ltrim(preg_replace('/[^0-9]/', '', $this->search), '0');
                     $q->where('invoice_number', 'like', '%' . $this->search . '%');
                     
                     if ($searchClean !== '') {
