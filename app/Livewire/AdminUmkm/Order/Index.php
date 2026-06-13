@@ -243,6 +243,7 @@ class Index extends Component
                 'id_raw' => $order->id,
                 'id'     => $order->invoice_number ?? 'ORDER-'.$order->id,
                 'client' => $order->customer->name ?? 'Guest',
+                'client_avatar' => $order->customer->profile_photo_path ?? null,
                 'service'=> $order->product->name ?? 'Unknown',
                 'price'  => 'Rp ' . number_format($order->agreed_price, 0, ',', '.'),
                 'status' => $info['label'],

@@ -52,9 +52,13 @@
                         <div>
                             <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5">Customer</label>
                             <div class="flex items-center gap-2">
-                                <div class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-xs font-bold text-gray-600">
-                                    {{ substr($order->customer->name, 0, 1) }}
-                                </div>
+                                @if($order->customer->profile_photo_path)
+                                    <img src="{{ Storage::url($order->customer->profile_photo_path) }}" class="w-8 h-8 rounded-full object-cover border border-gray-200" alt="{{ $order->customer->name }}">
+                                @else
+                                    <div class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-xs font-bold text-gray-600">
+                                        {{ substr($order->customer->name, 0, 1) }}
+                                    </div>
+                                @endif
                                 <p class="text-sm font-bold text-gray-900">{{ $order->customer->name }}</p>
                             </div>
                         </div>

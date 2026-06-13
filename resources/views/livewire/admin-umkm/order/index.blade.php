@@ -235,9 +235,13 @@
                         </td>
                         <td class="px-4 py-4">
                             <div class="flex items-center gap-3">
-                                <div class="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center text-xs font-bold text-slate-600">
-                                    {{ substr($o['client'], 0, 1) }}
-                                </div>
+                                @if(!empty($o['client_avatar']))
+                                    <img src="{{ Storage::url($o['client_avatar']) }}" class="w-8 h-8 rounded-full object-cover border border-slate-200" alt="{{ $o['client'] }}">
+                                @else
+                                    <div class="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center text-xs font-bold text-slate-600">
+                                        {{ substr($o['client'], 0, 1) }}
+                                    </div>
+                                @endif
                                 <span class="text-sm font-bold text-slate-900">{{ $o['client'] }}</span>
                             </div>
                         </td>
