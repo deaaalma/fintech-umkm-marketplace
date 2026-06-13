@@ -226,7 +226,7 @@
          }">
 
         {{-- Header & Filter --}}
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 animate-fade-in-up" style="animation-delay: 0.05s">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 animate-fade-in-up relative z-50" style="animation-delay: 0.05s">
             <div>
                 <h1 class="text-2xl font-bold text-gray-900 font-plus">Laporan & Analytics</h1>
                 <p class="text-sm text-gray-500 mt-1 font-medium">Ringkasan performa bisnis berdasarkan periode</p>
