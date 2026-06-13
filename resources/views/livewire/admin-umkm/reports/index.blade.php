@@ -197,33 +197,58 @@
 @endpush
 
 <div class="space-y-6 pb-10 animate-fade-in-up">
-    {{-- Header --}}
-    <div>
-        <h1 class="text-2xl font-bold text-gray-900 font-plus">Laporan & Analytics</h1>
-        <p class="text-sm text-gray-500 mt-1 font-medium">Ringkasan performa bisnis berdasarkan periode</p>
-    </div>
-
-    {{-- Filter Bar --}}
-    <div class="bg-white p-4 rounded-2xl border border-gray-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div class="flex items-center gap-2">
-            <div class="relative" x-data="{ init() { if (typeof flatpickr !== 'undefined') flatpickr($refs.dateStart, { dateFormat: 'Y-m-d', altInput: true, altFormat: 'j M Y', onChange: (d, str) => { @this.set('startDate', str) } }) } }">
-                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                </div>
-                <input type="text" x-ref="dateStart" wire:model="startDate" readonly class="pl-10 pr-4 py-2 bg-gray-50 border-none rounded-xl text-sm focus:ring-2 focus:ring-[#0077B6]/20 transition-all w-40 cursor-pointer">
-            </div>
-            <span class="text-gray-400 font-bold">-</span>
-            <div class="relative" x-data="{ init() { if (typeof flatpickr !== 'undefined') flatpickr($refs.dateEnd, { dateFormat: 'Y-m-d', altInput: true, altFormat: 'j M Y', onChange: (d, str) => { @this.set('endDate', str) } }) } }">
-                <input type="text" x-ref="dateEnd" wire:model="endDate" readonly class="px-4 py-2 bg-gray-50 border-none rounded-xl text-sm focus:ring-2 focus:ring-[#0077B6]/20 transition-all w-40 cursor-pointer">
-            </div>
+    {{-- Header & Filter --}}
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+            <h1 class="text-2xl font-bold text-gray-900 font-plus">Laporan & Analytics</h1>
+            <p class="text-sm text-gray-500 mt-1 font-medium">Ringkasan performa bisnis berdasarkan periode</p>
         </div>
         
-        <div class="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0">
-            <button wire:click="setDateRange('today')" class="px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap {{ $dateRange === 'today' ? 'bg-[#0077B6] text-white shadow-sm' : 'bg-gray-50 text-gray-500 hover:bg-gray-100' }}">Today</button>
-            <button wire:click="setDateRange('last_7_days')" class="px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap {{ $dateRange === 'last_7_days' ? 'bg-[#0077B6] text-white shadow-sm' : 'bg-gray-50 text-gray-500 hover:bg-gray-100' }}">Last 7 Days</button>
-            <button wire:click="setDateRange('this_month')" class="px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap {{ $dateRange === 'this_month' ? 'bg-[#0077B6] text-white shadow-sm' : 'bg-gray-50 text-gray-500 hover:bg-gray-100' }}">This Month</button>
-            <button wire:click="setDateRange('last_month')" class="px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap {{ $dateRange === 'last_month' ? 'bg-[#0077B6] text-white shadow-sm' : 'bg-gray-50 text-gray-500 hover:bg-gray-100' }}">Last Month</button>
-            <button wire:click="$refresh" class="px-6 py-2 bg-[#000B44] hover:bg-blue-900 text-white rounded-xl text-xs font-bold transition-all shadow-sm ml-2">Apply</button>
+        <div class="relative" x-data="{ filterOpen: false }">
+            <button @click="filterOpen = !filterOpen" class="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-xl text-sm font-semibold text-gray-700 hover:bg-gray-50 transition-colors shadow-sm">
+                <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/></svg>
+                Filter Data
+                <svg class="w-4 h-4 text-gray-400 transition-transform" :class="{'rotate-180': filterOpen}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            </button>
+
+            {{-- Popover --}}
+            <div x-cloak x-show="filterOpen" 
+                 @click.outside="filterOpen = false"
+                 x-transition:enter="transition ease-out duration-200"
+                 x-transition:enter-start="opacity-0 scale-95 translate-y-2"
+                 x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+                 x-transition:leave="transition ease-in duration-150"
+                 x-transition:leave-start="opacity-100 scale-100 translate-y-0"
+                 x-transition:leave-end="opacity-0 scale-95 translate-y-2"
+                 class="absolute right-0 mt-2 w-80 bg-white rounded-2xl shadow-xl border border-gray-100 z-50 p-4 flex flex-col gap-4">
+                 
+                 <div class="space-y-3">
+                     <p class="text-xs font-bold text-gray-500 uppercase tracking-wider">Pilih Rentang Waktu</p>
+                     <div class="flex items-center gap-2">
+                        <div class="relative w-full" x-data="{ init() { if (typeof flatpickr !== 'undefined') flatpickr($refs.dateStart, { dateFormat: 'Y-m-d', altInput: true, altFormat: 'j M Y', onChange: (d, str) => { @this.set('startDate', str) } }) } }">
+                            <input type="text" x-ref="dateStart" wire:model="startDate" placeholder="Mulai" readonly class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-[#0077B6]/20 transition-all cursor-pointer">
+                        </div>
+                        <span class="text-gray-400 font-bold">-</span>
+                        <div class="relative w-full" x-data="{ init() { if (typeof flatpickr !== 'undefined') flatpickr($refs.dateEnd, { dateFormat: 'Y-m-d', altInput: true, altFormat: 'j M Y', onChange: (d, str) => { @this.set('endDate', str) } }) } }">
+                            <input type="text" x-ref="dateEnd" wire:model="endDate" placeholder="Akhir" readonly class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-[#0077B6]/20 transition-all cursor-pointer">
+                        </div>
+                    </div>
+                 </div>
+
+                 <div class="border-t border-gray-100 pt-3">
+                     <p class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Pilih Cepat</p>
+                     <div class="grid grid-cols-2 gap-2">
+                        <button wire:click="setDateRange('today')" @click="filterOpen = false" class="px-3 py-2 rounded-lg text-xs font-bold transition-all {{ $dateRange === 'today' ? 'bg-[#0077B6] text-white' : 'bg-gray-50 text-gray-600 hover:bg-gray-100' }}">Hari Ini</button>
+                        <button wire:click="setDateRange('last_7_days')" @click="filterOpen = false" class="px-3 py-2 rounded-lg text-xs font-bold transition-all {{ $dateRange === 'last_7_days' ? 'bg-[#0077B6] text-white' : 'bg-gray-50 text-gray-600 hover:bg-gray-100' }}">7 Hari Terakhir</button>
+                        <button wire:click="setDateRange('this_month')" @click="filterOpen = false" class="px-3 py-2 rounded-lg text-xs font-bold transition-all {{ $dateRange === 'this_month' ? 'bg-[#0077B6] text-white' : 'bg-gray-50 text-gray-600 hover:bg-gray-100' }}">Bulan Ini</button>
+                        <button wire:click="setDateRange('last_month')" @click="filterOpen = false" class="px-3 py-2 rounded-lg text-xs font-bold transition-all {{ $dateRange === 'last_month' ? 'bg-[#0077B6] text-white' : 'bg-gray-50 text-gray-600 hover:bg-gray-100' }}">Bulan Lalu</button>
+                     </div>
+                 </div>
+                 
+                 <div class="pt-2">
+                     <button @click="filterOpen = false" wire:click="$refresh" class="w-full py-2 bg-[#000B44] hover:bg-blue-900 text-white rounded-lg text-sm font-bold transition-all shadow-sm">Terapkan Filter</button>
+                 </div>
+            </div>
         </div>
     </div>
 
