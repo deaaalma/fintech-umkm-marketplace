@@ -23,7 +23,7 @@
 </style>
 @endpush
 
-<div class="w-full animate-fade-in-up pb-20">
+<div class="w-full animate-fade-in-up pb-20" wire:poll.5s>
     
     {{-- Header Section --}}
     <div class="mb-8">
