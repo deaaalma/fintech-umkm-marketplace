@@ -226,7 +226,7 @@
          }">
 
         {{-- Header & Filter --}}
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 animate-fade-in-up relative z-50" style="animation-delay: 0.05s">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative z-50">
             <div>
                 <h1 class="text-2xl font-bold text-gray-900 font-plus">Laporan & Analytics</h1>
                 <p class="text-sm text-gray-500 mt-1 font-medium">Ringkasan performa bisnis berdasarkan periode</p>
@@ -281,7 +281,7 @@
         </div>
 
         {{-- Info Alert --}}
-        <div class="bg-blue-50/50 border border-blue-100 p-3 rounded-xl flex items-center gap-2 animate-fade-in-up" style="animation-delay: 0.1s">
+        <div class="bg-blue-50/50 border border-blue-100 p-3 rounded-xl flex items-center gap-2">
             <svg class="w-4 h-4 text-[#0077B6]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
             <p class="text-[11px] text-blue-800 font-medium">Analitik ini diperbarui secara real-time berdasarkan aktivitas pemesanan di aplikasi UMKM Anda.</p>
         </div>
@@ -289,7 +289,7 @@
         {{-- Top Metrics Cards --}}
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {{-- Total Pesanan --}}
-            <div class="metric-card bg-white p-6 rounded-2xl border border-gray-200 animate-fade-in-up group relative overflow-hidden" style="animation-delay: 0.15s">
+            <div class="metric-card bg-white p-6 rounded-2xl border border-gray-200 group relative overflow-hidden">
                 <div class="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
                     <svg class="w-20 h-20 text-[#0077B6]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
                 </div>
@@ -306,7 +306,7 @@
             </div>
 
             {{-- Total Revenue (Dark Card) --}}
-            <div class="metric-card bg-[#000B44] p-6 rounded-2xl border border-[#1a3a7a] animate-fade-in-up flex flex-col group relative overflow-hidden" style="animation-delay: 0.2s">
+            <div class="metric-card bg-[#000B44] p-6 rounded-2xl border border-[#1a3a7a] flex flex-col group relative overflow-hidden">
                 <div class="absolute inset-0 bg-gradient-to-br from-[#0077B6]/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 <div class="flex items-center gap-2 mb-4 relative z-10">
                     <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
@@ -330,7 +330,7 @@
             </div>
 
             {{-- Status Pesanan (Progress Bars) --}}
-            <div class="metric-card bg-white p-6 rounded-2xl border border-gray-200 animate-fade-in-up" style="animation-delay: 0.25s">
+            <div class="metric-card bg-white p-6 rounded-2xl border border-gray-200">
                 <div class="flex items-center justify-between mb-4">
                     <h3 class="text-[11px] font-black text-gray-500 uppercase tracking-widest">Status Pesanan</h3>
                 </div>
@@ -364,7 +364,7 @@
             </div>
 
             {{-- Avg Order Value --}}
-            <div class="metric-card bg-white p-6 rounded-2xl border border-gray-200 animate-fade-in-up group relative overflow-hidden" style="animation-delay: 0.3s">
+            <div class="metric-card bg-white p-6 rounded-2xl border border-gray-200 group relative overflow-hidden">
                 <div class="flex items-center gap-2 mb-4">
                     <svg class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
                     <h3 class="text-[11px] font-black text-gray-500 uppercase tracking-widest group-hover:text-indigo-600 transition-colors">Avg Order Value</h3>
@@ -385,7 +385,7 @@
         {{-- Main Charts --}}
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6" wire:ignore>
             {{-- Revenue Trend --}}
-            <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm animate-fade-in-up" style="animation-delay: 0.35s">
+            <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
                 <div class="flex items-center justify-between mb-6">
                     <div>
                         <h3 class="text-base font-bold text-gray-900">Trend Pendapatan</h3>
@@ -402,7 +402,7 @@
             </div>
 
             {{-- Pesanan per Hari --}}
-            <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm animate-fade-in-up" style="animation-delay: 0.4s">
+            <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
                 <div class="flex items-center justify-between mb-6">
                     <div>
                         <h3 class="text-base font-bold text-gray-900">Volume Pesanan</h3>
@@ -422,7 +422,7 @@
         {{-- Secondary Charts --}}
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6" wire:ignore>
             {{-- Top Selling Services --}}
-            <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm animate-fade-in-up" style="animation-delay: 0.45s">
+            <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
                 <div class="flex items-center justify-between mb-6">
                     <div>
                         <h3 class="text-base font-bold text-gray-900">Layanan Terlaris</h3>
@@ -453,7 +453,7 @@
             </div>
 
             {{-- Customer Demographics --}}
-            <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm flex flex-col animate-fade-in-up" style="animation-delay: 0.5s">
+            <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm flex flex-col">
                 <div class="flex items-center justify-between mb-6">
                     <div>
                         <h3 class="text-base font-bold text-gray-900">Demografi Pelanggan</h3>
@@ -489,7 +489,7 @@
         </div>
 
         {{-- Detail Data Pesanan Table --}}
-        <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden animate-fade-in-up" style="animation-delay: 0.55s">
+        <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
             <div class="px-8 py-5 border-b border-gray-100 flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
                     <h3 class="text-base font-bold text-gray-900">Detail Data Pesanan</h3>
