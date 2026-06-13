@@ -109,7 +109,7 @@
                 </div>
                 <div class="w-12 h-12 bg-[#000B44] rounded-full flex items-center justify-center overflow-hidden border-2 border-white shadow-sm ring-1 ring-slate-100">
                     @if(auth()->user()->profile_photo_path)
-                        <img src="{{ Storage::url(auth()->user()->profile_photo_path) }}" alt="Profile" class="w-full h-full object-cover">
+                        <img src="{{ asset(auth()->user()->profile_photo_path) }}" alt="Profile" class="w-full h-full object-cover">
                     @else
                         <span class="text-white font-black text-sm">{{ substr(auth()->user()->name, 0, 1) }}</span>
                     @endif

@@ -15,7 +15,14 @@ class Index extends Component
     use WithFileUploads;
 
     public Umkm $umkm;
-    public $activeTab = 'informasi';
+    public $activeTab = 'profil_admin';
+
+    // Profil Admin
+    public $isEditing = false;
+    public $admin_name;
+    public $admin_email;
+    public $admin_phone;
+    public $admin_avatar;
 
     // Informasi Perusahaan
     public $name;
@@ -36,6 +43,12 @@ class Index extends Component
     public function mount()
     {
         $this->umkm = Umkm::where('owner_id', auth()->id())->firstOrFail();
+        
+        // Profil Admin
+        $user = auth()->user();
+        $this->admin_name = $user->name;
+        $this->admin_email = $user->email;
+        $this->admin_phone = $user->phone;
         $this->name = $this->umkm->name;
         $this->tagline = $this->umkm->tagline;
         $this->description = $this->umkm->description;
@@ -51,51 +64,86 @@ class Index extends Component
     public function setTab($tab)
     {
         $this->activeTab = $tab;
+        $this->isEditing = false;
     }
 
     public function save()
     {
-        $this->validate([
-            'name' => 'nullable|string|max:255',
-            'email' => 'nullable|email',
-            'logo' => 'nullable|image|max:2048',
-            'qris_image' => 'nullable|image|max:2048',
-        ]);
+        if ($this->activeTab === 'profil_admin') {
+            $this->validate([
+                'admin_name' => 'required|string|max:255',
+                'admin_email' => 'required|email|max:255',
+                'admin_phone' => 'nullable|string|max:20',
+                'admin_avatar' => 'nullable|image|max:2048',
+            ]);
 
-        $logoPath = $this->umkm->logo_url;
-        if ($this->logo) {
-            if ($this->umkm->logo_url) {
-                Storage::disk('public')->delete(str_replace('storage/', '', $this->umkm->logo_url));
+            $user = auth()->user();
+            $avatarPath = $user->profile_photo_path;
+
+            if ($this->admin_avatar) {
+                if ($user->profile_photo_path) {
+                    Storage::disk('public')->delete(str_replace('storage/', '', $user->profile_photo_path));
+                }
+                $avatarPath = 'storage/' . $this->admin_avatar->store('admin-avatars', 'public');
             }
-            $logoPath = 'storage/' . $this->logo->store('umkm-logos', 'public');
-        }
 
-        $qrisPath = $this->umkm->qris_image_url;
-        if ($this->qris_image) {
-            if ($this->umkm->qris_image_url) {
-                Storage::disk('public')->delete(str_replace('storage/', '', $this->umkm->qris_image_url));
+            $user->update([
+                'name' => $this->admin_name,
+                'email' => $this->admin_email,
+                'phone' => $this->admin_phone,
+                'profile_photo_path' => $avatarPath,
+            ]);
+
+            $this->admin_avatar = null;
+
+        } else {
+            $this->validate([
+                'name' => 'nullable|string|max:255',
+                'email' => 'nullable|email',
+                'logo' => 'nullable|image|max:2048',
+                'qris_image' => 'nullable|image|max:2048',
+            ]);
+
+            $logoPath = $this->umkm->logo_url;
+            if ($this->logo) {
+                if ($this->umkm->logo_url) {
+                    Storage::disk('public')->delete(str_replace('storage/', '', $this->umkm->logo_url));
+                }
+                $logoPath = 'storage/' . $this->logo->store('umkm-logos', 'public');
             }
-            $qrisPath = 'storage/' . $this->qris_image->store('umkm-qris', 'public');
-        }
 
-        $this->umkm->update([
-            'name' => $this->name,
-            'tagline' => $this->tagline,
-            'description' => $this->description,
-            'address' => $this->address,
-            'email' => $this->email,
-            'phone' => $this->phone,
-            'instagram_url' => $this->instagram_url,
-            'whatsapp_number' => $this->whatsapp_number,
-            'facebook_url' => $this->facebook_url,
-            'website_url' => $this->website_url,
-            'logo_url' => $logoPath,
-            'qris_image_url' => $qrisPath,
-        ]);
+            $qrisPath = $this->umkm->qris_image_url;
+            if ($this->qris_image) {
+                if ($this->umkm->qris_image_url) {
+                    Storage::disk('public')->delete(str_replace('storage/', '', $this->umkm->qris_image_url));
+                }
+                $qrisPath = 'storage/' . $this->qris_image->store('umkm-qris', 'public');
+            }
+
+            $this->umkm->update([
+                'name' => $this->name,
+                'tagline' => $this->tagline,
+                'description' => $this->description,
+                'address' => $this->address,
+                'email' => $this->email,
+                'phone' => $this->phone,
+                'instagram_url' => $this->instagram_url,
+                'whatsapp_number' => $this->whatsapp_number,
+                'facebook_url' => $this->facebook_url,
+                'website_url' => $this->website_url,
+                'logo_url' => $logoPath,
+                'qris_image_url' => $qrisPath,
+            ]);
+
+            $this->logo = null;
+            $this->qris_image = null;
+            $this->umkm->refresh();
+        }
 
         $this->logo = null;
         $this->qris_image = null;
         $this->umkm->refresh();
+        $this->isEditing = false;
 
         $this->dispatch('notify', [
             'message' => 'Pengaturan berhasil disimpan',
