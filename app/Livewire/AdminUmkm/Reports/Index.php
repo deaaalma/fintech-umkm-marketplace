@@ -134,7 +134,7 @@ class Index extends Component
                     $q->where('invoice_number', 'like', '%' . $this->search . '%');
                     
                     if ($searchClean !== '') {
-                        $q->orWhere('id', 'like', '%' . $searchClean . '%');
+                        $q->orWhere('id', $searchClean);
                     }
 
                     $q->orWhereHas('customer', function ($q2) {
