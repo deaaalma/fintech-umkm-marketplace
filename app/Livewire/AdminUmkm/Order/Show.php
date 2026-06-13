@@ -136,11 +136,14 @@ class Show extends Component
             ['worker_id' => $this->selectedWorkerId, 'status' => 'assigned']
         );
 
+        $worker = \App\Models\User::find($this->selectedWorkerId);
+        $workerName = $worker ? $worker->name : 'seorang staf';
+
         OrderLog::create([
             'order_id' => $this->order->id,
             'actor_id' => auth()->id(),
             'action' => 'Worker Assigned',
-            'reason' => 'Admin assigned a worker to this order.',
+            'reason' => "Admin menugaskan staf ($workerName) untuk mengerjakan pesanan ini.",
         ]);
 
         $this->order->load('orderAssignment.worker');
