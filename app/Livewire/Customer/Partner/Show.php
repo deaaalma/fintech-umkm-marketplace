@@ -44,7 +44,12 @@ class Show extends Component
 
     public function mount(Umkm $partner)
     {
-        $this->partner = $partner->load(['category', 'products', 'reviews.customer', 'workers.user']);
+        $this->partner = $partner->load([
+            'category', 
+            'products', 
+            'reviews' => fn($q) => $q->latest()->with('customer'), 
+            'workers.user'
+        ]);
         $this->workers = $this->partner->workers;
     }
 
