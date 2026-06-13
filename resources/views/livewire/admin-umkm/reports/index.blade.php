@@ -125,7 +125,7 @@
                             data: orders,
                             backgroundColor: chartColors.dark,
                             borderRadius: 4,
-                            barThickness: 16
+                            maxBarThickness: 48
                         }]
                     },
                     options: {
