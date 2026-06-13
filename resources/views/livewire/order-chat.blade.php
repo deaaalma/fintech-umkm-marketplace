@@ -106,12 +106,13 @@
                  x-transition:leave-start="opacity-100 scale-100 translate-y-0"
                  x-transition:leave-end="opacity-0 scale-95 translate-y-4"
                  class="bg-white rounded-2xl shadow-2xl w-80 sm:w-96 overflow-hidden border border-gray-100 flex flex-col" 
-                 style="height: 480px;">
+                 style="height: 480px;"
+                 @mousedown="startDrag($event)"
+                 @touchstart="startDrag($event)">
 
                 {{-- Header (drag handle) --}}
                 <div class="bg-[#000B44] px-4 py-3 flex items-center justify-between text-white cursor-grab active:cursor-grabbing select-none"
-                     @mousedown.prevent="startDrag($event)"
-                     @touchstart.prevent="startDrag($event)">
+                     title="Drag untuk memindahkan chat">
                     <div class="flex items-center gap-3">
                         @if($isAdmin)
                             {{-- Admin melihat nama customer --}}
@@ -139,13 +140,13 @@
                             </div>
                         @endif
                     </div>
-                    <button @click.stop="chatOpen = false" class="text-gray-300 hover:text-white transition-colors p-1 rounded-lg hover:bg-white/10">
+                    <button @click.stop="chatOpen = false" @mousedown.stop @touchstart.stop class="text-gray-300 hover:text-white transition-colors p-1 rounded-lg hover:bg-white/10 z-50">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                     </button>
                 </div>
 
                 {{-- Messages - wire:poll HANYA di sini --}}
-                <div wire:poll.5s class="flex-1 bg-gray-50 p-4 overflow-y-auto flex flex-col gap-3" id="chatBody">
+                <div wire:poll.5s class="flex-1 bg-gray-50 p-4 overflow-y-auto flex flex-col gap-3" id="chatBody" @mousedown.stop @touchstart.stop>
                     @forelse($messages as $msg)
                         @if($msg->type === 'system')
                             <div class="text-center text-[11px] font-bold text-gray-400 my-2 bg-white py-1.5 px-3 rounded-full self-center shadow-sm border border-gray-100">
@@ -209,7 +210,7 @@
                 </div>
 
                 {{-- Input pesan --}}
-                <form wire:submit="sendMessage" class="p-3 bg-white border-t border-gray-100 relative">
+                <form wire:submit="sendMessage" class="p-3 bg-white border-t border-gray-100 relative" @mousedown.stop @touchstart.stop>
                     <input wire:model="newMessage" type="text" placeholder="Ketik pesan..." class="w-full bg-gray-50 border border-gray-200 rounded-full pl-4 pr-12 py-2.5 text-sm outline-none focus:border-[#000B44] focus:ring-1 focus:ring-[#000B44] transition-all" autocomplete="off">
                     <button type="submit" class="absolute right-4 top-1/2 -translate-y-1/2 w-8 h-8 bg-[#000B44] text-white rounded-full flex items-center justify-center hover:scale-105 transition-transform disabled:opacity-50">
                         <svg wire:loading.remove wire:target="sendMessage" class="w-4 h-4 ml-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
@@ -218,7 +219,7 @@
                 </form>
 
                 @if($isAdmin && $order->status === 'processing')
-                <div class="px-3 pb-3 bg-white border-t border-gray-100">
+                <div class="px-3 pb-3 bg-white border-t border-gray-100" @mousedown.stop @touchstart.stop>
                     <div x-data="{ showFeeForm: false }">
                         <button type="button" @click="showFeeForm = !showFeeForm" class="w-full py-2 bg-orange-50 text-orange-600 text-xs font-bold rounded-lg flex items-center justify-center gap-2 hover:bg-orange-100 transition-colors mt-2">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>

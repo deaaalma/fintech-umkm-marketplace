@@ -181,7 +181,7 @@
                         @error('selectedWorkerId') <span class="text-[10px] text-red-500 font-bold mt-1 ml-1">{{ $message }}</span> @enderror
                     </div>
                     
-                    <button wire:click="assignWorker" class="w-full py-4 bg-gray-900 text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-black transition-all shadow-lg flex items-center justify-center gap-2">
+                    <button wire:click="assignWorker" class="w-full py-4 bg-[#000B44] text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-opacity-90 transition-all shadow-lg flex items-center justify-center gap-2">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/></svg>
                         {{ $order->orderAssignment ? 'Update Assignment' : 'Assign to Order' }}
                     </button>
