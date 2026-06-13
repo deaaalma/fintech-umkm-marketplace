@@ -347,7 +347,7 @@
                             <span class="text-xs font-bold text-gray-700">{{ $completedCount }} · {{ $totalOrders > 0 ? round(($completedCount/$totalOrders)*100) : 0 }}%</span>
                         </div>
                         <div class="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
-                            <div class="h-full bg-teal-500 rounded-full transition-all duration-1000 ease-out" style="width: 0%" x-data x-init="setTimeout(() => { $el.style.width = '{{ $totalOrders > 0 ? ($completedCount/$totalOrders)*100 : 0 }}%' }, 100)"></div>
+                            <div class="h-full bg-teal-500 rounded-full transition-all duration-1000 ease-out" style="width: {{ $totalOrders > 0 ? ($completedCount/$totalOrders)*100 : 0 }}%"></div>
                         </div>
                     </div>
                     {{-- Active --}}
@@ -359,7 +359,7 @@
                             <span class="text-xs font-bold text-gray-700">{{ $activeCount }} · {{ $totalOrders > 0 ? round(($activeCount/$totalOrders)*100) : 0 }}%</span>
                         </div>
                         <div class="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
-                            <div class="h-full bg-[#0077B6] rounded-full transition-all duration-1000 ease-out" style="width: 0%" x-data x-init="setTimeout(() => { $el.style.width = '{{ $totalOrders > 0 ? ($activeCount/$totalOrders)*100 : 0 }}%' }, 200)"></div>
+                            <div class="h-full bg-[#0077B6] rounded-full transition-all duration-1000 ease-out" style="width: {{ $totalOrders > 0 ? ($activeCount/$totalOrders)*100 : 0 }}%"></div>
                         </div>
                     </div>
                 </div>
