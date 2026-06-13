@@ -516,7 +516,7 @@
                     <tbody class="divide-y divide-gray-100">
                         @forelse($orders as $order)
                             <tr class="hover:bg-gray-50 transition-colors group">
-                                <td class="px-8 py-4 text-xs text-gray-500 font-mono">{{ $order->invoice_number ?? '-' }}</td>
+                                <td class="px-8 py-4 text-xs text-gray-500 font-mono">{{ $order->invoice_number ?? ('#ORD-' . str_pad($order->id, 5, '0', STR_PAD_LEFT)) }}</td>
                                 <td class="px-6 py-4">
                                     <span class="text-sm text-gray-600 font-medium">{{ $order->created_at->format('d M Y') }}</span>
                                 </td>

@@ -130,10 +130,16 @@ class Index extends Component
             ->with(['customer', 'product'])
             ->when($this->search, function ($query) {
                 $query->where(function ($q) {
-                    $q->where('invoice_number', 'like', '%' . $this->search . '%')
-                      ->orWhereHas('customer', function ($q2) {
-                          $q2->where('name', 'like', '%' . $this->search . '%');
-                      });
+                    $searchClean = ltrim(str_ireplace('#ORD-', '', $this->search), '0');
+                    $q->where('invoice_number', 'like', '%' . $this->search . '%');
+                    
+                    if ($searchClean !== '') {
+                        $q->orWhere('id', 'like', '%' . $searchClean . '%');
+                    }
+
+                    $q->orWhereHas('customer', function ($q2) {
+                        $q2->where('name', 'like', '%' . $this->search . '%');
+                    });
                 });
             })
             ->latest()
