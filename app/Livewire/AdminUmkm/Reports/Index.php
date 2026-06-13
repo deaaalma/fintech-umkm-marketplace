@@ -71,8 +71,59 @@ class Index extends Component
         }
 
         $totalOrders = (clone $ordersQuery)->count();
-        $totalRevenue = (clone $ordersQuery)->where('status', 'completed')->sum('agreed_price');
+        $totalRevenue = (clone $ordersQuery)->whereIn('status', ['paid', 'completed'])->sum('agreed_price');
         $aov = $totalOrders > 0 ? $totalRevenue / $totalOrders : 0;
+
+        // Status Counts
+        $statusCounts = (clone $ordersQuery)
+            ->selectRaw('status, count(*) as count')
+            ->groupBy('status')
+            ->pluck('count', 'status')
+            ->toArray();
+            
+        $activeCount = ($statusCounts['pending_valuation'] ?? 0) + ($statusCounts['negotiation'] ?? 0) + ($statusCounts['waiting_worker'] ?? 0) + ($statusCounts['processing'] ?? 0) + ($statusCounts['waiting_payment'] ?? 0);
+        $completedCount = ($statusCounts['paid'] ?? 0) + ($statusCounts['completed'] ?? 0);
+        $cancelledCount = $statusCounts['cancelled'] ?? 0;
+
+        // Chart Data (Daily Revenue & Orders)
+        $chartDataRaw = (clone $ordersQuery)
+            ->selectRaw('DATE(created_at) as date, SUM(CASE WHEN status IN ("paid", "completed") THEN agreed_price ELSE 0 END) as revenue, COUNT(*) as orders_count')
+            ->groupBy('date')
+            ->orderBy('date', 'asc')
+            ->get();
+            
+        $chartDates = [];
+        $chartRevenues = [];
+        $chartOrders = [];
+        
+        foreach ($chartDataRaw as $data) {
+            $chartDates[] = Carbon::parse($data->date)->format('d M');
+            $chartRevenues[] = $data->revenue;
+            $chartOrders[] = $data->orders_count;
+        }
+
+        // Top Services
+        $topServices = (clone $ordersQuery)
+            ->selectRaw('product_id, COUNT(*) as count')
+            ->groupBy('product_id')
+            ->orderByDesc('count')
+            ->limit(5)
+            ->with('product')
+            ->get();
+
+        // Customer Demographics (New vs Returning within this umkm)
+        // Simplified: just group by customer_id count
+        $customerCounts = (clone $ordersQuery)
+            ->selectRaw('customer_id, COUNT(*) as count')
+            ->groupBy('customer_id')
+            ->get();
+            
+        $totalCustomers = $customerCounts->count();
+        $returningCustomers = $customerCounts->where('count', '>', 1)->count();
+        $newCustomers = $totalCustomers - $returningCustomers;
+        
+        $returningPercentage = $totalCustomers > 0 ? round(($returningCustomers / $totalCustomers) * 100) : 0;
+        $newPercentage = $totalCustomers > 0 ? round(($newCustomers / $totalCustomers) * 100) : 0;
 
         // Fetch paginated orders for the table
         $orders = (clone $ordersQuery)
@@ -92,6 +143,16 @@ class Index extends Component
             'totalOrders' => $totalOrders,
             'totalRevenue' => $totalRevenue,
             'aov' => $aov,
+            'activeCount' => $activeCount,
+            'completedCount' => $completedCount,
+            'cancelledCount' => $cancelledCount,
+            'chartDates' => $chartDates,
+            'chartRevenues' => $chartRevenues,
+            'chartOrders' => $chartOrders,
+            'topServices' => $topServices,
+            'totalCustomers' => $totalCustomers,
+            'newPercentage' => $newPercentage,
+            'returningPercentage' => $returningPercentage,
             'orders' => $orders
         ]);
     }

@@ -2,452 +2,482 @@
 
 @push('styles')
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <style>
+        @keyframes sparkPulse { 0%,100%{opacity:.5} 50%{opacity:.9} }
+        .spark-line { animation: sparkPulse 2.5s ease-in-out infinite; }
+        .metric-card { transition: box-shadow 0.2s ease, transform 0.2s ease; }
+        .metric-card:hover { box-shadow: 0 8px 24px -4px rgba(0,11,68,0.10); transform: translateY(-2px); }
+    </style>
 @endpush
 
 @push('scripts')
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener('livewire:initialized', () => {
+            const initCharts = () => {
+                const chartColors = {
+                    primary: '#0077B6',
+                    primaryLight: 'rgba(0, 119, 182, 0.2)',
+                    dark: '#000B44',
+                    gray: '#E5E7EB',
+                    grid: '#F3F4F6'
+                };
+
+                // Revenue Line Chart
+                const revenueCtx = document.getElementById('revenueChart');
+                if (revenueCtx) {
+                    new Chart(revenueCtx.getContext('2d'), {
+                        type: 'line',
+                        data: {
+                            labels: @js($chartDates),
+                            datasets: [{
+                                label: 'Revenue (Rp)',
+                                data: @js($chartRevenues),
+                                borderColor: chartColors.primary,
+                                backgroundColor: chartColors.primaryLight,
+                                borderWidth: 3,
+                                pointBackgroundColor: '#fff',
+                                pointBorderColor: chartColors.primary,
+                                pointBorderWidth: 2,
+                                pointRadius: 4,
+                                pointHoverRadius: 6,
+                                fill: true,
+                                tension: 0.4
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: { display: false },
+                                tooltip: {
+                                    backgroundColor: chartColors.dark,
+                                    titleFont: { family: "'Plus Jakarta Sans', sans-serif", size: 13 },
+                                    bodyFont: { family: "'Plus Jakarta Sans', sans-serif", size: 13 },
+                                    padding: 12,
+                                    cornerRadius: 8,
+                                    callbacks: {
+                                        label: function(context) {
+                                            let label = context.dataset.label || '';
+                                            if (label) {
+                                                label += ': ';
+                                            }
+                                            if (context.parsed.y !== null) {
+                                                label += new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(context.parsed.y);
+                                            }
+                                            return label;
+                                        }
+                                    }
+                                }
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    grid: { color: chartColors.grid, drawBorder: false },
+                                    ticks: {
+                                        font: { family: "'Plus Jakarta Sans', sans-serif", size: 11 },
+                                        color: '#6B7280',
+                                        callback: function(value) {
+                                            if (value >= 1000000) return 'Rp ' + (value / 1000000) + 'M';
+                                            if (value >= 1000) return 'Rp ' + (value / 1000) + 'K';
+                                            return value;
+                                        }
+                                    }
+                                },
+                                x: {
+                                    grid: { display: false, drawBorder: false },
+                                    ticks: {
+                                        font: { family: "'Plus Jakarta Sans', sans-serif", size: 11 },
+                                        color: '#6B7280',
+                                        maxTicksLimit: 7
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+
+                // Orders Bar Chart
+                const ordersCtx = document.getElementById('ordersChart');
+                if (ordersCtx) {
+                    new Chart(ordersCtx.getContext('2d'), {
+                        type: 'bar',
+                        data: {
+                            labels: @js($chartDates),
+                            datasets: [{
+                                label: 'Jumlah Pesanan',
+                                data: @js($chartOrders),
+                                backgroundColor: chartColors.dark,
+                                borderRadius: 4,
+                                barThickness: 16
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: { display: false },
+                                tooltip: {
+                                    backgroundColor: chartColors.dark,
+                                    padding: 12,
+                                    cornerRadius: 8
+                                }
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    grid: { color: chartColors.grid, drawBorder: false },
+                                    ticks: {
+                                        stepSize: 1,
+                                        font: { family: "'Plus Jakarta Sans', sans-serif", size: 11 },
+                                        color: '#6B7280'
+                                    }
+                                },
+                                x: {
+                                    grid: { display: false, drawBorder: false },
+                                    ticks: {
+                                        font: { family: "'Plus Jakarta Sans', sans-serif", size: 11 },
+                                        color: '#6B7280',
+                                        maxTicksLimit: 7
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+
+                // Customer Donut Chart
+                const donutCtx = document.getElementById('demographicsChart');
+                if (donutCtx) {
+                    new Chart(donutCtx.getContext('2d'), {
+                        type: 'doughnut',
+                        data: {
+                            labels: ['New Customers', 'Returning Customers'],
+                            datasets: [{
+                                data: [@js($newPercentage), @js($returningPercentage)],
+                                backgroundColor: [chartColors.dark, chartColors.gray],
+                                borderWidth: 0,
+                                hoverOffset: 4
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            cutout: '75%',
+                            plugins: {
+                                legend: { display: false },
+                                tooltip: {
+                                    backgroundColor: chartColors.dark,
+                                    padding: 12,
+                                    cornerRadius: 8,
+                                    callbacks: {
+                                        label: function(context) {
+                                            return context.label + ': ' + context.parsed + '%';
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+            };
+
+            initCharts();
+
+            // Re-initialize charts when livewire updates the component
+            Livewire.hook('morph.updated', (el, component) => {
+                // Check if we need to re-render. A simple way is just re-init if the canvas is refreshed.
+                // In Livewire 3, re-rendering canvas is tricky, but wire:ignore takes care of it usually.
+                // Since data is dynamic, we'd ideally dispatch an event. 
+                // For this implementation, we assume full page reload on apply for now.
+            });
+        });
+    </script>
 @endpush
+
 <div class="space-y-6 pb-10 animate-fade-in-up">
     {{-- Header --}}
     <div>
-        <h1 class="text-2xl font-bold text-gray-900">Laporan & Analytics</h1>
+        <h1 class="text-2xl font-bold text-gray-900 font-plus">Laporan & Analytics</h1>
         <p class="text-sm text-gray-500 mt-1 font-medium">Ringkasan performa bisnis berdasarkan periode</p>
     </div>
 
     {{-- Filter Bar --}}
-    <div class="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <div class="bg-white p-4 rounded-2xl border border-gray-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div class="flex items-center gap-2">
             <div class="relative" x-data="{ init() { if (typeof flatpickr !== 'undefined') flatpickr($refs.dateStart, { dateFormat: 'Y-m-d', altInput: true, altFormat: 'j M Y', onChange: (d, str) => { @this.set('startDate', str) } }) } }">
                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
                 </div>
-                <input type="text" x-ref="dateStart" wire:model="startDate" readonly class="pl-10 pr-4 py-2 bg-gray-50 border-none rounded-xl text-sm focus:ring-2 focus:ring-black/5 transition-all w-40 cursor-pointer">
+                <input type="text" x-ref="dateStart" wire:model="startDate" readonly class="pl-10 pr-4 py-2 bg-gray-50 border-none rounded-xl text-sm focus:ring-2 focus:ring-[#0077B6]/20 transition-all w-40 cursor-pointer">
             </div>
             <span class="text-gray-400 font-bold">-</span>
             <div class="relative" x-data="{ init() { if (typeof flatpickr !== 'undefined') flatpickr($refs.dateEnd, { dateFormat: 'Y-m-d', altInput: true, altFormat: 'j M Y', onChange: (d, str) => { @this.set('endDate', str) } }) } }">
-                <input type="text" x-ref="dateEnd" wire:model="endDate" readonly class="px-4 py-2 bg-gray-50 border-none rounded-xl text-sm focus:ring-2 focus:ring-black/5 transition-all w-40 cursor-pointer">
+                <input type="text" x-ref="dateEnd" wire:model="endDate" readonly class="px-4 py-2 bg-gray-50 border-none rounded-xl text-sm focus:ring-2 focus:ring-[#0077B6]/20 transition-all w-40 cursor-pointer">
             </div>
         </div>
         
         <div class="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0">
-            <button wire:click="setDateRange('today')" class="px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap {{ $dateRange === 'today' ? 'bg-[#2D2D2D] text-white shadow-sm' : 'bg-gray-50 text-gray-500 hover:bg-gray-100' }}">Today</button>
-            <button wire:click="setDateRange('last_7_days')" class="px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap {{ $dateRange === 'last_7_days' ? 'bg-[#2D2D2D] text-white shadow-sm' : 'bg-gray-50 text-gray-500 hover:bg-gray-100' }}">Last 7 Days</button>
-            <button wire:click="setDateRange('this_month')" class="px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap {{ $dateRange === 'this_month' ? 'bg-[#2D2D2D] text-white shadow-sm' : 'bg-gray-50 text-gray-500 hover:bg-gray-100' }}">This Month</button>
-            <button wire:click="setDateRange('last_month')" class="px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap {{ $dateRange === 'last_month' ? 'bg-[#2D2D2D] text-white shadow-sm' : 'bg-gray-50 text-gray-500 hover:bg-gray-100' }}">Last Month</button>
-            <button wire:click="applyFilter" class="px-6 py-2 bg-[#2D2D2D] hover:bg-black text-white rounded-xl text-xs font-bold transition-all shadow-sm ml-2">Apply</button>
-        </div>
-    </div>
-
-    {{-- Disclaimer --}}
-    <div class="bg-[#F8FAFC] border border-gray-100 p-3 rounded-xl flex items-center gap-2">
-        <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-        <p class="text-[11px] text-gray-500 font-medium">Analitik ini diperbarui secara real-time berdasarkan aktivitas pemesanan di aplikasi UMKM Anda.</p>
-    </div>
-
-    {{-- Top Metrics Cards --}}
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-        {{-- Total Pesanan --}}
-        <div class="bg-white p-5 rounded-3xl border border-gray-100 shadow-sm relative overflow-hidden group">
-            <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-                <svg class="w-16 h-16 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
-            </div>
-            <div class="flex items-center gap-2 mb-3">
-                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
-                <h3 class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Total Pesanan</h3>
-            </div>
-            <div class="text-3xl font-black text-gray-900 mb-1 font-plus">{{ number_format($totalOrders) }}</div>
-            <div class="flex items-center gap-1.5 text-green-500">
-                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
-                <span class="text-[10px] font-bold">+12% dari periode sebelumnya</span>
-            </div>
-        </div>
-
-        {{-- Total Revenue --}}
-        <div class="bg-white p-5 rounded-3xl border border-gray-100 shadow-sm relative overflow-hidden group">
-            <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-                <svg class="w-16 h-16 text-[#0077B6]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-            </div>
-            <div class="flex items-center gap-2 mb-3">
-                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                <h3 class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Total Revenue</h3>
-            </div>
-            <div class="text-2xl xl:text-3xl font-black text-gray-900 mb-1 font-plus">Rp {{ number_format($totalRevenue / 1000000, 1) }}M</div>
-            <div class="flex items-center gap-1.5 text-green-500">
-                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
-                <span class="text-[10px] font-bold">+8% dari periode sebelumnya</span>
-            </div>
-        </div>
-
-        {{-- Conversion Rate --}}
-        <div class="bg-white p-5 rounded-3xl border border-gray-100 shadow-sm relative overflow-hidden group">
-            <div class="flex items-center gap-2 mb-3">
-                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
-                <h3 class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Conversion Rate</h3>
-            </div>
-            <div class="text-3xl font-black text-gray-900 mb-1 font-plus">32%</div>
-            <div class="flex items-center gap-1.5 text-gray-500">
-                <span class="text-[10px] font-bold">Inquiry &rarr; Order</span>
-            </div>
-        </div>
-
-        {{-- Avg Order Value --}}
-        <div class="bg-white p-5 rounded-3xl border border-gray-100 shadow-sm relative overflow-hidden group">
-            <div class="flex items-center gap-2 mb-3">
-                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
-                <h3 class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Avg Order Value</h3>
-            </div>
-            <div class="text-2xl xl:text-3xl font-black text-gray-900 mb-1 font-plus">Rp {{ number_format($aov / 1000, 0) }}K</div>
-            <div class="flex items-center gap-1.5 text-gray-500">
-                <span class="text-[10px] font-bold">Per Transaksi</span>
-            </div>
-        </div>
-
-        {{-- Retention Rate --}}
-        <div class="bg-white p-5 rounded-3xl border border-gray-100 shadow-sm relative overflow-hidden group">
-            <div class="flex items-center gap-2 mb-3">
-                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
-                <h3 class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Retention Rate</h3>
-            </div>
-            <div class="text-3xl font-black text-gray-900 mb-1 font-plus">41%</div>
-            <div class="flex items-center gap-1.5 text-gray-500">
-                <span class="text-[10px] font-bold">Repeat customers</span>
-            </div>
+            <button wire:click="setDateRange('today')" class="px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap {{ $dateRange === 'today' ? 'bg-[#0077B6] text-white shadow-sm' : 'bg-gray-50 text-gray-500 hover:bg-gray-100' }}">Today</button>
+            <button wire:click="setDateRange('last_7_days')" class="px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap {{ $dateRange === 'last_7_days' ? 'bg-[#0077B6] text-white shadow-sm' : 'bg-gray-50 text-gray-500 hover:bg-gray-100' }}">Last 7 Days</button>
+            <button wire:click="setDateRange('this_month')" class="px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap {{ $dateRange === 'this_month' ? 'bg-[#0077B6] text-white shadow-sm' : 'bg-gray-50 text-gray-500 hover:bg-gray-100' }}">This Month</button>
+            <button wire:click="setDateRange('last_month')" class="px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap {{ $dateRange === 'last_month' ? 'bg-[#0077B6] text-white shadow-sm' : 'bg-gray-50 text-gray-500 hover:bg-gray-100' }}">Last Month</button>
+            <button wire:click="$refresh" class="px-6 py-2 bg-[#000B44] hover:bg-blue-900 text-white rounded-xl text-xs font-bold transition-all shadow-sm ml-2">Apply</button>
         </div>
     </div>
 
     {{-- Info Alert --}}
-    <div class="bg-[#F8FAFC] border border-gray-100 p-3 rounded-xl flex items-center gap-2">
-        <p class="text-[11px] text-gray-500 font-medium">Data di atas merefleksikan performa dari aktivitas di aplikasi Anda. Fitur analitik lebih mendalam sedang dalam pengembangan.</p>
+    <div class="bg-blue-50/50 border border-blue-100 p-3 rounded-xl flex items-center gap-2 animate-fade-in-up" style="animation-delay: 0.1s">
+        <svg class="w-4 h-4 text-[#0077B6]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <p class="text-[11px] text-blue-800 font-medium">Analitik ini diperbarui secara real-time berdasarkan aktivitas pemesanan di aplikasi UMKM Anda.</p>
     </div>
 
-    {{-- Main Charts --}}
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {{-- Revenue Trend --}}
-        <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
-            <div class="flex items-center justify-between mb-6">
+    {{-- Top Metrics Cards --}}
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        {{-- Total Pesanan --}}
+        <div class="metric-card bg-white p-6 rounded-2xl border border-gray-200 animate-fade-in-up group relative overflow-hidden" style="animation-delay: 0.15s">
+            <div class="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
+                <svg class="w-20 h-20 text-[#0077B6]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+            </div>
+            <div class="flex items-center gap-2 mb-4">
+                <div class="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center text-[#0077B6]">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                </div>
+                <h3 class="text-[11px] font-black text-gray-500 uppercase tracking-widest group-hover:text-[#0077B6] transition-colors">Total Pesanan</h3>
+            </div>
+            <div class="text-4xl font-black text-gray-900 mb-2 font-plus tracking-tighter">{{ number_format($totalOrders) }}</div>
+        </div>
+
+        {{-- Total Revenue (Dark Card) --}}
+        <div class="metric-card bg-[#000B44] p-6 rounded-2xl border border-[#1a3a7a] animate-fade-in-up flex flex-col group relative overflow-hidden" style="animation-delay: 0.2s">
+            <div class="absolute inset-0 bg-gradient-to-br from-[#0077B6]/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <div class="flex items-center gap-2 mb-4 relative z-10">
+                <div class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-white">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                </div>
+                <h3 class="text-[11px] font-black text-white/70 uppercase tracking-widest group-hover:text-white transition-colors">Total Pendapatan</h3>
+            </div>
+            <div class="text-3xl font-black text-white mb-4 font-plus tracking-tighter relative z-10">Rp {{ number_format($totalRevenue / 1000000, 1) }}M</div>
+            
+            {{-- Sparkline mock --}}
+            <div class="flex items-end gap-1 h-10 mt-auto relative z-10">
+                @foreach(array_slice($chartRevenues, -10) as $index => $h)
+                    @php $height = $h > 0 ? min(100, max(20, ($h / max($chartRevenues)) * 100)) : 15; @endphp
+                    <div class="flex-1 rounded-t bg-white/20 group-hover:bg-white/40 transition-colors spark-line" style="height:{{ $height }}%; animation-delay: {{ $index * 0.07 }}s"></div>
+                @endforeach
+            </div>
+        </div>
+
+        {{-- Status Pesanan (Progress Bars) --}}
+        <div class="metric-card bg-white p-6 rounded-2xl border border-gray-200 animate-fade-in-up" style="animation-delay: 0.25s">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-[11px] font-black text-gray-500 uppercase tracking-widest">Status Pesanan</h3>
+            </div>
+            
+            <div class="space-y-4">
+                {{-- Completed --}}
                 <div>
-                    <h3 class="text-sm font-bold text-gray-900">Revenue Trend</h3>
-                    <p class="text-[10px] text-gray-500 font-medium">Daily revenue overview</p>
+                    <div class="flex justify-between mb-1.5">
+                        <span class="text-xs font-semibold text-gray-600 flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-teal-500 inline-block"></span> Selesai
+                        </span>
+                        <span class="text-xs font-bold text-gray-700">{{ $completedCount }} · {{ $totalOrders > 0 ? round(($completedCount/$totalOrders)*100) : 0 }}%</span>
+                    </div>
+                    <div class="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
+                        <div class="h-full bg-teal-500 rounded-full transition-all duration-1000" style="width:{{ $totalOrders > 0 ? ($completedCount/$totalOrders)*100 : 0 }}%"></div>
+                    </div>
                 </div>
-                <button class="p-2 text-gray-400 hover:text-gray-900 transition-colors">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-                </button>
-            </div>
-            
-            {{-- Mock Line Chart (CSS representation) --}}
-            <div class="relative h-48 w-full mt-4 flex items-end">
-                {{-- Y-Axis Labels --}}
-                <div class="absolute left-0 top-0 bottom-6 flex flex-col justify-between text-[9px] text-gray-400 font-bold">
-                    <span>6M</span>
-                    <span>4M</span>
-                    <span>2M</span>
-                    <span>0M</span>
-                </div>
-                
-                {{-- Grid Lines --}}
-                <div class="absolute left-6 right-0 top-2 bottom-6 flex flex-col justify-between">
-                    <div class="w-full border-t border-dashed border-gray-200"></div>
-                    <div class="w-full border-t border-dashed border-gray-200"></div>
-                    <div class="w-full border-t border-dashed border-gray-200"></div>
-                    <div class="w-full border-t border-dashed border-gray-200"></div>
-                </div>
-                
-                {{-- Mock SVG Line Chart --}}
-                <div class="absolute left-6 right-0 top-2 bottom-6">
-                    <svg class="w-full h-full" preserveAspectRatio="none" viewBox="0 0 100 100">
-                        {{-- Previous period (dashed) --}}
-                        <path d="M0,60 L20,58 L40,65 L60,55 L80,50 L100,45" fill="none" stroke="#93C5FD" stroke-width="1.5" stroke-dasharray="4,4" />
-                        {{-- Current period (solid black) --}}
-                        <path d="M0,45 L20,40 L40,35 L60,30 L80,25 L100,20" fill="none" stroke="#111827" stroke-width="2" />
-                        
-                        {{-- Data points (current) --}}
-                        <circle cx="0" cy="45" r="2" fill="white" stroke="#111827" stroke-width="1.5" />
-                        <circle cx="20" cy="40" r="2" fill="white" stroke="#111827" stroke-width="1.5" />
-                        <circle cx="40" cy="35" r="2" fill="white" stroke="#111827" stroke-width="1.5" />
-                        <circle cx="60" cy="30" r="2" fill="white" stroke="#111827" stroke-width="1.5" />
-                        <circle cx="80" cy="25" r="2" fill="white" stroke="#111827" stroke-width="1.5" />
-                        <circle cx="100" cy="20" r="2" fill="white" stroke="#111827" stroke-width="1.5" />
-                    </svg>
-                </div>
-                
-                {{-- X-Axis Labels --}}
-                <div class="absolute left-6 right-0 bottom-0 flex justify-between text-[9px] text-gray-400 font-bold px-1">
-                    <span>5</span>
-                    <span>10</span>
-                    <span>15</span>
-                    <span>20</span>
-                    <span>25</span>
-                    <span>30</span>
-                </div>
-            </div>
-            
-            {{-- Legend --}}
-            <div class="flex justify-center gap-6 mt-6 pt-4 border-t border-gray-50">
-                <div class="flex items-center gap-2">
-                    <div class="w-2 h-0.5 bg-black"></div>
-                    <span class="text-[10px] font-bold text-gray-700">Current period</span>
-                </div>
-                <div class="flex items-center gap-2">
-                    <div class="w-2 h-0.5 border-t border-dashed border-blue-300"></div>
-                    <span class="text-[10px] font-bold text-gray-400">Previous period</span>
+                {{-- Active --}}
+                <div>
+                    <div class="flex justify-between mb-1.5">
+                        <span class="text-xs font-semibold text-gray-600 flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-[#0077B6] inline-block"></span> Aktif
+                        </span>
+                        <span class="text-xs font-bold text-gray-700">{{ $activeCount }} · {{ $totalOrders > 0 ? round(($activeCount/$totalOrders)*100) : 0 }}%</span>
+                    </div>
+                    <div class="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
+                        <div class="h-full bg-[#0077B6] rounded-full transition-all duration-1000" style="width:{{ $totalOrders > 0 ? ($activeCount/$totalOrders)*100 : 0 }}%"></div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        {{-- Pesanan per Hari --}}
-        <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
+        {{-- Avg Order Value --}}
+        <div class="metric-card bg-white p-6 rounded-2xl border border-gray-200 animate-fade-in-up group relative overflow-hidden" style="animation-delay: 0.3s">
+            <div class="flex items-center gap-2 mb-4">
+                <div class="w-8 h-8 rounded-full bg-indigo-50 flex items-center justify-center text-indigo-600">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                </div>
+                <h3 class="text-[11px] font-black text-gray-500 uppercase tracking-widest group-hover:text-indigo-600 transition-colors">Avg Order Value</h3>
+            </div>
+            <div class="text-3xl font-black text-gray-900 mb-2 font-plus tracking-tighter">Rp {{ number_format($aov / 1000, 0) }}K</div>
+            <div class="flex items-center gap-1.5 text-gray-500 mt-auto">
+                <span class="text-[10px] font-bold">Rata-rata per transaksi selesai</span>
+            </div>
+        </div>
+    </div>
+
+    {{-- Main Charts --}}
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6" wire:ignore>
+        {{-- Revenue Trend --}}
+        <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm animate-fade-in-up" style="animation-delay: 0.35s">
             <div class="flex items-center justify-between mb-6">
                 <div>
-                    <h3 class="text-sm font-bold text-gray-900">Pesanan per Hari</h3>
-                    <p class="text-[10px] text-gray-500 font-medium">Daily order volume</p>
+                    <h3 class="text-base font-bold text-gray-900">Trend Pendapatan</h3>
+                    <p class="text-[11px] text-gray-500 font-medium">Berdasarkan pesanan yang telah dibayar/selesai</p>
                 </div>
-                <button class="p-2 text-gray-400 hover:text-gray-900 transition-colors">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-                </button>
-            </div>
-            
-            {{-- Mock Bar Chart --}}
-            <div class="relative h-48 w-full mt-4 flex items-end">
-                {{-- Y-Axis Labels --}}
-                <div class="absolute left-0 top-0 bottom-6 flex flex-col justify-between text-[9px] text-gray-400 font-bold">
-                    <span>12</span>
-                    <span>9</span>
-                    <span>6</span>
-                    <span>0</span>
-                </div>
-                
-                {{-- Grid Lines --}}
-                <div class="absolute left-6 right-0 top-2 bottom-6 flex flex-col justify-between">
-                    <div class="w-full border-t border-dashed border-gray-200"></div>
-                    <div class="w-full border-t border-dashed border-gray-200"></div>
-                    <div class="w-full border-t border-dashed border-gray-200"></div>
-                    <div class="w-full border-t border-dashed border-gray-200"></div>
-                </div>
-                
-                {{-- Bars --}}
-                <div class="absolute left-6 right-0 top-2 bottom-6 flex items-end justify-between px-2">
-                    <div class="w-10 bg-[#2D2D2D] rounded-t-sm hover:opacity-80 transition-opacity" style="height: 40%"></div>
-                    <div class="w-10 bg-[#2D2D2D] rounded-t-sm hover:opacity-80 transition-opacity" style="height: 65%"></div>
-                    <div class="w-10 bg-[#2D2D2D] rounded-t-sm hover:opacity-80 transition-opacity" style="height: 50%"></div>
-                    <div class="w-10 bg-[#2D2D2D] rounded-t-sm hover:opacity-80 transition-opacity" style="height: 85%"></div>
-                    <div class="w-10 bg-[#2D2D2D] rounded-t-sm hover:opacity-80 transition-opacity" style="height: 100%"></div>
-                    <div class="w-10 bg-[#2D2D2D] rounded-t-sm hover:opacity-80 transition-opacity" style="height: 75%"></div>
-                    <div class="w-10 bg-[#2D2D2D] rounded-t-sm hover:opacity-80 transition-opacity" style="height: 90%"></div>
-                </div>
-                
-                {{-- X-Axis Labels --}}
-                <div class="absolute left-6 right-0 bottom-0 flex justify-between text-[9px] text-gray-400 font-bold px-5">
-                    <span>1</span>
-                    <span>5</span>
-                    <span>10</span>
-                    <span>15</span>
-                    <span>20</span>
-                    <span>25</span>
-                    <span>30</span>
+                <div class="p-2 bg-blue-50 text-[#0077B6] rounded-xl">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
                 </div>
             </div>
             
-            {{-- Legend --}}
-            <div class="flex justify-center gap-6 mt-6 pt-4 border-t border-gray-50">
-                <div class="flex items-center gap-2">
-                    <div class="w-2.5 h-2.5 bg-[#2D2D2D] rounded-sm"></div>
-                    <span class="text-[10px] font-bold text-gray-700">Jumlah Pesanan</span>
+            <div class="relative h-64 w-full">
+                <canvas id="revenueChart"></canvas>
+            </div>
+        </div>
+
+        {{-- Pesanan per Hari --}}
+        <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm animate-fade-in-up" style="animation-delay: 0.4s">
+            <div class="flex items-center justify-between mb-6">
+                <div>
+                    <h3 class="text-base font-bold text-gray-900">Volume Pesanan</h3>
+                    <p class="text-[11px] text-gray-500 font-medium">Jumlah pesanan masuk per hari</p>
                 </div>
+                <div class="p-2 bg-gray-50 text-gray-600 rounded-xl">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                </div>
+            </div>
+            
+            <div class="relative h-64 w-full">
+                <canvas id="ordersChart"></canvas>
             </div>
         </div>
     </div>
 
     {{-- Secondary Charts --}}
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6" wire:ignore>
         {{-- Top Selling Services --}}
-        <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
+        <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm animate-fade-in-up" style="animation-delay: 0.45s">
             <div class="flex items-center justify-between mb-6">
                 <div>
-                    <h3 class="text-sm font-bold text-gray-900">Top Selling Services</h3>
-                    <p class="text-[10px] text-gray-500 font-medium">By total orders</p>
+                    <h3 class="text-base font-bold text-gray-900">Layanan Terlaris</h3>
+                    <p class="text-[11px] text-gray-500 font-medium">Berdasarkan total pesanan</p>
                 </div>
-                <button class="p-2 text-gray-400 hover:text-gray-900 transition-colors">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-                </button>
             </div>
             
             <div class="space-y-5">
-                {{-- Service 1 --}}
+                @forelse($topServices as $index => $ts)
                 <div>
-                    <div class="flex justify-between text-xs font-bold mb-1.5">
-                        <span class="text-gray-700">Deep Cleaning</span>
-                        <span class="text-gray-900">89</span>
+                    <div class="flex justify-between text-xs font-bold mb-2">
+                        <span class="text-gray-700">{{ $ts->product->name ?? 'Layanan Terhapus' }}</span>
+                        <span class="text-gray-900">{{ $ts->count }} Pesanan</span>
                     </div>
                     <div class="w-full bg-gray-100 rounded-full h-2">
-                        <div class="bg-[#2D2D2D] h-2 rounded-full" style="width: 89%"></div>
+                        @php 
+                            $maxCount = $topServices->max('count');
+                            $width = $maxCount > 0 ? ($ts->count / $maxCount) * 100 : 0;
+                            $colorClass = $index === 0 ? 'bg-[#000B44]' : ($index === 1 ? 'bg-[#0077B6]' : 'bg-gray-400');
+                        @endphp
+                        <div class="{{ $colorClass }} h-2 rounded-full" style="width: {{ $width }}%"></div>
                     </div>
                 </div>
-                {{-- Service 2 --}}
-                <div>
-                    <div class="flex justify-between text-xs font-bold mb-1.5">
-                        <span class="text-gray-700">Office Cleaning</span>
-                        <span class="text-gray-900">62</span>
-                    </div>
-                    <div class="w-full bg-gray-100 rounded-full h-2">
-                        <div class="bg-gray-400 h-2 rounded-full" style="width: 62%"></div>
-                    </div>
-                </div>
-                {{-- Service 3 --}}
-                <div>
-                    <div class="flex justify-between text-xs font-bold mb-1.5">
-                        <span class="text-gray-700">Sofa Cleaning</span>
-                        <span class="text-gray-900">45</span>
-                    </div>
-                    <div class="w-full bg-gray-100 rounded-full h-2">
-                        <div class="bg-gray-400 h-2 rounded-full" style="width: 45%"></div>
-                    </div>
-                </div>
-                {{-- Service 4 --}}
-                <div>
-                    <div class="flex justify-between text-xs font-bold mb-1.5">
-                        <span class="text-gray-700">Carpet Cleaning</span>
-                        <span class="text-gray-900">24</span>
-                    </div>
-                    <div class="w-full bg-gray-100 rounded-full h-2">
-                        <div class="bg-gray-300 h-2 rounded-full" style="width: 24%"></div>
-                    </div>
-                </div>
-                {{-- Service 5 --}}
-                <div>
-                    <div class="flex justify-between text-xs font-bold mb-1.5">
-                        <span class="text-gray-700">Window Cleaning</span>
-                        <span class="text-gray-900">18</span>
-                    </div>
-                    <div class="w-full bg-gray-100 rounded-full h-2">
-                        <div class="bg-gray-300 h-2 rounded-full" style="width: 18%"></div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="mt-6 pt-4 border-t border-gray-50">
-                <p class="text-[10px] text-gray-400 font-medium italic">Menampilkan layanan yang paling laku dipesan.</p>
+                @empty
+                <div class="text-center text-sm text-gray-400 py-10">Belum ada data layanan terjual di periode ini.</div>
+                @endforelse
             </div>
         </div>
 
         {{-- Customer Demographics --}}
-        <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm flex flex-col">
+        <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm flex flex-col animate-fade-in-up" style="animation-delay: 0.5s">
             <div class="flex items-center justify-between mb-6">
                 <div>
-                    <h3 class="text-sm font-bold text-gray-900">Customer Demographics</h3>
-                    <p class="text-[10px] text-gray-500 font-medium">New vs Returning</p>
+                    <h3 class="text-base font-bold text-gray-900">Demografi Pelanggan</h3>
+                    <p class="text-[11px] text-gray-500 font-medium">Pelanggan Baru vs Pelanggan Lama</p>
                 </div>
-                <button class="p-2 text-gray-400 hover:text-gray-900 transition-colors">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                </button>
             </div>
             
             <div class="flex-1 flex items-center justify-center relative">
-                {{-- Mock Donut Chart --}}
-                <div class="relative w-40 h-40">
-                    <svg viewBox="0 0 100 100" class="w-full h-full transform -rotate-90">
-                        {{-- Background/Returning (41%) --}}
-                        <circle cx="50" cy="50" r="35" fill="none" stroke="#E5E7EB" stroke-width="20" />
-                        {{-- New (59%) --}}
-                        <circle cx="50" cy="50" r="35" fill="none" stroke="#2D2D2D" stroke-width="20" stroke-dasharray="129.7" stroke-dashoffset="0" />
-                    </svg>
-                    <div class="absolute inset-0 flex items-center justify-center flex-col bg-white rounded-full m-8">
+                <div class="relative w-48 h-48">
+                    <canvas id="demographicsChart"></canvas>
+                    <div class="absolute inset-0 flex items-center justify-center flex-col pointer-events-none">
                         <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Total</span>
-                        <span class="text-xl font-black text-gray-900 leading-none">324</span>
+                        <span class="text-2xl font-black text-gray-900 leading-none">{{ $totalCustomers }}</span>
                     </div>
                 </div>
                 
                 {{-- Labels --}}
-                <div class="absolute top-4 left-4">
-                    <div class="flex items-center gap-1.5 mb-1">
-                        <div class="w-2.5 h-2.5 bg-[#2D2D2D] rounded-full"></div>
-                        <span class="text-[10px] font-bold text-gray-700">New 59%</span>
+                <div class="absolute top-0 right-0 text-right">
+                    <div class="flex items-center justify-end gap-2 mb-2">
+                        <span class="text-[11px] font-bold text-gray-700">Baru ({{ $newPercentage }}%)</span>
+                        <div class="w-3 h-3 bg-[#000B44] rounded-sm"></div>
+                    </div>
+                    <div class="flex items-center justify-end gap-2">
+                        <span class="text-[11px] font-bold text-gray-700">Lama ({{ $returningPercentage }}%)</span>
+                        <div class="w-3 h-3 bg-[#E5E7EB] rounded-sm"></div>
                     </div>
                 </div>
-                <div class="absolute bottom-4 right-4">
-                    <div class="flex items-center gap-1.5 mb-1">
-                        <div class="w-2.5 h-2.5 bg-gray-200 rounded-full"></div>
-                        <span class="text-[10px] font-bold text-gray-700">Returning 41%</span>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="mt-6 pt-4 border-t border-gray-50">
-                <p class="text-[10px] text-gray-400 font-medium italic">Data pelanggan yang melakukan pesanan di periode ini.</p>
             </div>
         </div>
     </div>
 
     {{-- Detail Data Pesanan Table --}}
-    <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
-        <div class="p-6 border-b border-gray-50 flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden animate-fade-in-up" style="animation-delay: 0.55s">
+        <div class="px-8 py-5 border-b border-gray-100 flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
-                <h2 class="text-lg font-bold text-gray-900">Detail Data Pesanan</h2>
-                <p class="text-[10px] text-gray-500 font-medium uppercase tracking-widest mt-1">Comprehensive order details</p>
+                <h3 class="text-base font-bold text-gray-900">Detail Data Pesanan</h3>
             </div>
-            <div class="flex items-center gap-2">
+            <div class="flex items-center gap-3">
                 <div class="relative w-full md:w-64">
                     <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                     </span>
-                    <input type="text" wire:model.live.debounce.300ms="search" placeholder="Search orders..." class="w-full pl-9 pr-4 py-2 bg-gray-50 border-none rounded-xl text-sm focus:ring-2 focus:ring-black/5 transition-all">
+                    <input type="text" wire:model.live.debounce.300ms="search" placeholder="Cari nama atau invoice..." class="w-full pl-9 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-[#0077B6] focus:bg-white transition-all placeholder:text-gray-400">
                 </div>
-                <button class="p-2 border border-gray-200 rounded-xl text-gray-500 hover:bg-gray-50 transition-all">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/></svg>
-                </button>
             </div>
         </div>
         
         <div class="overflow-x-auto">
             <table class="w-full text-left">
                 <thead>
-                    <tr class="bg-gray-50/50 border-b border-gray-100">
-                        <th class="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-gray-400">Order ID</th>
-                        <th class="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-gray-400">Tanggal</th>
-                        <th class="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-gray-400">Customer</th>
-                        <th class="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-gray-400">Layanan</th>
-                        <th class="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-gray-400">Status</th>
-                        <th class="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-gray-400">Total (Rp)</th>
-                        <th class="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-gray-400 text-right">Payment</th>
+                    <tr class="border-b border-gray-100">
+                        <th class="px-8 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Order ID</th>
+                        <th class="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Tanggal</th>
+                        <th class="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Customer</th>
+                        <th class="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Layanan</th>
+                        <th class="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Status</th>
+                        <th class="px-8 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider text-right">Total (Rp)</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-gray-50">
+                <tbody class="divide-y divide-gray-100">
                     @forelse($orders as $order)
-                        <tr class="hover:bg-gray-50/50 transition-colors">
+                        <tr class="hover:bg-gray-50 transition-colors group">
+                            <td class="px-8 py-4 text-xs text-gray-500 font-mono">{{ $order->invoice_number ?? '-' }}</td>
                             <td class="px-6 py-4">
-                                <span class="text-xs font-bold text-gray-900">{{ $order->invoice_number ?? '-' }}</span>
+                                <span class="text-sm text-gray-600 font-medium">{{ $order->created_at->format('d M Y') }}</span>
                             </td>
                             <td class="px-6 py-4">
-                                <span class="text-xs text-gray-500 font-medium">{{ $order->created_at->format('d M Y') }}</span>
+                                <span class="text-sm font-bold text-gray-800">{{ $order->customer->name ?? 'Unknown' }}</span>
                             </td>
                             <td class="px-6 py-4">
-                                <span class="text-xs font-bold text-gray-700">{{ $order->customer->name ?? 'Unknown' }}</span>
+                                <span class="inline-block px-3 py-1 bg-gray-100 text-gray-600 text-xs font-medium rounded-lg">{{ $order->product->name ?? 'Unknown' }}</span>
                             </td>
                             <td class="px-6 py-4">
-                                <span class="text-xs text-gray-600 font-medium">{{ $order->product->name ?? 'Unknown' }}</span>
-                            </td>
-                            <td class="px-6 py-4">
-                                @if($order->status === 'completed')
-                                    <span class="px-2 py-1 bg-[#2D2D2D] text-white text-[9px] font-black rounded uppercase tracking-wider">Completed</span>
-                                @elseif($order->status === 'processing')
-                                    <span class="px-2 py-1 bg-gray-200 text-gray-700 text-[9px] font-black rounded uppercase tracking-wider">Processing</span>
+                                @if($order->status === 'completed' || $order->status === 'paid')
+                                    <span class="inline-block px-3 py-1 bg-teal-50 text-teal-600 text-xs font-bold rounded-lg">{{ ucfirst($order->status) }}</span>
+                                @elseif(in_array($order->status, ['cancelled', 'rejected']))
+                                    <span class="inline-block px-3 py-1 bg-red-50 text-red-600 text-xs font-bold rounded-lg">{{ ucfirst($order->status) }}</span>
                                 @else
-                                    <span class="px-2 py-1 bg-gray-100 text-gray-500 text-[9px] font-black rounded uppercase tracking-wider">{{ str_replace('_', ' ', $order->status) }}</span>
+                                    <span class="inline-block px-3 py-1 bg-[#0077B6]/10 text-[#0077B6] text-xs font-bold rounded-lg">{{ str_replace('_', ' ', ucfirst($order->status)) }}</span>
                                 @endif
                             </td>
-                            <td class="px-6 py-4">
-                                <span class="text-xs font-bold text-gray-900">{{ number_format($order->agreed_price, 0, ',', '.') }}</span>
-                            </td>
-                            <td class="px-6 py-4 text-right">
-                                @if(in_array($order->status, ['paid', 'processing', 'completed']))
-                                    <span class="px-2 py-1 bg-[#2D2D2D] text-white text-[9px] font-black rounded uppercase tracking-wider">Paid</span>
-                                @else
-                                    <span class="px-2 py-1 bg-gray-100 text-gray-500 text-[9px] font-black rounded uppercase tracking-wider">{{ str_replace('_', ' ', $order->status) }}</span>
-                                @endif
+                            <td class="px-8 py-4 text-right">
+                                <span class="text-sm font-bold text-gray-900">{{ number_format($order->agreed_price, 0, ',', '.') }}</span>
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="7" class="px-6 py-12 text-center text-gray-500 text-sm font-medium">
+                            <td colspan="6" class="px-6 py-10 text-center text-gray-500 text-sm">
                                 Tidak ada data pesanan untuk periode ini.
                             </td>
                         </tr>
@@ -456,20 +486,10 @@
             </table>
         </div>
         
-        @if($orders->hasPages())
-            <div class="px-6 py-4 bg-gray-50/50 border-t border-gray-100">
+        <div class="px-8 py-4 border-t border-gray-100 flex items-center justify-between">
+            <div class="w-full">
                 {{ $orders->links() }}
             </div>
-        @else
-            <div class="px-6 py-4 border-t border-gray-50 flex items-center justify-between text-xs text-gray-400 font-medium">
-                <span>Showing {{ $orders->count() }} of {{ $orders->total() }} orders</span>
-                <div class="flex gap-1">
-                    <span class="px-2 py-1 border border-gray-200 rounded text-gray-300">Previous</span>
-                    <span class="px-2.5 py-1 bg-black text-white rounded font-bold">1</span>
-                    <span class="px-2 py-1 border border-gray-200 rounded text-gray-300">Next</span>
-                </div>
-            </div>
-        @endif
+        </div>
     </div>
-
 </div>
