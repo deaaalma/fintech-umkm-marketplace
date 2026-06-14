@@ -99,17 +99,28 @@ class Index extends Component
         
         $calendarDays = [];
         $currentDate = $startOfGrid->copy();
+
+        // [OPTIMIZATION] Pre-fetch semua tugas dalam rentang grid kalender (1x query)
+        $assignmentsData = OrderAssignment::where('worker_id', $workerId)
+            ->whereHas('order', function($query) use ($startOfGrid, $endOfGrid) {
+                $query->whereBetween('booking_date', [$startOfGrid->copy()->startOfDay(), $endOfGrid->copy()->endOfDay()]);
+            })
+            ->with('order:id,booking_date')
+            ->get();
+            
+        $assignmentsCounts = $assignmentsData->groupBy(function($item) {
+            return Carbon::parse($item->order->booking_date)->toDateString();
+        })->map->count();
         
         while ($currentDate <= $endOfGrid) {
-            $count = OrderAssignment::where('worker_id', $workerId)
-                ->whereHas('order', function($query) use ($currentDate) {
-                    $query->whereDate('booking_date', $currentDate);
-                })
-                ->count();
+            $dateString = $currentDate->toDateString();
+            
+            // Ambil count dari collection yang sudah di-group di memori, fallback ke 0
+            $count = $assignmentsCounts->get($dateString, 0);
                 
             $calendarDays[] = [
                 'date_obj' => $currentDate->copy(),
-                'date_string' => $currentDate->toDateString(),
+                'date_string' => $dateString,
                 'day_num' => $currentDate->format('d'),
                 'is_today' => $currentDate->isToday(),
                 'is_current_month' => $currentDate->month === (int)$this->month,
