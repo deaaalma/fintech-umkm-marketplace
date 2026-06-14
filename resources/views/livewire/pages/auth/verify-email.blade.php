@@ -62,7 +62,7 @@ new #[Layout('layouts.blank')] class extends Component {
         $user = Auth::user();
         $otpCode = (string) rand(100000, 999999);
         $user->otp_code = $otpCode;
-        $user->otp_expires_at = now()->addMinutes(10);
+        $user->otp_expires_at = now()->addMinutes(30);
         $user->save();
 
         Mail::to($user->email)->send(new OtpMail($otpCode));

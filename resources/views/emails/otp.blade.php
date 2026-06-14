@@ -8,7 +8,7 @@
         # {{ $otpCode }}
     </x-mail::panel>
 
-    This OTP will expire in 10 minutes.
+    This OTP will expire in 30 minutes.
 
     Thanks,<br>
     {{ config('app.name') }}

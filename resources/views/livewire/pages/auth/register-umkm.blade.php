@@ -36,7 +36,7 @@ class extends Component {
             'password' => Hash::make($validated['password']),
             'role' => 'admin_umkm',
             'otp_code' => (string) rand(100000, 999999),
-            'otp_expires_at' => now()->addMinutes(10),
+            'otp_expires_at' => now()->addMinutes(30),
         ]);
 
         event(new Registered($user));

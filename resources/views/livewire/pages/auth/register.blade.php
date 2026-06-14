@@ -39,7 +39,7 @@ new
         $otpCode = (string) rand(100000, 999999);
 
         $validated['otp_code'] = $otpCode;
-        $validated['otp_expires_at'] = now()->addMinutes(10);
+        $validated['otp_expires_at'] = now()->addMinutes(30);
 
         $user = User::create($validated);
 
