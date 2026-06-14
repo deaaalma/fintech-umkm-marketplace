@@ -19,9 +19,8 @@ Secara keseluruhan, proyek sudah berjalan dan punya alur bisnis yang cukup lengk
 ### ~~2. Worker Routes Tidak Ada Middleware Role~~ ✅ SELESAI
 - **Fix**: Sudah ditambahkan `role:worker` ke grup middleware di `routes/worker.php`.
 
-### 3. Invoice Number Masih Kosong di Database
-- **Dampak**: Kolom `invoice_number` di tabel orders banyak yang `null`. Sudah ada workaround di Report (`#ORD-XXXXX`), tapi belum ada logika untuk mengisi kolom ini secara otomatis saat order baru dibuat.
-- **Fix**: Tambahkan auto-generate `invoice_number` di event `Order::creating()` (Observer atau mutator di Model).
+### ~~3. Invoice Number Masih Kosong di Database~~ ✅ SELESAI
+- **Fix**: Sudah ditambahkan auto-generate `invoice_number` di event `static::creating()` di `Order.php` dan seluruh data lama yang null sudah di-backfill dengan format `INV-YYYYMM-XXXXX`.
 
 ### 4. Verifikasi Email Tidak Bisa Diakses (Karena Bug `dd()` di Atas)
 - Alur verifikasi email kemungkinan belum pernah bisa dijalankan secara normal.

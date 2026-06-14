@@ -8,6 +8,22 @@ class Order extends Model
 {
     protected $guarded = ['id'];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($order) {
+            if (empty($order->invoice_number)) {
+                $prefix = 'INV-' . now()->format('Ym') . '-';
+                $lastOrder = static::whereNotNull('invoice_number')->latest('id')->first();
+                $lastNumber = $lastOrder
+                    ? (int) substr($lastOrder->invoice_number, -5)
+                    : 0;
+                $order->invoice_number = $prefix . str_pad($lastNumber + 1, 5, '0', STR_PAD_LEFT);
+            }
+        });
+    }
+
     protected $casts = [
         'booking_date' => 'date',
         'photos' => 'json',
