@@ -25,9 +25,8 @@ Secara keseluruhan, proyek sudah berjalan dan punya alur bisnis yang cukup lengk
 ### ~~4. Verifikasi Email Tidak Bisa Diakses (Karena Bug `dd()` di Atas)~~ ✅ SELESAI
 - **Fix**: Dilakukan sedikit penyesuaian agar alur registrasi hingga verifikasi email dapat berjalan sukses dan me-redirect ke dashboard dengan benar.
 
-### 5. File Sampah di Root Project
-- Ada beberapa file debug/temporary yang tertinggal di root: `backfill_logs.php`, `check_db.php`, `extract.php`, `extract.py`, `fix_order.php`, `restore.py`, `restore_templates.ps1`, `update_images.php`, `update_logs.php`, `temp_register.txt`, file `toArray()` (tanpa ekstensi).
-- **Fix**: Hapus semua file ini. Mereka tidak boleh ada di repositori produksi.
+### ~~5. File Sampah di Root Project~~ ✅ SELESAI
+- **Fix**: File debug/temporary di root (`backfill_logs.php`, `check_db.php`, `extract.php`, `extract.py`, `fix_order.php`, `restore.py`, `restore_templates.ps1`, `update_images.php`, `update_logs.php`, `temp_register.txt`, `toArray()`) sudah dihapus agar rapi. Mereka tidak boleh ada di repositori produksi.
 
 ---
 
