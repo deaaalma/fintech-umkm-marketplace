@@ -1,6 +1,7 @@
 <x-slot:title>Review Order #{{ $order->invoice_number ?? $order->id }}</x-slot>
 
-<div class="space-y-6 animate-fade-in-up" wire:poll.5s x-data="{ showCancelModal: @entangle('showCancelModal') }">
+<div class="space-y-6" wire:poll.5s x-data="{ showCancelModal: @entangle('showCancelModal') }">
+    <div class="space-y-6 animate-fade-in-up">
     {{-- Header --}}
     <div class="flex items-center justify-between">
         <div class="flex items-center gap-4">
@@ -380,6 +381,8 @@
         </div>
     </div>
     
+    </div>
+
     {{-- Floating Chat --}}
     @if($order->status === 'pending_valuation' || in_array($order->status, ['negotiation', 'processing', 'waiting_payment']))
         <livewire:order-chat :order="$order" />

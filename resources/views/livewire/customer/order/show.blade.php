@@ -23,7 +23,8 @@
 </style>
 @endpush
 
-<div class="w-full animate-fade-in-up pb-20" wire:poll.5s>
+<div class="w-full pb-20" wire:poll.5s>
+    <div class="animate-fade-in-up">
     
     {{-- Header Section --}}
     <div class="mb-8">
@@ -1255,6 +1256,8 @@
         </div>
     </template>
     @endif
+
+    </div>
 
     {{-- Functional Livewire Chat Widget --}}
     @if($order->messages()->count() > 0 && in_array($order->status, ['pending_valuation', 'negotiation', 'waiting_payment', 'processing']))
