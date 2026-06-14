@@ -391,7 +391,7 @@
     </div>
 
     {{-- Floating Chat --}}
-    @if($order->status === 'pending_valuation' || in_array($order->status, ['negotiation', 'processing', 'waiting_payment']))
+    @if($order->status === 'pending_valuation' || in_array($order->status, ['negotiation', 'processing', 'waiting_payment', 'cancel_requested']))
         <livewire:order-chat :order="$order" />
     @endif
 
