@@ -217,6 +217,12 @@
                             <p class="text-sm font-bold text-white mb-1">Menunggu Review Customer</p>
                             <p class="text-xs text-blue-200">Proposal seharga Rp {{ number_format($latestProposal->metadata['price'] ?? $order->agreed_price, 0, ',', '.') }} sedang direview.</p>
                         </div>
+                        <div class="pt-4">
+                            <button @click="showCancelModal = true" class="w-full py-3.5 bg-transparent border border-red-500/50 text-red-300 rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-red-500/20 transition-all flex items-center justify-center gap-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
+                                Batalkan Pesanan (Harga Tidak Masuk Akal)
+                            </button>
+                        </div>
                     @else
                         <div>
                             <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2.5">Set Final Price (Proposal)</label>
@@ -238,7 +244,7 @@
                                 {{ $order->agreed_price ? 'Update & Send Proposal' : 'Accept & Send Proposal' }}
                             </button>
                             {{-- Tolak pesanan: muncul baik sebelum maupun SAAT negosiasi (harga tidak masuk akal) --}}
-                            <button @click="showCancelModal = true" class="w-full py-4 bg-transparent border border-white/20 text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-red-500/20 hover:border-red-400/50 transition-all flex items-center justify-center gap-2">
+                            <button @click="showCancelModal = true" class="w-full py-4 bg-transparent border border-red-500/50 text-red-300 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-red-500/20 transition-all flex items-center justify-center gap-2">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
                                 {{ $order->agreed_price ? 'Batalkan Pesanan (Harga Tidak Masuk Akal)' : 'Batalkan Pesanan' }}
                             </button>
