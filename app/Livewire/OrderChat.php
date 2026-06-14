@@ -58,6 +58,13 @@ class OrderChat extends Component
             'current_step' => 4,
         ]);
 
+        $latestProposal = $this->order->messages()->where('type', 'proposal')->latest()->first();
+        if ($latestProposal) {
+            $metadata = $latestProposal->metadata;
+            $metadata['status'] = 'accepted';
+            $latestProposal->update(['metadata' => $metadata]);
+        }
+
         OrderMessage::create([
             'order_id' => $this->order->id,
             'sender_id' => Auth::id(),
@@ -84,6 +91,13 @@ class OrderChat extends Component
         $this->order->update([
             'agreed_price' => null,
         ]);
+
+        $latestProposal = $this->order->messages()->where('type', 'proposal')->latest()->first();
+        if ($latestProposal) {
+            $metadata = $latestProposal->metadata;
+            $metadata['status'] = 'rejected';
+            $latestProposal->update(['metadata' => $metadata]);
+        }
 
         OrderMessage::create([
             'order_id' => $this->order->id,
