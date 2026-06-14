@@ -1242,7 +1242,7 @@
     @endif
 
     {{-- Functional Livewire Chat Widget --}}
-    @if(in_array($order->status, ['pending_valuation', 'negotiation', 'waiting_payment', 'processing']))
+    @if($order->messages()->count() > 0 && in_array($order->status, ['pending_valuation', 'negotiation', 'waiting_payment', 'processing']))
         <livewire:order-chat :order="$order" />
     @endif
 </div>
