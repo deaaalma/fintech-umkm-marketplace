@@ -160,7 +160,7 @@
                                 
                                 @if(!$isAdmin && $order->status === 'pending_valuation')
                                 <div class="flex gap-2">
-                                    <button wire:click="rejectProposal" wire:confirm="Yakin ingin menolak dan membatalkan pesanan ini?" class="flex-1 py-2.5 rounded-xl border-2 border-gray-200 text-gray-600 text-xs font-bold hover:bg-gray-50 transition-colors">Tolak</button>
+                                    <button wire:click="rejectProposal" wire:confirm="Yakin ingin menolak penawaran harga ini? Admin dapat mengirimkan penawaran baru nantinya." class="flex-1 py-2.5 rounded-xl border-2 border-gray-200 text-gray-600 text-xs font-bold hover:bg-gray-50 transition-colors">Tolak Harga</button>
                                     <button wire:click="acceptProposal" wire:confirm="Yakin ingin menyetujui harga ini?" class="flex-1 py-2.5 rounded-xl bg-[#000B44] text-white text-xs font-bold hover:bg-black transition-colors shadow-lg">Terima</button>
                                 </div>
                                 @elseif($isAdmin && $order->status === 'pending_valuation')
