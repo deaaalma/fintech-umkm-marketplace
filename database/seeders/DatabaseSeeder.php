@@ -210,6 +210,9 @@ class DatabaseSeeder extends Seeder
             }
         }
 
+        $this->command->info('🔧 Seeding checklist items untuk setiap UMKM...');
+        $this->call(OrderChecklistSeeder::class);
+
         $this->command->info('✅ Seeding Selesai! Data Kota, NIK, NPWP, dan Foto Usaha sudah masuk.');
     }
 }

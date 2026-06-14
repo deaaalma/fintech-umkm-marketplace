@@ -253,10 +253,23 @@
                     Layanan sedang dikerjakan. Setelah pekerjaan selesai, klik tombol di bawah untuk memberi tahu pelanggan dan pindah ke fase pembayaran.
                 </p>
                 @if($order->orderAssignment)
-                <button wire:click="completeOrder" wire:confirm="Apakah layanan sudah benar-benar selesai? Status akan berpindah ke Menunggu Pembayaran." class="w-full py-4 bg-white text-teal-700 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-teal-50 transition-all shadow-lg flex items-center justify-center gap-2 relative z-10">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-                    Tandai Layanan Selesai
-                </button>
+                <div class="space-y-3 relative z-10">
+                    <button wire:click="completeOrder" wire:confirm="Apakah layanan sudah benar-benar selesai? Status akan berpindah ke Menunggu Pembayaran." class="w-full py-4 bg-white text-teal-700 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-teal-50 transition-all shadow-lg flex items-center justify-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                        Tandai Layanan Selesai
+                    </button>
+
+                    {{-- Bypass: hanya muncul jika staff sudah submit tapi customer belum setujui --}}
+                    @if($order->work_result_photos && !$order->is_work_accepted)
+                    <div class="pt-2 border-t border-white/10">
+                        <p class="text-[10px] text-teal-200 font-bold uppercase tracking-widest mb-3 text-center">Staff sudah submit — Customer belum konfirmasi</p>
+                        <button wire:click="adminMarkServiceComplete" wire:confirm="Konfirmasi pekerjaan staff sebagai selesai? Customer akan langsung diminta melakukan pembayaran (bypass persetujuan customer)." class="w-full py-3.5 bg-white/10 border border-white/20 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-white/20 transition-all flex items-center justify-center gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            Konfirmasi Selesai (Admin Bypass)
+                        </button>
+                    </div>
+                    @endif
+                </div>
                 @else
                 <div class="p-4 bg-white/10 rounded-2xl border border-white/20 text-center relative z-10">
                     <p class="text-xs text-teal-100 font-bold">⚠️ Tugaskan staf terlebih dahulu sebelum menyelesaikan layanan.</p>

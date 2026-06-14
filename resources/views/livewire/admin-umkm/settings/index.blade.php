@@ -34,6 +34,13 @@
                         <span class="text-sm font-bold whitespace-nowrap">Pembayaran</span>
                     </button>
 
+                    <button wire:click="setTab('checklist')" class="flex-shrink-0 flex items-center gap-3 px-5 py-3 rounded-xl transition-all {{ $activeTab === 'checklist' ? 'bg-[#000B44] text-white shadow-md shadow-[#000B44]/20' : 'text-gray-500 hover:bg-gray-50' }}">
+                        <div class="w-8 h-8 rounded-lg flex items-center justify-center {{ $activeTab === 'checklist' ? 'bg-white/10' : 'bg-gray-100 text-gray-400' }}">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+                        </div>
+                        <span class="text-sm font-bold whitespace-nowrap">Checklist Tugas</span>
+                    </button>
+
                 </div>
             </div>
         </div>
@@ -263,8 +270,65 @@
             </div>
             @endif
 
-            {{-- Placeholder sections for other tabs --}}
+            @if($activeTab === 'checklist')
+            {{-- Checklist Tugas Section --}}
+            <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden animate-fade-in">
+                <div class="p-8 border-b border-gray-50">
+                    <h2 class="text-lg font-bold text-gray-900">Checklist Tugas Staff</h2>
+                    <p class="text-xs text-gray-500 font-medium mt-1">Kelola daftar item checklist yang akan ditampilkan ke staff saat mengerjakan layanan.</p>
+                </div>
 
+                {{-- Form Tambah Item --}}
+                <div class="p-8 border-b border-gray-50 bg-gray-50">
+                    <h3 class="text-xs font-black text-gray-400 uppercase tracking-widest mb-5">Tambah Item Baru</h3>
+                    <div class="flex gap-3 flex-wrap md:flex-nowrap">
+                        <input type="text" wire:model="newChecklistLabel" placeholder="Nama item checklist, contoh: Persiapan alat..." class="flex-1 px-5 py-3 bg-white border border-gray-200 rounded-2xl text-sm font-medium text-gray-900 focus:ring-2 focus:ring-black/5 focus:border-gray-400 outline-none transition-all min-w-0" />
+                        <button wire:click="addChecklist" class="shrink-0 px-6 py-3 bg-gray-900 text-white rounded-2xl text-xs font-black uppercase tracking-widest hover:bg-black transition-all flex items-center gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
+                            Tambah
+                        </button>
+                    </div>
+                    @error('newChecklistLabel') <span class="text-xs text-red-500 font-bold mt-2 inline-block">{{ $message }}</span> @enderror
+                </div>
+
+                {{-- Daftar Item --}}
+                <div class="divide-y divide-gray-50">
+                    @forelse($checklists as $item)
+                    <div class="flex items-center gap-4 px-8 py-4 hover:bg-gray-50 transition-all group">
+                        {{-- Toggle Aktif --}}
+                        <button wire:click="toggleChecklist({{ $item['id'] }})" class="shrink-0 w-10 h-6 rounded-full transition-all {{ $item['is_active'] ? 'bg-teal-500' : 'bg-gray-200' }} flex items-center px-1">
+                            <span class="w-4 h-4 bg-white rounded-full shadow transition-transform {{ $item['is_active'] ? 'translate-x-4' : 'translate-x-0' }}"></span>
+                        </button>
+
+                        {{-- Label atau Edit Form --}}
+                        @if($editingChecklistId === $item['id'])
+                            <input type="text" wire:model="editingChecklistLabel" wire:keydown.enter="updateChecklist({{ $item['id'] }})" wire:keydown.escape="$set('editingChecklistId', null)" class="flex-1 px-4 py-2 bg-white border border-gray-300 rounded-xl text-sm font-medium text-gray-900 focus:ring-2 focus:ring-black/5 outline-none" autofocus />
+                            <button wire:click="updateChecklist({{ $item['id'] }})" class="px-4 py-2 bg-gray-900 text-white rounded-xl text-xs font-black hover:bg-black transition-all">Simpan</button>
+                            <button wire:click="$set('editingChecklistId', null)" class="px-4 py-2 text-gray-400 text-xs font-bold hover:text-gray-600">Batal</button>
+                        @else
+                            <span class="flex-1 text-sm font-medium text-gray-900 {{ !$item['is_active'] ? 'opacity-40 line-through' : '' }}">{{ $item['label'] }}</span>
+                            <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition-all">
+                                <button wire:click="$set('editingChecklistId', {{ $item['id'] }}); $set('editingChecklistLabel', '{{ addslashes($item['label']) }}')" class="p-2 text-gray-400 hover:text-gray-700 hover:bg-gray-100 rounded-xl transition-all">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
+                                </button>
+                                <button wire:click="deleteChecklist({{ $item['id'] }})" wire:confirm="Hapus item ini?" class="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-xl transition-all">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                                </button>
+                            </div>
+                        @endif
+                    </div>
+                    @empty
+                    <div class="p-12 text-center">
+                        <div class="w-12 h-12 bg-gray-100 rounded-2xl flex items-center justify-center mx-auto mb-3 text-gray-300">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+                        </div>
+                        <p class="text-xs font-bold text-gray-400 uppercase tracking-widest">Belum ada item checklist</p>
+                        <p class="text-[11px] text-gray-400 mt-1">Tambah item menggunakan form di atas.</p>
+                    </div>
+                    @endforelse
+                </div>
+            </div>
+            @endif
 
             @if($activeTab === 'pembayaran')
             <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden animate-fade-in">

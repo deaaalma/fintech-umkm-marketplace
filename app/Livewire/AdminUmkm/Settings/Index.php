@@ -2,6 +2,7 @@
 
 namespace App\Livewire\AdminUmkm\Settings;
 
+use App\Models\OrderChecklist;
 use App\Models\Umkm;
 use App\Models\UmkmDetail;
 use Livewire\Attributes\Layout;
@@ -40,6 +41,12 @@ class Index extends Component
     public $facebook_url;
     public $website_url;
 
+    // Checklist
+    public $checklists = [];
+    public $newChecklistLabel = '';
+    public $editingChecklistId = null;
+    public $editingChecklistLabel = '';
+
     public function mount()
     {
         $this->umkm = Umkm::where('owner_id', auth()->id())->firstOrFail();
@@ -59,12 +66,28 @@ class Index extends Component
         $this->whatsapp_number = $this->umkm->whatsapp_number;
         $this->facebook_url = $this->umkm->facebook_url;
         $this->website_url = $this->umkm->website_url;
+
+        // Load checklist
+        $this->loadChecklists();
+    }
+
+    public function loadChecklists()
+    {
+        $this->checklists = OrderChecklist::where('umkm_id', $this->umkm->id)
+            ->orderBy('sort_order')
+            ->orderBy('id')
+            ->get()
+            ->toArray();
     }
 
     public function setTab($tab)
     {
         $this->activeTab = $tab;
         $this->isEditing = false;
+        $this->editingChecklistId = null;
+        if ($tab === 'checklist') {
+            $this->loadChecklists();
+        }
     }
 
     public function save()
@@ -149,6 +172,63 @@ class Index extends Component
             'message' => 'Pengaturan berhasil disimpan',
             'type' => 'success'
         ]);
+    }
+
+    public function addChecklist()
+    {
+        $this->validate([
+            'newChecklistLabel' => 'required|string|max:255',
+        ]);
+
+        $maxOrder = OrderChecklist::where('umkm_id', $this->umkm->id)->max('sort_order') ?? 0;
+
+        OrderChecklist::create([
+            'umkm_id'    => $this->umkm->id,
+            'product_id' => null,
+            'label'      => $this->newChecklistLabel,
+            'sort_order' => $maxOrder + 1,
+            'is_active'  => true,
+        ]);
+
+        $this->newChecklistLabel = '';
+        $this->loadChecklists();
+    }
+
+    public function updateChecklist($id)
+    {
+        $this->validate([
+            'editingChecklistLabel' => 'required|string|max:255',
+        ]);
+
+        OrderChecklist::where('id', $id)
+            ->where('umkm_id', $this->umkm->id)
+            ->update(['label' => $this->editingChecklistLabel]);
+
+        $this->editingChecklistId = null;
+        $this->editingChecklistLabel = '';
+        $this->loadChecklists();
+    }
+
+    public function deleteChecklist($id)
+    {
+        OrderChecklist::where('id', $id)
+            ->where('umkm_id', $this->umkm->id)
+            ->delete();
+
+        $this->loadChecklists();
+    }
+
+    public function toggleChecklist($id)
+    {
+        $item = OrderChecklist::where('id', $id)
+            ->where('umkm_id', $this->umkm->id)
+            ->first();
+
+        if ($item) {
+            $item->update(['is_active' => !$item->is_active]);
+        }
+
+        $this->loadChecklists();
     }
 
     public function render()

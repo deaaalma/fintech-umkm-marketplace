@@ -261,6 +261,51 @@ class Show extends Component
         $this->order->refresh();
     }
 
+    public function adminMarkServiceComplete()
+    {
+        // Guard: hanya bisa jika staff sudah submit (ada work_result_photos) tapi customer belum setujui
+        if (!$this->order->work_result_photos || $this->order->is_work_accepted) {
+            return;
+        }
+
+        $this->order->update([
+            'is_work_accepted' => true,
+            'status'           => 'waiting_payment',
+            'current_step'     => 5,
+        ]);
+
+        OrderLog::create([
+            'order_id' => $this->order->id,
+            'actor_id' => auth()->id(),
+            'action'   => 'Admin Marked Service Complete',
+            'reason'   => 'Admin manually confirmed service completion on behalf of the customer.',
+        ]);
+
+        // Notifikasi ke Customer
+        UserNotification::create([
+            'user_id' => $this->order->customer_id,
+            'title'   => 'Layanan Selesai – Lakukan Pembayaran',
+            'message' => 'Layanan pesanan #' . ($this->order->invoice_number ?? $this->order->id) . ' telah dikonfirmasi selesai oleh admin. Silakan lakukan pembayaran.',
+            'type'    => 'order_status',
+            'link'    => route('customer.order-details', $this->order->id),
+        ]);
+
+        // Notifikasi ke Staff (Worker yang ditugaskan)
+        $workerId = $this->order->orderAssignment?->worker_id;
+        if ($workerId) {
+            UserNotification::create([
+                'user_id' => $workerId,
+                'title'   => 'Pekerjaan Dikonfirmasi ✓',
+                'message' => 'Admin telah mengkonfirmasi penyelesaian pekerjaan Anda untuk pesanan #' . ($this->order->invoice_number ?? $this->order->id) . '. Terima kasih atas kerja keras Anda!',
+                'type'    => 'order_status',
+                'link'    => '#',
+            ]);
+        }
+
+        session()->flash('message', 'Layanan berhasil ditandai selesai. Customer akan diminta melakukan pembayaran.');
+        $this->order->refresh();
+    }
+
     public function rejectOrder()
     {
         $this->order->update(['status' => 'cancelled']);
