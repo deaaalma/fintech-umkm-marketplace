@@ -13,7 +13,7 @@
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-10">
         {{-- New Orders --}}
-        <a href="{{ route('umkm.orders') }}" class="metric-card block bg-[#000B44] rounded-2xl border border-[#1a3a7a] flex flex-col group relative overflow-hidden hover:opacity-90 transition-opacity animate-fade-in-up" style="animation-delay: 0.1s">
+        <a href="{{ route('umkm.orders', ['category' => 'Pending Review']) }}" class="metric-card block bg-[#000B44] rounded-2xl border border-[#1a3a7a] flex flex-col group relative overflow-hidden hover:opacity-90 transition-opacity animate-fade-in-up" style="animation-delay: 0.1s">
             @if($stats['new_orders'] > 0)
                 <div class="absolute top-4 right-4 w-2.5 h-2.5 rounded-full bg-yellow-400 animate-pulse"></div>
             @endif
@@ -67,10 +67,12 @@
                     $totalPipelineOrders = array_sum($pipeline) > 0 ? array_sum($pipeline) : 1;
                     $cumulativePercent = 0;
                     $colors = [
+                        'new'        => '#8b5cf6', // violet-500
                         'waiting'    => '#f59e0b', // amber-500
                         'paid'       => '#14b8a6', // teal-500
                         'processing' => '#3b82f6', // blue-500
                         'completed'  => '#10b981', // emerald-500
+                        'cancelled'  => '#ef4444', // red-500
                     ];
                 @endphp
                 

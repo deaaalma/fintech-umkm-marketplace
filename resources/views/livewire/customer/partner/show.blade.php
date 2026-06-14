@@ -185,7 +185,7 @@
                                     {{-- Address --}}
                                     <div class="space-y-2">
                                         <label for="address" class="text-[10px] font-black text-slate-600 uppercase tracking-widest ml-1">Alamat Layanan</label>
-                                        <textarea id="address" wire:model.live.blur="address" rows="3" placeholder="Masukkan alamat lengkap lokasi pembersihan..." class="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl text-sm font-medium focus:ring-2 focus:ring-[#0077B6] focus:border-[#0077B6] outline-none transition-all resize-none text-slate-900 placeholder-slate-400"></textarea>
+                                        <textarea id="address" wire:model.live.blur="address" rows="3" placeholder="Masukkan alamat lengkap lokasi layanan..." class="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl text-sm font-medium focus:ring-2 focus:ring-[#0077B6] focus:border-[#0077B6] outline-none transition-all resize-none text-slate-900 placeholder-slate-400"></textarea>
                                         @error('address') <span class="text-xs text-red-600 font-bold ml-1" role="alert">{{ $message }}</span> @enderror
                                     </div>
 

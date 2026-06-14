@@ -32,7 +32,7 @@ class Index extends Component
             });
         }
 
-        $recentOrders = $ordersQuery->whereIn('status', ['pending_valuation', 'waiting_payment'])->limit(4)->get();
+        $recentOrders = $ordersQuery->where('status', 'pending_valuation')->limit(4)->get();
 
         // 2. Statistik Riil (Gunakan umkm_net_income untuk balance)
         $stats = [
@@ -43,10 +43,12 @@ class Index extends Component
 
         // 4. Live Pipeline (Berdasarkan enum aslimu)
         $pipeline = [
+            'New'        => Order::where('umkm_id', $umkmId)->where('status', 'pending_valuation')->count(),
             'Waiting'    => Order::where('umkm_id', $umkmId)->where('status', 'waiting_payment')->count(),
             'Paid'       => Order::where('umkm_id', $umkmId)->where('status', 'paid')->count(),
             'Processing' => Order::where('umkm_id', $umkmId)->where('status', 'processing')->count(),
             'Completed'  => Order::where('umkm_id', $umkmId)->where('status', 'completed')->count(),
+            'Cancelled'  => Order::where('umkm_id', $umkmId)->where('status', 'cancelled')->count(),
         ];
 
         return view('livewire.admin-umkm.index', [
