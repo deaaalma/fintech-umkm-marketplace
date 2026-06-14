@@ -79,14 +79,16 @@ class OrderChat extends Component
     {
         if ($this->order->status !== 'pending_valuation') return;
 
+        // Hanya tolak penawaran harga, bukan batalkan pesanan
+        // Reset agreed_price agar admin bisa kirim penawaran baru
         $this->order->update([
-            'status' => 'cancelled',
+            'agreed_price' => null,
         ]);
 
         OrderMessage::create([
             'order_id' => $this->order->id,
             'sender_id' => Auth::id(),
-            'message' => 'Penawaran harga telah ditolak dan pesanan dibatalkan.',
+            'message' => 'Penawaran harga ditolak. Menunggu admin memberikan penawaran harga baru.',
             'type' => 'system',
         ]);
 
@@ -94,7 +96,7 @@ class OrderChat extends Component
             'order_id' => $this->order->id,
             'actor_id' => Auth::id(),
             'action' => 'Customer Rejected Proposal',
-            'reason' => 'Customer cancelled the order during price negotiation.',
+            'reason' => 'Customer rejected the price proposal and is waiting for a new offer.',
         ]);
         
         $this->dispatch('proposal-action-taken');

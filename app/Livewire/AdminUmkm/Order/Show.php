@@ -19,6 +19,8 @@ class Show extends Component
     public $admin_note;
     public $selectedWorkerId;
     public $availableWorkers = [];
+    public $showCancelModal = false;
+    public $cancellationReason = '';
 
     public function mount(Order $order)
     {
@@ -306,27 +308,100 @@ class Show extends Component
         $this->order->refresh();
     }
 
-    public function rejectOrder()
+    public function requestCancel()
     {
+        $this->validate([
+            'cancellationReason' => 'required|string|min:10|max:500',
+        ], [
+            'cancellationReason.required' => 'Alasan pembatalan wajib diisi.',
+            'cancellationReason.min'      => 'Alasan minimal 10 karakter.',
+        ]);
+
+        $this->order->update([
+            'previous_status'           => $this->order->status,
+            'status'                    => 'cancel_requested',
+            'cancellation_reason'       => $this->cancellationReason,
+            'cancellation_requested_by' => 'admin',
+        ]);
+
+        OrderLog::create([
+            'order_id' => $this->order->id,
+            'actor_id' => auth()->id(),
+            'action'   => 'Admin Requested Cancellation',
+            'reason'   => $this->cancellationReason,
+        ]);
+
+        UserNotification::create([
+            'user_id' => $this->order->customer_id,
+            'title'   => 'Permintaan Pembatalan Pesanan dari Admin',
+            'message' => 'Admin mengajukan pembatalan pesanan #' . ($this->order->invoice_number ?? $this->order->id) . '. Alasan: ' . $this->cancellationReason . '. Silakan tinjau dan berikan persetujuan Anda.',
+            'type'    => 'order_status',
+            'link'    => route('customer.order-details', $this->order->id),
+        ]);
+
+        $this->cancellationReason = '';
+        $this->showCancelModal = false;
+        session()->flash('message', 'Permintaan pembatalan telah dikirim ke customer. Menunggu persetujuan.');
+        $this->order->refresh();
+    }
+
+    public function approveCancel()
+    {
+        if ($this->order->status !== 'cancel_requested' || $this->order->cancellation_requested_by !== 'customer') {
+            return;
+        }
+
         $this->order->update(['status' => 'cancelled']);
 
         OrderLog::create([
             'order_id' => $this->order->id,
             'actor_id' => auth()->id(),
-            'action' => 'Admin Rejected Order',
-            'reason' => 'Admin rejected the order request.',
+            'action'   => 'Admin Approved Cancellation',
+            'reason'   => 'Admin menyetujui permintaan pembatalan dari Customer.',
         ]);
 
-        // Notifikasi ke customer
         UserNotification::create([
             'user_id' => $this->order->customer_id,
-            'title'   => 'Pesanan Ditolak',
-            'message' => 'Mohon maaf, pesanan #' . ($this->order->invoice_number ?? $this->order->id) . ' Anda telah ditolak oleh penyedia jasa. Silakan hubungi admin untuk informasi lebih lanjut.',
+            'title'   => 'Pesanan Dibatalkan',
+            'message' => 'Permintaan pembatalan pesanan #' . ($this->order->invoice_number ?? $this->order->id) . ' telah disetujui oleh Admin.',
             'type'    => 'order_status',
             'link'    => route('customer.order-details', $this->order->id),
         ]);
 
-        session()->flash('message', 'Pesanan telah ditolak.');
+        session()->flash('message', 'Permintaan pembatalan customer disetujui. Pesanan dibatalkan.');
+        $this->order->refresh();
+    }
+
+    public function rejectCancel()
+    {
+        if ($this->order->status !== 'cancel_requested' || $this->order->cancellation_requested_by !== 'customer') {
+            return;
+        }
+
+        $this->order->update([
+            'status'                    => $this->order->previous_status ?? 'pending_valuation',
+            'cancellation_reason'       => null,
+            'cancellation_requested_by' => null,
+            'previous_status'           => null,
+        ]);
+
+        OrderLog::create([
+            'order_id' => $this->order->id,
+            'actor_id' => auth()->id(),
+            'action'   => 'Admin Rejected Cancellation',
+            'reason'   => 'Admin menolak permintaan pembatalan dari Customer. Pesanan dilanjutkan.',
+        ]);
+
+        UserNotification::create([
+            'user_id' => $this->order->customer_id,
+            'title'   => 'Permintaan Pembatalan Ditolak',
+            'message' => 'Admin menolak permintaan pembatalan pesanan #' . ($this->order->invoice_number ?? $this->order->id) . '. Pesanan Anda dilanjutkan kembali.',
+            'type'    => 'order_status',
+            'link'    => route('customer.order-details', $this->order->id),
+        ]);
+
+        session()->flash('message', 'Permintaan pembatalan ditolak. Pesanan dilanjutkan kembali.');
+        $this->order->refresh();
     }
 
     public function getSitePhotosProperty()

@@ -1,6 +1,6 @@
 <x-slot:title>Review Order #{{ $order->invoice_number ?? $order->id }}</x-slot>
 
-<div class="space-y-6 animate-fade-in-up" wire:poll.5s>
+<div class="space-y-6 animate-fade-in-up" wire:poll.5s x-data="{ showCancelModal: @entangle('showCancelModal') }">
     {{-- Header --}}
     <div class="flex items-center justify-between">
         <div class="flex items-center gap-4">
@@ -235,12 +235,11 @@
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
                                 {{ $order->agreed_price ? 'Update & Send Proposal' : 'Accept & Send Proposal' }}
                             </button>
-                            @if(!$order->agreed_price)
-                            <button wire:click="rejectOrder" wire:confirm="Are you sure you want to REJECT this order?" class="w-full py-4 bg-transparent border border-white/20 text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-white/5 transition-all flex items-center justify-center gap-2">
+                            {{-- Tolak pesanan: muncul baik sebelum maupun SAAT negosiasi (harga tidak masuk akal) --}}
+                            <button @click="showCancelModal = true" class="w-full py-4 bg-transparent border border-white/20 text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-red-500/20 hover:border-red-400/50 transition-all flex items-center justify-center gap-2">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
-                                Reject Order
+                                {{ $order->agreed_price ? 'Batalkan Pesanan (Harga Tidak Masuk Akal)' : 'Batalkan Pesanan' }}
                             </button>
-                            @endif
                         </div>
                     @endif
                 </div>
@@ -269,10 +268,25 @@
                         </button>
                     </div>
                     @endif
+
+                    {{-- Cancel order saat processing (force majeure, staf sakit, dll) --}}
+                    <div class="pt-2 border-t border-white/10">
+                        <button @click="showCancelModal = true" class="w-full py-3.5 bg-transparent border border-red-400/40 text-red-300 rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-red-500/20 transition-all flex items-center justify-center gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
+                            Batalkan Pesanan
+                        </button>
+                    </div>
                 </div>
                 @else
-                <div class="p-4 bg-white/10 rounded-2xl border border-white/20 text-center relative z-10">
-                    <p class="text-xs text-teal-100 font-bold">⚠️ Tugaskan staf terlebih dahulu sebelum menyelesaikan layanan.</p>
+                <div class="space-y-3 relative z-10">
+                    <div class="p-4 bg-white/10 rounded-2xl border border-white/20 text-center">
+                        <p class="text-xs text-teal-100 font-bold">⚠️ Tugaskan staf terlebih dahulu sebelum menyelesaikan layanan.</p>
+                    </div>
+                    {{-- Cancel tetap tersedia meski staf belum ditugaskan --}}
+                    <button @click="showCancelModal = true" class="w-full py-3.5 bg-transparent border border-red-400/40 text-red-300 rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-red-500/20 transition-all flex items-center justify-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
+                        Batalkan Pesanan
+                    </button>
                 </div>
                 @endif
             </div>
@@ -366,8 +380,59 @@
         </div>
     </div>
     
-    {{-- Floating Chat (komponen sudah handle floating UI sendiri) --}}
+    {{-- Floating Chat --}}
     @if($order->status === 'pending_valuation' || in_array($order->status, ['negotiation', 'processing', 'waiting_payment']))
         <livewire:order-chat :order="$order" />
     @endif
+
+    {{-- Card: Permintaan Pembatalan dari Customer --}}
+    @if($order->status === 'cancel_requested' && $order->cancellation_requested_by === 'customer')
+    <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full p-8">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="w-12 h-12 rounded-2xl bg-red-50 flex items-center justify-center">
+                    <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                </div>
+                <div>
+                    <h3 class="text-base font-black text-gray-900">Permintaan Pembatalan</h3>
+                    <p class="text-xs text-gray-500 font-medium">dari Customer — {{ $order->customer->name }}</p>
+                </div>
+            </div>
+            <div class="bg-red-50 border border-red-100 rounded-2xl p-4 mb-6">
+                <p class="text-xs font-bold text-red-600 uppercase tracking-widest mb-1">Alasan Pembatalan:</p>
+                <p class="text-sm font-medium text-gray-800 leading-relaxed italic">"{{ $order->cancellation_reason }}"</p>
+            </div>
+            <p class="text-sm text-gray-600 font-medium mb-6">Apakah Anda menyetujui pembatalan ini? Jika ditolak, pesanan akan dilanjutkan kembali ke status sebelumnya.</p>
+            <div class="flex gap-3">
+                <button wire:click="rejectCancel" class="flex-1 py-3.5 bg-white border border-gray-200 text-gray-700 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-gray-50 transition-all">
+                    Tolak, Lanjutkan
+                </button>
+                <button wire:click="approveCancel" class="flex-1 py-3.5 bg-red-500 text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-red-600 transition-all">
+                    Setujui Pembatalan
+                </button>
+            </div>
+        </div>
+    </div>
+    @endif
+
+    {{-- Modal: Input Alasan Pembatalan (Admin) --}}
+    <div x-show="showCancelModal" x-cloak class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full p-8">
+            <h3 class="text-base font-black text-gray-900 mb-2">Ajukan Pembatalan Pesanan</h3>
+            <p class="text-sm text-gray-500 font-medium mb-6">Permintaan pembatalan akan dikirim ke customer untuk mendapat persetujuan terlebih dahulu.</p>
+            <div class="mb-5">
+                <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Alasan Pembatalan <span class="text-red-500">*</span></label>
+                <textarea wire:model="cancellationReason" rows="4" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-2xl text-sm font-medium text-gray-700 focus:outline-none focus:ring-2 focus:ring-red-400 focus:border-transparent resize-none" placeholder="Jelaskan alasan pembatalan (min. 10 karakter)..."></textarea>
+                @error('cancellationReason') <span class="text-xs text-red-500 font-bold mt-1 inline-block">{{ $message }}</span> @enderror
+            </div>
+            <div class="flex gap-3">
+                <button @click="showCancelModal = false" class="flex-1 py-3.5 bg-white border border-gray-200 text-gray-700 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-gray-50 transition-all">
+                    Batal
+                </button>
+                <button wire:click="requestCancel" class="flex-1 py-3.5 bg-red-500 text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-red-600 transition-all">
+                    Kirim Permintaan
+                </button>
+            </div>
+        </div>
+    </div>
 </div>

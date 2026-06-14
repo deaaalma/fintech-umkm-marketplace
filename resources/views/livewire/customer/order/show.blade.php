@@ -179,6 +179,9 @@
             </h3>
             @if($order->status === 'pending_valuation' && $order->agreed_price === null)
                 <p class="text-sm text-gray-600 font-medium leading-relaxed">Pesanan Anda sedang ditinjau oleh Admin untuk verifikasi detail layanan. Admin akan menghubungi Anda via chat untuk mendiskusikan detail dan total harga jika diperlukan.</p>
+                <button wire:click="$set('showCancelModal', true)" class="mt-3 text-xs font-bold text-red-500 hover:text-red-700 underline underline-offset-2 transition-colors">
+                    Batalkan Pesanan
+                </button>
             @elseif($order->status === 'pending_valuation' && $order->agreed_price !== null)
                 <p class="text-sm text-gray-600 font-medium leading-relaxed">Admin telah mengirimkan penawaran harga untuk pesanan Anda. Silakan periksa rincian biaya di bawah ini.</p>
             @elseif($order->status === 'waiting_payment')
@@ -330,10 +333,22 @@
                         BELI/LANJUT PEMBAYARAN
                     </button>
                 </div>
+                {{-- Batalkan Pesanan --}}
+                <div class="mt-3 pt-3 border-t border-gray-100 text-center">
+                    <button wire:click="$set('showCancelModal', true)" class="text-xs font-bold text-red-500 hover:text-red-700 underline underline-offset-2 transition-colors">
+                        Batalkan Pesanan
+                    </button>
+                </div>
             </div>
             @else
             <div class="mt-4 p-4 bg-gray-50 border border-gray-200 rounded text-center text-sm text-gray-600 font-medium">
                 Menunggu tanggapan atau proposal baru dari Admin...
+            </div>
+            {{-- Batalkan Pesanan saat menunggu proposal baru --}}
+            <div class="mt-2 text-center">
+                <button wire:click="$set('showCancelModal', true)" class="text-xs font-bold text-red-500 hover:text-red-700 underline underline-offset-2 transition-colors">
+                    Batalkan Pesanan
+                </button>
             </div>
             @endif
         </div>
@@ -1244,5 +1259,58 @@
     {{-- Functional Livewire Chat Widget --}}
     @if($order->messages()->count() > 0 && in_array($order->status, ['pending_valuation', 'negotiation', 'waiting_payment', 'processing']))
         <livewire:order-chat :order="$order" />
+    @endif
+
+    {{-- Card: Permintaan Pembatalan dari Admin (modal overlay) --}}
+    @if($order->status === 'cancel_requested' && $order->cancellation_requested_by === 'admin')
+    <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full p-8">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="w-12 h-12 rounded-2xl bg-red-50 flex items-center justify-center">
+                    <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                </div>
+                <div>
+                    <h3 class="text-base font-black text-gray-900">Permintaan Pembatalan dari Admin</h3>
+                    <p class="text-xs text-gray-500 font-medium">{{ $order->umkm->name }} ingin membatalkan pesanan ini</p>
+                </div>
+            </div>
+            <div class="bg-red-50 border border-red-100 rounded-2xl p-4 mb-6">
+                <p class="text-xs font-bold text-red-600 uppercase tracking-widest mb-1">Alasan dari Admin:</p>
+                <p class="text-sm font-medium text-gray-800 leading-relaxed italic">"{{ $order->cancellation_reason }}"</p>
+            </div>
+            <p class="text-sm text-gray-600 font-medium mb-6">Jika Anda <strong>setuju</strong>, pesanan akan dibatalkan. Jika <strong>tolak</strong>, pesanan akan dilanjutkan kembali dan Admin akan mendapat notifikasi.</p>
+            <div class="flex gap-3">
+                <button wire:click="rejectCancel" class="flex-1 py-4 bg-white border border-gray-200 text-gray-700 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-gray-50 transition-all">
+                    Tolak, Lanjutkan
+                </button>
+                <button wire:click="approveCancel" class="flex-1 py-4 bg-red-500 text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-red-600 transition-all shadow-lg">
+                    Setujui Pembatalan
+                </button>
+            </div>
+        </div>
+    </div>
+    @endif
+
+    {{-- Modal: Input Alasan Pembatalan (Customer) --}}
+    @if($showCancelModal)
+    <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full p-8">
+            <h3 class="text-base font-black text-gray-900 mb-1">Batalkan Pesanan</h3>
+            <p class="text-sm text-gray-500 font-medium mb-6">Permintaan pembatalan akan dikirim ke Admin untuk mendapat persetujuan. Pesanan tidak langsung dibatalkan.</p>
+            <div class="mb-5">
+                <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Alasan Pembatalan <span class="text-red-500">*</span></label>
+                <textarea wire:model="cancellationReason" rows="4" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-2xl text-sm font-medium text-gray-700 focus:outline-none focus:ring-2 focus:ring-red-400 focus:border-transparent resize-none" placeholder="Jelaskan alasan pembatalan Anda (min. 10 karakter)..."></textarea>
+                @error('cancellationReason') <span class="text-xs text-red-500 font-bold mt-1 inline-block">{{ $message }}</span> @enderror
+            </div>
+            <div class="flex gap-3">
+                <button wire:click="$set('showCancelModal', false)" class="flex-1 py-4 bg-white border border-gray-200 text-gray-700 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-gray-50 transition-all">
+                    Batal
+                </button>
+                <button wire:click="requestCancel" class="flex-1 py-4 bg-red-500 text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-red-600 transition-all shadow-lg">
+                    Kirim Permintaan
+                </button>
+            </div>
+        </div>
+    </div>
     @endif
 </div>
