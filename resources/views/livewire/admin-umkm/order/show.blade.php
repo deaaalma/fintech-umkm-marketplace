@@ -21,6 +21,7 @@
                     'processing'        => ['bg' => 'bg-blue-50 border-blue-100',   'text' => 'text-blue-600',   'label' => 'Processing'],
                     'completed'         => ['bg' => 'bg-green-50 border-green-100',  'text' => 'text-green-600',  'label' => 'Completed'],
                     'cancelled'         => ['bg' => 'bg-red-50 border-red-100',    'text' => 'text-red-600',    'label' => 'Cancelled'],
+                    'cancel_requested'  => ['bg' => 'bg-red-50 border-red-100',    'text' => 'text-red-600',    'label' => 'Cancel Requested'],
                 ];
                 $s = $statusMap[$order->status] ?? ['bg' => 'bg-gray-50 border-gray-100', 'text' => 'text-gray-600', 'label' => $order->status];
             @endphp

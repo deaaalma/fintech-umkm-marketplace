@@ -174,6 +174,8 @@
                     Menunggu Pembayaran
                 @elseif(in_array($order->status, ['paid', 'completed']))
                     Order Selesai
+                @elseif($order->status === 'cancel_requested')
+                    Permintaan Pembatalan
                 @else
                     Status Pesanan Saat Ini
                 @endif
@@ -195,6 +197,12 @@
                 @endif
             @elseif(in_array($order->status, ['paid', 'completed']))
                 <p class="text-sm text-gray-600 font-medium leading-relaxed">Thank you! Pembayaran received and service successfully completed. We hope you're satisfied with the results.</p>
+            @elseif($order->status === 'cancel_requested')
+                @if($order->cancellation_requested_by === 'customer')
+                    <p class="text-sm text-gray-600 font-medium leading-relaxed">Anda telah mengajukan pembatalan untuk pesanan ini. Menunggu admin menyetujui pembatalan tersebut.</p>
+                @else
+                    <p class="text-sm text-gray-600 font-medium leading-relaxed">Admin telah mengajukan pembatalan untuk pesanan ini. Silakan berikan persetujuan Anda melalui pop-up yang muncul.</p>
+                @endif
             @endif
         </div>
     </div>
