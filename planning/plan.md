@@ -22,9 +22,8 @@ Secara keseluruhan, proyek sudah berjalan dan punya alur bisnis yang cukup lengk
 ### ~~3. Invoice Number Masih Kosong di Database~~ ✅ SELESAI
 - **Fix**: Sudah ditambahkan auto-generate `invoice_number` di event `static::creating()` di `Order.php` dan seluruh data lama yang null sudah di-backfill dengan format `INV-YYYYMM-XXXXX`.
 
-### 4. Verifikasi Email Tidak Bisa Diakses (Karena Bug `dd()` di Atas)
-- Alur verifikasi email kemungkinan belum pernah bisa dijalankan secara normal.
-- **Fix**: Selesaikan fix poin #1, lalu test alur registrasi → verifikasi email hingga tuntas.
+### ~~4. Verifikasi Email Tidak Bisa Diakses (Karena Bug `dd()` di Atas)~~ ✅ SELESAI
+- **Fix**: Dilakukan sedikit penyesuaian agar alur registrasi hingga verifikasi email dapat berjalan sukses dan me-redirect ke dashboard dengan benar.
 
 ### 5. File Sampah di Root Project
 - Ada beberapa file debug/temporary yang tertinggal di root: `backfill_logs.php`, `check_db.php`, `extract.php`, `extract.py`, `fix_order.php`, `restore.py`, `restore_templates.ps1`, `update_images.php`, `update_logs.php`, `temp_register.txt`, file `toArray()` (tanpa ekstensi).
